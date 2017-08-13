@@ -222,7 +222,7 @@
 <script>
   $(function () {
     $('#dishTypeTable').DataTable({
-      "paging": false,
+      "paging": true,
       "lengthChange": true,
       "searching": true,
       "ordering": false,
@@ -299,15 +299,6 @@ var yourImg = document.getElementById('editPhotoIcon');
                       },
                       notEmpty: {
                         message: 'This field is required.'
-                      },
-                      remote: {
-                        url: '/DishTypeValidator',
-                        data: function(validator) {
-                           return {
-                               addDishTypeName: $('addDishTypeName').val()
-                           };
-                        },
-                        message: 'EXisting'
                       }
                   }
               },

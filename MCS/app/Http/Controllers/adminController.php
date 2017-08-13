@@ -572,7 +572,6 @@ class adminController extends Controller
         $packageData = DB::table('package_tbl')
         ->join('packageinclusion_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
         ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','packageinclusion_tbl.dishTypeID')
-        ->groupBy('package_tbl.packageID')
         ->where('packageStatus', 1)->where('packageAvailability',1)
         ->get();
 
@@ -899,9 +898,22 @@ class adminController extends Controller
         return redirect()->back();
     }
 
-    //Schedule function------------------------------------------------------------------------------>
     public function schedulePage(){
+
+
+        
         return View::make('/schedulePage');
+    }//Schedule function------------------------------------------------------------------------------>
+    
+
+    public function retrieveScheduleData(Request $request){
+
+        $rsvtn = DB::table('reservation_tbl')
+              ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+              ->where('reservation_tbl.reservationStatus', '=', 1)
+              ->get();
+
+      return \Response::json(['rsvtn'=>$rsvtn]);
     }
 
     //Reservation function------------------------------------------------------------------------------>

@@ -112,6 +112,7 @@ Route::post("/DeleteServiceTypePage", array("uses"=>"adminController@deleteServi
 
 //SchedulePage
 Route::get('/SchedulePage', 'adminController@schedulePage');
+Route::get('/RetrieveSchedule', 'adminController@retrieveScheduleData');
 
 //Transaction Reservation
 Route::get('/ReservationPage', 'adminController@reservationPage');
