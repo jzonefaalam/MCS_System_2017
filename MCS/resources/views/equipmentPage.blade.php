@@ -1,0 +1,476 @@
+@extends('layouts.admin')
+
+@section('content')
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <br>
+        <ol class="breadcrumb">
+          <li><a href="menu.php"><i class="fa fa-wrench"></i> Maintenance</a></li>
+          <li class="active"><a href = "#"><i class="fa fa-cube"></i>Equipment</a></li>
+        </ol>
+      </section>
+
+    <section class="content">
+          <div class="box">
+            <div class="box-header with-border">
+              <div class="row">
+                <div class="col-md-6">
+                  <h2>Equipment</h2>
+                </div>
+                <div class="col-md-6">
+                      <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
+                        <i class="fa fa-save"></i> ADD
+                      </a>
+                    </div>
+              </div>
+            </div>
+          <!-- /.box-header -->
+          
+                <!-- /Header -->
+                <div class="box-body">
+                  <table class="table table-bordered table-striped dataTable" id="equipmentTable">
+                    <thead>
+                    <tr>
+                      <th width="150px">Image</th>
+                      <th width="180px">Name</th>
+                      <th width="200px">Description</th>
+                      <th width="80px">Rate Per Hour</th>
+                      <th width="80px">Type</th>
+                      <th width="150px">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      @foreach ($equipmentData as $equipmentData)
+                      <tr>
+                        <td><img src="{{ asset('images/' . $equipmentData->equipmentImage) }}"  style="width:150px;height:100px;" /></td>
+                        <td>{{ $equipmentData->equipmentName }}</td>
+                        <td>{{ $equipmentData->equipmentDescription }}</td>
+                        <td>{{ $equipmentData->equipmentRatePerHour }}</td>
+                        <td>{{ $equipmentData->equipmentTypeName }}</td>
+                       <td>
+                        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
+                        <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-trash fa-fw"></i> Delete</a>
+                       </td>
+                      </tr>
+                      @endforeach
+                      </tbody>
+                  </table>
+                </div>
+                <!-- /Body -->
+            <!-- /2nd Body -->
+
+
+            <!-- /Box Body -->
+            </div>
+
+
+                      <!-- Delete Equipment Modal-->
+                      <form role="form" method="POST" action="DeleteEquipmentPage" class="form-horizontal">
+                      <div class="modal fade" id="deleteEquipmentModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                             <div class="modal-body">
+                                <div class="form-group" style="display: none;">
+                                  <label class="col-sm-4 control-label">Equipment ID</label>
+                                  <div class="col-sm-5 input-group">
+                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="deleteEquipmentID" id="deleteEquipmentID" readonly="">
+                                  </div>
+                                </div>
+                                {!! csrf_field() !!}
+                                <div>
+                                  <h5> Are you sure you want to delete this item? </h5>
+                                </div>
+                                <div style="text-align: center;">
+                                  <button type="submit" name="deleteEquipmentBtn" class="btn btn-primary btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                      <!-- End Modals-->
+
+                    <!-- Update Package Modal-->
+                    <div class="modal fade" id="editEquipmentModal">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                    <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data" >
+                    <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">UPDATE EQUIPMENT</h4>
+                    </div>
+
+                    <div class="modal-body">
+                    {!! csrf_field() !!}
+                    <div class="form-group" style="display: none;">
+                    <label class="col-sm-4 control-label">Equipment ID</label>
+                    <div class="col-sm-6">
+                    <div class = "input-group">
+                    <div class="input-group-addon">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    </div>
+                    <input type="text" class="form-control" name="editEquipmentID" id="editEquipmentID" readonly="">
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="col-sm-4 control-label">Equipment Name</label>
+                    <div class="col-sm-6">
+                    <div class = "input-group">
+                    <div class="input-group-addon">
+                    <i class="fa fa-cube" aria-hidden="true"></i>
+                    </div>
+                    <input type="text" class="form-control" name="editEquipmentName" id="editEquipmentName" required>
+                    </div>
+
+                    <input type="text" class="form-control" name="tempName" id="tempName" style="display: none;">
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="col-sm-4 control-label"> Description</label>
+                    <div class="col-sm-6">
+                    <div class = "input-group">
+                    <div class="input-group-addon">
+                    <i class="fa fa-quote-right" aria-hidden="true"></i>
+                    </div>
+                    <textarea type="text" required class="form-control" name="editEquipmentDescription" id="editEquipmentDescription"></textarea>
+                    </div>
+                    </div>
+                    </div>
+
+
+                    <div class="form-group">
+                    <label class="col-sm-4 control-label">Rate per Hour</label>
+                    <div class="col-sm-6">
+                    <div class = "input-group">
+                    <div class="input-group-addon">
+                    <i class="fa fa-hourglass-half" aria-hidden="true"></i>
+                    </div>
+                    <input type="text" class="form-control" name="editEquipmentRatePerHour" id="editEquipmentRatePerHour" required>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                    <label class="col-sm-4 control-label"> Type</label>
+                    <div class="col-sm-6">
+                    <div class = "input-group">
+                    <div class="input-group-addon">
+                    <i class="fa fa-navicon" aria-hidden="true"></i>
+                    </div>
+                    <select class="form-control" name="editEquipmentType" id="editEquipmentType">
+                    @foreach($addEquipmentData as $equipmentTypeData)
+                    <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
+                    @endforeach
+                    </select>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="form-group has-feedback">
+                    <label class="col-sm-4 control-label">Equipment Image</label>
+                    <div class="col-sm-6">
+                    <div class="input-group">
+                    <div class="input-group-addon">
+                    <input type="file" name="editEquipmentImage">
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="modal-footer">
+                    <button type="submit" name="editEquipmentBtn" class="btn btn-primary">Save</button>
+                    </div>
+                    </form>
+                    </div>
+                    </div>                   
+                    </div>
+                    <!-- End Modals-->
+
+                    <!-- addEquipment Modal-->
+                    <form id="addEquipmentForm" role="form" method="POST" action="/EquipmentPage" class="form-horizontal addEquipmentValidator" enctype="multipart/form-data">
+                    <div class="panel-body">
+                     
+                        <div class="modal fade" id="addEquipmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">ADD EQUIPMENT</h4>
+                              </div>
+                              
+                              <div class="modal-body">
+                                {!! csrf_field() !!}
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Equipment Name</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                    <div class="input-group-addon">
+                                      <i class="fa fa-cube" aria-hidden="true"></i>
+                                    </div>
+                                    <input type="text" class="form-control" name="addEquipmentName" placeholder="Equipment Name" required>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label"> Description</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <div class="input-group-addon">
+                                        <i class="fa fa-quote-right" aria-hidden="true"></i>
+                                      </div>
+                                      <textarea type="text" class="form-control" name="addEquipmentDescription" placeholder="Equipment Description" required></textarea>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Rate per Hour</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <div class="input-group-addon">
+                                        <i class="fa fa-hourglass-half" aria-hidden="true"></i>
+                                      </div>
+                                    <input type="text" class="form-control" name="addEquipmentRatePerHour" placeholder="Rate Per Hour" required>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                <label class="col-sm-4 control-label"> Type</label>
+                                <div class="col-sm-6">
+                                <div class = "input-group">
+                                <div class="input-group-addon">
+                                <i class="fa fa-navicon" aria-hidden="true"></i>
+                                </div>
+                                <select class="form-control" name="addEquipmentType" id="addEquipmentType">
+                                @foreach($addEquipmentData as $equipmentTypeData)
+                                <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
+                                @endforeach
+                                </select>
+                                </div>
+                                </div>
+                                </div>
+
+                                <div class="form-group has-feedback">
+                                  <label class="col-sm-4 control-label">Equipment Image</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <div class="input-group-addon">
+                                        <input type="file" name="addEquipmentImage" id="addEquipmentImage">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                
+
+                                <div class="modal-footer">
+                                  <button type="submit" name="addEquipmentBtn" class="btn btn-primary">Save</button>
+                                </div>
+
+                                </div>
+                    
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    </form>
+                    <!-- End Modals-->
+
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+ <script>
+  $(function () {
+    $('#equipmentTable').DataTable({
+      "paging": false,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
+  });
+</script>
+  <script>
+      function getEquipment(id){
+        $.ajax({
+                type: "GET",
+                url:  "/RetrieveEquipment",
+                data: 
+                {
+                    sdid: id
+                },
+                success: function(data){
+                $('#editEquipmentID').val(data['ss'][0]['equipmentID']);
+                $('#deleteEquipmentID').val(data['ss'][0]['equipmentID']);
+                $('#editEquipmentName').val(data['ss'][0]['equipmentName']);
+                $('#editEquipmentDescription').val(data['ss'][0]['equipmentDescription']);
+                $('#editEquipmentRatePerHour').val(data['ss'][0]['equipmentRatePerHour']);
+                $('#editEquipmentUnit').val(data['ss'][0]['equipmentUnit']);
+                var opty = document.getElementById('editEquipmentType').options;
+                  for(var i =0; i<opty.length; i++){
+                    if(opty[i].value==data['ss'][0]['equipmentTypeID']){
+                    $('#editEquipmentType').val(data['ss'][0]['equipmentTypeID']) ;
+                    break;
+                    }
+                  }
+                },
+                error: function(xhr)
+                {
+                    alert("mali");
+                    alert($.parseJSON(xhr.responseText)['error']['message']);
+                }                
+            });
+      }
+
+    </script>
+
+    <script type="text/javascript">
+    $('.editEquipmentValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              editEquipmentName: {
+                  validators: {
+                        stringLength: {
+                        min: 2,
+                        max: 20,
+                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                      },
+                          regexp: {
+                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                              message: 'This field should contain letters only.'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+
+              },
+               editEquipmentDescription: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Middle name should not exceed 20 characters.'
+                    },
+                          regexp: {
+                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                                message: 'This field should contain letters only.'
+                        
+                        },
+                    }
+                },
+                editEquipmentUnit: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Middle name should not exceed 20 characters.'
+                    },
+                          regexp: {
+                            regexp: /^\d+(?:\.\d{1,2})?$/,
+                            message: 'Invalid Input.'
+                    },
+                    }
+                },
+                editEquipmentRatePerHour: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Middle name should not exceed 20 characters.'
+                    },
+                          regexp: {
+                            regexp: /^\d+(?:\.\d{1,2})?$/,
+                            message: 'Invalid Input.'
+                    },
+                    }
+                },
+              }
+          });
+      </script>
+
+      <script type="text/javascript">
+    $('.addEquipmentValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              addEquipmentName: {
+                  validators: {
+                        stringLength: {
+                        min: 2,
+                        max: 20,
+                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                      },
+                          regexp: {
+                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                              message: 'This field should contain letters only.'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+
+              },
+               addEquipmentDescription: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Middle name should not exceed 20 characters.'
+                    },
+                          regexp: {
+                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                                message: 'This field should contain letters only.'
+                        
+                        },
+                    }
+                },
+                addEquipmentUnit: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Middle name should not exceed 20 characters.'
+                    },
+                          regexp: {
+                            regexp: /^\d+(?:\.\d{1,2})?$/,
+                            message: 'Invalid Input.'
+                    },
+                    }
+                },
+                addEquipmentRatePerHour: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Middle name should not exceed 20 characters.'
+                    },
+                          regexp: {
+                            regexp: /^\d+(?:\.\d{1,2})?$/,
+                            message: 'Invalid Input.'
+                    },
+                    }
+                },
+              }
+          });
+      </script>
+  @endsection
