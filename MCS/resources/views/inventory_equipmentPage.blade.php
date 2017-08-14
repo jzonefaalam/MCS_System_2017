@@ -20,12 +20,23 @@
     <section class="content">
           <div class="box">
             <div class="box-header with-border">
-              <div class="row">
-                <div class="col-md-6">
-                  <h2>Equipment</h2>
-                </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h2>Dish Type</h2>
+              </div>
+              <div class="col-md-6">
+                <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
+                  <i class="fa fa-save"></i> REPORTS  
+                </a>
+                <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
+                  <i class="fa fa-save"></i> EDIT
+                </a>
+                <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
+                  <i class="fa fa-save"></i> ADD
+                </a>
               </div>
             </div>
+          </div>
           <!-- /.box-header -->
           
                 <!-- /Header -->
@@ -33,56 +44,27 @@
                   <table id="example1" class="table table-bordered table-striped">
                     <thead>
                     <tr>
-                      <th width="150px">Image</th>
-                      <th width="180px">Name</th>
+                      <th width="150px">Date</th>
+                      <th width="180px">Category</th>
+                      <th> Brand</th>
+                      <th> Equipment Description</th>
                       <th width="80px">Rate Per Hour</th>
                       <th width="50px">Total Quantity</th>
                       <th width="50px">Remaining Quantity</th>
-                      <th width="10px">Actions</th>
+                      <th> In use</th>
                     </tr>
                     </thead>
                     <tbody>
                       @foreach ($equipmentData as $equipmentData)
                       <tr>
-                        <td><img src="{{ asset('images/' . $equipmentData->equipmentImage) }}"  style="width:150px;height:100px;" /></td>
-                        <td>{{ $equipmentData->equipmentName }}</td>
-                        <td>{{ $equipmentData->equipmentRatePerHour }}</td>
-                        <td> Total Quantity </td>
-                        <td width="80px">{{ $equipmentData->equipmentUnit }} 
-                        <a onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}" data-toggle="modal" data-target="#updateEquipmentModal" class="pull-right"><i class="fa fa-plus-square-o" style="margin-right: 5px;"  aria-hidden="true"></i>
-                        </a>
-                        </td>
-                        <td>
-                          <?php if (( $equipmentData->equipmentAvailability )==0): ?> 
-                          <div class="btn-group">
-                          <button type="button" class="btn btn-default">Disable</button>
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                          <li>
-                          <a data-toggle="modal" data-target="#enableEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}">Enable</a>
-                          </li>
-                          </ul>
-                          </div>
-                          <?php endif ?>
-
-                          <?php if (( $equipmentData->equipmentAvailability )==1): ?> 
-                          <div class="btn-group">
-                          <button type="button" class="btn btn-default">Enable</button>
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                          <li>
-                          <a data-toggle="modal" data-target="#disableEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}">Disable</a>
-                          </li>
-                          </ul>
-                          </div>
-                          <?php endif ?>
-                        </td>
+                        <td>Date</td>
+                        <td>Equipment Type</td>
+                        <td>Equipment Brand</td>
+                        <td>Equipment Description</td>
+                        <td width="80px">Rate</td>
+                        <td>Total</td>
+                        <td>Remaining </td>
+                        <td>Number of items</td>
                       </tr>
                       @endforeach
                       </tbody>

@@ -240,6 +240,7 @@
       var end=[];
       var rsvtn=1;
       var events=[];
+      var eventName=[];
       $.ajax({
             url: '/RetrieveSchedule',
             type: 'GET',
@@ -247,14 +248,14 @@
                asd: rsvtn
               },
               success: function(data){
-                alert(data['rsvtn'].length);
                 for(var i=0;i<data['rsvtn'].length;i++){
+                  eventName.push([data['rsvtn'][i]['eventName']]);
                   datee.push([data['rsvtn'][i]['eventDate']]);  
                   start.push([data['rsvtn'][i]['eventTime']]);  
                   end.push([data['rsvtn'][i]['endTime']]);
                 } 
                 for(var i=0;i<data['rsvtn'].length;i++){
-                  events.push({title: 'Reserved',  start : datee[i]+'T'+start[i], end : datee[i]+'T'+end[i]})
+                  events.push({title: 'Reserved'+"\r\nEvent: "+eventName[i],  start : datee[i]+'T'+start[i], end : datee[i]+'T'+end[i]})
                  
                 }
 
@@ -274,7 +275,7 @@
                 });               
               },
               error: function(result){
-                alert('errors');
+                alert('Error! ');
               }
       });
       // $(document).ready(function() {

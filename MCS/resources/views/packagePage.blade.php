@@ -29,7 +29,7 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <table class="table table-stripped table-bordered dataTable" id="packageTable">
+            <table class="table table-stripped table-bordered dataTable">
               <thead>
                 <tr>
                   <th>Image</th>
@@ -163,19 +163,18 @@
 
                 <div class="modal-body">
 
-                <table id="packageInclusionTable" class="table table-bordered table-hover dataTable">
-                  <thead>
-                    <tr>
-                      <th>BreakDown Name</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody style="color:black;">
-
-                  </tbody>
-                </table>
+                <table class="table table-stripped table-bordered dataTable" id="packageInclusionTable">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Package Name</th>
+                </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
               
-              </div>
+                </div>
                 <div class="modal-footer">
                 <button type="submit" name="editPackageBtn" class="btn btn-primary">Close</button>
                 </div>
@@ -374,14 +373,14 @@
       "autoWidth": true
     });
 
-    $('#packageInclusionTable').DataTable({
-      "paging": false,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": false,
-      "info": true,
-      "autoWidth": true
-    });
+    // $('#packageInclusionTable').DataTable({
+    //   "paging": false,
+    //   "lengthChange": true,
+    //   "searching": true,
+    //   "ordering": false,
+    //   "info": true,
+    //   "autoWidth": true
+    // });
   });
 </script>
     <script>
@@ -415,7 +414,7 @@
   <script>
       function getPackageInclusion(id){
           alert(id);
-          var tblSDet = $('#packageInclusionTable').DataTable(); 
+          var tblSDet = $('#packageInclusionTable');
           tblSDet.clear();
           tblSDet.draw(true);
           alert('adasxxxx');
@@ -427,7 +426,6 @@
                     sdid: id
                 },
                 success: function(data){
-                    alert('asdas');
                     var dishTypeName = null;
                     var dishTypeStatus = null;
                     for(i=0; i<data['ss'].length; i++){
