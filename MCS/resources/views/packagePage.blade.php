@@ -36,9 +36,7 @@
                   <th>Package Name</th>
                   <th>Package Description</th>
                   <th>Package Cost</th>
-                  <th>Courses Included</th>
-                  <th>Services Included</th>
-                  <th>Equipment Included</th>
+                  <th>Inclusions</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -49,9 +47,7 @@
                   <td>{{ $packageData->packageName }}</td>
                   <td>{{ $packageData->packageDescription }}</td>
                   <td>{{ $packageData->packageCost }}</td>
-                  <td>{{ $packageData->dishTypeName }}</td>
-                  <td>None</td>
-                  <td>None</td>
+                  <td> <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewInclusionsModal" onclick="getPackageInclusion(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> View Inclusions</a></td>
                   <td width="180px">
       						  <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editPackageModal" onclick="getPackage(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
           					<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePackageModal" onclick="getPackage(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-trash fa-fw"></i> Delete</a>
@@ -153,6 +149,41 @@
                 </div>
                 </form>
                 <!-- End Modals-->
+
+                <!-- View Package Inclusions Modal-->
+                <div class="modal fade" id="viewInclusionsModal">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                <form   role="form" class="form-horizontal" enctype="multipart/form-data">
+
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Package Inclusions</h4>
+                </div>
+
+                <div class="modal-body">
+
+                <table id="packageInclusionTable" class="table table-bordered table-hover dataTable">
+                  <thead>
+                    <tr>
+                      <th>BreakDown Name</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody style="color:black;">
+
+                  </tbody>
+                </table>
+              
+              </div>
+                <div class="modal-footer">
+                <button type="submit" name="editPackageBtn" class="btn btn-primary">Close</button>
+                </div>
+                </form>
+                </div>
+                </div>
+                </div>
+                <!-- End Modals-->        
 		  
 				<!-- edit package Modal-->
                     <div class="modal fade" id="editPackageModal">
@@ -342,10 +373,20 @@
       "info": true,
       "autoWidth": true
     });
+
+    $('#packageInclusionTable').DataTable({
+      "paging": false,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
   });
 </script>
     <script>
       function getPackage(id){
+
         $.ajax({
                 type: "GET",
                 url:  "/RetrievePackage",
@@ -364,6 +405,43 @@
                 error: function(xhr)
                 {
                     alert("mali");
+                    alert($.parseJSON(xhr.responseText)['error']['message']);
+                }                
+            });
+      }
+
+    </script>
+
+  <script>
+      function getPackageInclusion(id){
+          alert(id);
+          var tblSDet = $('#packageInclusionTable').DataTable(); 
+          tblSDet.clear();
+          tblSDet.draw(true);
+          alert('adasxxxx');
+        $.ajax({
+                type: "GET",
+                url:  "/RetrievePackageInclusion",
+                data: 
+                {
+                    sdid: id
+                },
+                success: function(data){
+                    alert('asdas');
+                    var dishTypeName = null;
+                    var dishTypeStatus = null;
+                    for(i=0; i<data['ss'].length; i++){
+                      dishTypeName=data['ss'][i]['dishTypeName'];
+                      dishTypeStatus=data['ss'][i]['dishTypeStatus'];
+                      tblSDet.row.add([
+                        dishTypeName
+                      ]).draw(true);
+                    }
+
+                },
+                error: function(xhr)
+                {
+                    alert('adsasxx');
                     alert($.parseJSON(xhr.responseText)['error']['message']);
                 }                
             });

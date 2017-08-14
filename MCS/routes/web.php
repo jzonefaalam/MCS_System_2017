@@ -87,6 +87,7 @@ Route::get('/PackagePage', 'adminController@packagePage');
 Route::post("/PackagePage", array("uses"=>"adminController@addPackage"));
 Route::post("/EditPackagePage", array("uses"=>"adminController@editPackage"));
 Route::get('/RetrievePackage', 'adminController@retrievePackageData');
+Route::get('/RetrievePackageInclusion', 'adminController@retrievePackageInclusion');
 Route::post("/DeletePackagePage", array("uses"=>"adminController@deletePackage"));
 
 //LocationPage

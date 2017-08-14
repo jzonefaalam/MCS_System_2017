@@ -570,8 +570,6 @@ class adminController extends Controller
 
     public function packagePage(){
         $packageData = DB::table('package_tbl')
-        ->join('packageinclusion_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
-        ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','packageinclusion_tbl.dishTypeID')
         ->where('packageStatus', 1)->where('packageAvailability',1)
         ->get();
 
@@ -624,6 +622,15 @@ class adminController extends Controller
         $ss = DB::table('package_tbl')
         ->select('*')
         ->where('packageID', Input::get('sdid'))
+        ->get();
+        return \Response::json(['ss'=>$ss]);
+    }
+
+    public function retrievePackageInclusion(){
+        $ss = DB::table('packageinclusion_tbl')
+        ->select('dishtype_tbl.*', 'packageinclusion_tbl.*')
+        ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','packageinclusion_tbl.dishTypeID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
         ->get();
         return \Response::json(['ss'=>$ss]);
     }
