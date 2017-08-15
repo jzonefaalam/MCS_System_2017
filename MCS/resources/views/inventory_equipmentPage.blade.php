@@ -48,7 +48,7 @@
                       <th width="180px">Category</th>
                       <th> Brand</th>
                       <th> Equipment Description</th>
-                      <th width="80px">Rate Per Hour</th>
+                      <th width="80px">Rate</th>
                       <th width="50px">Total Quantity</th>
                       <th width="50px">Remaining Quantity</th>
                       <th> In use</th>
