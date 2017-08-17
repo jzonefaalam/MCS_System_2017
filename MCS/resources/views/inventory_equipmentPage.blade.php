@@ -64,7 +64,7 @@
                         <td width="80px">Rate</td>
                         <td>Total</td>
                         <td>Remaining </td>
-                        <td>Number of items</td>
+                        <td>Number of items</td>  
                       </tr>
                       @endforeach
                       </tbody>
