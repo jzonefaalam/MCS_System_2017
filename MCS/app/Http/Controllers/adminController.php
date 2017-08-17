@@ -644,7 +644,7 @@ class adminController extends Controller
     }
     //Equipment functions------------------------------------------------------------------------->
 
-    public function equipmentPage(){
+    public function inventoryEquipmentPage(){
         $equipmentData = DB::table('equipment_tbl')
         ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
         ->select('*')
@@ -656,7 +656,7 @@ class adminController extends Controller
         ->where('equipmentTypeStatus', 1)
         ->get();
 
-        return View::make('/EquipmentPage')
+        return View::make('/inventory_EquipmentPage')
         ->with('equipmentData', $equipmentData)
         ->with('addEquipmentData', $addEquipmentData);
     }
@@ -737,8 +737,8 @@ class adminController extends Controller
         $equipment = equipmenttbl::find($id);
         $equipment->equipmentName = Input::get('editEquipmentName');
         $equipment->equipmentDescription = Input::get('editEquipmentDescription');
+        $equipment->equipmentTypeID = Input::get('editEquipmentTypeID');
         $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
-        $equipment->equipmentUnit = 9999;
         $equipment->save();
         return redirect()->back();
     }
@@ -1011,13 +1011,6 @@ class adminController extends Controller
     }
 
     //Inventory Equipment
-     public function inventoryEquipmentPage(){
-        $equipmentData = DB::table('equipment_tbl')
-        ->select('*')
-        ->where('equipmentStatus', 1)
-        ->get();
-        return View::make('/inventory_equipmentPage')->with('equipmentData', $equipmentData);
-    }
 
     public function enableEquipment(){
         $id = Input::get('enableEquipmentID');

@@ -137,6 +137,26 @@ Route::get('/InventoryLocationPage', 'adminController@inventoryLocationPage');
 Route::post("/EnableLocation", array("uses"=>"adminController@enableLocation"));
 Route::post("/DisableLocation", array("uses"=>"adminController@disableLocation"));
 
+///// USER ROUTING /////
+
+Route::get('/UserBasePage', 'userController@basePage');
+Route::get('/UserMenuPage', 'userController@menuPage');
+Route::get('/UserPackagePage', 'userController@uPackPage');
+Route::get('/UserDishPage', 'userController@uDishPage');
+Route::get('/UserServicePage', 'userController@uServicePage');
+Route::get('/UserReservationPage', 'userController@reservationPage');
+Route::post('/UserReservationPage-getPIID', 'userController@getPIID');
+Route::post('/UserReservationPage-getPay', 'userController@getPay');
+Route::post('/UserReservationPage-getPrice', 'userController@getPrice');
+Route::post('/UserReservationPage-getAdd', 'userController@getAdd');
+Route::post('/UserReservationPage-getServ', 'userController@getServ');
+Route::post('/UserReservationPage-getEquip', 'userController@getEquip');
+Route::post('/UserReservationPage-getReservation', 'userController@getReservation');
+Route::post("/UserReservationPage", array("uses"=>"userController@addReservation"));
+Route::post("/UserReservationPage-getDish", array("uses"=>"userController@getDish"));
+Route::get('/UserReservationPage2', 'userController@reservationPage2');
+Route::get('/UserAboutPage', 'userController@aboutPage');
+
 
 Auth::routes();
 

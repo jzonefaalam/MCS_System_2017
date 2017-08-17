@@ -8,6 +8,7 @@ class contact_tbl extends Model
 {
   protected $table = 'contact_tbl';
   protected $primaryKey = 'contactID';
-  protected $fillable = array('contactName', 'contactNum', 'customerID');
+  protected $fillable = array('contactID','contactName', 'contactNum', 'customerID');
   public $timestamps = false;
+  public $incrementing = false;
 }

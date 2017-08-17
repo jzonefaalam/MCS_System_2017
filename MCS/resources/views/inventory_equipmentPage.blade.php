@@ -22,16 +22,16 @@
             <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>Dish Type</h2>
+                <h2>EQUIPMENT</h2>
               </div>
               <div class="col-md-6">
+                <a class="btn btn-app" href="EquipmentTypePage" style="float:right">
+                  <i class="fa fa-save"></i> CATEGORIES  
+                </a>
                 <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
                   <i class="fa fa-save"></i> REPORTS  
                 </a>
-                <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
-                  <i class="fa fa-save"></i> EDIT
-                </a>
-                <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
+                <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
                   <i class="fa fa-save"></i> ADD
                 </a>
               </div>
@@ -41,7 +41,7 @@
           
                 <!-- /Header -->
                 <div class="box-body">
-                  <table id="example1" class="table table-bordered table-striped">
+                  <table id="inventoryEquipmentTable" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>
                       <th width="150px">Date</th>
@@ -51,21 +51,26 @@
                       <th width="80px">Rate</th>
                       <th width="50px">Total Quantity</th>
                       <th width="50px">Remaining Quantity</th>
-                      <th> In use</th>
+                      <th> In use</th> 
+                      <th style="display:none;">Equipment Type ID</th>
+                      <th style="display:none;">Equipment ID</th>
                     </tr>
                     </thead>
                     <tbody>
                       @foreach ($equipmentData as $equipmentData)
                       <tr>
                         <td>Date</td>
-                        <td>Equipment Type</td>
-                        <td>Equipment Brand</td>
-                        <td>Equipment Description</td>
-                        <td width="80px">Rate</td>
-                        <td>Total</td>
-                        <td>Remaining </td>
-                        <td>Number of items</td>  
-                      </tr>
+                        <td>{{ $equipmentData->equipmentTypeName }}</td>
+                        <td>{{ $equipmentData->equipmentName }}</td>
+                        <td>{{ $equipmentData->equipmentDescription }}</td>
+                        <td>{{ $equipmentData->equipmentRatePerHour }}</td>
+                        <td> Total </td>
+                        <td>{{ $equipmentData->equipmentQuantityIn }}</td>
+                        <td>{{ $equipmentData->equipmentQuantityOut }}</td>  
+                        <td style="display:none">{{ $equipmentData->equipmentTypeID }}</td>
+                        <td style="display:none">{{ $equipmentData->equipmentID }}</td>
+                      
+                       </tr>
                       @endforeach
                       </tbody>
                   </table>
@@ -76,6 +81,100 @@
 
             <!-- /Box Body -->
             </div>
+
+            <!-- addEquipment Modal-->
+                    <form id="addEquipmentForm" role="form" method="POST" action="/EquipmentPage" class="form-horizontal addEquipmentValidator" enctype="multipart/form-data">
+                    <div class="panel-body">
+                     
+                        <div class="modal fade" id="addEquipmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">ADD EQUIPMENT</h4>
+                              </div>
+                              
+                              <div class="modal-body">
+                                {!! csrf_field() !!}
+
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Brand Name</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                    <div class="input-group-addon">
+                                      <i class="fa fa-cube" aria-hidden="true"></i>
+                                    </div>
+                                    <input type="text" class="form-control" name="addEquipmentName" id="addEquipmentName" placeholder="Equipment Name" required>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label"> Description</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <div class="input-group-addon">
+                                        <i class="fa fa-quote-right" aria-hidden="true"></i>
+                                      </div>
+                                      <textarea type="text" class="form-control" name="addEquipmentDescription" placeholder="Equipment Description" required></textarea>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Rate</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <div class="input-group-addon">
+                                        <i class="fa fa-hourglass-half" aria-hidden="true"></i>
+                                      </div>
+                                    <input type="text" class="form-control" name="addEquipmentRatePerHour" placeholder="Rate" required>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="form-group">
+                                <label class="col-sm-4 control-label"> Category</label>
+                                <div class="col-sm-6">
+                                <div class = "input-group">
+                                <div class="input-group-addon">
+                                <i class="fa fa-navicon" aria-hidden="true"></i>
+                                </div>
+                                <select class="form-control" name="addEquipmentType" id="addEquipmentType">
+                                @foreach($addEquipmentData as $equipmentTypeData)
+                                <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
+                                @endforeach
+                                </select>
+                                </div>
+                                </div>
+                                </div>
+
+                                <div class="form-group has-feedback">
+                                  <label class="col-sm-4 control-label">Equipment Image</label>
+                                  <div class="col-sm-6">
+                                    <div class="input-group">
+                                      <div class="input-group-addon">
+                                        <input type="file" name="addEquipmentImage" id="addEquipmentImage">
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                
+                                
+
+                                <div class="modal-footer">
+                                  <button type="submit" name="addEquipmentBtn" class="btn btn-primary">Save</button>
+                                </div>
+
+                                </div>
+                    
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    </form>
+                    <!-- End Modals-->
 
                     <!-- Enable Equipment Modal-->
                       <div class="modal fade" id="enableEquipmentModal">
@@ -137,53 +236,200 @@
                       </div>
                       <!-- End Modals-->
 
-                    <!-- Update Equipment Unit Modal-->
-                      <div class="modal fade" id="updateEquipmentModal">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <form role="form" method="POST" action="UpdateEquipmentUnit" class="form-horizontal">
-                              <div class="modal-body">
-                              {!! csrf_field() !!}
-                                <div class="form-group" style="display: none;">
-                                  <label class="col-sm-4 control-label">Equipment ID</label>
-                                  <div class="col-sm-5 input-group">
-                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="updateEquipmentID" id="updateEquipmentID"  readonly="">
-                                  </div>
-                                </div>
-
-                                <div class="form-group ">
-                                <label class="col-sm-4 control-label"> Quantity</label>
-                                <div class="col-sm-6">
-                                <div class="input-group">
-                                <div class="input-group-addon">
-                                <i aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="remainingQuantity" id="remainingQuantity" readonly="">
-                                </div>
-                                </div>
-                                </div>
-
-                                <div class="form-group ">
-                                <label class="col-sm-4 control-label"> Additional Quantity</label>
-                                <div class="col-sm-6">
-                                <div class="input-group">
-                                <div class="input-group-addon">
-                                <i aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="updateEquipmentUnit" id="updateEquipmentUnit">
-                                </div>
-                                </div>
-                                </div>
-
-                                <div style="text-align: center;">
-                                  <button type="submit" name="enableEquipmentBtn" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
+                      <!-- Update Modal -->
+                      <div class="modal fade" id="editEquipmentModal">
+                      <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">UPDATE EQUIPMENT</h4>
                       </div>
-                      <!-- End Modals-->
+                      <div class="modal-body">
+                        <div>
+                        <!-- Custom Tabs -->
+                        <div class="nav-tabs-custom">
+                          <ul class="nav nav-tabs">
+                            <li class="active"><a  href="#tab_1" data-toggle="tab">Update Equipment Details</a></li>
+                            <li class=""><a href="#tab_2" data-toggle="tab">Add Equipment Unit</a></li>
+                          </ul>
+                          <div class="tab-content">
+
+                            <div class="tab-pane active" id="tab_1">
+                              <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
+                              {!! csrf_field() !!}
+                              <div class="form-group" style="display: none;">
+                              <label class="col-sm-4 control-label">Equipment ID</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-list" aria-hidden="true"></i>
+                              </div>
+                              <input type="text" class="form-control" name="editEquipmentID" id="editEquipmentID" readonly="">
+                              </div>
+                              </div>
+                              </div>
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label">Equipment Name</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-cube" aria-hidden="true"></i>
+                              </div>
+                              <input type="text" class="form-control" name="editEquipmentName" id="editEquipmentName" required>
+                              </div>
+
+                              <input type="text" class="form-control" name="tempName" id="tempName" style="display: none;">
+                              </div>
+                              </div>
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label"> Description</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-quote-right" aria-hidden="true"></i>
+                              </div>
+                              <textarea type="text" required class="form-control" name="editEquipmentDescription" id="editEquipmentDescription"></textarea>
+                              </div>
+                              </div>
+                              </div>
+
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label">Rate</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-hourglass-half" aria-hidden="true"></i>
+                              </div>
+                              <input type="text" class="form-control" name="editEquipmentRatePerHour" id="editEquipmentRatePerHour" required>
+                              </div>
+                              </div>
+                              </div>
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label"> Type</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-navicon" aria-hidden="true"></i>
+                              </div>
+                              <select class="form-control" name="editEquipmentType" id="editEquipmentType">
+                              @foreach($addEquipmentData as $equipmentTypeData)
+                              <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
+                              @endforeach
+                              </select>
+                              </div>
+                              </div>
+                              </div>
+
+                              <div class="form-group has-feedback">
+                              <label class="col-sm-4 control-label">Equipment Image</label>
+                              <div class="col-sm-6">
+                              <div class="input-group">
+                              <div class="input-group-addon">
+                              <input type="file" name="editEquipmentImage">
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+
+                              <div style="text-align: center;">
+                              <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                              <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                              </div>
+
+                              </form>
+                            </div>
+
+                            <div class="tab-pane active" id="tab_2">
+                              <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
+                              {!! csrf_field() !!}
+                              <div class="form-group" style="display: none;">
+                              <label class="col-sm-4 control-label">Equipment ID</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-list" aria-hidden="true"></i>
+                              </div>
+                              <input type="text" class="form-control" name="addQuantityEquipmentID" id="addQuantityEquipmentID" readonly="">
+                              </div>
+                              </div>
+                              </div>
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label">Equipment Name</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-cube" aria-hidden="true"></i>
+                              </div>
+                              <input type="text" class="form-control" name="addQuantityEquipmentName" id="addQuantityEquipmentName" readonly="">
+                              </div>
+                              </div>
+                              </div>
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label">Equipment Quantity</label>
+                              <div class="col-sm-6">
+                              <div class = "input-group">
+                              <div class="input-group-addon">
+                              <i class="fa fa-cube" aria-hidden="true"></i>
+                              </div>
+                              <input type="text" class="form-control" name="equipmentQuantityFake" id="equipmentQuantityFake" readonly="">
+                              </div>
+                              </div>
+                              </div>
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label">Add Quantity</label>
+                              <div class="col-sm-6">
+                              <div class="input-group">
+                              <span class="input-group-addon">
+                              <input type="checkbox">
+                              </span>
+                              <input type="text" id="addEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
+                              </div>
+                              </div>
+                              </div>
+
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label">Minus Quantity</label>
+                              <div class="col-sm-6">
+                              <div class="input-group">
+                              <span class="input-group-addon">
+                              <input type="checkbox">
+                              </span>
+                              <input type="text" id="minusEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
+                              </div>
+                              </div>
+                              </div>
+
+                              
+                              <div style="text-align: center;">
+                                <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                              </div>
+
+                              </form>
+
+                            </div>
+                           
+                          </div>
+                          <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                        </div>
+                        <!-- nav-tabs-custom -->
+                      </div>
+                        
+                      </div>
+                      </div>
+                      </div>
+                      <!-- End Update Modal -->
+
+                      
 
                       <!-- Disable Equipment Modal-->
                       <div class="modal fade" id="disableEquipmentModal">
@@ -245,6 +491,45 @@
       }
 
     </script>
+
+
+
+    <script>
+  $(function () {
+    $('#inventoryEquipmentTable').DataTable({
+      "paging": false,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
+  });
+
+  $(document).ready(function() {
+    var table = $('#inventoryEquipmentTable').DataTable();
+     
+    $('#inventoryEquipmentTable tbody').on('dblclick', 'tr', function () {
+        var data = table.row( this ).data();
+        var equipmentDateVar = data[0];
+        var equipmentNameVar = data[2];
+        var equipmentDescriptionVar = data[3];
+        var equipmentRatePerHourVar = data[4];
+        var equipmentUnitVar= data[5];
+        var equipmentTypeVar = data[8];
+        var equipmentIDVar = data[9];
+         $('#editEquipmentType option[value="' + equipmentTypeVar + '"]').prop("selected", true);
+         $('#editEquipmentName').val(equipmentNameVar);
+         $('#editEquipmentDescription').val(equipmentDescriptionVar);
+         $('#editEquipmentRatePerHour').val(equipmentRatePerHourVar);
+         $('#editEquipmentID').val(equipmentIDVar);
+         $('#addQuantityEquipmentID').val(equipmentIDVar);
+         $('#addQuantityEquipmentName').val(equipmentNameVar);
+         $('#equipmentQuantityFake').val(equipmentUnitVar);
+         $("#editEquipmentModal").modal("show");
+    } );
+} );
+</script>
 
     <script type="text/javascript">
     $('.editEquipmentValidator').bootstrapValidator({
