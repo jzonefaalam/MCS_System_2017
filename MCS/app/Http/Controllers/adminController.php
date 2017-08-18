@@ -23,6 +23,8 @@ use App\reservationtbl;
 use App\eventtbl;
 use App\customertbl;
 use App\packageinclusiontbl;
+use App\equipmentlogtbl;
+
 
 class adminController extends Controller
 {
@@ -647,6 +649,7 @@ class adminController extends Controller
     public function inventoryEquipmentPage(){
         $equipmentData = DB::table('equipment_tbl')
         ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
+        ->join('equipmentlog_tbl','equipmentlog_tbl.equipmentID','=','equipment_tbl.equipmentID')
         ->select('*')
         ->where('equipmentStatus', 1)
         ->get();
@@ -669,12 +672,19 @@ class adminController extends Controller
         $equipment->equipmentName = Input::get('addEquipmentName');
         $equipment->equipmentDescription = Input::get('addEquipmentDescription');
         $equipment->equipmentRatePerHour = Input::get('addEquipmentRatePerHour');
-        $equipment->equipmentUnit = 0;
         $equipment->equipmentAvailability = 1;
         $equipment->equipmentStatus = 1;
         $equipment->equipmentTypeID = Input::get('addEquipmentType');
         $equipment->equipmentImage = "No Image";
         $equipment->save();
+        $getEquipmentID = DB::table('equipment_tbl')
+        ->MAX('equipmentID');
+        $equipmentlog = new equipmentlogtbl;
+        $equipmentlog->equipmentID = $getEquipmentID;
+        $equipmentlog->equipmentQuantityIn = 0;
+        $equipmentlog->equipmentQuantityOut = 0;
+        $equipmentlog->equipmentLogDate = Date_create('now');
+        $equipmentlog->save();
         return redirect()->back();
         }
         else{
@@ -1029,12 +1039,13 @@ class adminController extends Controller
     }
 
     public function addEquipmentUnit(){
-        $id = Input::get('updateEquipmentID');
-        $inventoryEquipment = equipmenttbl::find($id);
-        $additionalEquipmentUnit = Input::get('updateEquipmentUnit'); 
-        $inventoryEquipment->equipmentUnit = (Input::get('remainingQuantity'))+ $additionalEquipmentUnit; 
-        $inventoryEquipment->save();
-        return redirect()->back();
+        $id = Input::get('id');
+        $addQuantityInput = Input::get('addQuantity');
+        $minusQuantityInput = Input::get('minusQuantity');
+        $equipmentlog = equipmentlogtbl::find($id);
+        $equipmentlog->equipmentQuantityIn = $addQuantityInput;
+        $equipmentlog->equipmentQuantityOut = $minusQuantityInput;
+        $equipmentlog->save();    
     }
 
     //Inventory Location

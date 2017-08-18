@@ -64,7 +64,7 @@
                         <td>{{ $equipmentData->equipmentName }}</td>
                         <td>{{ $equipmentData->equipmentDescription }}</td>
                         <td>{{ $equipmentData->equipmentRatePerHour }}</td>
-                        <td> Total </td>
+                        <td>{{ ($equipmentData->equipmentQuantityIn) + ($equipmentData->equipmentQuantityOut) }} </td>
                         <td>{{ $equipmentData->equipmentQuantityIn }}</td>
                         <td>{{ $equipmentData->equipmentQuantityOut }}</td>  
                         <td style="display:none">{{ $equipmentData->equipmentTypeID }}</td>
@@ -344,8 +344,10 @@
                             </div>
 
                             <div class="tab-pane active" id="tab_2">
-                              <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
+                              <form  id="updateEquipmentQuantityForm" role="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
                               {!! csrf_field() !!}
+
+                              <input type="hidden" id="token" value="{{ csrf_token() }}">
                               <div class="form-group" style="display: none;">
                               <label class="col-sm-4 control-label">Equipment ID</label>
                               <div class="col-sm-6">
@@ -387,9 +389,9 @@
                               <div class="col-sm-6">
                               <div class="input-group">
                               <span class="input-group-addon">
-                              <input type="checkbox">
+                              <input type="checkbox" id="addCheckBox" name="addCheckBox">
                               </span>
-                              <input type="text" id="addEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
+                              <input type="text" name="addEquipmentQuantity" id="addEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
                               </div>
                               </div>
                               </div>
@@ -399,16 +401,16 @@
                               <div class="col-sm-6">
                               <div class="input-group">
                               <span class="input-group-addon">
-                              <input type="checkbox">
+                              <input type="checkbox" id="minusCheckBox" name="minusCheckBox">
                               </span>
-                              <input type="text" id="minusEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
+                              <input type="text" name="minusEquipmentQuantity" id="minusEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
                               </div>
                               </div>
                               </div>
 
                               
                               <div style="text-align: center;">
-                                <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                <button type="submit" id="submitQuantityBtn" class="btn btn-primary btn-sm">Confirm</button>
                                 <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
                               </div>
 
@@ -427,45 +429,64 @@
                       </div>
                       </div>
                       </div>
-                      <!-- End Update Modal -->
-
-                      
-
-                      <!-- Disable Equipment Modal-->
-                      <div class="modal fade" id="disableEquipmentModal">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <form role="form" method="POST" action="/DisableEquipment" class="form-horizontal">
-                              <div class="modal-body">
-                              {!! csrf_field() !!}
-                                <div class="form-group" style="display: none;">
-                                  <label class="col-sm-4 control-label">Equipment ID</label>
-                                  <div class="col-sm-5 input-group">
-                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="disableEquipmentID" id="disableEquipmentID" readonly="">
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <h5> Are you sure you want to deactive this equipment? </h5>
-                                </div>
-
-                                <div style="text-align: center;">
-                                  <button type="submit" name="disableEquipmentBtn" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                                </div>
-                              </div>
-                            </form>
-                          </div>
-                        </div>
-                      </div>
-                      <!-- End Modals-->
+                      <!-- End Update Modal -->     
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+<script>
+$(document).ready(function() {
+
+    //if submit button is clicked
+    $('#updateEquipmentQuantityForm').submit(function (e) {        
+        e.preventDefault();
+        var id = $('input[name=addQuantityEquipmentID]');
+        var addEquipmentQuantity;
+        var minusEquipmentQuantity;
+        
+        if ( $("#addCheckBox").is(':checked') ){
+          addEquipmentQuantity = $('input[name=addEquipmentQuantity]');
+          minusEquipmentQuantity = 0;
+        }
+        if ( $("#minusCheckBox").is(':checked') ){
+          minusEquipmentQuantity = $('input[name=minusEquipmentQuantity]');
+          addEquipmentQuantity = 0;
+        }
+        if ( ($("#addCheckBox").is(':checked')) && ($("#minusCheckBox").is(':checked')) ){
+          addEquipmentQuantity = $('input[name=addEquipmentQuantity]');
+          minusEquipmentQuantity = $('input[name=minusEquipmentQuantity]');
+        }
+
+        $.ajax({
+          url:  "/UpdateEquipmentUnit",
+          type: "POST",
+            beforeSend: function (xhr) {
+              var token = $('meta[name="csrf_token"]').attr('content');
+              if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+              }
+          },
+          data: {
+            id = id,
+            addQuantity = addEquipmentQuantity,
+            minusQuantity = minusEquipmentQuantity
+            '_token': $('#token').val()
+          },
+          success: function(data){
+          window.location.href = "damage";            
+          },
+          error: function(xhr)
+          {
+          // alert("asd")
+          alert($.parseJSON(xhr.responseText)['error']['message']);
+          }                  
+        });
+      }); 
+}); 
+</script> 
 
   <script>
       function getEquipment(id){
@@ -527,7 +548,7 @@
          $('#addQuantityEquipmentName').val(equipmentNameVar);
          $('#equipmentQuantityFake').val(equipmentUnitVar);
          $("#editEquipmentModal").modal("show");
-    } );
+        } );
 } );
 </script>
 

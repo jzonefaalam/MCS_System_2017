@@ -8,6 +8,6 @@ class equipmenttbl extends Model
 {
     protected $table = 'equipment_tbl';
 	protected $primaryKey = 'equipmentID';
-	protected $fillable = array('equipmentName', 'equipmentDescription', 'equipmentRatePerHour', 'equipmentUnit', 'equipmentStatus', 'equipmentAvailability', 'equipmentImage', 'equipmentTypeID');
+	protected $fillable = array('equipmentName', 'equipmentDescription', 'equipmentRatePerHour', 'equipmentStatus', 'equipmentAvailability', 'equipmentImage', 'equipmentTypeID');
 	public $timestamps = false;
 }
