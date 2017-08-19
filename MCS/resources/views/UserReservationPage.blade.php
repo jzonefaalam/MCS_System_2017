@@ -242,9 +242,9 @@
 				                                    <div class="col-sm-6" >
 					                                    <h5 class="info-text"> <i> Payment Term</i> </h5>
 				                                    	@foreach($paymentTerm as $pt)
-				                                        <div class="col-sm-6 ">
-															<div class="choice" data-toggle="wizard-checkbox" style="margin-top: -10px" >
-				                                                <input type="checkbox" name="pt{{$pt->paymentTermID}}" id="{{$pt->paymentTermID}}">
+				                                        <div class="col-sm-6" id="ppt{{$pt->paymentTermID}}">
+															<div class="choice" data-toggle="wizard-checkbox"  style="margin-top: -10px" >
+				                                                <input type="checkbox" name="{{$pt->paymentTermID}}" id="pt{{$pt->paymentTermID}}">
 				                                                <div class="card card-checkboxes card-hover-effect"  id="{{$pt->paymentTermID}}" onclick="getpt(this.id)">
 				                                                    <i class="{{$pt->paymentTermIco}}"></i>
 																	<p>{{$pt->paymentTermName}}</p>
@@ -257,9 +257,9 @@
 					                                        <h5 class="info-text"> <i> Payment Mode</i> </h5>
 					                                    
 				                                    	@foreach($paymentMode as $pm)
-				                                        <div class="col-sm-6 ">
+				                                        <div class="col-sm-6 " id="ppm{{$pm->paymentModeID}}" >
 															<div class="choice" data-toggle="wizard-checkbox" style="margin-top: -10px">
-				                                                <input type="checkbox" name="pm{{$pm->paymentModeID}}" id="{{$pm->paymentModeID}}">
+				                                                <input type="checkbox" name="{{$pm->paymentModeID}}" id="pm{{$pm->paymentModeID}}">
 				                                                <div class="card card-checkboxes card-hover-effect" id="{{$pm->paymentModeID}}" onclick="getpm(this.id)">
 				                                                    <i class="{{$pm->paymentModeIco}}"></i>
 																	<p>{{$pm->paymentModeName}}</p>
@@ -1059,6 +1059,7 @@
 						}
 					});
 			}
+////////////////////////////////////			// //////////////////////////////////////////////////////////////////////////////////////////////
 			function getpt(id){
 				var ptid=id;
 					$.ajax({
@@ -1070,8 +1071,10 @@
 						},
 						success: function(data){
 							for(var i = 0; i < data['paymentTerm'].length; i++){
-								document.getElementsByName("pt"+[data['paymentTerm'][i]['paymentTermID']]).checked=false;
+								document.getElementById("pt"+[data['paymentTerm'][i]['paymentTermID']]).checked=false;
+								$('#ppt'+[data['paymentTerm'][i]['paymentTermID']]).find('[data-toggle="wizard-checkbox"]').removeClass('active');							
 							}
+							document.getElementById("pt"+id).checked=true;
 
 						},
 						error: function(result){
@@ -1090,9 +1093,13 @@
 						},
 						success: function(data){
 							for(var i = 0; i < data['paymentMode'].length; i++){
-								document.getElementsByName("pm"+[data['paymentMode'][i]['paymentModeID']]).checked=false;
+								document.getElementById("pm"+[data['paymentMode'][i]['paymentModeID']]).checked=false; 
+								$('#ppm'+[data['paymentMode'][i]['paymentModeID']]).find('[data-toggle="wizard-checkbox"]').removeClass('active');
+								
 							}
+							document.getElementById("pm"+id).checked=true;
 
+								// $('.fc-toolbar').find('.fc-button-group').addClass('btn-xs btn-group');
 						},
 						error: function(result){
 							alert('error');
@@ -1483,6 +1490,7 @@
 										left: 'prev,next today'
 									},
 									events: events,
+									displayEventTime: false,
 									theme:true
 
 										
