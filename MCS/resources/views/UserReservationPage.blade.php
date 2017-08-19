@@ -223,6 +223,8 @@
 		                                    </div>
 
 		                                	<input type="text" id="dtid" hidden>
+		                                	<input type="text" id="ptids" hidden>
+		                                	<input type="text" id="pmids" hidden>
 		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#additionalModal" value="Food"> &nbsp &nbsp
 
 		                                	<input type="text" id="dtid" hidden>
@@ -434,101 +436,66 @@
 	            <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span></button>
-	                <h4 class="modal-title step-1" data-step="1">Additional Food</h4>
-	                <h4 class="modal-title step-2" data-step="2">Additional Food</h4>
-	                <h4 class="modal-title step-3" data-step="3">Additional Food</h4>
+					<h3 hidden>{{$i=1}}</h3>
+					@foreach($dishtype as $dd)
+	                <h4 class="modal-title step-{{$i}}" data-step="{{$i}}">{{$dd->dishTypeName}}</h4>
+	                <h3 hidden>{{$i++}}</h3>
+	                @endforeach
 	            </div>
-
-	            <div class="modal-body step step-1" align="center">
-	            	<div class="row">
-		                <img src="img.jpg" style="width: 300px;height: 170px"> <br> <br>
-		                <select class="form-control" name="dishImg" style="width: 300px">
+				<input id="addprice" hidden>
+				<h3 hidden>{{$i=1}}</h3>
+				@foreach($dishtype as $dd)
+	            <div class="modal-body step step-{{$i}}" align="center">
+	            	<div class="row">						
+		                <img src="{{ asset('images/' . $dd->dishTypeImage) }}" id="dishTypeImage{{$dd->dishTypeID}}" width="200px" height="150px">
+						<select class="form-control" name="dishTypeImage{{$dd->dishTypeID}}" id="dishType{{$dd->dishTypeID}}" style="width: 200px" onchange="pckdshimg(this.name)">
 							<option disabled selected value="">Choose Dish</option>
+							@foreach($dishes as $dishh)
+							@if($dd->dishTypeID == $dishh->dishTypeID)
+								<option value="{{$dishh->dishID}}">{{$dishh->dishName}}</option>
+							@endif
+							@endforeach
 						</select> <br>
 					    
 					    <div class="col-sm-6">
 					    	<div class="form-group">
 					    		<label>Quantity</label>
-					    		<input type="text" name="qntty" id = "qntty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity per serving (5 pax)">
+					    		<input type="number" name="{{$dd->dishTypeID}}" id = "qty{{$dd->dishTypeID}}" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity per serving (5 pax)" onkeyup="comPrice(this.name)">
 					    	</div>
 					    
 					    	<div class="form-group">
 					    		<label>Price</label>
-					    		<input type="text" disabled="" name="price" id = "price" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
+					    		<input type="number" disabled="" name="{{$dd->dishTypeID}}"  id="price{{$dd->dishTypeID}}" maxlength="50" class="form-control" style="width: 250px" value="" placeholder="Price">
 					    	</div>
 					    </div>
 
 					    <div class="col-sm-offset-1">
 					    	<label>Note / Comment</label>
-					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
+					    	<textarea name="note" name="{{$dd->dishTypeID}}" id = "{{$dd->dishTypeID}}note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
 					   	</div>
 					</div>
 	            </div>
-
-	            <div class="modal-body step step-2" align="center">
-	                <div class="row">
-		                <img src="img.jpg" style="width: 300px;height: 170px"> <br> <br>
-		                <select class="form-control" name="dishImg" style="width: 300px">
-							<option disabled selected value="">Choose Dish</option>
-						</select> <br>
-					    
-					    <div class="col-sm-6">
-					    	<div class="form-group">
-					    		<label>Quantity</label>
-					    		<input type="text" name="qntty" id = "qntty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity per serving (5 pax)">
-					    	</div>
-					    
-					    	<div class="form-group">
-					    		<label>Price</label>
-					    		<input type="text" disabled="" name="price" id = "price" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
-					    	</div>
-					    </div>
-
-					    <div class="col-sm-offset-1">
-					    	<label>Note / Comment</label>
-					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
-					   	</div>
-					</div>
-	            </div> 
-
-	            <div class="modal-body step step-3" align="center">
-	                <div class="row">
-		                <img src="img.jpg" style="width: 300px;height: 170px"> <br> <br>
-		                <select class="form-control" name="dishImg" style="width: 300px">
-							<option disabled selected value="">Choose Dish</option>
-						</select> <br>
-					    
-					    <div class="col-sm-6">
-					    	<div class="form-group">
-					    		<label>Quantity</label>
-					    		<input type="text" name="qntty" id = "qntty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity per serving (5 pax)">
-					    	</div>
-					    
-					    	<div class="form-group">
-					    		<label>Price</label>
-					    		<input type="text" disabled="" name="price" id = "price" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
-					    	</div>
-					    </div>
-
-					    <div class="col-sm-offset-1">
-					    	<label>Note / Comment</label>
-					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
-					   	</div>
-					</div>
-	            </div> 
+	            <h3 hidden>{{$i++}}</h3>
+	            @endforeach
+	            
 
 	            <div class="modal-footer">
 		            <div class="pull-right">
-                		<button type="button" class="btn btn-primary btn-fill step step-1" data-step="1" onclick="sendEvent('#additionalModal', 2)"> <i class="ti-angle-double-right"></i> </button>
-                		<button type="button" class="btn btn-primary btn-fill step step-2" data-step="2" onclick="sendEvent('#additionalModal', 3)"> <i class="ti-angle-double-right"></i> </button>
-	                	<button type="button" class="btn btn-success btn-fill step step-3" data-step="3" data-dismiss="modal" onclick="sendEvent('#additionalModal')">Save</button>
-	                	<button type="button" class="btn btn-success btn-fill step step-2" data-step="2" data-dismiss="modal" onclick="sendEvent('#additionalModal')">Save</button>
-	                	<button type="button" class="btn btn-success btn-fill step step-1" data-step="1" data-dismiss="modal" onclick="sendEvent('#additionalModal')">Save</button>
+		            <h3 hidden>{{$i=1}}</h3>
+					@foreach($dishtype as $dd)
+                		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#additionalModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
+	                	<button type="button" name="{{$dd->dishTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="sendEvent('#additionalModal')" onclick="addAdd(this.name)">Add to Cart</button>
+
+	            	<h3 hidden>{{$i++}}</h3>
+	            	@endforeach
 		            </div>
 
 		            <div class="pull-left">
-                		<button type="button" class="btn btn-default step step-2" data-step="2" onclick="sendEvent('#additionalModal', 1)"><i class="ti-angle-double-left"></i></button>
-                		<button type="button" class="btn btn-default step step-3" data-step="3" onclick="sendEvent('#additionalModal', 2)"><i class="ti-angle-double-left"></i></button>
+		            <h3 hidden>{{$i=1}}</h3>
+					@foreach($dishtype as $dd)
+                		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="2" onclick="sendEvent('#additionalModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
+                	<h3 hidden>{{$i++}}</h3>
+	            	@endforeach
 		            </div>
 	            </div>
 	        </div>
@@ -1017,6 +984,7 @@
 						var dishImages=([data['dish'][0]['dishImage']]);
 						var str="{!! asset('img/'.'"+ dishImages +"')!!}";
 						var pckdishimg =  document.getElementById(id);
+						$("#addprice").val([data['dish'][0]['dishCost']]);
 						pckdishimg.src=str;
 						
 						},
@@ -1062,6 +1030,7 @@
 ////////////////////////////////////			// //////////////////////////////////////////////////////////////////////////////////////////////
 			function getpt(id){
 				var ptid=id;
+				$('#ptids').val(ptid);
 					$.ajax({
 						url: '/UserReservationPage-getPay',
 						type: 'POST',
@@ -1084,6 +1053,7 @@
 			}
 			function getpm(id){
 				var pmid=id;
+				$('#pmids').val(pmid);
 					$.ajax({
 						url: '/UserReservationPage-getPay',
 						type: 'POST',
@@ -1153,6 +1123,13 @@
 						}
 				});
 		 		
+ 			}
+ 			function comPrice(id){
+ 					var p=$('#addprice').val();
+ 					var qty=$('#qty'+id).val();
+ 					var tp;
+ 					tp=p*qty;
+ 					$('#price'+id).val(tp);
  			}
  			function deleteRowFood(t){
 				    var row = t.parentNode.parentNode;
@@ -1347,37 +1324,13 @@
 						var addDishQty = [];
 						var addDishNotes = [];
 						var dishAvailedIDs = [];
+						var ptIDs = $("#ptids").val();
+						var pmIDs = $("#pmids").val();
 						for (var i = 1; i <= addCtr; i++){
 							addDishID.push($("#additionalDish"+i+"").val());
 							addDishQty.push($("#additionalQty"+i+"").val());
 							addDishNotes.push($("#additionalNotes"+i+"").val());
 						}
-						alert(addPackIDs);
-						alert(dishIDs);
-						alert(servIDs);
-						alert(equipIDs);
-						alert(empIDs);
-						alert(addEventIDs);
-						alert(eNames);
-						alert(eDates);
-						alert(eTimes);
-						alert(enTimes);
-						alert(eLocs);
-						alert(eLoc2s);
-						alert(eNums);
-						alert(eTypes);
-						alert(addCustomerIDs);
-						alert(cusNames);
-						alert(homeAdds);
-						alert(emailAdds);
-						alert(telNums);
-						alert(cellNums);
-						alert(dobs);
-						alert(addContactIDs);
-						alert(conPersons);
-						alert(conNums);
-						alert(addReservationIDs);
-						alert('ss');
 						
 						// var d = new Date(); 
 						//  dt = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); 
