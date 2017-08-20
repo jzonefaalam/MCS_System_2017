@@ -952,8 +952,6 @@ class adminController extends Controller
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
-        ->join('equipmentavailed_tbl', 'equipmentavailed_tbl.reservationID', '=', 'reservation_tbl.reservationID')
-        ->select('event_tbl.*', 'package_tbl.*', 'customer_tbl.*', 'reservation_tbl.*', 'equipmentavailed_tbl.*')
         ->where('reservation_tbl.reservationStatus', 1)
         ->get();
 

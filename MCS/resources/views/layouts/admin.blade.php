@@ -31,11 +31,16 @@
   <!-- Daterange picker -->
   <link rel="stylesheet" href="{{ asset('LTE/plugins/daterangepicker/daterangepicker.css') }}">
   <!-- bootstrap wysihtml5 - text editor -->
+  
+  <!-- Bootstrap time PickeSr -->
+  <link rel="stylesheet" href="{{ asset('LTE/timepicker/bootstrap-timepicker.min.css') }}">
   <!-- Select -->
   <link rel="stylesheet" href="{{ asset('LTE/plugins/select2/select2.min.css') }}">
   <link rel="stylesheet" href="{{ asset('LTE/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
   <link rel="stylesheet" href="{{ asset('LTE/plugins/datatables/dataTables.bootstrap.min.css') }}">
 
+  <link href="{{ asset('LTE/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('LTE/fullcalendar/fullcalendar.print.min.css') }}" rel="stylesheet" media="print" />
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -223,6 +228,8 @@
 <script src="{{ asset('LTE/dist/js/demo.js') }}"></script>
 <script src="{{ asset('LTE/plugins/datatables/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('LTE/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+<!-- bootstrap time picker -->
+<script src="{{ asset('LTE/timepicker/bootstrap-timepicker.min.js') }}"></script>
   @yield('script')
 </body>
 </html>
