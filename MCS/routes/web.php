@@ -28,9 +28,8 @@ Route::get('/RegisterAccount', function () {
 
 Route::get('/Logout', 'adminController@authenticateLogout');
 
-Route::get('/AdminDashboard', function () {
-    return view('adminDashboard');
-});
+//DashBoardPage
+Route::get('/DashboardPage', 'adminController@dashboardPage');
 
 //DishPage
 Route::get('/DishPage', 'adminController@dishPage');

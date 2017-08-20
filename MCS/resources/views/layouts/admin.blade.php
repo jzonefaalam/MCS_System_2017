@@ -68,7 +68,7 @@
           <ul class="sidebar-menu" style="font-size: 20px">
             
             <li class="active">
-              <a href="#">
+              <a href="DashboardPage">
                 <i class="fa fa-home"></i> <span>Dashboard</span>
               </a>
             </li>
@@ -82,7 +82,7 @@
               </a>
                 <ul class="treeview-menu">
                   <li class="active treeview">
-                    <a href="Maintenance/DishPage"><i class="fa fa-circle-o"></i> Dish
+                    <a href="DishPage"><i class="fa fa-circle-o"></i> Dish
                       <span class="pull-right-container">
                       <i class="fa fa-angle-right pull-right"></i>
                       </span>

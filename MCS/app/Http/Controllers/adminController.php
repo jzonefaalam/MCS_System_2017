@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Database\Query\Builder;
-
+use Carbon\Carbon;
 use App\coursetbl;
 use App\coursetypetbl;
 use App\employeetypetbl;
@@ -43,6 +43,19 @@ class adminController extends Controller
 
     public function authenticateLogout(){
         return View::make('/Login');
+    }
+
+    //Dashboard Page functions-------------------------------------------------------------------------->
+    public function dashboardPage(){ 
+        $dateTime = Date_create('now');
+        $dateToday = $dateTime->format('n.j.Y');
+        $dashboardData = DB::table('reservation_tbl')
+          ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+          ->where('reservation_tbl.reservationStatus', '=', 1)
+          ->where('event_tbl.eventDate', '>=', Carbon::now())
+          ->get();
+        return View::make('/DashboardPage')
+        ->with('dashboardData', $dashboardData);
     }
 
     //Dish Page functions-------------------------------------------------------------------------->
