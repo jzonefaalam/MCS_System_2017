@@ -195,6 +195,157 @@
               <!-- THE CALENDAR -->
               <div id="calendar"></div>
             </div>
+
+
+            <!-- Update Modal -->
+            <div class="modal fade" id="detailModal" style="width:100%;">
+            <div class="modal-dialog" style="width:70%; margin-top:5%; margin-left:17%;">
+            <div class="modal-content">
+            <div class="modal-header" style="width:100%;" >
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Update Reservation</h4>
+            </div>
+            <div class="modal-body" style="width:100%;">
+              <div class="box">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="box">
+                        <div class="box-header">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <h4><strong>Customer Details</strong></h4>
+                            </div>
+                            <div class="col-sm-6" id="contactNumber">
+                              
+                            </div>
+                          </div>
+                        </div>
+                        <div class="box-body">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>Customer Name</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editCustomerName" id="editCustomerName" column="20" required >
+                              </div>
+                              <label>Home Address</label>
+                              <br>
+                              <div>
+                                <input type="text" " name="editHomeAddress" id="editHomeAddress" required >
+                              </div>
+                              <label>Email Address</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEmailAddress" id="editEmailAddress" required >
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>Contact Number</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editContactNumber" id="editContactNumber" required >
+                              </div>
+                              <label>Date of Birth</label>
+                              <br>
+                              <div>
+                                <input type="text" name="editDateOfBirth" id="editDateOfBirth" required >
+                              </div>
+                            </div>
+                          </div>
+                          <!-- End Row -->
+                        </div>
+                      </div>
+                      <div class="box">
+                        <div class="box-header">
+                          <h4><strong>Event Details</strong></h4>
+                        </div>
+                        <div class="box-body">
+                           <div class="row">
+                            <div class="col-sm-6">
+                              <label>Event Name</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventName" id="editEventName" column="20" required >
+                              </div>
+                              <label>Event Date</label>
+                              <br>
+                              <div>
+                                <input type="text" " name="editEventDate" id="editEventDate" required >
+                              </div>
+                              <label>Event Location</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventLocation" id="editEventLocation" required >
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>Number of Guests</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventGuestCount" id="editEventGuestCount" required >
+                              </div>
+                              <label>Start Time</label>
+                              <br>
+                              <div>
+                                <input type="text" name="editEventStartTime" id="editEventStartTime" required >
+                              </div>
+                              <label>End Time</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventEndTime" id="editEventEndTime" required >
+                              </div>
+                            </div>
+                          </div>
+                          <!-- End Row -->
+                        </div>
+                      </div>
+                      <!-- End Box -->
+                    </div>
+                    <!-- End Column -->
+                  </div>
+                  <!-- End Row -->
+                  <div class="box">
+                    <div class="box-body">
+                      <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                          <li class=""><a href="#tab_2" data-toggle="tab">Package </a></li>
+                          <li class=""><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
+                          <li class=""><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
+                          <li class=""><a href="#tab_4" data-toggle="tab">Additional Service & Staff </a></li>
+                        </ul>
+                        <div class="tab-content">
+
+                          <!-- Date & Time Tab -->
+                          <div class="tab-pane active" id="tab_2">
+                          </div>
+                          <!-- End Reservation Info Tab -->
+
+                          <!-- Package & Menu Info Tab -->
+                          <div class="tab-pane active" id="tab_3">
+                          </div>
+                          <!-- End Reservation Tab -->
+
+                          <!-- Equipment, Service & Staff Tab -->
+                          <div class="tab-pane active" id="tab_4">
+                            
+                          </div>
+                          <!-- End Reservation Info Tab -->
+
+                        </div>
+                        <!-- /.tab-pane -->
+                      </div>
+                      <!-- /.tab-content -->
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+                  <!-- nav-tabs-custom -->
+            </div>
+            </div>
+            </div>
+            </div>
+                <!-- End Update Modal -->     
             <!-- /.box-body -->
           </div>
           <!-- /. box -->
@@ -235,12 +386,20 @@
 <script>
 
 
-      var datee=[];
-      var start=[];
-      var end=[];
+      var eventDate=[];
+      var eventStart=[];
+      var eventEnd=[];
+      var eventLocation=[];
+      var eventGuestCount=[];
       var rsvtn=1;
       var events=[];
       var eventName=[];
+      var dateReservationId=[];
+      var customerName=[];
+      var customerHomeAddress=[];
+      var customerEmailAddress=[];
+      var customerCellNumber=[];
+      var customerBirthDate=[];
       $.ajax({
             url: '/RetrieveSchedule',
             type: 'GET',
@@ -250,26 +409,83 @@
               success: function(data){
                 for(var i=0;i<data['rsvtn'].length;i++){
                   eventName.push([data['rsvtn'][i]['eventName']]);
-                  datee.push([data['rsvtn'][i]['eventDate']]);  
-                  start.push([data['rsvtn'][i]['eventTime']]);  
-                  end.push([data['rsvtn'][i]['endTime']]);
+                  eventDate.push([data['rsvtn'][i]['eventDate']]);  
+                  eventStart.push([data['rsvtn'][i]['eventTime']]);  
+                  eventEnd.push([data['rsvtn'][i]['endTime']]);
+                  eventLocation.push([data['rsvtn'][i]['eventLocation']]);
+                  eventGuestCount.push([data['rsvtn'][i]['guestCount']]);
+                  dateReservationId.push([data['rsvtn'][i]['reservationID']]);
+                  customerName.push([data['rsvtn'][i]['fullName']]);
+                  customerHomeAddress.push([data['rsvtn'][i]['homeAddress']]);
+                  customerEmailAddress.push([data['rsvtn'][i]['emailAddress']]);
+                  customerCellNumber.push([data['rsvtn'][i]['cellNum']]);
+                  customerBirthDate.push([data['rsvtn'][i]['dateOfBirth']]);
                 } 
+                // alert(dateReservationId);
                 for(var i=0;i<data['rsvtn'].length;i++){
-                  events.push({title: 'Reserved'+"\r\nEvent: "+eventName[i],  start : datee[i]+'T'+start[i], end : datee[i]+'T'+end[i]})
-                 
+                  events.push({
+                    title: 'Reserved'+"\r\nEvent: "+eventName[i],  
+                    start: eventDate[i]+'T'+eventStart[i], 
+                    end: eventDate[i]+'T'+eventEnd[i], 
+                    id: dateReservationId[i],
+                    customerNameEvent: customerName[i],
+                    customerHomeAddressEvent: customerHomeAddress[i],
+                    customerEmailAddressEvent: customerEmailAddress[i],
+                    customerCellNumberEvent: customerCellNumber[i],
+                    customerBirthDateEvent: customerBirthDate[i],
+                    guestCountEvent: eventGuestCount[i],
+                    locationEvent: eventLocation[i],
+                    nameEvent: eventName[i],
+                    dateEvent: eventDate[i],
+                    startTimeEvent: eventStart[i],
+                    endTimeEvent: eventEnd[i]
+                  })
                 }
 
                 $('#calendar').fullCalendar({
                 header: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'month,listWeek'
+                  left: 'prev,next today',
+                  center: 'title',
+                  right: 'month,listWeek'
                 },
                 events: events,
+                eventRender: function(event, element) {
+                    content: 
+                      event.id,
+                      event.customerNameEvent,
+                      event.customerHomeAddressEvent,
+                      event.customerEmailAddressEvent,
+                      event.customerCellNumberEvent,
+                      event.customerBirthDateEvent,
+                      event.guestCountEvent,
+                      event.locationEvent,
+                      event.nameEvent,
+                      event.dateEvent
+                      event.startTimeEvent,
+                      event.endTimeEvent
+                },
                 navLinks: true, // can click day/week names to navigate views
                 editable: false,
                 eventLimit: true, // allow "more" link when too many events
-                droppable: true
+                droppable: true,
+
+
+                eventClick: function(calEvent, jsEvent, view) {
+                  document.getElementById('contactNumber').innerHTML = '<h2 class="pull-right"><strong> #'+calEvent.customerCellNumberEvent+'</strong></h2>';
+                  $('#editCustomerName').val(calEvent.customerNameEvent);
+                  $('#editContactNumber').val(calEvent.customerCellNumberEvent);
+                  $('#editEmailAddress').val(calEvent.customerEmailAddressEvent);
+                  $('#editHomeAddress').val(calEvent.customerHomeAddressEvent);
+                  $('#editDateOfBirth').val(calEvent.customerBirthDateEvent);
+                  $('#editEventName').val(calEvent.nameEvent);
+                  $('#editEventDate').val(calEvent.dateEvent);
+                  $('#editEventLocation').val(calEvent.locationEvent);
+                  $('#editEventGuestCount').val(calEvent.guestCountEvent);
+                  $('#editEventStartTime').val(calEvent.startTimeEvent);
+                  $('#editEventEndTime').val(calEvent.endTimeEvent);
+                  $("#detailModal").modal("show");
+                }
+                
 
 
                 });               

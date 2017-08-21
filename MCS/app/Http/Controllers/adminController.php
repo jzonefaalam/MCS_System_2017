@@ -934,15 +934,13 @@ class adminController extends Controller
     
 
     public function retrieveScheduleData(Request $request){
-
         $rsvtn = DB::table('reservation_tbl')
               ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-              // ->join('event_tbl','event_tbl.eventID','=','customer_tbl.eventID')
-              // ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*')
+              ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
+              ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*')
               ->where('reservation_tbl.reservationStatus', '=', 1)
               ->get();
-
-      return \Response::json(['rsvtn'=>$rsvtn]);
+        return \Response::json(['rsvtn'=>$rsvtn]);
     }
 
     //Reservation function------------------------------------------------------------------------------>

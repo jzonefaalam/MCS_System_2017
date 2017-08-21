@@ -73,7 +73,7 @@
               <!-- Custom Tabs -->
               <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
-                  <li class="active"><a  href="#tab_1" data-toggle="tab">Reservation Info</a></li>
+                  <li class="active"><a href="#tab_1" data-toggle="tab">Reservation Info</a></li>
                   <li class=""><a href="#tab_2" data-toggle="tab">Date & Time </a></li>
                   <li class=""><a href="#tab_3" data-toggle="tab">Package & Menu </a></li>
                   <li class=""><a href="#tab_4" data-toggle="tab">Equipment, Services & Staff </a></li>
