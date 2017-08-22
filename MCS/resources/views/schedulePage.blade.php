@@ -309,26 +309,111 @@
                     <div class="box-body">
                       <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
-                          <li class=""><a href="#tab_2" data-toggle="tab">Package </a></li>
-                          <li class=""><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
-                          <li class=""><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
-                          <li class=""><a href="#tab_4" data-toggle="tab">Additional Service & Staff </a></li>
+                          <li ><a href="#tab_2" data-toggle="tab">Package </a></li>
+                          <li ><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
+                          <li ><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
+                          <li ><a href="#tab_5" data-toggle="tab">Additional Service & Staff </a></li>
                         </ul>
                         <div class="tab-content">
 
-                          <!-- Date & Time Tab -->
+                          <!-- Package Tab -->
                           <div class="tab-pane active" id="tab_2">
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Package Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                                <div>
+                                  <label>Package Name</label>
+                                  <br>
+                                  <div> 
+                                    <select class="form-control" name="editPackage" id="editPackage">
+                                    @foreach($packageData as $packageData)
+                                    <option value="{{ $packageData->packageID }}">{{ $packageData->packageName }} </option>
+                                    @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                  <br>
+                                  <h3><strong> Package Inclusions </strong></h3>
+                                 <div class="row">
+                                  <div class="col-sm-4">
+                                  <h4> Dish Included </h4>
+                                    <label>Dish 1</label>
+                                    <br>
+                                    <label>Dish 2</label>
+                                    <br>
+                                    <label>Dish 3</label>
+                                    <br>
+                                  </div>
+                                  <div class="col-sm-4">
+                                  <h4> Equipment Included </h4>
+                                    <label>Dish 1</label>
+                                    <br>
+                                    <label>Dish 2</label>
+                                    <br>
+                                    <label>Dish 3</label>
+                                    <br>
+                                  </div>
+                                  <div class="col-sm-4">
+                                  <h4> Services & Staff Included </h4>
+                                    <label>Dish 1</label>
+                                    <br>
+                                    <label>Dish 2</label>
+                                    <br>
+                                    <label>Dish 3</label>
+                                    <br>
+                                  </div>
+                                </div>
+                                <!-- End Row -->
+                              </div>
+                            </div>
+                            <!-- End Box -->
                           </div>
                           <!-- End Reservation Info Tab -->
 
-                          <!-- Package & Menu Info Tab -->
+                          <!-- Additional Food Tab -->
                           <div class="tab-pane active" id="tab_3">
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Additional Food Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                                <table id="additionalFoodTable">
+
+                                </table>
+                                <!-- End Row -->
+                              </div>
+                            </div>
+                            <!-- End Box -->
                           </div>
                           <!-- End Reservation Tab -->
 
-                          <!-- Equipment, Service & Staff Tab -->
+                          <!-- Additional Equipment Tab -->
                           <div class="tab-pane active" id="tab_4">
-                            
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Additional Equipment Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                                Additionals
+                              </div>
+                            </div>
+                            <!-- End Box -->
+                          </div>
+                          <!-- End Reservation Info Tab -->
+
+                          <!-- Additional Service & Staff Tab -->
+                          <div class="tab-pane active" id="tab_5">
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Additional Service & Staff Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                                Additionals
+                              </div>
+                            </div>
+                            <!-- End Box -->
                           </div>
                           <!-- End Reservation Info Tab -->
 
@@ -400,6 +485,8 @@
       var customerEmailAddress=[];
       var customerCellNumber=[];
       var customerBirthDate=[];
+      var eventPackageName=[];
+      var eventPackageId=[];
       $.ajax({
             url: '/RetrieveSchedule',
             type: 'GET',
@@ -420,6 +507,8 @@
                   customerEmailAddress.push([data['rsvtn'][i]['emailAddress']]);
                   customerCellNumber.push([data['rsvtn'][i]['cellNum']]);
                   customerBirthDate.push([data['rsvtn'][i]['dateOfBirth']]);
+                  eventPackageName.push([data['rsvtn'][i]['packageName']]);
+                  eventPackageId.push([data['rsvtn'][i]['packageID']]);
                 } 
                 // alert(dateReservationId);
                 for(var i=0;i<data['rsvtn'].length;i++){
@@ -438,7 +527,9 @@
                     nameEvent: eventName[i],
                     dateEvent: eventDate[i],
                     startTimeEvent: eventStart[i],
-                    endTimeEvent: eventEnd[i]
+                    endTimeEvent: eventEnd[i],
+                    packageNameEvent: eventPackageName[i],
+                    packageIdEvent: eventPackageId[i]
                   })
                 }
 
@@ -462,7 +553,9 @@
                       event.nameEvent,
                       event.dateEvent
                       event.startTimeEvent,
-                      event.endTimeEvent
+                      event.endTimeEvent,
+                      event.packageNameEvent,
+                      event.packageIdEvent
                 },
                 navLinks: true, // can click day/week names to navigate views
                 editable: false,
@@ -483,6 +576,13 @@
                   $('#editEventGuestCount').val(calEvent.guestCountEvent);
                   $('#editEventStartTime').val(calEvent.startTimeEvent);
                   $('#editEventEndTime').val(calEvent.endTimeEvent);
+                  var opty = document.getElementById('editPackage').options;
+                  for(var i =0; i<opty.length; i++){
+                    if(opty[i].value==(calEvent.packageIdEvent)){
+                      $('#editPackage').val(calEvent.packageIdEvent);
+                      break;
+                    }
+                  }
                   $("#detailModal").modal("show");
                 }
                 

@@ -59,7 +59,7 @@
                     <tbody>
                       @foreach ($equipmentData as $equipmentData)
                       <tr>
-                        <td>Date</td>
+                        <td>{{ $equipmentData->equipmentLogDate }}</td>
                         <td>{{ $equipmentData->equipmentTypeName }}</td>
                         <td>{{ $equipmentData->equipmentName }}</td>
                         <td>{{ $equipmentData->equipmentDescription }}</td>
@@ -344,10 +344,8 @@
                             </div>
 
                             <div class="tab-pane active" id="tab_2">
-                              <form  id="updateEquipmentQuantityForm" role="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
-                              {!! csrf_field() !!}
+                              <form id="updateEquipmentQuantityForm" class="form-horizontal">
 
-                              <input type="hidden" id="token" value="{{ csrf_token() }}">
                               <div class="form-group" style="display: none;">
                               <label class="col-sm-4 control-label">Equipment ID</label>
                               <div class="col-sm-6">
@@ -359,6 +357,8 @@
                               </div>
                               </div>
                               </div>
+
+                              <input type="hidden" id="token" value="{{ csrf_token() }}">
 
                               <div class="form-group">
                               <label class="col-sm-4 control-label">Equipment Name</label>
@@ -410,7 +410,7 @@
 
                               
                               <div style="text-align: center;">
-                                <button type="submit" id="submitQuantityBtn" class="btn btn-primary btn-sm">Confirm</button>
+                                <button type="submit" id="submitQuantityBtn" class="btn btn-primary btn-sm" data-dismiss="modal">Add</button>
                                 <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
                               </div>
 
@@ -438,28 +438,26 @@
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
 <script>
-$(document).ready(function() {
 
     //if submit button is clicked
-    $('#updateEquipmentQuantityForm').submit(function (e) {        
-        e.preventDefault();
-        var id = $('input[name=addQuantityEquipmentID]');
+    $("#submitQuantityBtn").click(function(e){
+        var id = $('input[name=addQuantityEquipmentID]').val();
         var addEquipmentQuantity;
         var minusEquipmentQuantity;
         
         if ( $("#addCheckBox").is(':checked') ){
-          addEquipmentQuantity = $('input[name=addEquipmentQuantity]');
+          addEquipmentQuantity = $('input[name=addEquipmentQuantity]').val();
           minusEquipmentQuantity = 0;
         }
         if ( $("#minusCheckBox").is(':checked') ){
-          minusEquipmentQuantity = $('input[name=minusEquipmentQuantity]');
+          minusEquipmentQuantity = $('input[name=minusEquipmentQuantity]').val();
           addEquipmentQuantity = 0;
         }
         if ( ($("#addCheckBox").is(':checked')) && ($("#minusCheckBox").is(':checked')) ){
-          addEquipmentQuantity = $('input[name=addEquipmentQuantity]');
-          minusEquipmentQuantity = $('input[name=minusEquipmentQuantity]');
+          addEquipmentQuantity = $('input[name=addEquipmentQuantity]').val();
+          minusEquipmentQuantity = $('input[name=minusEquipmentQuantity]').val();
         }
-
+        alert(id + ' ' + addEquipmentQuantity + ' ' + minusEquipmentQuantity);
         $.ajax({
           url:  "/UpdateEquipmentUnit",
           type: "POST",
@@ -470,22 +468,21 @@ $(document).ready(function() {
               }
           },
           data: {
-            id = id,
-            addQuantity = addEquipmentQuantity,
-            minusQuantity = minusEquipmentQuantity
+            id: id,
+            addQuantity: addEquipmentQuantity,
+            minusQuantity: minusEquipmentQuantity,
             '_token': $('#token').val()
           },
           success: function(data){
-          window.location.href = "damage";            
+            alert('success');
+            window.location.href = "InventoryEquipmentPage";      
           },
           error: function(xhr)
           {
-          // alert("asd")
           alert($.parseJSON(xhr.responseText)['error']['message']);
           }                  
         });
       }); 
-}); 
 </script> 
 
   <script>
@@ -518,10 +515,10 @@ $(document).ready(function() {
     <script>
   $(function () {
     $('#inventoryEquipmentTable').DataTable({
-      "paging": false,
+      "paging": true,
       "lengthChange": true,
       "searching": true,
-      "ordering": false,
+      "ordering": true,
       "info": true,
       "autoWidth": true
     });
