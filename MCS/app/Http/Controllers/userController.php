@@ -189,6 +189,14 @@ class userController extends Controller
                     ->where('equipment_tbl.equipmentAvailability', 1)
                     ->get();
 
+        $equipmenttype = DB::table('equipmenttype_tbl') 
+                    ->where('equipmenttype_tbl.equipmentTypeStatus', 1)
+                    ->get();
+
+        $employeetype = DB::table('employeetype_tbl') 
+                    ->where('employeetype_tbl.employeeTypeStatus', 1)
+                    ->get();
+
         $location = DB::table('location_tbl') 
                     ->where('location_tbl.locationStatus', 1)
                     ->where('location_tbl.locationAvailability', 1)
@@ -203,7 +211,7 @@ class userController extends Controller
 
        
      
-        return View::make('/UserReservationPage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID)->with('eventNewID', $eventNewID)->with('reservationNewID', $reservationNewID)->with('contactNewID', $contactNewID)->with('dishAvailedNewID', $dishAvailedNewID)->with('eType', $eType)->with('customerNewID', $customerNewID)->with('package', $package)->with('packageinclusion', $packageinclusion)->with('serviceinclusion', $serviceinclusion)->with('equipmentinclusion', $equipmentinclusion)->with('employeeinclusion', $employeeinclusion)->with('dishtype', $dishtype)->with('dishes', $dishes)->with('service', $service)->with('servicetype', $servicetype)->with('equipment', $equipment)->with('location',$location)->with('countDish', $countDish)->with('countPckg', $countPckg)->with('paymentMode', $paymentMode)->with('paymentTerm', $paymentTerm);
+        return View::make('/UserReservationPage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID)->with('eventNewID', $eventNewID)->with('reservationNewID', $reservationNewID)->with('contactNewID', $contactNewID)->with('dishAvailedNewID', $dishAvailedNewID)->with('eType', $eType)->with('customerNewID', $customerNewID)->with('package', $package)->with('packageinclusion', $packageinclusion)->with('serviceinclusion', $serviceinclusion)->with('equipmentinclusion', $equipmentinclusion)->with('employeeinclusion', $employeeinclusion)->with('dishtype', $dishtype)->with('dishes', $dishes)->with('service', $service)->with('servicetype', $servicetype)->with('equipment', $equipment)->with('equipmenttype', $equipmenttype)->with('employeetype', $employeetype)->with('location',$location)->with('countDish', $countDish)->with('countPckg', $countPckg)->with('paymentMode', $paymentMode)->with('paymentTerm', $paymentTerm);
 
     }
 
@@ -282,6 +290,15 @@ class userController extends Controller
       
 
       return Response::json(['equip'=>$equip]);
+    }
+
+    public function getEmp(Request $request){
+        $emp = DB::table('employeetype_tbl')
+              ->where('employeetype_tbl.employeeTypeID', '=', $request->input('ae_id'))
+              ->get();
+      
+
+      return Response::json(['emp'=>$emp]);
     }
 
     public function getReservation(Request $request){

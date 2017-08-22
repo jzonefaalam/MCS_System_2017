@@ -1,533 +1,288 @@
-<html>
-	<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel="apple-touch-icon" sizes="76x76" href="{{ asset('USER_UI/assets/img/favicon.ico') }}">
-		<title> Reservation | Margareth's Catering </title>
-
-		<link rel="apple-touch-icon" sizes="76x76" href="{{ asset('USER_UI/assets/img/apple-icon.png') }}" />
-		<link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}" />
-		<!-- Font Awesome -->
-		<link rel="stylesheet" href="{{ URL::asset('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css') }}">
-		<!-- Ionicons -->
-		<link rel="stylesheet" href="{{ URL::asset('https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css') }}">
-		<!-- Theme style -->
-		<link rel="stylesheet" href="{{ asset('USER_UI/dist/css/AdminLTE.min.css') }}">
-		<!-- AdminLTE Skins. Choose a skin from the css/skins
-		    folder instead of downloading all of them to reduce the load. -->
-		<link rel="stylesheet" href="{{ asset('USER_UI/dist/css/skins/_all-skins.min.css') }}">
-		<!--     Fonts and icons     -->
-		<link rel="stylesheet" type="text/css" href="{{ URL::asset('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons') }}" />
-		<link rel="stylesheet" href="{{ URL::asset('https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css') }}" />
-		
-		<!-- CSS Files -->
-
-		<link href="{{ asset('USER_UI/assets/css/bootstrap.min.css') }}" rel="stylesheet" />
-		<link href="{{ asset('USER_UI/assets/css/material-bootstrap-wizard.css') }}" rel="stylesheet" />
-
-		<link rel="stylesheet" type="text/css" href="{{ asset('validator/dist/css/bootstrapValidator.css') }}"/>
-		<!-- Full Calendar -->		
-		<link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet" />
-		<link href="{{ asset('fullcalendar/fullcalendar.print.min.css') }}" rel="stylesheet" media="print" />
-
-		<!-- CSS Just for demo purpose, don't include it in your project -->
-		<link href="{{ asset('USER_UI/assets/css/demo.css') }}" rel="stylesheet" />
-		<link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datatables/dataTables.bootstrap.css') }}">
-		<link rel="stylesheet" type="text/css" href="{{ asset('/plugins/datatables/jquery.dataTables.min.css') }}">
-		
-	</head>
-
-	<body style = "background-image:url(img/bg1.jpg); background-size: cover; background-attachment: fixed; background-position: center; background-repeat: no-repeat">
-		<div class="container-fluid">
-
-			<nav class="navbar navbar-default navbar-fixed-top" style="background-color:black;">
-				<div class="container" style = "background-color:black; width:100%; cursor: pointer;">
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-
-						<a class="navbar-brand" href="Base.php"><img src="img/logo.png" style ="float:left ; width 40px;height :40px;padding-bottom :10px"></a>
-					</div>
-
-					<div class="collapse navbar-collapse" id="myNavbar" style = "background-color:black; width:100%">
-						<ul class ="nav navbar-nav navbar-right">
-							<li><a href="UserBasePage"> Home </a></li>
-
-							<li class="dropdown">
-								<a class="dropdown-toggle" type = "button" data-toggle="dropdown">
-									Menu <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="UserPackagePage"> Packages </a></li>
-									<li><a href="UserDishPage"> Dishes </a></li>
-									<li><a href="UserServicePage"> Services </a></li>
-								</ul>
-							</li>
-
-							<li><a href="UserReservationPage">Make a Reservation </a></li>
-							<li><a href="UserAboutPage"> Contact Us </a></li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-
-			<!--   Big container   -->
+@extends('layouts.userReserveUI')
+@section('contents')
+@section('scripts')
+	    <!--   Big container   -->
 	    <div class="container">
 	        <div class="row">
 		        <div class="col-sm-7">
+
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
-		                <div class="card wizard-card" data-color="blue" id="wizardProfile">
-		                    <form class = "form-horizontal infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data">
-		                <!--        You can switch " data-color="purple" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
-												{!! csrf_field() !!}
+		                <div class="card wizard-card" data-color="azure" id="wizard">
+		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data">
+		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
+
 		                    	<div class="wizard-header">
-		                        	<h3 class="wizard-title">
-		                        	   	R E S E R V A T I O N
-		                        	</h3>
+		                        	<h3 class="wizard-title">Reservation</h3>
+		                        	<p class="category">Book a reservation now!</p>
 		                    	</div>
-<!-- NAVIGATION -->
+
 								<div class="wizard-navigation">
+									<div class="progress-with-circle">
+									     <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 21%;"></div>
+									</div>
 									<ul>
-			                            <li><a href="#resDetail" data-toggle="tab">Event Details</a></li>
-			                            <li><a href="#cusInfo" data-toggle="tab">Customer Information</a></li>
-			                            <li><a href="#package" data-toggle="tab">Package Selection</a></li>
-			                            <li><a href="#addOn" data-toggle="tab">Additional</a></li>
+			                            <li>
+											<a href="#resDetails" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-calendar"></i>
+												</div>
+												Event Details
+											</a>
+										</li>
+			                            <li>
+											<a href="#cusInfo" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-user"></i>
+												</div>
+												Customer Information
+											</a>
+										</li>
+			                            <li>
+											<a href="#package" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-package"></i>
+												</div>
+												Package Selection
+											</a>
+										</li>
+			                            <li>
+											<a href="#addOn" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-plus"></i>
+												</div>
+												Additional
+											</a>
+										</li>
+			                            <li>
+											<a href="#payment" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-wallet"></i>
+												</div>
+												Payment
+											</a>
+										</li>
 			                        </ul>
 								</div>
-<!-- EVENT -->
 		                        <div class="tab-content">
-		                        	<div class="tab-pane" id="resDetail">
-		                              <div class="row">
-		                                	<div class="col-sm-4 col-sm-offset-1">
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">toc</i>
-													</span>
-													<input type="text" name="addEventID" id="addEventID" value = "{{ $eventNewID }}" hidden>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Event Type</label>
-		                                            	<select name="eType" id = "eType" class="form-control">
-															<option disabled="" selected=""></option>
+		                            <div class="tab-pane" id="resDetails">
+		                            	<div class="row"> <br> <br>
+			                                <div class="col-sm-5 col-sm-offset-1">
+			                                	<input type="text" name="addEventID" id="addEventID" value = "{{ $eventNewID }}" hidden>
+			                                    <div class="form-group">
+			                                        <label>Event Type</label>
+			                                        <select name="eType" id = "eType" class="form-control">
+														<option disabled="" selected=""></option>
 														    @foreach($eType as $type)
-														    	<option value="{{$type->eventTypeID}}">{{$type->eventTypeName}}</option>
+														<option value="{{$type->eventTypeID}}">{{$type->eventTypeName}}</option>
 														    @endforeach
-		                                            	</select>
-		                                            </div>
-		                                        </div>
-
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">label</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Do you have a location?</label>
+		                                            </select>
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>Name of Event</label>
+			                                        <input type="text" name="eName" id = "eName" maxlength="50" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5 col-sm-offset-1">
+			                                    <div class="form-group">
+			                                        <label>Do you have a location?</label>
 		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)">
 															<option disabled="" selected=""></option>
-															<option value="Yes"> Yes </option>
-															<option value="No"> No </option>
-		                                            	</select>
-		                                            </div>
-		                                        </div>
-
-		                                		<div class="input-group" id="locYes">
-													<span class="input-group-addon">
-														<i class="material-icons">location_on</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Location</label>
-			                                            <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="">
-			                                        </div>
-		                                        </div>
-
-		                                		<div class="input-group" id="locNo" style="display:none">
-													<span class="input-group-addon">
-														<i class="material-icons">location_on</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Location</label>
-		                                            	<select name="eLoc2" id = "eLoc2" class="form-control">
-															<option disabled="Choose location" selected=""></option>
-															@foreach($location as $loc)
-														    	<option value="{{$loc->locationID}}">{{$loc->locationName}}</option>
-														    @endforeach
-		                                            	</select>
-			                                        </div>
-		                                        </div>
-		                                        <div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">query_builder</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Starting Time of Event</label>
-			                                            <input type="time" name="eTime" id = "eTime" class="form-control">
-			                                        </div>
-		                                        </div>
-		                                    </div>
-
-		                                	<div class="col-sm-4 col-sm-offset-1">
-												<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">spellcheck</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Name of Event</label>
-			                                            <input type="text" name="eName" id = "eName" maxlength="50" class="form-control">
-			                                        </div>
-		                                        </div>
-
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">perm_identity</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Number of Guest</label>
-			                                            <input type="number" name="eNum" id = "eNum" class="form-control">
-			                                        </div>
-		                                        </div>
-
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">today</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Date of Event</label>
-			                                            <input type="date" name="eDate" id = "eDate" class="form-control">
-			                                        </div>
-		                                        </div>
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">query_builder</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">End Time of Event</label>
-			                                            <input type="time" name="enTime" id = "enTime" class="form-control">
-			                                        </div>
-		                                        </div>
-
-		                                	</div>
+															<option value="Yes">Yes</option>
+															<option>No</option>
+			                                        </select>
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>Date of Event</label>
+			                                        <input type="date" name="eDate" id = "eDate"  class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5 col-sm-offset-1" id="locYes">
+			                                    <div class="form-group">
+			                                        <label>Location</label>
+			                                        <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="">
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5 col-sm-offset-1" id="locNo" style="display:none">
+			                                    <div class="form-group">
+			                                        <label>Location</label>
+		                                            <select name="eLoc2" id = "eLoc2" class="form-control">
+														<option disabled="Choose location" selected=""></option>
+														@foreach($location as $loc)
+														<option value="{{$loc->locationID}}">{{$loc->locationName}}</option>
+														@endforeach
+		                                            </select>
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>Number of Guests</label>
+			                                        <input type="number" name="eNum" id = "eNum" min="1" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5 col-sm-offset-1">
+			                                    <div class="form-group">
+			                                        <label>Starting Time of Event</label>
+			                                        <input type="time" name="eTime" id = "eTime" class="form-control">
+			                                    </div>
+			                                </div>
+			                                <div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>End Time of Event</label>
+			                                        <input type="time" name="enTime" id = "enTime" class="form-control">
+			                                    </div>
+			                                </div>
 		                            	</div>
-		                            </div>
-<!-- CUSTOMER -->
+		                        	</div>
+
 		                            <div class="tab-pane" id="cusInfo">
-		                              	<div class="row">
+		                                <div class="row"> <br> <br>
+											<input type="text" name="addCustomerID" id="addCustomerID" value = "{{ $customerNewID }}" hidden>
+											<input type="text" name="addReservationID" id="addReservationID" value = "{{ $reservationNewID }}" hidden>
+											<input type="text" name="addContactID" id="addContactID" value = "{{ $contactNewID }}" hidden>
+											<input type="text" name="addDishAvailedID" id="addDishAvailedID" value = "{{ $dishAvailedNewID }}" hidden>
 
-		                                	<div class="col-sm-4 col-sm-offset-1">
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">toc</i>
-													</span>
-
-													<input type="text" name="addCustomerID" id="addCustomerID" value = "{{ $customerNewID }}" hidden>
-													<input type="text" name="addReservationID" id="addReservationID" value = "{{ $reservationNewID }}" hidden>
-													<input type="text" name="addContactID" id="addContactID" value = "{{ $contactNewID }}" hidden><input type="text" name="addDishAvailedID" id="addDishAvailedID" value = "{{ $dishAvailedNewID }}" hidden>
-
-
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Full Name</label>
-			                                            <input type="text" name="cusName" id = "cusName" class="form-control">
-		                                            </div>
-		                                        </div>
-
-												<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">location_on</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Home Address</label>
-			                                            <input type="text" name="homeAdd" id = "homeAdd" class="form-control">
-			                                        </div>
-		                                        </div>
-
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">loyalty</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Billing Address</label>
-			                                            <input type="text" name="billAdd" id = "billAdd" class="form-control">
-		                                            </div>
-		                                        </div>
-
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">today</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Date of Birth</label>
-			                                            <input type="date" name="dob" id = "dob" class="form-control">
-		                                            </div>
-		                                        </div>
+											<div class="col-sm-5 col-sm-offset-1">
+			                                    <div class="form-group">
+			                                        <label>Full Name<small>(required)</small></label>
+			                                        <input type="text" name="cusName" id = "cusName" class="form-control">
+			                                    </div>
+			                                </div>
+											<div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>Home Address</label>
+			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control">
+			                                    </div>
+			                                </div>
+											<div class="col-sm-5 col-sm-offset-1">
+			                                    <div class="form-group">
+			                                        <label>Date of Birth</label>
+			                                        <input type="date" name="dob" id = "dob" class="form-control">
+			                                    </div>
+			                                </div>
+											<div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>Telephone Number</label>
+			                                        <input type="text" name="telNum" id = "telNum" class="form-control">
+			                                    </div>
+			                                </div>
+											<div class="col-sm-5 col-sm-offset-1">
+			                                    <div class="form-group">
+			                                        <label>Cellphone Number</label>
+			                                        <input type="text" name="cellNum" id = "cellNum" class="form-control">
+			                                    </div>
+			                                </div>
+											<div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>Email Address</label>
+			                                        <input type="text" name="emailAdd" id = "emailAdd" class="form-control">
+			                                    </div>
+			                                </div>		                                	
+			                                <div class="col-sm-12">
+		                                    	<h5 class="info-text"> In case of emergency please specify another contact</h5>
 		                                    </div>
-
-		                                	<div class="col-sm-4 col-sm-offset-1">
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">ring_volume</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Telephone Number</label>
-			                                            <input type="text" name="telNum" id = "telNum" class="form-control">
-		                                            </div>
-		                                        </div>
-
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">voicemail</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Cellphone Number</label>
-			                                            <input type="text" name="cellNum" id = "cellNum" class="form-control">
-		                                            </div>
-		                                        </div>
-
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">comment</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Email Address</label>
-			                                            <input type="text" name="emailAdd" id = "emailAdd" class="form-control">
-		                                            </div>
-		                                        </div>
-
-		                                	</div>
-		                            	</div>
-
-										<div class="row">
-		                                    <div class="col-sm-12">
-		                                        <h4 class="info-text"> In case of emergency please specify another contact </h4>
-		                                    </div>
-
-		                                	<div class="col-sm-4 col-sm-offset-1">
-												<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">assignment_ind</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Contact Name</label>
-			                                            <input type="text" name="conPerson" id = "conPerson" class="form-control">
-			                                        </div>
-		                                        </div>
-		                                    </div>
-
-		                                	<div class="col-sm-4 col-sm-offset-1">
-		                                		<div class="input-group">
-													<span class="input-group-addon">
-														<i class="material-icons">settings_phone</i>
-													</span>
-													<div class="form-group label-floating">
-			                                            <label class="control-label">Contact Number</label>
-			                                            <input type="text" name="conNum" id = "conNum" class="form-control">
-		                                            </div>
-		                                        </div>
-		                                    </div>
+											<div class="col-sm-5 col-sm-offset-1">
+			                                    <div class="form-group">
+			                                        <label>Contact Name</label>
+			                                        <input type="text" name="conPerson" id = "conPerson" class="form-control">
+			                                    </div>
+			                                </div>
+											<div class="col-sm-5">
+			                                    <div class="form-group">
+			                                        <label>Contact Number</label>
+			                                        <input type="text" name="conNum" id = "conNum" class="form-control">
+			                                    </div>
+			                                </div>
 		                                </div>
 		                            </div>
-<!-- PACKAGE -->
-		                            <div class="tab-pane" id="package"> <br>
-		                                <div class="row" align = "center">
-		                                    <div class="panel-group" id="accordion">
-<!--  -->
 
-
-
-<!--  -->
-												<input type="text" id="pckid" hidden>
-												@foreach($package as $pg)
-		                                    	<button type="button" style = "width: 550px; height: 70px" class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#packageModal{{$pg->packageID}}" name='{{$pg->packageID}}' onclick="getpckid(this.name)"><h5>{{$pg->packageName}}</h5></button><br>
-		                                    	<input type="text" id="pgid" value='{{$pg->packageID}}' hidden>
-											    <input type="text" id="pgimage" value='{{$pg->packageImage}}' hidden>
-											    <input type="text" id="countDish" value="{{$countDish}}" hidden>
-		                                    	<!-- Modal -->
-												<div id="packageModal{{$pg->packageID}}" class="modal fade" role="dialog">
-													<div class="col-md-8 col-sm-offset-2">
-
-														<!-- Modal content-->
-														<div class="modal-content" style="margin-top: 50px">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss="modal">&times;</button>
-
-																<h4 class="modal-title"> Package <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h4>
-															</div>
-
-															<div class="modal-footer">
-																<div>
-																	<h6 align="left"><i>This package includes:</i></h6>
-																</div>
-																@foreach($packageinclusion as $pgi)
-		                                    					@if($pgi->packageID == $pg->packageID)
-		                                    					<div class = "col-md-3 col-sm-3">
-											        				<h3 id='dishTypeName'><center>{{$pgi->dishTypeName}}{{$pgi->serviceID}}</center></h3>
-					                                            	<div class="form-group">
-																		<img src="{{ asset('images/' . $pgi->dishTypeImage) }}" id="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" width="160px" height="120px" class="col-md-10 col-sm-11">
-					                                            		<select class="form-control" name="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" id="dish{{$pgi->packageID}}{{$pgi->packageInclusionID}}" onclick="getdishid(this.id)" onchange="pckdshimg(this.name)">
-																			<option disabled selected value="">Choose Dish</option>
-																			@foreach($dishes as $dishh)
-																			@if($pgi->dishTypeID == $dishh->dishTypeID)
-														    				<option value="{{$dishh->dishID}}">{{$dishh->dishName}}</option>
-														    				@endif
-														    				@endforeach
-						                                            	</select>
-							                                        </div>
-																</div>																
-																@endif
-																@endforeach
-															</div>
-
-															<div class="modal-footer">
-																<div class="pull-left">
-																	<h5 align="left">
-																		<label>Services:
-																			<i>								
-																				@foreach($serviceinclusion as $sgi)
-					                                    						@if($sgi->packageID == $pg->packageID)
-																					{{$sgi->serviceName}}, &nbsp														
-																				@endif
-																				@endforeach
-																				@foreach($employeeinclusion as $egi)
-						                                    					@if($egi->packageID == $pg->packageID)
-																					{{$egi->employeeTypeName}}, &nbsp	
-																				@endif
-																				@endforeach
-																			</i><br/>Equipment:
-																			<i>								
-																				@foreach($equipmentinclusion as $egi)
-						                                    					@if($egi->packageID == $pg->packageID)
-																					{{$egi->equipmentName}}, &nbsp	
-																				@endif
-																				@endforeach
-																			</i>																
-																		</label>
-																	<h5>
-																</div>
-																<div class="pull-right">
-																<button type="button" class="btn btn-success pull-right" data-dismiss="modal" name="{{$pg->packageID}}" id="{{$pg->packageID}}" class="btn btn-info btn-md" onclick="addPack(this.name)">Save</button>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-												@endforeach
-											</div>
+		                            <div class="tab-pane" id="package">
+		                                <div class="row" align="center">                       
+		                                	<div class="col-sm-12">
+		                                        <h5 class="info-text"> <i> Choose your package </i> </h5>
+		                                    </div>
+		                                    @foreach($package as $pg)
+		                                	<input type="text" id="pckid" hidden>
+		                                    <input type="button" style = "width: 550px" class="btn btn-warning btn-sm"  data-toggle="modal" href="#packageModal{{$pg->packageID}}" id = "pck{{$pg->packageID}}" name='{{$pg->packageID}}' onclick="getpckid(this.name)" value="{{$pg->packageName}}">
+		                                    <br> <br>
+		                                    <input type="text" id="pgid" value='{{$pg->packageID}}' hidden>
+											<input type="text" id="pgimage" value='{{$pg->packageImage}}' hidden>
+										    <input type="text" id="countDish" value="{{$countDish}}" hidden>
+		                                    @endforeach
 		                                </div>
 		                            </div>
-<!-- ADDITIONAL -->
-		                            <div class="tab-pane" id="addOn">		                                
-		                            	<div class="row" align = "center">
-											<input type="text" id="dtid" hidden>
-		                                	<h4> <i> Additional Food / Service / Equipment </i> </h4>
-		                                    <div class="panel-group" id="accordion">
-		                                    	<button type="button" style = "width: 550px; height: 70px" class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#foodModal"><h4>Food</h4></button><br>
-		                                    	<!-- Modal -->
-												<div id="foodModal" class="modal fade" role="dialog">
-													<div class="col-md-6 col-sm-offset-3">
+		                            
+		                            <div class="tab-pane" id="addOn">
+		                                <div class="row" align="center">                       
+		                                	<div class="col-sm-12">
+		                                        <h5 class="info-text"> <i> Additional Food / Service / Equipment </i> </h5>
+		                                    </div>
 
-														<!-- Modal content-->
-														<div class="modal-content" style="margin-top: 130px">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss="modal">&times;</button>
+		                                	<input type="text" id="dtid" hidden>
+		                                	<input type="text" id="ptids" hidden>
+		                                	<input type="text" id="pmids" hidden>
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#additionalModal" value="Food"> &nbsp &nbsp
 
-																<h4 class="modal-title"> Additional Food <i class="fa fa-check-square-o" aria-hidden="true"></i></h4>
-															</div>
+		                                	<input type="text" id="dtid" hidden>
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#serviceModal" value="Service"> &nbsp &nbsp
+		                                    </a>
 
-															<div class="modal-footer">
-
-<!--  -->
-											    @foreach($dishtype as $dd)
-											    <div>
-											      	<div class="col-md-12" >
-											        	<h4><center>{{$dd->dishTypeName}}</center></h4>
-											      	</div>
-
-		                                    		<div class = "col-md-3">
-											      		<div class="form-group">
-															<img src="{{ asset('images/' . $dd->dishTypeImage) }}" id="dishTypeImage{{$dd->dishTypeID}}" width="200px" height="150px">
-															<select class="form-control" name="dishTypeImage{{$dd->dishTypeID}}" id="dishType{{$dd->dishTypeID}}" onchange="pckdshimg(this.name)">
-																<option disabled selected value="">Choose Dish </option>
-																@foreach($dishes as $dishh)
-																	@if($dd->dishTypeID == $dishh->dishTypeID)
-												    				<option value="{{$dishh->dishID}}">{{$dishh->dishName}}</option>
-												    				@endif
-											    				@endforeach
-			                                            	</select>
-														</div>
-													</div>
-													<div class = "col-md-4">
-					                                  	<div class="form-group">
-					                                   		
+		                                	<input type="text" id="dtid" hidden>
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment">
+		                                    </a>
+		                                </div>
+		                            </div>
+		                            
+		                            <div class="tab-pane" id="payment">
+		                                <div class="row" align="center">
+		                					<!-- <div class="card wizard-card" data-color="orange"> -->
+			                                    <div class="row">
+				                                    <div class="col-sm-6" >
+					                                    <h5 class="info-text"> <i> Payment Term</i> </h5>
+				                                    	@foreach($paymentTerm as $pt)
+				                                        <div class="col-sm-6" id="ppt{{$pt->paymentTermID}}">
+															<div class="choice" data-toggle="wizard-checkbox"  style="margin-top: -10px" >
+				                                                <input type="checkbox" name="{{$pt->paymentTermID}}" id="pt{{$pt->paymentTermID}}">
+				                                                <div class="card card-checkboxes card-hover-effect"  id="{{$pt->paymentTermID}}" onclick="getpt(this.id)">
+				                                                    <i class="{{$pt->paymentTermIco}}"></i>
+																	<p>{{$pt->paymentTermName}}</p>
+				                                                </div>
+				                                            </div>
 				                                        </div>
-													</div>
-
-
-											    </div>
-											    @endforeach
-
-<!--  -->
-															</div>
-
-															<div class="modal-footer">
-																<button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
-															</div>
-														</div>
-
-													</div>
-												</div>
-
-		                                    	<button type="button" style = "width: 550px; height: 70px" class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#serviceModal"><h4>Service</h4></button><br>
-		                                    	<!-- Modal -->
-												<div id="serviceModal" class="modal fade" role="dialog">
-													<div class="col-md-6 col-sm-offset-3">
-
-														<!-- Modal content-->
-														<div class="modal-content" style="margin-top: 130px">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss="modal">&times;</button>
-
-																<h4 class="modal-title"> Additional Service <i class="fa fa-check-square-o" aria-hidden="true"></i></h4>
-															</div>
-
-															<div class="modal-footer">
-																<button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
-															</div>
-														</div>
-													</div>
-												</div>
-
-		                                    	<button type="button" style = "width: 550px; height: 70px" class="btn btn-info btn-lg" type="button" data-toggle="modal" data-target="#equipModal"><h4>Equipment</h4></button><br>
-		                                    	<!-- Modal -->
-												<div id="equipModal" class="modal fade" role="dialog">
-													<div class="col-md-6 col-sm-offset-3">
-
-														<!-- Modal content-->
-														<div class="modal-content" style="margin-top: 130px">
-															<div class="modal-header">
-																<button type="button" class="close" data-dismiss="modal">&times;</button>
-
-																<h4 class="modal-title"> Additional Equipment <i class="fa fa-check-square-o" aria-hidden="true"></i></h4>
-															</div>
-
-															<div class="modal-footer">
-																<button type="button" class="btn btn-success" data-dismiss="modal">Save</button>
-															</div>
-														</div>
-													</div>
-												</div>
-
-											</div>
-										</div>
+				                                    	@endforeach
+				                                    </div>
+				                                    <div class="col-sm-6" >
+					                                        <h5 class="info-text"> <i> Payment Mode</i> </h5>
+					                                    
+				                                    	@foreach($paymentMode as $pm)
+				                                        <div class="col-sm-6 " id="ppm{{$pm->paymentModeID}}" >
+															<div class="choice" data-toggle="wizard-checkbox" style="margin-top: -10px">
+				                                                <input type="checkbox" name="{{$pm->paymentModeID}}" id="pm{{$pm->paymentModeID}}">
+				                                                <div class="card card-checkboxes card-hover-effect" id="{{$pm->paymentModeID}}" onclick="getpm(this.id)">
+				                                                    <i class="{{$pm->paymentModeIco}}"></i>
+																	<p>{{$pm->paymentModeName}}</p>
+				                                                </div>
+				                                            </div>
+				                                        </div>
+				                                    	@endforeach
+				                                    </div>
+				                                </div>
+			                                <!-- </div>		                                 -->
+		                                </div>
 		                            </div>
 		                        </div>
-
 		                        <div class="wizard-footer">
-		                            <div class="pull-right">
-		                                <input type='button' class='btn btn-next btn-fill btn-default btn-wd' name='next' value='Next' />
-		                                <input type='button' class='btn btn-finish btn-fill btn-success btn-wd' name='finish' id='btnFinish' value='Finish' />
+		                        	<div class="pull-right">
+		                                <input type='button' class='btn btn-next btn-fill btn-primary btn-wd' name='next' value='Next'  />
+		                                <input type="button" id="btnFinish" class="btn btn-finish btn-fill btn-primary btn-wd" name="finish" value="Finish"/>
 		                            </div>
 
 		                            <div class="pull-left">
-		                                <input type='button' class='btn btn-previous btn-fill btn-default btn-wd' name='previous' value='Previous' />
+		                                <input type='button' class='btn btn-previous btn-default btn-wd' name='previous' value='Previous' />
 		                            </div>
 		                            <div class="clearfix"></div>
 		                        </div>
@@ -536,79 +291,432 @@
 		            </div> <!-- wizard container -->
 		        </div>
 
-		        <div class="col-sm-5 col-sm-offset-9" style="margin-left: 0px">
-		            <div class="wizard-container">
-		        	<div class="modal-content">
-                    	<div class="modal-header">
-	                       	
-	                   	</div>
-	                 	<div class="modal-body">
-
-							<div id='calendar'></div>
-						</div>	
-						<div class="modal-footer ">
-							<h5 align="left"><b>NOTE:</b> <label>View the dates for availability</label></h5>
-						</div>
-					</div>
-		        	</div>
-
-				</div>
-
-		        <div class="col-sm-5 col-sm-offset-9" style="margin-left: 0px">
+		        <div class="col-sm-5 col-sm-offset-8" style="margin: 0px">
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
-		               <!--  <div class="card wizard-card" id="wizardProfile">
-		                    <form action="" method=""> -->
-		                <!--        You can switch " data-color="purple" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
-		                	<div class="modal-content">
-		                    	<div class="modal-header">
-		                        	<h4 class="wizard-title">
-		                        	   	Cart <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
-		                        	</h4>
+		                <div class="card wizard-card" data-color="blue" id="wizard">
+		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
+		                		<div class="wizard-header">
+		                        	<h3 class="wizard-title">Viewing</h3>
+		                        	<p class="category">Click the icon to view the details.</p>
 		                    	</div>
-								<div class="modal-body">
-									<table id="cartTable" class="table table-hover">
-                  						<thead>
-                     				
-           								</thead>
-                   						<tbody>
-                             
-                   						</tbody>
-          							</table>
-								</div>	
-								<div class="modal-footer ">
-									<div id="subtot">
-										<h3 class="pull-left">Subtotal:   <b></b></h3> 
+
+								<div class="wizard-navigation">
+									<div class="progress-with-circle">
+									     <div class="progress-bar" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="5" style="width: 21%;"></div>
 									</div>
+									<ul>			                            
+			                            <li>
+											<a href="#viewDate" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-check-box"></i>
+												</div>
+												Dates
+											</a>
+										</li>
+										<li>
+											<a href="#viewCart" data-toggle="tab">
+												<div class="icon-circle">
+													<i class="ti-shopping-cart"></i>
+												</div>
+												Cart
+											</a>
+										</li>
+			                        </ul>
 								</div>
-							</div>
-								
-		                   <!--  </form>
-		                </div> -->
+
+		                        <div class="tab-content">
+		                            <div class="tab-pane" id="viewCart">
+		                                <div class="row">
+		                                    <table id="cartTable" class="table table-hover">
+                  								<thead>
+                     				
+           										</thead>
+                   								<tbody>
+                             
+                   								</tbody>
+          									</table>
+		                                </div>
+		                            </div>
+
+		                            <div class="tab-pane" id="viewDate">
+		                                <div class="row">
+		                                    <div id="calendar" class="col-sm-10 col-sm-offset-1"></div>
+		                                </div>
+
+		                            </div>
+
+		                        </div>
+		                        <div class="wizard-footer">
+		                            <div id="subtot">
+										<h3 class="pull-left"> <b></b></h3> 
+									</div>
+		                            <div class="clearfix"></div>
+		                        </div>
+
+		                </div>
 		            </div> <!-- wizard container -->
 		        </div>
-	        </div><!-- end row -->
-	    </div> </br> </br> <!--  big container -->
+	        </div> <!-- row -->
+	    </div> <!--  big container -->
+	</div>
+	
+	<!-- PACKAGE MODAL -->
+	@foreach($package as $pg)
+	<div id="packageModal{{$pg->packageID}}" class="modal fade" role="dialog">
+		<div class="col-md-8 col-sm-offset-2">	
+			<div class="modal-content" style="margin-top: 50px">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"> {{$pg->packageName}} <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h4>
+				</div>
 
-        <!-- /.modal-content -->
-        </div>
-        <!-- AdminLTE App -->
+				<div class="modal-footer">
+					@foreach($packageinclusion as $pgi)
+		            	@if($pgi->packageID == $pg->packageID)
+		            		<div class = "col-md-3 col-sm-3">
+								<h3 id='dishTypeName'><center>{{$pgi->dishTypeName}}{{$pgi->serviceID}}</center></h3>
+					            <div class="form-group">
+									<img src="{{ asset('images/' . $pgi->dishTypeImage) }}" style="height: 150px; border: 5px" id="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" class="col-md-12 col-sm-12">
+					            	<select class="form-control" name="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" id="dish{{$pgi->packageID}}{{$pgi->packageInclusionID}}" onclick="getdishid(this.id)" onchange="pckdshimg(this.name)">
+									<option disabled selected value="">Choose Dish</option>
+										@foreach($dishes as $dishh)
+											@if($pgi->dishTypeID == $dishh->dishTypeID)
+								   				<option value="{{$dishh->dishID}}">{{$dishh->dishName}}</option>
+											@endif
+										@endforeach
+						           	</select>
+							    </div>
+							</div>																
+						@endif
+					@endforeach
+				</div>
+				<div class="modal-footer">
+					<div class="pull-left">			
+						<small>
+						<h6 align="left"><label>
+						<i><small>This package includes:</small></i><br/>
+						Services:
+						<i>								
+						@foreach($serviceinclusion as $sgi)
+							@if($sgi->packageID == $pg->packageID)
+								{{$sgi->serviceName}}, &nbsp														
+							@endif
+						@endforeach
+						@foreach($employeeinclusion as $egi)
+		   					@if($egi->packageID == $pg->packageID)
+								{{$egi->employeeTypeName}}, &nbsp	
+							@endif
+						@endforeach
+						</i><br/>Equipment:
+						<i>								
+						@foreach($equipmentinclusion as $egi)
+		  					@if($egi->packageID == $pg->packageID)
+								{{$egi->equipmentName}}, &nbsp	
+							@endif
+						@endforeach
+						</i>																
+						</label>
+						</h6>
+						</small>
+					</div>
+					<div class="pull-right">
+						<button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="{{$pg->packageID}}" id="{{$pg->packageID}}" class="btn btn-info btn-md" onclick="addPack(this.name)">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@endforeach
 
-	    <script type="text/javascript" src="{{ asset('/jquery-1.10.2.min.js') }}"></script>
-	    <script type="text/javascript" src="{{ asset('USER_UI/dist/js/validator.js') }}"></script>
-	   	<script src="{{ asset('USER_UI/dist/js/app.min.js') }}"></script>
-	    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-	    <script src="{{ asset('USER_UI/dist/js/pages/dashboard.js') }}"></script>
-	    <!-- AdminLTE for demo purposes -->
-	    <script src="{{ asset('USER_UI/dist/js/demo.js') }}"></script>
+	<!-- ADDITIONAL MODAL -->
+	<form class="modal multi-step" id="additionalModal">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+					<h3 hidden>{{$i=1}}</h3>
+					@foreach($dishtype as $dd)
+	                <h4 class="modal-title step-{{$i}}" data-step="{{$i}}">{{$dd->dishTypeName}}</h4>
+	                <h3 hidden>{{$i++}}</h3>
+	                @endforeach
+	            </div>
+				<input id="addprice" hidden>
+				<h3 hidden>{{$i=1}}</h3>
+				@foreach($dishtype as $dd)
+	            <div class="modal-body step step-{{$i}}" align="center">
+	            	<div class="row">						
+		                <img src="{{ asset('images/' . $dd->dishTypeImage) }}" id="dishTypeImage{{$dd->dishTypeID}}" width="200px" height="150px">
+						<select class="form-control" name="dishTypeImage{{$dd->dishTypeID}}" id="dishType{{$dd->dishTypeID}}" style="width: 200px" onchange="pckdshimg(this.name)">
+							<option disabled selected value="">Choose Dish</option>
+							@foreach($dishes as $dishh)
+							@if($dd->dishTypeID == $dishh->dishTypeID)
+								<option value="{{$dishh->dishID}}">{{$dishh->dishName}}</option>
+							@endif
+							@endforeach
+						</select> <br>
+					    
+					    <div class="col-sm-6">
+					    	<div class="form-group">
+					    		<label>Quantity</label>
+					    		<input type="number" name="{{$dd->dishTypeID}}" id = "addqty{{$dd->dishTypeID}}" maxlength="50" min="1" max="9999" class="form-control" style="width: 250px" placeholder="Quantity per serving (5 pax)" onkeyup="comPrice(this.name)" onchange="comPrice(this.name)">
+					    	</div>
+					    
+					    	<div class="form-group">
+					    		<label>Price</label>
+					    		<input type="number" disabled="" name="{{$dd->dishTypeID}}"  id="addprice{{$dd->dishTypeID}}" maxlength="50" class="form-control" style="width: 250px" value="" placeholder="Price">
+					    	</div>
+					    </div>
 
-	    <script type="text/javascript" src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+					    <div class="col-sm-offset-1">
+					    	<label>Note / Comment</label>
+					    	<textarea name="note" name="{{$dd->dishTypeID}}" id = "addnote{{$dd->dishTypeID}}" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
+					   	</div>
+					</div>
+	            </div>
+	            <h3 hidden>{{$i++}}</h3>
+	            @endforeach
+	            
 
-		<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-		<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+	            <div class="modal-footer">
+		            <div class="pull-right">
+		            <h3 hidden>{{$i=1}}</h3>
+					@foreach($dishtype as $dd)
+                		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#additionalModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
+	                	<button type="button" name="dishType{{$dd->dishTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addAdd(this.name)">Add to Cart</button>
 
-	    <script type="text/javascript">
-   			$('.infoForm').bootstrapValidator({
+	            	<h3 hidden>{{$i++}}</h3>
+	            	@endforeach
+		            </div>
+
+		            <div class="pull-left">
+		            <h3 hidden>{{$i=1}}</h3>
+					@foreach($dishtype as $dd)
+                		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="2" onclick="sendEvent('#additionalModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
+                	<h3 hidden>{{$i++}}</h3>
+	            	@endforeach
+		            </div>
+	            </div>
+	        </div>
+	    </div>
+	</form>
+
+	<!-- SERVICE MODAL -->
+	<form class="modal multi-step" id="serviceModal">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title step-1" data-step="1">Staff Service</h4>
+	                <h3 hidden>{{$i=2}}</h3>
+					@foreach($servicetype as $st)
+	                <h4 class="modal-title step-{{$i}}" data-step="{{$i}}">{{$st->serviceTypeName}}</h4>
+	                <h3 hidden>{{$i++}}</h3>
+	                @endforeach
+	            </div>
+
+	            <div class="modal-body step step-1" align="center">
+	                <div class="row">
+		                <img src="{{ asset('images/' . avatar5.png) }}" style="width: 200px;height: 150px"> <br> <br>
+		                <select class="form-control" name="dishImg" style="width: 200px">
+							<option disabled selected value="">Choose Staff</option>
+							@foreach($employeeType as $et)
+								<option value="{{$et->employeeTypeID}}">{{$et->employeeTypeName}}</option>
+							@endforeach
+						</select> <br>
+
+					    	<label>Note / Comment</label>
+					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 300px; height: 120px" placeholder="Note"></textarea>
+					</div>
+	            </div> 
+
+				<input id="servprice" hidden>
+				<h3 hidden>{{$i=2}}</h3>
+	            @foreach($servicetype as $st)
+	            <div class="modal-body step step-{{$i}}" align="center">
+	            	<div class="row">	                
+						<img src="{{ asset('img/' . $st->serviceTypeImage) }}" id="serviceTypeImage{{$st->serviceTypeID}}" width="200px" height="150px">
+						<select class="form-control" name="serviceTypeImage{{$st->serviceTypeID}}" id="serviceType{{$st->serviceTypeID}}" style="width: 200px" onchange="pckservimg(this.name)">
+							<option disabled selected value="">Choose Service</option>
+							@foreach($service as $ss)
+							@if($st->serviceTypeID == $ss->serviceTypeID)
+								<option value="{{$ss->serviceID}}">{{$ss->serviceName}}</option>
+							@endif
+							@endforeach
+						</select> <br>
+					    
+					    <div class="col-sm-6">
+					    	<div class="form-group">
+					    		<label>Quantity</label>
+					    		<input type="text" name="{{$st->serviceTypeID}}" id = "servqty{{$st->serviceTypeID}}" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity" onchange="comPrices(this.name)" onkeyup="comPrices(this.name)">
+					    	</div>
+
+					    	<div class="form-group">
+					    		<label>Description</label>
+					    		<textarea name="servdesc" id = "servdesc{{$st->serviceTypeID}}" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Description"></textarea>
+
+					    	</div>
+					    </div>
+
+					    <div class="col-sm-offset-1">
+					    	<div class="form-group">
+					    		<label>Price</label>
+					    		<input type="text" disabled="" name="servprice" id = "servprice{{$st->serviceTypeID}}" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
+					    	</div>
+
+					    	<div class="form-group">
+					    		<label>Note / Comment</label>
+					    		<textarea name="servnote" id = "servnote{{$st->serviceTypeID}}" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
+					    	</div>
+					   	</div>
+					</div>
+	            </div>
+	            <h3 hidden>{{$i++}}</h3>
+	            @endforeach
+	            
+
+	            <div class="modal-footer">
+	            	<div class="pull-right">
+		            <h3 hidden>{{$i=2}}</h3>
+		            <h3 hidden>{{$j=1}}</h3>
+		            
+					@foreach($servicetype as $st)
+						<button type="button" name="employeeType{{$et->employeeTypeID}}" class="btn btn-success btn-fill step step-{{$j}}" data-step="{{$j}}" data-dismiss="modal" onclick="addEmp(this.name)">Add to Cart</button>
+                		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#serviceModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
+	                	<button type="button" name="serviceType{{$st->serviceTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addServ(this.name)">Add to Cart</button>
+
+	            	<h3 hidden>{{$i++}}</h3>
+	            	<h3 hidden>{{$j--}}</h3>
+	            	@endforeach
+		            </div>
+
+		            <div class="pull-left">
+		            <h3 hidden>{{$i=1}}</h3>
+					@foreach($dishtype as $dd)
+                		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="{{$i+1}}" onclick="sendEvent('#serviceModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
+                	<h3 hidden>{{$i++}}</h3>
+	            	@endforeach
+	            </div>
+	        </div>
+	    </div>
+	</form>
+
+	<!-- EQUIPMENT MODAL -->
+	<form class="modal multi-step" id="equipmentModal">
+	    <div class="modal-dialog">
+	        <div class="modal-content">
+	            <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+	                <h4 class="modal-title step-1" data-step="1">Additional Equipment</h4>
+	                <h4 class="modal-title step-2" data-step="2">Additional Equipment</h4>
+	            </div>
+
+	            <div class="modal-body step step-1" align="center">
+	            	<div class="row">
+	            		<h4> Smoke Machine </h4>
+		                <img src="img.jpg" style="width: 300px;height: 170px"> <br> <br>
+		                <select class="form-control" name="dishImg" style="width: 300px">
+							<option disabled selected value="">Choose Equipment</option>
+						</select> <br>
+					    
+					    <div class="col-sm-6">
+					    	<div class="form-group">
+					    		<label>Description</label>
+					    	<textarea name="desc" id = "desc" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Description"></textarea>
+
+					    	</div>
+					    
+					    	<div class="form-group">
+					    		<label>Price</label>
+					    		<input type="text" disabled="" name="price" id = "price" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
+					    	</div>
+					    </div>
+
+					    <div class="col-sm-offset-1">
+					    	<div class="form-group">
+					    		<label>Quantity</label>
+					    		<input type="text" name="qntty" id = "qntty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity">
+					    	</div>
+
+					    	<label>Note / Comment</label>
+					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
+					   	</div>
+					</div>
+	            </div>
+
+	            <div class="modal-body step step-2" align="center">
+	            	<div class="row">
+	            		<h4> Table </h4>
+		                <img src="img.jpg" style="width: 300px;height: 170px"> <br> <br>
+		                <select class="form-control" name="dishImg" style="width: 300px">
+							<option disabled selected value="">Choose Equipment</option>
+						</select> <br>
+					    
+					    <div class="col-sm-6">
+					    	<div class="form-group">
+					    		<label>Description</label>
+					    	<textarea name="desc" id = "desc" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Description"></textarea>
+
+					    	</div>
+					    
+					    	<div class="form-group">
+					    		<label>Price</label>
+					    		<input type="text" disabled="" name="price" id = "price" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
+					    	</div>
+					    </div>
+
+					    <div class="col-sm-offset-1">
+					    	<div class="form-group">
+					    		<label>Quantity</label>
+					    		<input type="text" name="qntty" id = "qntty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity">
+					    	</div>
+
+					    	<label>Note / Comment</label>
+					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
+					   	</div>
+					</div>
+	            </div>
+
+	            <div class="modal-footer">
+		            <div class="pull-right">
+                		<button type="button" class="btn btn-primary btn-fill step step-1" data-step="1" onclick="sendEvent('#equipmentModal', 2)"> <i class="ti-angle-double-right"></i> </button>
+
+	                	<button type="button" class="btn btn-success btn-fill step step-2" data-step="2" data-dismiss="modal" onclick="sendEvent('#equipmentModal')">Save</button>
+
+	                	<button type="button" class="btn btn-success btn-fill step step-1" data-step="1" data-dismiss="modal" onclick="sendEvent('#equipmentModal')">Save</button>
+		            </div>
+
+		            <div class="pull-left">
+                		<button type="button" class="btn btn-default step step-2" data-step="2" onclick="sendEvent('#equipmentModal', 1)"><i class="ti-angle-double-left"></i></button>
+		            </div>
+	        </div>
+	    </div>
+	</form>
+
+	<!-- PAYMENT MODAL -->
+	<div id="paymentModal" class="modal fade" role="dialog"> <br> <br> <br>
+		<div class="col-md-8 col-sm-offset-2">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" align="center"> Payment <i class="fa fa-money" aria-hidden="true"></i></h4>
+				</div>
+
+				<div class="modal-footer">
+					<div class="pull-right">
+						<button type="button" class="btn btn-success pull-right" data-dismiss="modal">Save</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+   			$('#addReservation').bootstrapValidator({
         		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         		feedbackIcons: {
             		valid: 'fa fa-check',
@@ -789,6 +897,9 @@
 
  		<script>
  			var addCtr = 0;
+ 			var servCtr = 0;
+ 			var equipCtr = 0;
+ 			var empCtr = 0;
  			function addPack(id){
 				var dishes = [];
 				var dishesVal = [];
@@ -823,14 +934,17 @@
 		 						// alert(price);
 
 							}
+							for(var i = 0; i < data['pckid'].length; i++){
+								document.getElementById("pck"+[data['pckid'][i]['packageID']]).disabled=true;
+							}
 							for(var i = 0; i < data['servid'].length; i++){
-								servid.push([data['servid'][i]['packageInclusionID']]);
+								servid.push([data['servid'][i]['serviceID']]);
 							}
 							for(var i = 0; i < data['equipid'].length; i++){
-								equipid.push([data['equipid'][i]['packageInclusionID']]);
+								equipid.push([data['equipid'][i]['equipmentID']]);
 							}
 							for(var i = 0; i < data['empid'].length; i++){
-								empid.push([data['empid'][i]['packageInclusionID']]);
+								empid.push([data['empid'][i]['employeeTypeID']]);
 							}
 							var pckginc = [];
 		 					for (var i = 0; i < pckgid.length; i++){
@@ -858,15 +972,15 @@
 
 							cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
 							document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
-						    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><label id="cartDishes"><i>'+ dishes +'</i></label>';
+						    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><small><label id="cartDishes"><i>'+ dishes +'</i></label></small>';
 		 					cell3.innerHTML = '<h6><b>'+price+'</b></h6>';
 						    // cell3.innerHTML = '<h3>'+price+'</h3><br/><button id ="btnRemove" type="button" class="btn btn-info btn-md" onclick="deleteRow(this)">Remove</button>';
-					    	cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-info btn-sm pull-right " onclick="deleteRow(this)">&times</button>';
+					    	cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRow(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="addPackageID" value="'+pgId+'" hidden>';
 							cell6.innerHTML = '<input type="text" id="addDishesAvailed" value="'+dishesVal+'" hidden>';
 							cell7.innerHTML = '<input type="text" id="addServiceAvailed" value="'+servid+'" hidden>';
 							cell8.innerHTML = '<input type="text" id="addEquipmentAvailed" value="'+equipid+'" hidden>';
-							cell9.innerHTML = '<input type="text" id="addEmployeeAvailed" value="'+empid+'" hidden>';
+							cell9.innerHTML = '<input type="text" id="addEmployeeEmployed" value="'+empid+'" hidden>';
 
 							var table = document.getElementById('cartTable');
 				        	var subt =0;
@@ -875,6 +989,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+
 						},
 						error: function(result){
 							alert('error');
@@ -898,7 +1013,9 @@
 						var dishImages=([data['dish'][0]['dishImage']]);
 						var str="{!! asset('img/'.'"+ dishImages +"')!!}";
 						var pckdishimg =  document.getElementById(id);
+						$("#addprice").val([data['dish'][0]['dishCost']]);
 						pckdishimg.src=str;
+						comPrice([data['dish'][0]['dishTypeID']]);
 						
 						},
 						error: function(result){
@@ -908,6 +1025,7 @@
 
 		        }
 			function deleteRow(t){
+		        	var pgId = $("#pckid").val();
 				    var row = t.parentNode.parentNode;
 				    document.getElementById("cartTable").deleteRow(row.rowIndex);
 
@@ -917,9 +1035,76 @@
 				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
 				        }
 				    // alert(subt);
+
 				    $subt=subt;
 				    document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
 				    // console.log(row);
+				    $.ajax({
+						url: '/UserReservationPage-getPIID',
+						type: 'POST',
+						data: {
+							"_token": "{{ csrf_token() }}",
+							pg_id: pgId
+						},
+						success: function(data){
+							for(var i = 0; i < data['pckid'].length; i++){
+								document.getElementById("pck"+[data['pckid'][i]['packageID']]).disabled=false;
+							}
+
+						},
+						error: function(result){
+							alert('error');
+						}
+					});
+			}
+////////////////////////////////////			// //////////////////////////////////////////////////////////////////////////////////////////////
+			function getpt(id){
+				var ptid=id;
+				$('#ptids').val(ptid);
+					$.ajax({
+						url: '/UserReservationPage-getPay',
+						type: 'POST',
+						data: {
+							"_token": "{{ csrf_token() }}",							
+							p_id: ptid,
+						},
+						success: function(data){
+							for(var i = 0; i < data['paymentTerm'].length; i++){
+								document.getElementById("pt"+[data['paymentTerm'][i]['paymentTermID']]).checked=false;
+								$('#ppt'+[data['paymentTerm'][i]['paymentTermID']]).find('[data-toggle="wizard-checkbox"]').removeClass('active');							
+							}
+							document.getElementById("pt"+id).checked=true;
+
+						},
+						error: function(result){
+							alert('error');
+						}
+					});
+			}
+			function getpm(id){
+				var pmid=id;
+				$('#pmids').val(pmid);
+					$.ajax({
+						url: '/UserReservationPage-getPay',
+						type: 'POST',
+						data: {
+							"_token": "{{ csrf_token() }}",
+							p_id: pmid,
+						},
+						success: function(data){
+							for(var i = 0; i < data['paymentMode'].length; i++){
+								document.getElementById("pm"+[data['paymentMode'][i]['paymentModeID']]).checked=false; 
+								$('#ppm'+[data['paymentMode'][i]['paymentModeID']]).find('[data-toggle="wizard-checkbox"]').removeClass('active');
+								
+							}
+							document.getElementById("pm"+id).checked=true;
+
+								// $('.fc-toolbar').find('.fc-button-group').addClass('btn-xs btn-group');
+						},
+						error: function(result){
+							alert('error');
+						}
+					});
 			}
 		  
  			function addAdd(id){
@@ -927,7 +1112,6 @@
 				var dish = selectedOption.options[selectedOption.selectedIndex].value;
 				var price=0;
 				var qty=0;
- 				// alert(dish);
  				$.ajax({
 					url: '/UserReservationPage-getAdd',
 					type: 'POST',
@@ -939,35 +1123,85 @@
 						price=parseFloat([data['dish'][0]['dishCost']]);	
 						var dishName=([data['dish'][0]['dishName']]);	
 						var dishImage=([data['dish'][0]['dishImage']]);
-						addCtr=addCtr+1;	 
-						 
-						var table = document.getElementById("cartTable");
-						var qty = document.getElementById("addquant").value;
-						var notes = document.getElementById("addnotes").value;
-					    var row = table.insertRow(0);
-					    var cell1 = row.insertCell(0);
-					    var cell2 = row.insertCell(1);
-						var cell3 = row.insertCell(2);
-						var cell4 = row.insertCell(3);
-						var cell5 = row.insertCell(4);
-						var cell6 = row.insertCell(5);
-						var cell7 = row.insertCell(6);
-									
-					   	cell1.innerHTML = '<img id="cartImg" src="" width="200px" height="150px">';
-						document.getElementById("cartImg").src="{!! asset('img/'.'"+ dishImage +"')!!}";
-						cell2.innerHTML = '<h4><b>'+dishName+'</b></h4><h6>Add-On</h6><br/><label id="cartDishes"> </label>';
-					    cell3.innerHTML = '<h4><b>'+price+'</b></h4>';
-					    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-info btn-md pull-right " onclick="deleteRowFood(this)">Remove</button>';
-						cell5.innerHTML = '<input type="text" id="additionalDish'+addCtr+'" value="'+dish+'" hidden>';
-						cell6.innerHTML = '<input type="text" id="additionalQty'+addCtr+'" value="'+qty+'" hidden>';
-						cell7.innerHTML = '<input type="text" id="additionalNotes'+addCtr+'" value="'+notes+'" hidden>';
-												
+						addCtr=addCtr+1;
+						var qty = $("#addqty"+([data['dish'][0]['dishTypeID']])).val();
+						var notes = $("#addnote"+([data['dish'][0]['dishTypeID']])).val();
+						var tp = $("#addprice"+([data['dish'][0]['dishTypeID']])).val();
+						var dishid;
+						var dishqty;
+						var dishnote;
+						var check;
+						// for (var i = addCtr; i>0; i--) {
+						// 	dishid=$('#additionalDish'+(i-1)).val();
+						// 	dishqty=$('#additionalQty'+(i-1)).val();
+						// 	dishnote=$('#additionalNotes'+(i-1)).val();
+							// var table = document.getElementById("cartTable");
+							// for (var r = 0,n=table.rows.length; r <n; r++) {		
+								 
+						 //        	if(dish==parseInt(table.rows[r].cells[4].innerText)){
+						        		
+						 //    		document.getElementById("cartTable").deleteRow(r);
+				   //   					addCtr=addCtr-1;
+							// 			//alert(check);
+										
+						 //        	}
+								
+						 //    }
+				     		
+							// if(dishid==dish){
+							// 	check=i;
+							// 	alert(check);
+							// 	document.getElementById("cartTable").deleteRow(check);
+				   //   			addCtr=addCtr-1;
+							// }
+
+						// }
+						if(qty>0){
+							var table = document.getElementById("cartTable");
+						    var row = table.insertRow(0);
+						    var cell1 = row.insertCell(0);
+						    var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+														
+							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
+							document.getElementById("cartImg").src="{!! asset('img/'.'"+ dishImage +"')!!}";
+							cell2.innerHTML = '<h6><b>'+dishName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
+						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowFood(this)">&times</button>';
+							cell5.innerHTML = '<input type="text" id="additionalDish'+addCtr+'" value="'+dish+'" hidden><h1 style="display:none">'+dish+'</h1>';
+							cell6.innerHTML = '<input type="text" id="additionalQty'+addCtr+'" value="'+qty+'" hidden>';
+							cell7.innerHTML = '<input type="text" id="additionalNotes'+addCtr+'" value="'+notes+'" hidden>';
+				
+
+							var table = document.getElementById('cartTable');
+					       	var subt =0;
+						        for (var r = 0, n = table.rows.length; r < n; r++) {
+						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						        }
+							$subt=subt;
+				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+						}
+						else{
+							
+						}						
 						},
 						error: function(result){
 							alert('error');
 						}
 				});
 		 		
+ 			}
+ 			function comPrice(id){
+ 					var p=$('#addprice').val();
+ 					var qty=$('#addqty'+id).val();
+ 					var tp;
+ 					tp=p*qty;
+ 					$('#addprice'+id).val(tp);
  			}
  			function deleteRowFood(t){
 				    var row = t.parentNode.parentNode;
@@ -981,9 +1215,23 @@
 				        }
 				    // alert(subt);
 				    $subt=subt;
-				    document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+				    document.getElementById('subtot').innerHTML='<h4 class="pull-left">Subtotal:   <b>'+subt+'</b></h4> ';
+
 				    // console.log(row);
 			}
+			// function tabDate(t){
+			// 		document.getElementById('subtot').innerHTML='<h4 class="pull-left">  <b></b></h3> ';	
+			// }
+			// function tabCart(t){
+			// 		var table = document.getElementById('cartTable');
+		    //        	var subt =0;
+			// 	        for (var r = 0, n = table.rows.length; r < n; r++) {
+			// 	            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+			// 	        }
+			// 	    // alert(subt);
+			// 	    $subt=subt;
+			// 	    document.getElementById('subtot').innerHTML='<h4 class="pull-left">Subtotal:   <b>'+subt+'</b></h4> ';
+			// }
  			function addServ(id){
  				var selectedOption = document.getElementById(id);
 				var serv = selectedOption.options[selectedOption.selectedIndex].value;
@@ -1001,35 +1249,103 @@
 						price=parseFloat([data['serv'][0]['serviceFee']]);	
 						var servName=([data['serv'][0]['serviceName']]);	
 						var servImage=([data['serv'][0]['serviceImage']]);
+						servCtr=servCtr+1;
+						var qty = $("#servqty"+([data['serv'][0]['serviceTypeID']])).val();
+						var notes = $("#servnote"+([data['serv'][0]['serviceTypeID']])).val();
+						var desc = $("#servdesc"+([data['serv'][0]['serviceTypeID']])).val();
+						var tp = $("#servprice"+([data['serv'][0]['serviceTypeID']])).val();
+					
 								 
-						 
-						var table = document.getElementById("cartTable");
-						var qty = document.getElementById("addquant").value;
-						var notes = document.getElementById("addnotes").value;
-					    var row = table.insertRow(0);
-					    var cell1 = row.insertCell(0);
-					    var cell2 = row.insertCell(1);
-						var cell3 = row.insertCell(2);
-						var cell4 = row.insertCell(3);
-						var cell5 = row.insertCell(4);
-						var cell6 = row.insertCell(5);
-						var cell7 = row.insertCell(6);
-									
-					   	cell1.innerHTML = '<img id="cartImg" src="" width="60px" height="45px">';
-						document.getElementById("cartImg").src="{!! asset('img/'.'"+ servImage +"')!!}";
-						cell2.innerHTML = '<h4><b>'+servName+'</b></h4><h6>Add-On</h6><br/><label id="cartDishes"> </label>';
-					    cell3.innerHTML = '<h4><b>'+price+'</b></h4>';
-					    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-info btn-md pull-right " onclick="deleteRow(this)">Remove</button>';
-						cell5.innerHTML = '<input type="text" id="'+serv+'" value="'+serv+'" hidden>';
-						cell6.innerHTML = '<input type="text" id="additionalQty" value="'+qty+'" hidden>';
-						cell7.innerHTML = '<input type="text" id="additionalNotes" value="'+notes+'" hidden>';
-						
+						if(qty>0){
+							var table = document.getElementById("cartTable");
+						    var row = table.insertRow(0);
+						    var cell1 = row.insertCell(0);
+						    var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+							var cell8 = row.insertCell(7);
+											
+							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
+							document.getElementById("cartImg").src="{!! asset('img/'.'"+ servImage +"')!!}";
+							cell2.innerHTML = '<h6><b>'+servName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
+						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowFood(this)">&times</button>';
+							cell5.innerHTML = '<input type="text" id="additionalService'+servCtr+'" value="'+serv+'" hidden><h1 style="display:none">'+serv+'</h1>';
+							cell6.innerHTML = '<input type="text" id="additionalSQty'+servCtr+'" value="'+qty+'" hidden>';
+							cell7.innerHTML = '<input type="text" id="additionalSNotes'+servCtr+'" value="'+notes+'" hidden>';
+							cell8.innerHTML = '<input type="text" id="additionalSDesc'+servCtr+'" value="'+desc+'" hidden>';
+				
+
+							var table = document.getElementById('cartTable');
+					       	var subt =0;
+						        for (var r = 0, n = table.rows.length; r < n; r++) {
+						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						        }
+							$subt=subt;
+				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+						}
+						else{
+							
+						}
 						},
 						error: function(result){
 							alert('error');
 						}
 				});
  			}
+ 			function pckservimg(id){			        
+				var selectedOption = document.getElementsByName(id);
+				var serv = selectedOption[0].options[selectedOption[0].selectedIndex].value;
+				        
+				$.ajax({
+					url: '/UserReservationPage-getServ',
+					type: 'POST',
+					data: {
+					"_token": "{{ csrf_token() }}",
+					as_id: serv
+						},
+						success: function(data){	
+						var servImages=([data['serv'][0]['serviceImage']]);
+						var str="{!! asset('img/'.'"+ servImages +"')!!}";
+						var pckdishimg =  document.getElementById(id);
+						$("#servprice").val([data['serv'][0]['serviceFee']]);
+						pckdishimg.src=str;
+						comPrices([data['serv'][0]['serviceTypeID']]);
+						
+						},
+						error: function(result){
+							alert('error');
+						}
+				});
+
+		    }
+ 			function comPrices(id){
+ 					var p=$('#servprice').val();
+ 					var qty=$('#servqty'+id).val();
+ 					var tp;
+ 					tp=p*qty;
+ 					$('#servprice'+id).val(tp);
+ 			}
+ 			function deleteRowServ(t){
+				    var row = t.parentNode.parentNode;
+				    document.getElementById("cartTable").deleteRow(row.rowIndex);
+				    servCtr=servCtr-1;
+
+		        	var table = document.getElementById('cartTable');
+		        	var subt =0;
+				        for (var r = 0, n = table.rows.length; r < n; r++) {
+				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				        }
+				    // alert(subt);
+				    $subt=subt;
+				    document.getElementById('subtot').innerHTML='<h4 class="pull-left">Subtotal:   <b>'+subt+'</b></h4> ';
+
+				    // console.log(row);
+			}
  			function addEquip(id){
 				var equip = id;
 				var price=0;
@@ -1095,7 +1411,7 @@
 				        }
 				    // alert(subt);
 				    $subt=subt;
-				    document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+				    document.getElementById('subtot').innerHTML='<h4 class="pull-left">Subtotal:   <b>'+subt+'</b></h4> ';
 		        }
  				function getpckid(id){
  				$("#pckid").val(id)
@@ -1131,7 +1447,6 @@
 						var addCustomerIDs = $("#addCustomerID").val();
 						var cusNames = $("#cusName").val();
 						var homeAdds = $("#homeAdd").val();
-						var billAdds = $("#billAdd").val();
 						var emailAdds = $("#emailAdd").val();
 						var telNums = $("#telNum").val();
 						var cellNums = $("#cellNum").val();
@@ -1141,44 +1456,21 @@
 						var conNums = $("#conNum").val();
 						var addReservationIDs = $("#addReservationID").val();
 						var addPackIDs = $("#addPackageID").val();
-						var dishIDs = $("#addDishesAvailed").val().split(',');	
+						var dishIDs = $("#addDishesAvailed").val().split(',');
+						var servIDs = $("#addServiceAvailed").val().split(',');	
+						var equipIDs = $("#addEquipmentAvailed").val().split(',');
+						var empIDs = $("#addEmployeeEmployed").val().split(',');
 						var addDishID = [];
 						var addDishQty = [];
 						var addDishNotes = [];
 						var dishAvailedIDs = [];
-						for (var i = 0; i < dishIDs.length; i++){
-							dishAvailedIDs.push(parseInt($("#addDishAvailedID").val())+i);
-						}
+						var ptIDs = $("#ptids").val();
+						var pmIDs = $("#pmids").val();
 						for (var i = 1; i <= addCtr; i++){
 							addDishID.push($("#additionalDish"+i+"").val());
 							addDishQty.push($("#additionalQty"+i+"").val());
 							addDishNotes.push($("#additionalNotes"+i+"").val());
 						}
-						alert(addPackIDs);
-						alert(dishIDs);
-						alert(dishAvailedIDs);
-						alert(addEventIDs);
-						alert(eNames);
-						alert(eDates);
-						alert(eTimes);
-						alert(enTimes);
-						alert(eLocs);
-						alert(eLoc2s);
-						alert(eNums);
-						alert(eTypes);
-						alert(addCustomerIDs);
-						alert(cusNames);
-						alert(homeAdds);
-						alert(billAdds);
-						alert(emailAdds);
-						alert(telNums);
-						alert(cellNums);
-						alert(dobs);
-						alert(addContactIDs);
-						alert(conPersons);
-						alert(conNums);
-						alert(addReservationIDs);
-						alert('ss');
 						
 						// var d = new Date(); 
 						//  dt = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); 
@@ -1207,7 +1499,7 @@
 									    addCustomerID: addCustomerIDs,
 									    cusName: cusNames,
 									    homeAdd: homeAdds,
-									    billAdd: billAdds,
+									    billAdd: homeAdds,
 									    emailAdd: emailAdds,
 									    telNum: telNums,
 									    cellNum: cellNums,
@@ -1217,8 +1509,10 @@
 									    conNum: conNums,
 										addReservationID: addReservationIDs,
 								       	addPackID: addPackIDs,
-						            	dishAvailedID: dishAvailedIDs,
 						            	dishID: dishIDs,
+						            	servID: servIDs,
+						            	equipID: equipIDs,
+						            	empID: empIDs,
 						            	addDishID: addDishID,
 						            	addDishQty: addDishQty,
 						            	addDishNotes: addDishNotes,
@@ -1229,8 +1523,8 @@
 										       
 										window.location.href = "UserReservationPage";
 					                },
-					                error: function(result){
-						            	alert("asd");
+					                error: function(xhr){
+						            	alert("Error");
 						            }                  
 					    		});					
 							
@@ -1272,51 +1566,47 @@
 							}	
 							for(var i=0;i<data['rsvtn'].length;i++){
 								events.push({title: 'Reserved',  start : datee[i]+'T'+start[i], end : datee[i]+'T'+end[i]})
-							}								
+							}	
+					 		$(document).ready(function() {
+					 			//alert(datee);
+								// alert(start);
+								// alert(end);
+								//alert(ctr);
+								// alert(events);
+								$('#calendar').fullCalendar({
+									header: {	
+										left: '',						
+										center: 'title',
+										right: '',
+									},
+									footer: {			
+										left: 'prev,next today'
+									},
+									events: events,
+									displayEventTime: false,
+									theme:true
+
+										
+													
+								});
+								$('.fc-toolbar').find('.fc-button-group').addClass('btn-xs btn-group');
+								$('.fc-toolbar').find('.ui-button').addClass('btn btn-info btn-fill');
+								$('.fc-toolbar').find('.fc-prev-button').html($('<span />').attr('class', 'ti-angle-left'));
+								$('.fc-toolbar').find('.fc-next-button').html($('<span />').attr('class', 'ti-angle-right'));
+							});							
 						},
 						error: function(result){
 							alert('error');
 						}
 		});
- 		$(document).ready(function() {
- 			// alert(datee);
-			// alert(start);
-			// alert(end);
-			//alert(ctr);
-			 // alert(events);
-			$('#calendar').fullCalendar({
-  
-				header: {
-					left: 'prev,next today',
-					center: 'title',
-					right: 'month,listWeek'
-				},
-				events: events
-
-					
-								
-			});
-			
-		});
  		</script>
 
-		<!--   Core JS Files   -->
-	    <script src="{{ asset('USER_UI/assets/js/jquery-2.2.4.min.js') }}" type="text/javascript"></script>
-	    <!-- Full Calendar -->
-		<script src="{{ asset('/fullcalendar/lib/moment.min.js')}}"></script>
-		<script src="{{ asset('/fullcalendar/lib/jquery.min.js')}}"></script>
-		<script src="{{ asset('/fullcalendar/fullcalendar.min.js')}}"'></script>
-		<script src="{{ asset('/fullcalendar/gcal.min.js')}}"></script>
-		<script src="{{ asset('USER_UI/assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
-		<script src="{{ asset('USER_UI/assets/js/jquery.bootstrap.js') }}" type="text/javascript"></script>
-
-		<!--  Plugin for the Wizard -->
-		<script src="{{ asset('/USER_UI/assets/js/material-bootstrap-wizard.js') }}"></script>
-
-	    <!--  More information about jquery.validate here: http://jqueryvalidation.org/	 -->
-		<script src="{{ asset('/USER_UI/assets/js/jquery.validate.min.js') }}"></script>
-		<script src="{{ asset('/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-		<script src="{{ asset('/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
+ 		<script src="/multi/multi-step-modal.js"></script>
 		
-	</body>
-</html>
+		<script>
+			sendEvent = function(sel, step) {
+		    	$(sel).trigger('next.m.' + step);
+			}
+		</script>
+
+@endsection

@@ -150,6 +150,7 @@ Route::post('/UserReservationPage-getPrice', 'userController@getPrice');
 Route::post('/UserReservationPage-getAdd', 'userController@getAdd');
 Route::post('/UserReservationPage-getServ', 'userController@getServ');
 Route::post('/UserReservationPage-getEquip', 'userController@getEquip');
+Route::post('/UserReservationPage-getEmp', 'userController@getEmp');
 Route::post('/UserReservationPage-getReservation', 'userController@getReservation');
 Route::post("/UserReservationPage", array("uses"=>"userController@addReservation"));
 Route::post("/UserReservationPage-getDish", array("uses"=>"userController@getDish"));
