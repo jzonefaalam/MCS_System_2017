@@ -460,7 +460,7 @@
 					    <div class="col-sm-6">
 					    	<div class="form-group">
 					    		<label>Quantity</label>
-					    		<input type="number" name="{{$dd->dishTypeID}}" id = "qty{{$dd->dishTypeID}}" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity per serving (5 pax)" onkeyup="comPrice(this.name)">
+					    		<input type="number" name="{{$dd->dishTypeID}}" id = "qty{{$dd->dishTypeID}}" maxlength="50" min="1" max="9999"class="form-control" style="width: 250px" placeholder="Quantity per serving (5 pax)" onkeyup="comPrice(this.name)">
 					    	</div>
 					    
 					    	<div class="form-group">
@@ -471,7 +471,7 @@
 
 					    <div class="col-sm-offset-1">
 					    	<label>Note / Comment</label>
-					    	<textarea name="note" name="{{$dd->dishTypeID}}" id = "{{$dd->dishTypeID}}note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
+					    	<textarea name="note" name="{{$dd->dishTypeID}}" id = "note{{$dd->dishTypeID}}" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
 					   	</div>
 					</div>
 	            </div>
@@ -484,7 +484,7 @@
 		            <h3 hidden>{{$i=1}}</h3>
 					@foreach($dishtype as $dd)
                 		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#additionalModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
-	                	<button type="button" name="{{$dd->dishTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="sendEvent('#additionalModal')" onclick="addAdd(this.name)">Add to Cart</button>
+	                	<button type="button" name="dishType{{$dd->dishTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addAdd(this.name)">Add to Cart</button>
 
 	            	<h3 hidden>{{$i++}}</h3>
 	            	@endforeach
@@ -986,6 +986,7 @@
 						var pckdishimg =  document.getElementById(id);
 						$("#addprice").val([data['dish'][0]['dishCost']]);
 						pckdishimg.src=str;
+						comPrice([data['dish'][0]['dishTypeID']]);
 						
 						},
 						error: function(result){
@@ -1082,7 +1083,6 @@
 				var dish = selectedOption.options[selectedOption.selectedIndex].value;
 				var price=0;
 				var qty=0;
- 				// alert(dish);
  				$.ajax({
 					url: '/UserReservationPage-getAdd',
 					type: 'POST',
@@ -1094,29 +1094,72 @@
 						price=parseFloat([data['dish'][0]['dishCost']]);	
 						var dishName=([data['dish'][0]['dishName']]);	
 						var dishImage=([data['dish'][0]['dishImage']]);
-						addCtr=addCtr+1;	 
-						 
-						var table = document.getElementById("cartTable");
-						var qty = document.getElementById("addquant").value;
-						var notes = document.getElementById("addnotes").value;
-					    var row = table.insertRow(0);
-					    var cell1 = row.insertCell(0);
-					    var cell2 = row.insertCell(1);
-						var cell3 = row.insertCell(2);
-						var cell4 = row.insertCell(3);
-						var cell5 = row.insertCell(4);
-						var cell6 = row.insertCell(5);
-						var cell7 = row.insertCell(6);
-									
-					   	cell1.innerHTML = '<img id="cartImg" src="" width="200px" height="150px">';
-						document.getElementById("cartImg").src="{!! asset('img/'.'"+ dishImage +"')!!}";
-						cell2.innerHTML = '<h4><b>'+dishName+'</b></h4><h6>Add-On</h6><br/><label id="cartDishes"> </label>';
-					    cell3.innerHTML = '<h4><b>'+price+'</b></h4>';
-					    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-info btn-md pull-right " onclick="deleteRowFood(this)">Remove</button>';
-						cell5.innerHTML = '<input type="text" id="additionalDish'+addCtr+'" value="'+dish+'" hidden>';
-						cell6.innerHTML = '<input type="text" id="additionalQty'+addCtr+'" value="'+qty+'" hidden>';
-						cell7.innerHTML = '<input type="text" id="additionalNotes'+addCtr+'" value="'+notes+'" hidden>';
-												
+						addCtr=addCtr+1;
+						var qty = $("#qty"+([data['dish'][0]['dishTypeID']])).val();
+						var notes = $("#note"+([data['dish'][0]['dishTypeID']])).val();
+						var tp = $("#price"+([data['dish'][0]['dishTypeID']])).val();
+						var dishid;
+						var dishqty;
+						var dishnote;
+						var check;
+						// for (var i = addCtr; i>0; i--) {
+						// 	dishid=$('#additionalDish'+(i-1)).val();
+						// 	dishqty=$('#additionalQty'+(i-1)).val();
+						// 	dishnote=$('#additionalNotes'+(i-1)).val();
+							// var table = document.getElementById("cartTable");
+							// for (var r = 0,n=table.rows.length; r <n; r++) {		
+								 
+						 //        	if(dish==parseInt(table.rows[r].cells[4].innerText)){
+						        		
+						 //    		document.getElementById("cartTable").deleteRow(r);
+				   //   					addCtr=addCtr-1;
+							// 			//alert(check);
+										
+						 //        	}
+								
+						 //    }
+				     		
+							// if(dishid==dish){
+							// 	check=i;
+							// 	alert(check);
+							// 	document.getElementById("cartTable").deleteRow(check);
+				   //   			addCtr=addCtr-1;
+							// }
+
+						// }
+						if(qty>0){
+							var table = document.getElementById("cartTable");
+						    var row = table.insertRow(0);
+						    var cell1 = row.insertCell(0);
+						    var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+														
+							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
+							document.getElementById("cartImg").src="{!! asset('img/'.'"+ dishImage +"')!!}";
+							cell2.innerHTML = '<h6><b>'+dishName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
+						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowFood(this)">&times</button>';
+							cell5.innerHTML = '<input type="text" id="additionalDish'+addCtr+'" value="'+dish+'" hidden><h1 style="display:none">'+dish+'</h1>';
+							cell6.innerHTML = '<input type="text" id="additionalQty'+addCtr+'" value="'+qty+'" hidden>';
+							cell7.innerHTML = '<input type="text" id="additionalNotes'+addCtr+'" value="'+notes+'" hidden>';
+				
+
+							var table = document.getElementById('cartTable');
+					       	var subt =0;
+						        for (var r = 0, n = table.rows.length; r < n; r++) {
+						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						        }
+							$subt=subt;
+				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+						}
+						else{
+							
+						}						
 						},
 						error: function(result){
 							alert('error');
