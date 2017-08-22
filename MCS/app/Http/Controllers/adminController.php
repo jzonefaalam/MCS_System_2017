@@ -929,7 +929,11 @@ class adminController extends Controller
     }
 
     public function schedulePage(){
-        return View::make('/schedulePage');
+        $packageData = DB::table('package_tbl')
+        ->where('packageStatus', 1)->where('packageAvailability',1)
+        ->get();
+        return View::make('/schedulePage')
+        ->with('packageData',$packageData);
     }//Schedule function------------------------------------------------------------------------------>
     
 
@@ -937,7 +941,8 @@ class adminController extends Controller
         $rsvtn = DB::table('reservation_tbl')
               ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
               ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
-              ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*')
+              ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
+              ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
               ->where('reservation_tbl.reservationStatus', '=', 1)
               ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
@@ -1051,10 +1056,13 @@ class adminController extends Controller
         $id = Input::get('id');
         $addQuantityInput = Input::get('addQuantity');
         $minusQuantityInput = Input::get('minusQuantity');
-        $equipmentlog = equipmentlogtbl::find($id);
+        $equipmentlog = new equipmentlogtbl;
+        $equipmentlog->equipmentID = $id;
         $equipmentlog->equipmentQuantityIn = $addQuantityInput;
         $equipmentlog->equipmentQuantityOut = $minusQuantityInput;
-        $equipmentlog->save();    
+        $equipmentlog->equipmentLogDate = Date_create('now');
+        $equipmentlog->save();
+
     }
 
     //Inventory Location

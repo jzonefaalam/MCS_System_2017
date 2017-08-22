@@ -479,7 +479,7 @@
                   
                     for(var i =0; i<opty.length; i++){
                       if(opty[i].value==data['ss'][0]['dishTypeID']){
-                      $('#editDishType').val(data['ss'][0]['dishTypeID']) ;
+                      $('#editDishType').val(data['ss'][0]['dishTypeID']);
                       break;
                       }
 

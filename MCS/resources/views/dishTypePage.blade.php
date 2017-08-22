@@ -161,7 +161,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">NEW DISH TYPE</h4>
                   </div>
-                  <div class="modal-body" id="addDishModalBody">
+                  <div class="modal-body" id="addDishTypeModalBody">
 
                     <div class="form-group">
                       <div class="col-sm-4" >
@@ -235,8 +235,8 @@
 <script>
 
 
-  $('#addDishTypeModal').on('hidden.bs.modal', function (e) {
-    $(this).find('form').trigger('reset');
+  $("#addDishTypeModal").on("hidden.bs.modal", function(){
+    $("#addDishTypeName").val("");
   });
 
   $('#addDishTypeImage').change(function(){
