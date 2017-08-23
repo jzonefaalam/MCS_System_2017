@@ -225,14 +225,14 @@
 		                                	<input type="text" id="dtid" hidden>
 		                                	<input type="text" id="ptids" hidden>
 		                                	<input type="text" id="pmids" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#additionalModal" value="Food"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#additionalModal" value="Food"> &nbsp &nbsp
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#serviceModal" value="Service"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg" data-toggle="modal" href="#serviceModal" value="Service"> &nbsp &nbsp
 		                                    </a>
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment">
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment">
 		                                    </a>
 		                                </div>
 		                            </div>
@@ -244,7 +244,7 @@
 				                                    <div class="col-sm-6" >
 					                                    <h5 class="info-text"> <i> Payment Term</i> </h5>
 				                                    	@foreach($paymentTerm as $pt)
-				                                        <div class="col-sm-6" id="ppt{{$pt->paymentTermID}}">
+				                                        <div class="col-sm-9 col-sm-offset-2" id="ppt{{$pt->paymentTermID}}">
 															<div class="choice" data-toggle="wizard-checkbox"  style="margin-top: -10px" >
 				                                                <input type="checkbox" name="{{$pt->paymentTermID}}" id="pt{{$pt->paymentTermID}}">
 				                                                <div class="card card-checkboxes card-hover-effect"  id="{{$pt->paymentTermID}}" onclick="getpt(this.id)">
@@ -256,10 +256,10 @@
 				                                    	@endforeach
 				                                    </div>
 				                                    <div class="col-sm-6" >
-					                                        <h5 class="info-text"> <i> Payment Mode</i> </h5>
+					                                    <h5 class="info-text"> <i>Payment Mode</i> </h5>
 					                                    
 				                                    	@foreach($paymentMode as $pm)
-				                                        <div class="col-sm-6 " id="ppm{{$pm->paymentModeID}}" >
+				                                        <div class="col-sm-9 col-sm-offset-1 " id="ppm{{$pm->paymentModeID}}" >
 															<div class="choice" data-toggle="wizard-checkbox" style="margin-top: -10px">
 				                                                <input type="checkbox" name="{{$pm->paymentModeID}}" id="pm{{$pm->paymentModeID}}">
 				                                                <div class="card card-checkboxes card-hover-effect" id="{{$pm->paymentModeID}}" onclick="getpm(this.id)">
@@ -282,7 +282,7 @@
 		                            </div>
 
 		                            <div class="pull-left">
-		                                <input type='button' class='btn btn-previous btn-default btn-wd' name='previous' value='Previous' />
+		                                <input type='button' class='btn btn-previous btn-primary btn-wd' name='previous' value='Previous' />
 		                            </div>
 		                            <div class="clearfix"></div>
 		                        </div>
@@ -1127,7 +1127,6 @@
 						price=parseFloat([data['dish'][0]['dishCost']]);	
 						var dishName=([data['dish'][0]['dishName']]);	
 						var dishImage=([data['dish'][0]['dishImage']]);
-						addCtr=addCtr+1;
 						var qty = $("#addqty"+([data['dish'][0]['dishTypeID']])).val();
 						var notes = $("#addnote"+([data['dish'][0]['dishTypeID']])).val();
 						var tp = $("#addprice"+([data['dish'][0]['dishTypeID']])).val();
@@ -1161,6 +1160,7 @@
 
 						// }
 						if(qty>0){
+							addCtr=addCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1188,7 +1188,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1253,7 +1253,6 @@
 						price=parseFloat([data['serv'][0]['serviceFee']]);	
 						var servName=([data['serv'][0]['serviceName']]);	
 						var servImage=([data['serv'][0]['serviceImage']]);
-						servCtr=servCtr+1;
 						var qty = $("#servqty"+([data['serv'][0]['serviceTypeID']])).val();
 						var notes = $("#servnote"+([data['serv'][0]['serviceTypeID']])).val();
 						var desc = $("#servdesc"+([data['serv'][0]['serviceTypeID']])).val();
@@ -1261,6 +1260,7 @@
 					
 								 
 						if(qty>0){
+							servCtr=servCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1290,7 +1290,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1367,17 +1367,13 @@
 						price=parseFloat([data['equip'][0]['equipmentRatePerHour']]);	
 						var equipName=([data['equip'][0]['equipmentName']]);	
 						var equipImage=([data['equip'][0]['equipmentImage']]);
-						equipCtr=equipCtr+1;
 						var qty = $("#equipqty"+([data['equip'][0]['equipmentTypeID']])).val();
 						var notes = $("#equipnote"+([data['equip'][0]['equipmentTypeID']])).val();
 						var desc = $("#equipdesc"+([data['equip'][0]['equipmentTypeID']])).val();
 						var tp = $("#equipprice"+([data['equip'][0]['equipmentTypeID']])).val();
-						alert(qty);
-						alert(desc);
-						alert(equip);
-						alert(tp);
-								 
+
 						if(qty>0){
+							equipCtr=equipCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1407,7 +1403,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1484,12 +1480,12 @@
 						price=parseFloat([data['emp'][0]['employeeRatePerHour']]);	
 						var empName=([data['emp'][0]['employeeTypeName']]);	
 						var empImage=([data['emp'][0]['employeeTypeImage']]);
-						empCtr=empCtr+1;
 						var qty = $("#empqty").val();
 						var notes = $("#empnote").val();
 						var tp = $("#emptprice").val();
 								 
 						if(qty>0){
+							empCtr=empCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1506,8 +1502,8 @@
 						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowEmp(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="additionalEmployee'+empCtr+'" value="'+emp+'" hidden><h1 style="display:none">'+emp+'</h1>';
-							cell6.innerHTML = '<input type="text" id="additionalEQty" value="'+qty+'" hidden>';
-							cell7.innerHTML = '<input type="text" id="additionalENotes" value="'+notes+'" hidden>';
+							cell6.innerHTML = '<input type="text" id="additionalEmQty'+empCtr+'" value="'+qty+'" hidden>';
+							cell7.innerHTML = '<input type="text" id="additionalEmNotes'+empCtr+'" value="'+notes+'" hidden>';
 				
 
 							var table = document.getElementById('cartTable');
@@ -1517,7 +1513,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1614,8 +1610,7 @@
  				//$("#pckid").val(id)
  				//alert(id)
  				}
- 				$("#btnFinish").click(function(e){	
-						alert('ss');
+ 				$("#btnFinish").click(function(e){
 						var addEventIDs = $("#addEventID").val();						
 						var eNames = $("#eName").val();
 						var eDates = $("#eDate").val();
@@ -1644,15 +1639,64 @@
 						var addDishID = [];
 						var addDishQty = [];
 						var addDishNotes = [];
-						var dishAvailedIDs = [];
+						var addServID = [];
+						var addServQty = [];
+						var addServNotes = [];
+						var addServDescs = [];
+						var addEquipID = [];
+						var addEquipQty = [];
+						var addEquipNotes = [];
+						var addEquipDescs = [];
+						var addEmpID = [];
+						var addEmpQty = [];
+						var addEmpNotes = [];
 						var ptIDs = $("#ptids").val();
 						var pmIDs = $("#pmids").val();
-						for (var i = 1; i <= addCtr; i++){
-							addDishID.push($("#additionalDish"+i+"").val());
-							addDishQty.push($("#additionalQty"+i+"").val());
-							addDishNotes.push($("#additionalNotes"+i+"").val());
+						if(addCtr>0){
+							for (var i = 1; i <= addCtr; i++){
+								addDishID.push($("#additionalDish"+i+"").val());
+								addDishQty.push($("#additionalQty"+i+"").val());
+								addDishNotes.push($("#additionalNotes"+i+"").val());
+							}
+							alert(addDishID);
+							alert(addDishQty);
+							alert(addDishNotes);
 						}
 						
+						if(servCtr>0){
+							for (var i = 1; i <= servCtr; i++){
+								addServID.push($("#additionalService"+i+"").val());
+								addServQty.push($("#additionalSQty"+i+"").val());
+								addServNotes.push($("#additionalSNotes"+i+"").val());
+								addServDescs.push($("#additionalSDesc"+i+"").val());
+							}
+							alert(addServID);
+							alert(addServQty);
+							alert(addServNotes);
+							alert(addServDescs);
+						}
+						if(equipCtr>0){
+							for (var i = 1; i <= equipCtr; i++){
+								addEquipID.push($("#additionalEquipment"+i+"").val());
+								addEquipQty.push($("#additionalEQty"+i+"").val());
+								addEquipNotes.push($("#additionalENotes"+i+"").val());
+								addEquipDescs.push($("#additionalEDesc"+i+"").val());
+							}
+							alert(addEquipID);
+							alert(addEquipQty);
+							alert(addEquipNotes);
+							alert(addEquipDescs);
+						}
+						if(empCtr>0){
+							for (var i = 1; i <= empCtr; i++){
+								addEmpID.push($("#additionalEmployee"+i+"").val());
+								addEmpQty.push($("#additionalEmQty"+i+"").val());
+								addEmpNotes.push($("#additionalEmNotes"+i+"").val());
+							}
+							alert(addEmpID);
+							alert(addEmpQty);
+							alert(addEmpNotes);
+						}
 						// var d = new Date(); 
 						//  dt = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); 
 						// alert(dt)
@@ -1697,6 +1741,19 @@
 						            	addDishID: addDishID,
 						            	addDishQty: addDishQty,
 						            	addDishNotes: addDishNotes,
+						            	addServID: addServID,
+										addServQty: addServQty,
+										addServNotes: addServNotes,
+										addServDescs: addServDescs,
+										addEquipID: addEquipID,
+										addEquipQty: addEquipQty,
+										addEquipNotes: addEquipNotes,
+										addEquipDescs: addEquipDescs,
+										addEmpID: addEmpID,
+										addEmpQty: addEmpQty,
+										addEmpNotes: addEmpNotes,
+										ptIDs: ptIDs,
+										pmIDs: pmIDs,
 						            	
 					         		},
 					                success: function(data){

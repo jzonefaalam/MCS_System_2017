@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Response;
 
+use App\dishadditional_tbl;
+use App\serviceadditional_tbl;
+use App\equipmentadditional_tbl;
+use App\employeeadditional_tbl;
 use App\dish_tbl;
 use App\dishtype_tbl;
 use App\customer_tbl;
@@ -208,9 +212,8 @@ class userController extends Controller
         $paymentTerm = DB::table('paymentterm_tbl') 
                     ->get();
         
-
-       
-     
+        
+           
         return View::make('/UserReservationPage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID)->with('eventNewID', $eventNewID)->with('reservationNewID', $reservationNewID)->with('contactNewID', $contactNewID)->with('dishAvailedNewID', $dishAvailedNewID)->with('eType', $eType)->with('customerNewID', $customerNewID)->with('package', $package)->with('packageinclusion', $packageinclusion)->with('serviceinclusion', $serviceinclusion)->with('equipmentinclusion', $equipmentinclusion)->with('employeeinclusion', $employeeinclusion)->with('dishtype', $dishtype)->with('dishes', $dishes)->with('service', $service)->with('servicetype', $servicetype)->with('equipment', $equipment)->with('equipmenttype', $equipmenttype)->with('employeetype', $employeetype)->with('location',$location)->with('countDish', $countDish)->with('countPckg', $countPckg)->with('paymentMode', $paymentMode)->with('paymentTerm', $paymentTerm);
 
     }
@@ -362,13 +365,27 @@ class userController extends Controller
     $reservation_tbl->reservationID = Input::get('addReservationID');
     $reservation_tbl->reservationStatus = 1;
     $reservation_tbl->eventID = Input::get('addEventID');
-    $reservation_tbl->paymentModeID = 2;
-    $reservation_tbl->paymentTermID = 2;
+    $reservation_tbl->paymentModeID = Input::get('pmIDs');
+    $reservation_tbl->paymentTermID = Input::get('ptIDs');
     $reservation_tbl->packageID = Input::get('addPackID');
       $dishID = Input::get('dishID');
       $servID = Input::get('servID');
       $equipID = Input::get('equipID');
       $empID = Input::get('empID');
+      $addDishID = Input::get('addDishID');
+      $addDishQty = Input::get('addDishQty');
+      $addDishNotes = Input::get('addDishNotes');
+      $addServID = Input::get('addServID');
+      $addServQty = Input::get('addServQty');
+      $addServNotes = Input::get('addServNotes');
+      $addServDescs = Input::get('addServDescs');
+      $addEquipID = Input::get('addEquipID');
+      $addEquipQty = Input::get('addEquipQty');
+      $addEquipNotes = Input::get('addEquipNotes');
+      $addEquipDescs = Input::get('addEquipDescs');
+      $addEmpID = Input::get('addEmpID');
+      $addEmpQty = Input::get('addEmpQty');
+      $addEmpNotes = Input::get('addEmpNotes');
       $customer_tbl->save();
       $contact_tbl->save();
       $event_tbl->save();
@@ -421,5 +438,63 @@ class userController extends Controller
         $ee->save();
       }
     }
-   }
+    if(!empty($addDishID[0][0])){
+      for ($i = 0; $i < count($addDishID); $i++){
+        $maxAddDishID = DB::table('dishadditional_tbl')->max('additionalID');
+        $additionalDishID = $maxAddDishID + 1;
+        $ad = dishadditional_tbl::create(array(
+        'additionalID' => $additionalDishID,
+        'additionalServing' => $addDishQty[$i][0],
+        'additionalNotes' => $addDishNotes[$i][0],
+        'dishID' =>$addDishID[$i][0],
+        'reservationID' =>Input::get('addReservationID')
+        ));
+        $ad->save();
+      }
+    }
+    if(!empty($addServID[0][0])){
+      for ($i = 0; $i < count($addServID); $i++){
+        $maxAddServID = DB::table('serviceadditional_tbl')->max('serviceAdditionalID');
+        $additionalServID = $maxAddServID + 1;
+        $as = serviceadditional_tbl::create(array(
+        'serviceAdditionalID' => $additionalServID,
+        'serviceAdditionalQty' => $addServQty[$i][0],
+        'serviceAdditionalNotes' => $addServNotes[$i][0],
+        'serviceAdditionalDesc' => $addServDescs[$i][0],
+        'serviceID' =>$addServID[$i][0],
+        'reservationID' =>Input::get('addReservationID')
+        ));
+        $as->save();
+      }
+    }
+    if(!empty($addEquipID[0][0])){
+      for ($i = 0; $i < count($addEquipID); $i++){
+        $maxAddEquipID = DB::table('equipmentadditional_tbl')->max('equipmentAdditionalID');
+        $additionalEquipID = $maxAddEquipID + 1;
+        $ae = equipmentadditional_tbl::create(array(
+        'equipmentAdditionalID' => $additionalEquipID,
+        'equipmentAdditionalQty' => $addEquipQty[$i][0],
+        'equipmentAdditionalNotes' => $addEquipNotes[$i][0],
+        'equipmentAdditionalDesc' => $addEquipDescs[$i][0],
+        'equipmentID' =>$addEquipID[$i][0],
+        'reservationID' =>Input::get('addReservationID')
+        ));
+        $ae->save();
+      }
+    }
+    if(!empty($addEmpID[0][0])){
+      for ($i = 0; $i < count($addEmpID); $i++){
+        $maxAddEmpID = DB::table('employeeadditional_tbl')->max('employeeAdditionalID');
+        $additionalEmpID = $maxAddEmpID + 1;
+        $aem = employeeadditional_tbl::create(array(
+        'employeeAdditionalID' => $additionalEmpID,
+        'employeeAdditionalQty' => $addEmpQty[$i][0],
+        'employeeAdditionalNotes' => $addEmpNotes[$i][0],
+        'employeeTypeID' =>$addEmpID[$i][0],
+        'reservationID' =>Input::get('addReservationID')
+        ));
+        $aem->save();
+      }
+    }
+  }
 }
