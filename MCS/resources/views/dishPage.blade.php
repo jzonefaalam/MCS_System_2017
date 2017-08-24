@@ -424,12 +424,9 @@
           var file = this.files[0];
           var reader = new FileReader();
           reader.onload = function(){
-            // alert("asdsd")
-
-              document.getElementById('photoIcon').src = this.result;
-              };
+          document.getElementById('photoIcon').src = this.result;
+          };
           reader.readAsDataURL(file);
-
           var yourImg = document.getElementById('photoIcon');
           if(yourImg && yourImg.style) {
           yourImg.style.height = '150px';

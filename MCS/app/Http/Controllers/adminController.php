@@ -643,8 +643,8 @@ class adminController extends Controller
 
     public function retrievePackageInclusion(){
         $ss = DB::table('packageinclusion_tbl')
-        ->select('dishtype_tbl.*', 'packageinclusion_tbl.*')
         ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','packageinclusion_tbl.dishTypeID')
+        ->select('dishtype_tbl.*', 'packageinclusion_tbl.*')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
         ->get();
         return \Response::json(['ss'=>$ss]);
@@ -932,6 +932,9 @@ class adminController extends Controller
         $packageData = DB::table('package_tbl')
         ->where('packageStatus', 1)->where('packageAvailability',1)
         ->get();
+
+        // $packageInclusionData = DB::table('packageinclusion_tbl')
+        // ->get
         return View::make('/schedulePage')
         ->with('packageData',$packageData);
     }//Schedule function------------------------------------------------------------------------------>

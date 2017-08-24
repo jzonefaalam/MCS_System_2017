@@ -25,6 +25,9 @@
                 <h2>EQUIPMENT</h2>
               </div>
               <div class="col-md-6">
+                <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
+                  <i class="fa fa-save"></i> LOGS
+                </a>
                 <a class="btn btn-app" href="EquipmentTypePage" style="float:right">
                   <i class="fa fa-save"></i> CATEGORIES  
                 </a>

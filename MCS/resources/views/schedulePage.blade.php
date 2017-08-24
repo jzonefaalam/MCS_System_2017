@@ -339,12 +339,9 @@
                                  <div class="row">
                                   <div class="col-sm-4">
                                   <h4> Dish Included </h4>
-                                    <label>Dish 1</label>
-                                    <br>
-                                    <label>Dish 2</label>
-                                    <br>
-                                    <label>Dish 3</label>
-                                    <br>
+                                    <div id="dishInclusion">
+                                       <input type="text"  name="editDishInclusion" id="editDishInclusion" >
+                                    </div>
                                   </div>
                                   <div class="col-sm-4">
                                   <h4> Equipment Included </h4>
@@ -583,11 +580,25 @@
                       break;
                     }
                   }
-                  $("#detailModal").modal("show");
-                }
-                
+                  $.ajax({
 
-
+                    type: "GET",
+                    url:  "/RetrievePackageInclusion",
+                    data: 
+                    {
+                      sdid: calEvent.packageIdEvent
+                    },
+                    success: function(data){
+                      $('#editDishInclusion').val(data['ss'][0]['dishTypeID']);
+                      $("#detailModal").modal("show");     
+                    },
+                    error: function(xhr)
+                    {
+                      alert("mali");
+                      alert($.parseJSON(xhr.responseText)['error']['message']);
+                    }                
+                  });
+                  }
                 });               
               },
               error: function(result){

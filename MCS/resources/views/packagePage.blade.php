@@ -162,17 +162,6 @@
                 </div>
 
                 <div class="modal-body">
-
-                <table class="table table-stripped table-bordered dataTable" id="packageInclusionTable">
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Package Name</th>
-                </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
               
                 </div>
                 <div class="modal-footer">
@@ -310,7 +299,7 @@
                     <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addDishTypeInclusion[]" style="width: 100%;">
                       @foreach($dishTypeData as $dishTypeData)
                       <option value="{{ $dishTypeData->dishTypeID }}">{{ $dishTypeData->dishTypeName }} </option>
-                     @endforeach
+                      @endforeach
                     </select>
                     </div>
                     </div>
@@ -373,14 +362,14 @@
       "autoWidth": true
     });
 
-    // $('#packageInclusionTable').DataTable({
-    //   "paging": false,
-    //   "lengthChange": true,
-    //   "searching": true,
-    //   "ordering": false,
-    //   "info": true,
-    //   "autoWidth": true
-    // });
+    $('#packageInclusionTable').DataTable({
+      "paging": false,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
   });
 </script>
     <script>
@@ -413,11 +402,11 @@
 
   <script>
       function getPackageInclusion(id){
-          alert(id);
-          var tblSDet = $('#packageInclusionTable');
-          tblSDet.clear();
-          tblSDet.draw(true);
-          alert('adasxxxx');
+          // alert(id);
+          // var tblSDet = $('#packageInclusionTable');
+          // tblSDet.clear();
+          // tblSDet.draw(true);
+          // alert('adasxxxx');
         $.ajax({
                 type: "GET",
                 url:  "/RetrievePackageInclusion",
@@ -426,15 +415,16 @@
                     sdid: id
                 },
                 success: function(data){
-                    var dishTypeName = null;
-                    var dishTypeStatus = null;
-                    for(i=0; i<data['ss'].length; i++){
-                      dishTypeName=data['ss'][i]['dishTypeName'];
-                      dishTypeStatus=data['ss'][i]['dishTypeStatus'];
-                      tblSDet.row.add([
-                        dishTypeName
-                      ]).draw(true);
-                    }
+                    // var dishTypeName = null;
+                    // var dishTypeStatus = null;
+                    // for(i=0; i<data['ss'].length; i++){
+                    //   dishTypeName=data['ss'][i]['dishTypeName'];
+                    //   dishTypeStatus=data['ss'][i]['dishTypeStatus'];
+                    //   $('<tr>').html(
+                    //   $('td').text(dishTypeName),
+                    //   $('td').text(dishTypeStatus)
+                    //   ).appendTo('#packageInclusionTable');
+                    // }
 
                 },
                 error: function(xhr)
