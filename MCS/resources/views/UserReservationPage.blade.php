@@ -98,7 +98,7 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Date of Event</label>
-			                                        <input type="date" name="eDate" id = "eDate"  class="form-control">
+			                                        <input type="date" name="eDate" id = "eDate"  min="{{date('Y-m-d',  strtotime( '+7 day' ))}}" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" class="form-control" onchange="dateday(this.id)">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locYes">
@@ -127,13 +127,13 @@
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Starting Time of Event</label>
-			                                        <input type="time" name="eTime" id = "eTime" class="form-control">
+			                                        <input type="time" name="eTime" id = "eTime" min="07:00:00" max="21:00:00" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>End Time of Event</label>
-			                                        <input type="time" name="enTime" id = "enTime" class="form-control">
+			                                        <input type="time" name="enTime" id = "enTime" min="07:00:00" max="21:00:00" class="form-control">
 			                                    </div>
 			                                </div>
 		                            	</div>
@@ -719,7 +719,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
    			$('#addReservation').bootstrapValidator({
         		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         		feedbackIcons: {
@@ -897,7 +897,7 @@
         	});
 
 
- 		</script>
+ 		</script> -->
 
  		<script>
  			var addCtr = 0;
@@ -917,6 +917,7 @@
 		        	var pckname;
 		        	var price = 0;
 		        	var pckImage;
+		        	var check = 0;
 		        	// alert(pgId);
 					$.ajax({
 						url: '/UserReservationPage-getPIID',
@@ -937,10 +938,7 @@
 		 						// price=price+parseDouble(([data['pckgid'][i]['dishCost']]));
 		 						// alert(price);
 
-							}
-							for(var i = 0; i < data['pckid'].length; i++){
-								document.getElementById("pck"+[data['pckid'][i]['packageID']]).disabled=true;
-							}
+							}							
 							for(var i = 0; i < data['servid'].length; i++){
 								servid.push([data['servid'][i]['serviceID']]);
 							}
@@ -958,42 +956,48 @@
 								var selectedOption = document.getElementById(pckginc[i]);
 		 						dishes[i] = " "+selectedOption.options[selectedOption.selectedIndex].text;
 								dishesVal[i] = selectedOption.options[selectedOption.selectedIndex].value;
+								if ((dishes[i])==" Choose Dish"){
+									check=1;
+								}
 		 					}
-							// alert(dishes);
-							// alert(dishesVal);
-		 					 
-							var table = document.getElementById("cartTable");
-						    var row = table.insertRow(0);
-						    var cell1 = row.insertCell(0);
-						    var cell2 = row.insertCell(1);
-							var cell3 = row.insertCell(2);
-							var cell4 = row.insertCell(3);
-							var cell5 = row.insertCell(4);
-							var cell6 = row.insertCell(5);
-							var cell7 = row.insertCell(6);
-							var cell8 = row.insertCell(7);
-							var cell9 = row.insertCell(8);
+							//alert(dishes);
+							//alert(dishesVal);
+		 					if(check==0){
+		 						for(var i = 0; i < data['pckid'].length; i++){
+									document.getElementById("pck"+[data['pckid'][i]['packageID']]).disabled=true;
+								}
+								var table = document.getElementById("cartTable");
+							    var row = table.insertRow(0);
+							    var cell1 = row.insertCell(0);
+							    var cell2 = row.insertCell(1);
+								var cell3 = row.insertCell(2);
+								var cell4 = row.insertCell(3);
+								var cell5 = row.insertCell(4);
+								var cell6 = row.insertCell(5);
+								var cell7 = row.insertCell(6);
+								var cell8 = row.insertCell(7);
+								var cell9 = row.insertCell(8);
 
-							cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
-							document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
-						    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><small><label id="cartDishes"><i>'+ dishes +'</i></label></small>';
-		 					cell3.innerHTML = '<h6><b>'+price+'</b></h6>';
-						    // cell3.innerHTML = '<h3>'+price+'</h3><br/><button id ="btnRemove" type="button" class="btn btn-info btn-md" onclick="deleteRow(this)">Remove</button>';
-					    	cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRow(this)">&times</button>';
-							cell5.innerHTML = '<input type="text" id="addPackageID" value="'+pgId+'" hidden>';
-							cell6.innerHTML = '<input type="text" id="addDishesAvailed" value="'+dishesVal+'" hidden>';
-							cell7.innerHTML = '<input type="text" id="addServiceAvailed" value="'+servid+'" hidden>';
-							cell8.innerHTML = '<input type="text" id="addEquipmentAvailed" value="'+equipid+'" hidden>';
-							cell9.innerHTML = '<input type="text" id="addEmployeeEmployed" value="'+empid+'" hidden>';
+								cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
+								document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
+							    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><small><label id="cartDishes"><i>'+ dishes +'</i></label></small>';
+			 					cell3.innerHTML = '<h6><b>'+price+'</b></h6>';
+							    // cell3.innerHTML = '<h3>'+price+'</h3><br/><button id ="btnRemove" type="button" class="btn btn-info btn-md" onclick="deleteRow(this)">Remove</button>';
+						    	cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRow(this)">&times</button>';
+								cell5.innerHTML = '<input type="text" id="addPackageID" value="'+pgId+'" hidden>';
+								cell6.innerHTML = '<input type="text" id="addDishesAvailed" value="'+dishesVal+'" hidden>';
+								cell7.innerHTML = '<input type="text" id="addServiceAvailed" value="'+servid+'" hidden>';
+								cell8.innerHTML = '<input type="text" id="addEquipmentAvailed" value="'+equipid+'" hidden>';
+								cell9.innerHTML = '<input type="text" id="addEmployeeEmployed" value="'+empid+'" hidden>';
 
-							var table = document.getElementById('cartTable');
-				        	var subt =0;
-						        for (var r = 0, n = table.rows.length; r < n; r++) {
-						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
-						        }
-							$subt=subt;
-				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-
+								var table = document.getElementById('cartTable');
+					        	var subt =0;
+							        for (var r = 0, n = table.rows.length; r < n; r++) {
+							            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+							        }
+								$subt=subt;
+					    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	}
 						},
 						error: function(result){
 							alert('error');
@@ -1610,6 +1614,9 @@
  				//$("#pckid").val(id)
  				//alert(id)
  				}
+ 				function dateday(id){
+ 					alert(document.getElementById(id).val());
+ 				}
  				$("#btnFinish").click(function(e){
 						var addEventIDs = $("#addEventID").val();						
 						var eNames = $("#eName").val();
@@ -1630,12 +1637,6 @@
 						var addContactIDs = $("#addContactID").val();
 						var conPersons = $("#conPerson").val();
 						var conNums = $("#conNum").val();
-						var addReservationIDs = $("#addReservationID").val();
-						var addPackIDs = $("#addPackageID").val();
-						var dishIDs = $("#addDishesAvailed").val().split(',');
-						var servIDs = $("#addServiceAvailed").val().split(',');	
-						var equipIDs = $("#addEquipmentAvailed").val().split(',');
-						var empIDs = $("#addEmployeeEmployed").val().split(',');
 						var addDishID = [];
 						var addDishQty = [];
 						var addDishNotes = [];
@@ -1652,15 +1653,23 @@
 						var addEmpNotes = [];
 						var ptIDs = $("#ptids").val();
 						var pmIDs = $("#pmids").val();
+						var addReservationIDs = $("#addReservationID").val();
+						var addPackIDs = $("#addPackageID").val();
+						if(addPackIDs){
+							var dishIDs = $("#addDishesAvailed").val().split(',');
+							var servIDs = $("#addServiceAvailed").val().split(',');	
+							var equipIDs = $("#addEquipmentAvailed").val().split(',');
+							var empIDs = $("#addEmployeeEmployed").val().split(',');
+						}
 						if(addCtr>0){
 							for (var i = 1; i <= addCtr; i++){
 								addDishID.push($("#additionalDish"+i+"").val());
 								addDishQty.push($("#additionalQty"+i+"").val());
 								addDishNotes.push($("#additionalNotes"+i+"").val());
 							}
-							alert(addDishID);
-							alert(addDishQty);
-							alert(addDishNotes);
+							// alert(addDishID);
+							// alert(addDishQty);
+							// alert(addDishNotes);
 						}
 						
 						if(servCtr>0){
@@ -1670,10 +1679,10 @@
 								addServNotes.push($("#additionalSNotes"+i+"").val());
 								addServDescs.push($("#additionalSDesc"+i+"").val());
 							}
-							alert(addServID);
-							alert(addServQty);
-							alert(addServNotes);
-							alert(addServDescs);
+							// alert(addServID);
+							// alert(addServQty);
+							// alert(addServNotes);
+							// alert(addServDescs);
 						}
 						if(equipCtr>0){
 							for (var i = 1; i <= equipCtr; i++){
@@ -1682,10 +1691,10 @@
 								addEquipNotes.push($("#additionalENotes"+i+"").val());
 								addEquipDescs.push($("#additionalEDesc"+i+"").val());
 							}
-							alert(addEquipID);
-							alert(addEquipQty);
-							alert(addEquipNotes);
-							alert(addEquipDescs);
+							// alert(addEquipID);
+							// alert(addEquipQty);
+							// alert(addEquipNotes);
+							// alert(addEquipDescs);
 						}
 						if(empCtr>0){
 							for (var i = 1; i <= empCtr; i++){
@@ -1693,10 +1702,11 @@
 								addEmpQty.push($("#additionalEmQty"+i+"").val());
 								addEmpNotes.push($("#additionalEmNotes"+i+"").val());
 							}
-							alert(addEmpID);
-							alert(addEmpQty);
-							alert(addEmpNotes);
+							// alert(addEmpID);
+							// alert(addEmpQty);
+							// alert(addEmpNotes);
 						}
+							// alert("motherfucker2");
 						// var d = new Date(); 
 						//  dt = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); 
 						// alert(dt)

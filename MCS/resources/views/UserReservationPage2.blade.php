@@ -517,18 +517,33 @@
 	                @endforeach
 	            </div>
 
+				<input id="empprice" hidden>
 	            <div class="modal-body step step-1" align="center">
 	                <div class="row">
-		                <img src="{{ asset('images/' . avatar5.png) }}" style="width: 200px;height: 150px"> <br> <br>
-		                <select class="form-control" name="dishImg" style="width: 200px">
+		                <img src="{{ asset('images/' . 'avatar5.png') }}"  id="empimage" style="width: 200px;height: 150px"> <br> <br>
+		                <select class="form-control" name="empimage" id="employeetype" style="width: 200px"  onchange="pckempimg(this.name)">
 							<option disabled selected value="">Choose Staff</option>
-							@foreach($employeeType as $et)
+							@foreach($employeetype as $et)
 								<option value="{{$et->employeeTypeID}}">{{$et->employeeTypeName}}</option>
 							@endforeach
 						</select> <br>
+						<div class="col-sm-6">
+					    	<div class="form-group">
+					    		<label>Quantity</label>
+					    		<input type="text" name="employee" id = "empqty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity" onchange="comPriceem(this)" onkeyup="comPriceem(this)">
+					    	</div>
 
-					    	<label>Note / Comment</label>
-					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 300px; height: 120px" placeholder="Note"></textarea>
+					    	<div class="form-group">
+					    		<label>Price</label>
+					    		<input type="text" disabled="" name="emptprice" id = "emptprice" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
+					    	</div>
+					    </div>
+						<div class="col-sm-6">
+						    <div class="col-sm-offset-1">
+						    	<label>Note / Comment</label>
+						    	<textarea name="note" id = "empnote" maxlength="50" class="form-control" style="width: 300px; height: 120px" placeholder="Note"></textarea>
+						    </div>
+						</div>
 					</div>
 	            </div> 
 
@@ -583,7 +598,7 @@
 		            <h3 hidden>{{$j=1}}</h3>
 		            
 					@foreach($servicetype as $st)
-						<button type="button" name="employeeType{{$et->employeeTypeID}}" class="btn btn-success btn-fill step step-{{$j}}" data-step="{{$j}}" data-dismiss="modal" onclick="addEmp(this.name)">Add to Cart</button>
+						<button type="button" name="employeetype" class="btn btn-success btn-fill step step-{{$j}}" data-step="{{$j}}" data-dismiss="modal" onclick="addEmp(this.name)">Add to Cart</button>
                 		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#serviceModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
 	                	<button type="button" name="serviceType{{$st->serviceTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addServ(this.name)">Add to Cart</button>
 
@@ -598,100 +613,89 @@
                 		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="{{$i+1}}" onclick="sendEvent('#serviceModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
                 	<h3 hidden>{{$i++}}</h3>
 	            	@endforeach
-	            </div>
-	        </div>
+	            	</div>
+	        	</div>
+	    	</div>
 	    </div>
 	</form>
 
-	<!-- EQUIPMENT MODAL -->
+<!-- EQUIPMENT MODAL -->
 	<form class="modal multi-step" id="equipmentModal">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span></button>
-	                <h4 class="modal-title step-1" data-step="1">Additional Equipment</h4>
-	                <h4 class="modal-title step-2" data-step="2">Additional Equipment</h4>
-	            </div>
-
-	            <div class="modal-body step step-1" align="center">
-	            	<div class="row">
-	            		<h4> Smoke Machine </h4>
-		                <img src="img.jpg" style="width: 300px;height: 170px"> <br> <br>
-		                <select class="form-control" name="dishImg" style="width: 300px">
+					<h3 hidden>{{$i=1}}</h3>
+					@foreach($equipmenttype as $et)
+	                <h4 class="modal-title step-{{$i}}" data-step="{{$i}}">{{$et->equipmentTypeName}}</h4>
+	                <h3 hidden>{{$i++}}</h3>
+	                @endforeach	            
+	           </div>
+				<input id="equipprice" hidden>
+				<h3 hidden>{{$i=1}}</h3>
+				@foreach($equipmenttype as $et)
+	            <div class="modal-body step step-{{$i}}" align="center">
+	            	<div class="row">						
+		                <img src="{{ asset('img/' . $et->equipmentTypeImage) }}" id="equipmentTypeImage{{$et->equipmentTypeID}}" width="200px" height="150px">
+						<select class="form-control" name="equipmentTypeImage{{$et->equipmentTypeID}}" id="equipmentType{{$et->equipmentTypeID}}" style="width: 200px" onchange="pckeqpimg(this.name)">
 							<option disabled selected value="">Choose Equipment</option>
+							@foreach($equipment as $eq)
+							@if($et->equipmentTypeID == $eq->equipmentTypeID)
+								<option value="{{$eq->equipmentID}}">{{$eq->equipmentName}}</option>
+							@endif
+							@endforeach
 						</select> <br>
 					    
 					    <div class="col-sm-6">
 					    	<div class="form-group">
-					    		<label>Description</label>
-					    	<textarea name="desc" id = "desc" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Description"></textarea>
-
+					    		<label>Quantity</label>
+					    		<input type="text" name="{{$et->equipmentTypeID}}" id = "equipqty{{$et->equipmentTypeID}}" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity" onchange="comPricee(this.name)" onkeyup="comPricee(this.name)">
 					    	</div>
-					    
+
 					    	<div class="form-group">
-					    		<label>Price</label>
-					    		<input type="text" disabled="" name="price" id = "price" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
+					    		<label>Description</label>
+					    		<textarea name="equipdesc" id = "equipdesc{{$et->equipmentTypeID}}" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Description"></textarea>
+
 					    	</div>
 					    </div>
 
 					    <div class="col-sm-offset-1">
 					    	<div class="form-group">
-					    		<label>Quantity</label>
-					    		<input type="text" name="qntty" id = "qntty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity">
-					    	</div>
-
-					    	<label>Note / Comment</label>
-					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
-					   	</div>
-					</div>
-	            </div>
-
-	            <div class="modal-body step step-2" align="center">
-	            	<div class="row">
-	            		<h4> Table </h4>
-		                <img src="img.jpg" style="width: 300px;height: 170px"> <br> <br>
-		                <select class="form-control" name="dishImg" style="width: 300px">
-							<option disabled selected value="">Choose Equipment</option>
-						</select> <br>
-					    
-					    <div class="col-sm-6">
-					    	<div class="form-group">
-					    		<label>Description</label>
-					    	<textarea name="desc" id = "desc" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Description"></textarea>
-
-					    	</div>
-					    
-					    	<div class="form-group">
 					    		<label>Price</label>
-					    		<input type="text" disabled="" name="price" id = "price" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
+					    		<input type="text" disabled="" name="equipprice" id = "equipprice{{$et->equipmentTypeID}}" maxlength="50" class="form-control" style="width: 250px" placeholder="Price">
 					    	</div>
-					    </div>
 
-					    <div class="col-sm-offset-1">
 					    	<div class="form-group">
-					    		<label>Quantity</label>
-					    		<input type="text" name="qntty" id = "qntty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity">
+					    		<label>Note / Comment</label>
+					    		<textarea name="equipnote" id = "equipnote{{$et->equipmentTypeID}}" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
 					    	</div>
-
-					    	<label>Note / Comment</label>
-					    	<textarea name="note" id = "note" maxlength="50" class="form-control" style="width: 250px; height: 120px" placeholder="Note"></textarea>
 					   	</div>
 					</div>
 	            </div>
+	            <h3 hidden>{{$i++}}</h3>
+	            @endforeach
+	            
 
 	            <div class="modal-footer">
 		            <div class="pull-right">
-                		<button type="button" class="btn btn-primary btn-fill step step-1" data-step="1" onclick="sendEvent('#equipmentModal', 2)"> <i class="ti-angle-double-right"></i> </button>
+		            <h3 hidden>{{$i=1}}</h3>
+					@foreach($equipmenttype as $et)
+                		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#equipmentModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
+	                	<button type="button" name="equipmentType{{$et->equipmentTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addEquip(this.name)">Add to Cart</button>
 
-	                	<button type="button" class="btn btn-success btn-fill step step-2" data-step="2" data-dismiss="modal" onclick="sendEvent('#equipmentModal')">Save</button>
-
-	                	<button type="button" class="btn btn-success btn-fill step step-1" data-step="1" data-dismiss="modal" onclick="sendEvent('#equipmentModal')">Save</button>
+	            	<h3 hidden>{{$i++}}</h3>
+	            	@endforeach
 		            </div>
 
 		            <div class="pull-left">
-                		<button type="button" class="btn btn-default step step-2" data-step="2" onclick="sendEvent('#equipmentModal', 1)"><i class="ti-angle-double-left"></i></button>
+		            <h3 hidden>{{$i=1}}</h3>
+					@foreach($equipmenttype as $et)
+                		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="2" onclick="sendEvent('#equipmentModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
+                	<h3 hidden>{{$i++}}</h3>
+	            	@endforeach
 		            </div>
+	            </div>
 	        </div>
 	    </div>
 	</form>
@@ -1272,7 +1276,7 @@
 							document.getElementById("cartImg").src="{!! asset('img/'.'"+ servImage +"')!!}";
 							cell2.innerHTML = '<h6><b>'+servName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
 						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
-						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowFood(this)">&times</button>';
+						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowServ(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="additionalService'+servCtr+'" value="'+serv+'" hidden><h1 style="display:none">'+serv+'</h1>';
 							cell6.innerHTML = '<input type="text" id="additionalSQty'+servCtr+'" value="'+qty+'" hidden>';
 							cell7.innerHTML = '<input type="text" id="additionalSNotes'+servCtr+'" value="'+notes+'" hidden>';
@@ -1347,7 +1351,8 @@
 				    // console.log(row);
 			}
  			function addEquip(id){
-				var equip = id;
+				var selectedOption = document.getElementById(id);
+				var equip = selectedOption.options[selectedOption.selectedIndex].value;
 				var price=0;
 				var qty=0;
  				// alert(equip);
@@ -1362,39 +1367,215 @@
 						price=parseFloat([data['equip'][0]['equipmentRatePerHour']]);	
 						var equipName=([data['equip'][0]['equipmentName']]);	
 						var equipImage=([data['equip'][0]['equipmentImage']]);
+						equipCtr=equipCtr+1;
+						var qty = $("#equipqty"+([data['equip'][0]['equipmentTypeID']])).val();
+						var notes = $("#equipnote"+([data['equip'][0]['equipmentTypeID']])).val();
+						var desc = $("#equipdesc"+([data['equip'][0]['equipmentTypeID']])).val();
+						var tp = $("#equipprice"+([data['equip'][0]['equipmentTypeID']])).val();
+						alert(qty);
+						alert(desc);
+						alert(equip);
+						alert(tp);
 								 
-						 
-						var table = document.getElementById("cartTable");
-						var qty = document.getElementById("addquant").value;
-						var notes = document.getElementById("addnotes").value;
-					    var row = table.insertRow(0);
-					    var cell1 = row.insertCell(0);
-					    var cell2 = row.insertCell(1);
-						var cell3 = row.insertCell(2);
-						var cell4 = row.insertCell(3);
-						var cell5 = row.insertCell(4);
-						var cell6 = row.insertCell(5);
-						var cell7 = row.insertCell(6);
-									
-					   	cell1.innerHTML = '<img id="cartImg" src="" width="200px" height="150px">';
-						document.getElementById("cartImg").src="{!! asset('img/'.'"+ equipImage +"')!!}";
-						cell2.innerHTML = '<h4><b>'+equipName+'</b></h4><h6>Add-On</h6><br/><label id="cartDishes"> </label>';
-					    cell3.innerHTML = '<h4><b>'+price+'</b></h4>';
-					    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-info btn-md pull-right " onclick="deleteRow(this)">Remove</button>';
-						cell5.innerHTML = '<input type="text" id="'+equip+'" value="'+equip+'" hidden>';
-						cell6.innerHTML = '<input type="text" id="additionalQty" value="'+qty+'" hidden>';
-						cell7.innerHTML = '<input type="text" id="additionalNotes" value="'+notes+'" hidden>';
-						  
-						
+						if(qty>0){
+							var table = document.getElementById("cartTable");
+						    var row = table.insertRow(0);
+						    var cell1 = row.insertCell(0);
+						    var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+							var cell8 = row.insertCell(7);
+											
+							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
+							document.getElementById("cartImg").src="{!! asset('img/'.'"+ equipImage +"')!!}";
+							cell2.innerHTML = '<h6><b>'+equipName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
+						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowEquip(this)">&times</button>';
+							cell5.innerHTML = '<input type="text" id="additionalEquipment'+equipCtr+'" value="'+equip+'" hidden><h1 style="display:none">'+equip+'</h1>';
+							cell6.innerHTML = '<input type="text" id="additionalEQty'+equipCtr+'" value="'+qty+'" hidden>';
+							cell7.innerHTML = '<input type="text" id="additionalENotes'+equipCtr+'" value="'+notes+'" hidden>';
+							cell8.innerHTML = '<input type="text" id="additionalEDesc'+equipCtr+'" value="'+desc+'" hidden>';
+				
+
+							var table = document.getElementById('cartTable');
+					       	var subt =0;
+						        for (var r = 0, n = table.rows.length; r < n; r++) {
+						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						        }
+							$subt=subt;
+				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+						}
+						else{
+							
+						}
 						},
 						error: function(result){
 							alert('error');
 						}
 				});
  			}
- 			// function addEmp(id){
- 			// 	alert(id);
- 			// }
+ 			function pckeqpimg(id){			        
+				var selectedOption = document.getElementsByName(id);
+				var equip = selectedOption[0].options[selectedOption[0].selectedIndex].value;
+				        
+				$.ajax({
+					url: '/UserReservationPage-getEquip',
+					type: 'POST',
+					data: {
+					"_token": "{{ csrf_token() }}",
+					ae_id: equip
+						},
+						success: function(data){	
+						var equipImages=([data['equip'][0]['equipmentImage']]);
+						var str="{!! asset('img/'.'"+ equipImages +"')!!}";
+						var pckeqpimg =  document.getElementById(id);
+						$("#equipprice").val([data['equip'][0]['equipmentRatePerHour']]);
+						pckeqpimg.src=str;
+						comPricee([data['equip'][0]['equipmentTypeID']]);
+						
+						},
+						error: function(result){
+							alert('error');
+						}
+				});
+
+		    }
+ 			function comPricee(id){
+ 					var p=$('#equipprice').val();
+ 					var qty=$('#equipqty'+id).val();
+ 					var tp;
+ 					tp=p*qty;
+ 					$('#equipprice'+id).val(tp);
+ 			}
+ 			function deleteRowEquip(t){
+				    var row = t.parentNode.parentNode;
+				    document.getElementById("cartTable").deleteRow(row.rowIndex);
+				    equipCtr=equipCtr-1;
+
+		        	var table = document.getElementById('cartTable');
+		        	var subt =0;
+				        for (var r = 0, n = table.rows.length; r < n; r++) {
+				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				        }
+				    // alert(subt);
+				    $subt=subt;
+				    document.getElementById('subtot').innerHTML='<h4 class="pull-left">Subtotal:   <b>'+subt+'</b></h4> ';
+
+				    // console.log(row);
+			}
+ 			function addEmp(id){
+ 				var selectedOption = document.getElementById(id);
+				var emp = selectedOption.options[selectedOption.selectedIndex].value;
+				var price=0;
+				var qty=0;
+ 				// alert(emp);
+ 				$.ajax({
+					url: '/UserReservationPage-getEmp',
+					type: 'POST',
+					data: {
+					"_token": "{{ csrf_token() }}",
+					ae_id: emp
+						},
+						success: function(data){
+						price=parseFloat([data['emp'][0]['employeeRatePerHour']]);	
+						var empName=([data['emp'][0]['employeeTypeName']]);	
+						var empImage=([data['emp'][0]['employeeTypeImage']]);
+						empCtr=empCtr+1;
+						var qty = $("#empqty").val();
+						var notes = $("#empnote").val();
+						var tp = $("#emptprice").val();
+								 
+						if(qty>0){
+							var table = document.getElementById("cartTable");
+						    var row = table.insertRow(0);
+						    var cell1 = row.insertCell(0);
+						    var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+											
+							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
+							document.getElementById("cartImg").src="{!! asset('img/'.'"+ empImage +"')!!}";
+							cell2.innerHTML = '<h6><b>'+empName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
+						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowEmp(this)">&times</button>';
+							cell5.innerHTML = '<input type="text" id="additionalEmployee'+empCtr+'" value="'+emp+'" hidden><h1 style="display:none">'+emp+'</h1>';
+							cell6.innerHTML = '<input type="text" id="additionalEQty" value="'+qty+'" hidden>';
+							cell7.innerHTML = '<input type="text" id="additionalENotes" value="'+notes+'" hidden>';
+				
+
+							var table = document.getElementById('cartTable');
+					       	var subt =0;
+						        for (var r = 0, n = table.rows.length; r < n; r++) {
+						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						        }
+							$subt=subt;
+				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+						}
+						else{
+							
+						}
+						},
+						error: function(result){
+							alert('error');
+						}
+				});
+ 			}
+ 			function pckempimg(id){			        
+				var selectedOption = document.getElementsByName(id);
+				var emp = selectedOption[0].options[selectedOption[0].selectedIndex].value;
+				$.ajax({
+					url: '/UserReservationPage-getEmp',
+					type: 'POST',
+					data: {
+					"_token": "{{ csrf_token() }}",
+					ae_id: emp
+						},
+						success: function(data){	
+						var empImages=([data['emp'][0]['employeeTypeImage']]);
+						var str="{!! asset('img/'.'"+ empImages +"')!!}";
+						var pckempimg =  document.getElementById(id);
+						$("#empprice").val([data['emp'][0]['employeeRatePerHour']]);
+						pckempimg.src=str;
+						comPriceem();
+						
+						},
+						error: function(result){
+							alert('error');
+						}
+				});
+
+		    }
+		    function comPriceem(id){
+ 					var p=$('#empprice').val();
+ 					var qty=$('#empqty').val();
+ 					var tp;
+ 					tp=p*qty;
+ 					$('#emptprice').val(tp);
+ 			}
+		    function deleteRowEmp(t){
+				    var row = t.parentNode.parentNode;
+				    document.getElementById("cartTable").deleteRow(row.rowIndex);
+				    empCtr=empCtr-1;
+
+		        	var table = document.getElementById('cartTable');
+		        	var subt =0;
+				        for (var r = 0, n = table.rows.length; r < n; r++) {
+				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				        }
+				    // alert(subt);
+				    $subt=subt;
+				    document.getElementById('subtot').innerHTML='<h4 class="pull-left">Subtotal:   <b>'+subt+'</b></h4> ';
+
+				    // console.log(row);
+			}
 
  			
 		        
