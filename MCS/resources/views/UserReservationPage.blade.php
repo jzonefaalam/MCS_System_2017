@@ -98,7 +98,7 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Date of Event</label>
-			                                        <input type="date" name="eDate" id = "eDate"  class="form-control">
+			                                        <input type="date" name="eDate" id = "eDate"  min="{{date('Y-m-d',  strtotime( '+7 day' ))}}" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" class="form-control" onchange="dateday(this.id)">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locYes">
@@ -127,13 +127,13 @@
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Starting Time of Event</label>
-			                                        <input type="time" name="eTime" id = "eTime" class="form-control">
+			                                        <input type="time" name="eTime" id = "eTime" min="07:00:00" max="21:00:00" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>End Time of Event</label>
-			                                        <input type="time" name="enTime" id = "enTime" class="form-control">
+			                                        <input type="time" name="enTime" id = "enTime" min="07:00:00" max="21:00:00" class="form-control">
 			                                    </div>
 			                                </div>
 		                            	</div>
@@ -719,7 +719,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
    			$('#addReservation').bootstrapValidator({
         		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         		feedbackIcons: {
@@ -897,7 +897,7 @@
         	});
 
 
- 		</script>
+ 		</script> -->
 
  		<script>
  			var addCtr = 0;
@@ -1613,6 +1613,9 @@
  				function getdishid(id){
  				//$("#pckid").val(id)
  				//alert(id)
+ 				}
+ 				function dateday(id){
+ 					alert(document.getElementById(id).val());
  				}
  				$("#btnFinish").click(function(e){
 						var addEventIDs = $("#addEventID").val();						
