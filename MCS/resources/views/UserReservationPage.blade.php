@@ -9,7 +9,7 @@
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
 		                <div class="card wizard-card" data-color="azure" id="wizard">
-		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data">
+		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data" >
 		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
 
 		                    	<div class="wizard-header">
@@ -71,7 +71,7 @@
 			                                	<input type="text" name="addEventID" id="addEventID" value = "{{ $eventNewID }}" hidden>
 			                                    <div class="form-group">
 			                                        <label>Event Type</label>
-			                                        <select name="eType" id = "eType" class="form-control">
+			                                        <select name="eType" id = "eType" class="form-control" required="">
 														<option disabled="" selected=""></option>
 														    @foreach($eType as $type)
 														<option value="{{$type->eventTypeID}}">{{$type->eventTypeName}}</option>
@@ -82,35 +82,35 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Name of Event</label>
-			                                        <input type="text" name="eName" id = "eName" maxlength="50" class="form-control">
+			                                        <input type="text" name="eName" id = "eName" maxlength="50" class="form-control" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Do you have a location?</label>
-		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)">
+		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)" required="">
 															<option disabled="" selected=""></option>
 															<option value="Yes">Yes</option>
-															<option>No</option>
-			                                        </select>
+															<option value="No">No</option>
+			                                       		 </select>
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Date of Event</label>
-			                                        <input type="date" name="eDate" id = "eDate"  min="{{date('Y-m-d',  strtotime( '+7 day' ))}}" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" class="form-control" onchange="dateday(this.id)">
+			                                        <input type="date" name="eDate" id = "eDate"  min="{{date('Y-m-d',  strtotime( '+7 day' ))}}" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" class="form-control" onchange="dateday(this.id)" required>
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locYes">
 			                                    <div class="form-group">
 			                                        <label>Location</label>
-			                                        <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="">
+			                                        <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locNo" style="display:none">
 			                                    <div class="form-group">
-			                                        <label>Location</label>
-		                                            <select name="eLoc2" id = "eLoc2" class="form-control">
+			                                        <label>Venue</label>
+		                                            <select name="eLoc2" id = "eLoc2" class="form-control" required="">
 														<option disabled="Choose location" selected=""></option>
 														@foreach($location as $loc)
 														<option value="{{$loc->locationID}}">{{$loc->locationName}}</option>
@@ -121,19 +121,19 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Number of Guests</label>
-			                                        <input type="number" name="eNum" id = "eNum" min="1" class="form-control">
+			                                        <input type="number" name="eNum" id = "eNum" min="100" max="400" class="form-control" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Starting Time of Event</label>
-			                                        <input type="time" name="eTime" id = "eTime" min="07:00:00" max="21:00:00" class="form-control">
+			                                        <input type="time" name="eTime" id = "eTime" min="06:59:00"  class="form-control" onchange="timeChange(this.id)"" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>End Time of Event</label>
-			                                        <input type="time" name="enTime" id = "enTime" min="07:00:00" max="21:00:00" class="form-control">
+			                                        <input type="time" name="enTime" id = "enTime" min="11:59:00" class="form-control" required="">
 			                                    </div>
 			                                </div>
 		                            	</div>
@@ -148,38 +148,38 @@
 
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
-			                                        <label>Full Name<small>(required)</small></label>
-			                                        <input type="text" name="cusName" id = "cusName" class="form-control">
+			                                        <label>Full Name</label>
+			                                        <input type="text" name="cusName" id = "cusName" class="form-control" placeholder="e.g. Juan de la Cruz" required>
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Home Address</label>
-			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control">
+			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control" required>
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Date of Birth</label>
-			                                        <input type="date" name="dob" id = "dob" class="form-control">
+			                                        <input type="date" name="dob" id = "dob" min="{{date('Y-m-d',  strtotime( '-100 year' ))}}" max="{{date('Y-m-d',  strtotime( '-12 year' ))}}" class="form-control" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Telephone Number</label>
-			                                        <input type="text" name="telNum" id = "telNum" class="form-control">
+			                                        <input type="text" name="telNum" id = "telNum" pattern="[0-9]{3}-[0-9]{4}" class="form-control" placeholder="e.g. 000-0000" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Cellphone Number</label>
-			                                        <input type="text" name="cellNum" id = "cellNum" class="form-control">
+			                                        <input type="text" name="cellNum" id = "cellNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000" class="form-control" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Email Address</label>
-			                                        <input type="text" name="emailAdd" id = "emailAdd" class="form-control">
+			                                        <input type="email" name="emailAdd" id = "emailAdd" class="form-control" placeholder="e.g. margarethcateringservices@gmail.com" required="">
 			                                    </div>
 			                                </div>		                                	
 			                                <div class="col-sm-12">
@@ -188,13 +188,13 @@
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Contact Name</label>
-			                                        <input type="text" name="conPerson" id = "conPerson" class="form-control">
+			                                        <input type="text" name="conPerson" id = "conPerson" class="form-control" placeholder="e.g Juana de la Cruz" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Contact Number</label>
-			                                        <input type="text" name="conNum" id = "conNum" class="form-control">
+			                                        <input type="text" name="conNum" id = "conNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}||[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000/000-0000" class="form-control" required="">
 			                                    </div>
 			                                </div>
 		                                </div>
@@ -421,7 +421,7 @@
 						</small>
 					</div>
 					<div class="pull-right">
-						<button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="{{$pg->packageID}}" id="{{$pg->packageID}}" class="btn btn-info btn-md" onclick="addPack(this.name)">Save</button>
+						<button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="{{$pg->packageID}}" id="{{$pg->packageID}}" class="btn btn-info btn-md" onclick="addPack(this.name)">Add to Cart</button>
 					</div>
 				</div>
 			</div>
@@ -934,7 +934,8 @@
 								price=([data['pckgid'][i]['packageCost']]);
 								pckgid.push([data['pckgid'][i]['packageInclusionID']]);
 		 						pckname=([data['pckgid'][i]['packageName']]);
-		 						pckImage=([data['pckgid'][i]['packageImage']]);		
+		 						pckImage=([data['pckgid'][i]['packageImage']]);	
+		 						tp=price*parseInt($('#eNum').val());
 		 						// price=price+parseDouble(([data['pckgid'][i]['dishCost']]));
 		 						// alert(price);
 
@@ -981,7 +982,7 @@
 								cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
 								document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
 							    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><small><label id="cartDishes"><i>'+ dishes +'</i></label></small>';
-			 					cell3.innerHTML = '<h6><b>'+price+'</b></h6>';
+			 					cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 							    // cell3.innerHTML = '<h3>'+price+'</h3><br/><button id ="btnRemove" type="button" class="btn btn-info btn-md" onclick="deleteRow(this)">Remove</button>';
 						    	cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRow(this)">&times</button>';
 								cell5.innerHTML = '<input type="text" id="addPackageID" value="'+pgId+'" hidden>';
@@ -1615,7 +1616,28 @@
  				//alert(id)
  				}
  				function dateday(id){
- 					alert(document.getElementById(id).val());
+ 					var d = new Date($('#eDate').val());
+ 					var n = d.getDay();
+ 					// alert(n);
+ 					if(n==0 || n==6){
+ 						document.getElementById('eTime').setAttribute("max","13:00:00.00");
+ 						document.getElementById('enTime').setAttribute("max","18:00:00.00");
+ 					}
+ 					else{
+ 						document.getElementById('eTime').setAttribute("max","16:00:00.00");
+ 						document.getElementById('enTime').setAttribute("max","21:00:00.00");
+ 					}
+
+ 				}
+ 				function timeChange(id){
+
+ 					var etime = $('#eTime').val();
+ 					var tt = etime.charAt(0)+etime.charAt(1);
+ 					var pp = etime.charAt(3)+etime.charAt(4);
+ 					var ttime = parseInt(tt) + 5;
+ 					var pt= ttime+":"+pp;
+ 					// alert(ttime);
+ 					document.getElementById('enTime').setAttribute("min",pt);
  				}
  				$("#btnFinish").click(function(e){
 						var addEventIDs = $("#addEventID").val();						
