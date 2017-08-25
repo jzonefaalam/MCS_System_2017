@@ -51,8 +51,9 @@ class adminController extends Controller
         $dateToday = $dateTime->format('n.j.Y');
         $dashboardData = DB::table('reservation_tbl')
           ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+          ->orderBy('reservation_tbl.created_at', 'desc')
           ->where('reservation_tbl.reservationStatus', '=', 1)
-          ->where('event_tbl.eventDate', '>=', Carbon::now())
+          ->where('reservation_tbl.created_at', '<=', Carbon::now())
           ->get();
         return View::make('/DashboardPage')
         ->with('dashboardData', $dashboardData);
@@ -598,10 +599,22 @@ class adminController extends Controller
         ->where('equipmentStatus', 1)->where('equipmentStatus',1)
         ->get();
 
+        $serviceData = DB::table('service_tbl')
+        ->select('*')
+        ->where('serviceStatus', 1)
+        ->get();
+
+        $staffData = DB::table('employeetype_tbl')
+        ->select('*')
+        ->where('employeeTypeStatus', 1)
+        ->get();
+
         return View::make('/PackagePage')
         ->with('packageData', $packageData)
         ->with('dishTypeData', $dishTypeData)
-        ->with('equipmentData', $equipmentData);
+        ->with('equipmentData', $equipmentData)
+        ->with('serviceData', $serviceData)
+        ->with('staffData', $staffData);
     }
 
     public function addPackage(Request $request){
@@ -613,11 +626,34 @@ class adminController extends Controller
         $package->packageStatus = 1;
         $package->packageAvailability = 1;
         $package->save();
+        $lastPackageID = DB::table('package_tbl')
+        ->max('packageID');
         $dti = $_POST['addDishTypeInclusion'];
+        $si = $_POST['addStaffInclusion'];
+        $ei = $_POST['addEquipmentInclusion'];
+        $svi = $_POST['addServiceInclusion'];
         foreach ($dti as $dtinclusion) {
             $packageInclusion = new packageinclusiontbl;
-            $packageInclusion->packageID = 1;
+            $packageInclusion->packageID = $lastPackageID;
             $packageInclusion->dishTypeID = $dtinclusion;
+            $packageInclusion->save();
+        }
+        foreach ($si as $staffInclusion) {
+            $packageInclusion = new packageinclusiontbl;
+            $packageInclusion->packageID = $lastPackageID;
+            $packageInclusion->employeeTypeID = $staffInclusion;
+            $packageInclusion->save();
+        }
+        foreach ($ei as $equipmentInclusion) {
+            $packageInclusion = new packageinclusiontbl;
+            $packageInclusion->packageID = $lastPackageID;
+            $packageInclusion->equipmentID = $equipmentInclusion;
+            $packageInclusion->save();
+        }
+        foreach ($svi as $serviceInclusion) {
+            $packageInclusion = new packageinclusiontbl;
+            $packageInclusion->packageID = $lastPackageID;
+            $packageInclusion->serviceID = $serviceInclusion;
             $packageInclusion->save();
         }
         return redirect()->back();
@@ -642,12 +678,63 @@ class adminController extends Controller
     }
 
     public function retrievePackageInclusion(){
-        $ss = DB::table('packageinclusion_tbl')
-        ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','packageinclusion_tbl.dishTypeID')
-        ->select('dishtype_tbl.*', 'packageinclusion_tbl.*')
+        $ss = DB::table('dishavailed_tbl')
+        ->join('reservation_tbl', 'reservation_tbl.reservationID','=','dishavailed_tbl.reservationID')
+        ->join('dish_tbl','dish_tbl.dishID', '=', 'dishavailed_tbl.dishID')
+        ->where('dishavailed_tbl.reservationID', Input::get('sendReservationID'))
+        ->get();
+
+        $dd = DB::table('packageinclusion_tbl')
+        ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
         ->get();
-        return \Response::json(['ss'=>$ss]);
+
+        $ff = DB::table('packageinclusion_tbl')
+        ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->get();
+
+        $gg = DB::table('packageinclusion_tbl')
+        ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->get();
+
+        $dishInclusion = DB::table('packageinclusion_tbl')
+        ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->get();
+
+        $dishData = DB::table('dish_tbl')
+        ->get();
+
+        $dishTypeData = DB::table('dishtype_tbl')
+        ->get();
+
+        $additionalDish = DB::table('dishadditional_tbl')
+        ->join('reservation_tbl', 'reservation_tbl.reservationID','=','dishadditional_tbl.reservationID')
+        ->join('dish_tbl','dish_tbl.dishID', '=', 'dishadditional_tbl.dishID')
+        ->where('dishadditional_tbl.reservationID', Input::get('sendReservationID'))
+        ->get();
+
+        $additionalEquipment = DB::table('equipmentadditional_tbl')
+        ->join('reservation_tbl', 'reservation_tbl.reservationID','=','equipmentadditional_tbl.reservationID')
+        ->join('equipment_tbl','equipment_tbl.equipmentID', '=', 'equipmentadditional_tbl.equipmentID')
+        ->where('equipmentadditional_tbl.reservationID', Input::get('sendReservationID'))
+        ->get();
+
+        $additionalService = DB::table('serviceadditional_tbl')
+        ->join('reservation_tbl', 'reservation_tbl.reservationID','=','serviceadditional_tbl.reservationID')
+        ->join('service_tbl','service_tbl.serviceID', '=', 'serviceadditional_tbl.serviceID')
+        ->where('serviceadditional_tbl.reservationID', Input::get('sendReservationID'))
+        ->get();
+
+        $additionalEmployee = DB::table('employeeadditional_tbl')
+        ->join('reservation_tbl', 'reservation_tbl.reservationID','=','employeeadditional_tbl.reservationID')
+        ->join('employeetype_tbl','employeetype_tbl.employeeTypeID', '=', 'employeeadditional_tbl.employeeTypeID')
+        ->where('employeeadditional_tbl.reservationID', Input::get('sendReservationID'))
+        ->get();
+
+        return \Response::json(['ss'=>$ss, 'gg'=>$gg, 'ff'=>$ff, 'dd'=>$dd, 'additionalDish'=>$additionalDish, 'additionalEquipment'=>$additionalEquipment, 'additionalService'=>$additionalService, 'additionalEmployee'=>$additionalEmployee, 'dishTypeData'=>$dishTypeData, 'dishData'=>$dishData, 'dishInclusion'=>$dishInclusion]);
     }
 
     public function deletePackage(){

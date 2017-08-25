@@ -151,7 +151,7 @@
                 <!-- End Modals-->
 
                 <!-- View Package Inclusions Modal-->
-                <div class="modal fade" id="viewInclusionsModal">
+                <div class="modal fade viewInclusionsModal" id="viewInclusionsModal">
                 <div class="modal-dialog">
                 <div class="modal-content">
                 <form   role="form" class="form-horizontal" enctype="multipart/form-data">
@@ -162,10 +162,40 @@
                 </div>
 
                 <div class="modal-body">
-              
-                </div>
-                <div class="modal-footer">
-                <button type="submit" name="editPackageBtn" class="btn btn-primary">Close</button>
+                  <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                      <li ><a href="#tab_1" data-toggle="tab">Dish </a></li>
+                      <li ><a href="#tab_2" data-toggle="tab">Equipment </a></li>
+                      <li ><a href="#tab_3" data-toggle="tab">Services</a></li>
+                      <li ><a href="#tab_4" data-toggle="tab">Staff </a></li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="tab_1">
+                        <div class="dishInclusionDiv" id="dishInclusionDiv">
+                        <strong><h4>Dish Inclusions</h4></strong>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane active" id="tab_2">
+                        <div class="equipmentInclusionDiv" id="equipmentInclusionDiv">
+                        <strong><h4>Equipment Inclusions</h4></strong>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane active" id="tab_3">
+                        <div class="serviceInclusionDiv" id="serviceInclusionDiv">
+                        <strong><h4>Service Inclusions</h4></strong>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane active" id="tab_4">
+                      <div class="staffInclusionDiv" id="staffInclusionDiv">
+                        <strong><h4>Staff Inclusions</h4></strong>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 </form>
                 </div>
@@ -307,7 +337,7 @@
                     <div class="form-group">
                     <label class="col-sm-4 control-label">Equipment</label>
                     <div class="col-sm-6">
-                    <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="equipmentInclusion[]" style="width: 100%;">
+                    <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addEquipmentInclusion[]" style="width: 100%;">
                       @foreach($equipmentData as $equipmentData)
                       <option value="{{ $equipmentData->equipmentID }}">{{ $equipmentData->equipmentName }} </option>
                      @endforeach
@@ -315,9 +345,27 @@
                     </div>
                     </div>
 
-                    
+                    <div class="form-group">
+                    <label class="col-sm-4 control-label">Services</label>
+                    <div class="col-sm-6">
+                    <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addServiceInclusion[]" style="width: 100%;">
+                      @foreach($serviceData as $serviceData)
+                      <option value="{{ $serviceData->serviceID }}">{{ $serviceData->serviceName }} </option>
+                     @endforeach
+                    </select>
+                    </div>
+                    </div>
 
-                    
+                    <div class="form-group">
+                    <label class="col-sm-4 control-label">Staff</label>
+                    <div class="col-sm-6">
+                    <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addStaffInclusion[]" style="width: 100%;">
+                      @foreach($staffData as $staffData)
+                        <option value="{{ $staffData->employeeTypeID }}">{{ $staffData->employeeTypeName }} </option>
+                      @endforeach
+                    </select>
+                    </div>
+                    </div>
 
                       <div class="form-group has-feedback">
                         <label class="col-sm-4 control-label">Package Image</label>
@@ -350,6 +398,12 @@
 <script>
 
   $(".select2").select2();
+  $(".viewInclusionsModal").on("hidden.bs.modal", function(){
+    $(".dishInclusionDiv").html("");
+    $(".equipmentInclusionDiv").html("");
+    $(".staffInclusionDiv").html("");
+    $(".serviceInclusionDiv").html("");
+  });
 </script>
      <script>
   $(function () {
@@ -372,6 +426,7 @@
     });
   });
 </script>
+
     <script>
       function getPackage(id){
 
@@ -390,6 +445,8 @@
                 $('#editPackagePrice').val(data['ss'][0]['packageCost']);
                 $('#editPackageInclusion').val(data['ss'][0]['packageInclusion']);
                 },
+
+                
                 error: function(xhr)
                 {
                     alert("mali");
@@ -415,17 +472,18 @@
                     sdid: id
                 },
                 success: function(data){
-                    // var dishTypeName = null;
-                    // var dishTypeStatus = null;
-                    // for(i=0; i<data['ss'].length; i++){
-                    //   dishTypeName=data['ss'][i]['dishTypeName'];
-                    //   dishTypeStatus=data['ss'][i]['dishTypeStatus'];
-                    //   $('<tr>').html(
-                    //   $('td').text(dishTypeName),
-                    //   $('td').text(dishTypeStatus)
-                    //   ).appendTo('#packageInclusionTable');
-                    // }
-
+                  for (var i = 0; i < data['dishInclusion'].length; i++) {
+                    document.getElementById('dishInclusionDiv').innerHTML += '<h5>'+data['dishInclusion'][i]['dishTypeName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
+                  }
+                  for (var i = 0; i < data['dd'].length; i++) {
+                    document.getElementById('serviceInclusionDiv').innerHTML += '<h5>'+data['dd'][i]['serviceName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
+                  }
+                  for (var i = 0; i < data['ff'].length; i++) {
+                    document.getElementById('equipmentInclusionDiv').innerHTML += '<h5>'+data['ff'][i]['equipmentName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
+                  } 
+                  for (var i = 0; i < data['gg'].length; i++) {
+                    document.getElementById('staffInclusionDiv').innerHTML += '<h5>'+data['gg'][i]['employeeTypeName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
+                  }   
                 },
                 error: function(xhr)
                 {

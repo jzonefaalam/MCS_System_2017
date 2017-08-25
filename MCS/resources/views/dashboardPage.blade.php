@@ -17,7 +17,7 @@
             <!-- Other Items -->
             <div class="col-md-6">
               <!-- Info Boxes Style 2 -->
-                  <div class="info-box bg-yellow">
+                  <!-- <div class="info-box bg-yellow">
                     <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
 
                     <div class="info-box-content">
@@ -30,11 +30,11 @@
                       <span class="progress-description">
                             50% Increase in 30 Days
                           </span>
-                    </div>
+                    </div> -->
                     <!-- /.info-box-content -->
-                  </div>
+                  <!-- </div> -->
               <!-- /.info-box -->
-                  <div class="info-box bg-green">
+                 <!--  <div class="info-box bg-green">
                     <span class="info-box-icon"><i class="ion ion-ios-heart-outline"></i></span>
 
                     <div class="info-box-content">
@@ -47,11 +47,11 @@
                       <span class="progress-description">
                             20% Increase in 30 Days
                           </span>
-                    </div>
+                    </div> -->
                     <!-- /.info-box-content -->
-                  </div>
+                  <!-- </div> -->
               <!-- /.info-box -->
-                  <div class="info-box bg-red">
+                  <!-- <div class="info-box bg-red">
                     <span class="info-box-icon"><i class="ion ion-ios-cloud-download-outline"></i></span>
 
                     <div class="info-box-content">
@@ -66,7 +66,7 @@
                           </span>
                     </div>
                     <!-- /.info-box-content -->
-                  </div>
+                  <!-- </div> -->
               <!-- /.info-box -->
             </div>
             <!-- Notifications -->
@@ -83,22 +83,23 @@
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
-                  <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-                  <ul class="todo-list">
-                  @foreach($dashboardData as $dashboardData)
-                      <li>
-                      <!-- todo text -->
-                      <span class="text"><a href="DishPage">{{ $dashboardData -> eventName}}</a></span>
-                      <!-- Emphasis label -->
-                      <small class="label label-danger"><i class="fa fa-clock-o"></i> {{ $dashboardData -> eventTime }}</small>
-                      <!-- General tools such as edit or delete-->
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                  @endforeach
-                  </ul>
+                  <table class="table table-bordered table-striped dataTable" id="notificationTable">
+                      <thead>
+                      <tr>
+                        <th width="150px">Notifs</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        @foreach($dashboardData as $dashboardData)
+                        <tr>
+                          <td>
+                            <a href="DishPage">{{ $dashboardData -> eventName}}</a>
+                            <small class="label label-danger pull-right"><i class="fa fa-clock-o"></i> {{ $dashboardData -> eventTime }}</small>
+                          </td>
+                        </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
                 </div>
               </div>
               <!-- /.box -->
@@ -111,5 +112,16 @@
     <!-- /.content-wrapper -->
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
-
+<script>
+  $(function () {
+    $('#notificationTable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
+  });
+</script>
 @endsection

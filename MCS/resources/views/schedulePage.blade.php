@@ -337,29 +337,29 @@
                                   <br>
                                   <h3><strong> Package Inclusions </strong></h3>
                                  <div class="row">
-                                  <div class="col-sm-4">
+                                  <div class="col-sm-3">
                                   <h4> Dish Included </h4>
                                     <div id="dishInclusion">
-                                       <input type="text"  name="editDishInclusion" id="editDishInclusion" >
+                                      
                                     </div>
                                   </div>
-                                  <div class="col-sm-4">
+                                  <div class="col-sm-3">
                                   <h4> Equipment Included </h4>
-                                    <label>Dish 1</label>
-                                    <br>
-                                    <label>Dish 2</label>
-                                    <br>
-                                    <label>Dish 3</label>
-                                    <br>
+                                    <div id="equipmentInclusion">
+
+                                    </div>
                                   </div>
-                                  <div class="col-sm-4">
+                                  <div class="col-sm-3">
                                   <h4> Services & Staff Included </h4>
-                                    <label>Dish 1</label>
-                                    <br>
-                                    <label>Dish 2</label>
-                                    <br>
-                                    <label>Dish 3</label>
-                                    <br>
+                                    <div id="serviceInclusion">
+
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                  <h4> Services & Staff Included </h4>
+                                    <div id="employeeInclusion">
+
+                                    </div>
                                   </div>
                                 </div>
                                 <!-- End Row -->
@@ -376,10 +376,10 @@
                                 <h4><strong>Additional Food Details</strong></h4>
                               </div>
                               <div class="box-body">
-                                <table id="additionalFoodTable">
+                              <h4> Lists </h4>
+                                <div id="additionalDishDiv">
 
-                                </table>
-                                <!-- End Row -->
+                                </div>
                               </div>
                             </div>
                             <!-- End Box -->
@@ -393,7 +393,10 @@
                                 <h4><strong>Additional Equipment Details</strong></h4>
                               </div>
                               <div class="box-body">
-                                Additionals
+                                <h4> Lists </h4>
+                                <div id="additionalEquipmentDiv">
+
+                                </div>
                               </div>
                             </div>
                             <!-- End Box -->
@@ -404,10 +407,13 @@
                           <div class="tab-pane active" id="tab_5">
                             <div class="box">
                               <div class="box-header">
-                                <h4><strong>Additional Service & Staff Details</strong></h4>
+                                <h4><strong>Additional Service Details</strong></h4>
                               </div>
                               <div class="box-body">
-                                Additionals
+                                <h4> Lists </h4>
+                                <div id="additionalServiceDiv">
+
+                                </div>
                               </div>
                             </div>
                             <!-- End Box -->
@@ -585,11 +591,43 @@
                     type: "GET",
                     url:  "/RetrievePackageInclusion",
                     data: 
-                    {
-                      sdid: calEvent.packageIdEvent
+                    {     
+                      sdid: calEvent.packageIdEvent,
+                      sendReservationID: calEvent.id
                     },
                     success: function(data){
-                      $('#editDishInclusion').val(data['ss'][0]['dishTypeID']);
+
+                      // for (var i = 0; i < data['ss'].length; i++) {
+                      //   document.getElementById('dishInclusion').innerHTML += '<select id="dishInclusion'+data['ss'][i]['dishID']+'"></select><br>';
+                      // }
+                      // for (var i = 0; i < data['ss'].length; i++) {
+                      //   var select = document.getElementById('dishInclusion'+data['ss'][i]['dishID']);
+                      //   for (var x = 0; x < data['dishTypeData'].length; x++) {
+                      //     if(data['dishTypeData'][i]['dishTypeID']==data['dishData'][x]['dishTypeID']){
+                      //       select.options[select.options.length] = new Option(data['dishData'][x]['dishName'],'value1');
+                      //   }
+                      // }
+                      for (var i = 0; i < data['ss'].length; i++) {
+                        document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['dd'].length; i++) {
+                        document.getElementById('serviceInclusion').innerHTML += '<h6>'+data['dd'][i]['serviceName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['ff'].length; i++) {
+                        document.getElementById('equipmentInclusion').innerHTML += '<h6>'+data['ff'][i]['equipmentName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['gg'].length; i++) {
+                        document.getElementById('employeeInclusion').innerHTML += '<h6>'+data['gg'][i]['employeeTypeName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['additionalDish'].length; i++) {
+                        document.getElementById('additionalDishDiv').innerHTML += '<h6>'+data['additionalDish'][i]['dishName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['additionalService'].length; i++) {
+                        document.getElementById('additionalServiceDiv').innerHTML += '<h6>'+data['additionalService'][i]['serviceName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['additionalEquipment'].length; i++) {
+                        document.getElementById('additionalEquipmentDiv').innerHTML += '<h6>'+data['additionalEquipment'][i]['equipmentName']+'</h6>';
+                      }
                       $("#detailModal").modal("show");     
                     },
                     error: function(xhr)
