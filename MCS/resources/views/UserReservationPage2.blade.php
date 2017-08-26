@@ -9,7 +9,7 @@
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
 		                <div class="card wizard-card" data-color="azure" id="wizard">
-		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data">
+		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data" >
 		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
 
 		                    	<div class="wizard-header">
@@ -71,7 +71,7 @@
 			                                	<input type="text" name="addEventID" id="addEventID" value = "{{ $eventNewID }}" hidden>
 			                                    <div class="form-group">
 			                                        <label>Event Type</label>
-			                                        <select name="eType" id = "eType" class="form-control">
+			                                        <select name="eType" id = "eType" class="form-control" required="">
 														<option disabled="" selected=""></option>
 														    @foreach($eType as $type)
 														<option value="{{$type->eventTypeID}}">{{$type->eventTypeName}}</option>
@@ -82,36 +82,36 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Name of Event</label>
-			                                        <input type="text" name="eName" id = "eName" maxlength="50" class="form-control">
+			                                        <input type="text" name="eName" id = "eName" maxlength="50" class="form-control" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
-			                                        <label>Do you have a location?</label>
-		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)">
+			                                        <label>Do you have a Venue?</label>
+		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)" required="">
 															<option disabled="" selected=""></option>
 															<option value="Yes">Yes</option>
-															<option>No</option>
-			                                        </select>
+															<option value="No">No</option>
+			                                       		 </select>
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Date of Event</label>
-			                                        <input type="date" name="eDate" id = "eDate"  class="form-control">
+			                                        <input type="date" name="eDate" id = "eDate"  min="{{date('Y-m-d',  strtotime( '+7 day' ))}}" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" class="form-control" onchange="dateday(this.id)" required>
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locYes">
 			                                    <div class="form-group">
-			                                        <label>Location</label>
-			                                        <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="">
+			                                        <label>Venue</label>
+			                                        <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locNo" style="display:none">
 			                                    <div class="form-group">
-			                                        <label>Location</label>
-		                                            <select name="eLoc2" id = "eLoc2" class="form-control">
-														<option disabled="Choose location" selected=""></option>
+			                                        <label>Venue</label>
+		                                            <select name="eLoc2" id = "eLoc2" class="form-control" required="">
+														<option disabled="Choose Venue" selected=""></option>
 														@foreach($location as $loc)
 														<option value="{{$loc->locationID}}">{{$loc->locationName}}</option>
 														@endforeach
@@ -121,19 +121,19 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Number of Guests</label>
-			                                        <input type="number" name="eNum" id = "eNum" min="1" class="form-control">
+			                                        <input type="number" name="eNum" id = "eNum" min="100" max="400" class="form-control" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Starting Time of Event</label>
-			                                        <input type="time" name="eTime" id = "eTime" class="form-control">
+			                                        <input type="time" name="eTime" id = "eTime" min="06:59:00"  class="form-control" onchange="timeChange(this.id)"" required="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>End Time of Event</label>
-			                                        <input type="time" name="enTime" id = "enTime" class="form-control">
+			                                        <input type="time" name="enTime" id = "enTime" min="11:59:00" class="form-control" required="">
 			                                    </div>
 			                                </div>
 		                            	</div>
@@ -148,38 +148,38 @@
 
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
-			                                        <label>Full Name<small>(required)</small></label>
-			                                        <input type="text" name="cusName" id = "cusName" class="form-control">
+			                                        <label>Full Name</label>
+			                                        <input type="text" name="cusName" id = "cusName" class="form-control" placeholder="e.g. Juan de la Cruz" required>
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Home Address</label>
-			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control">
+			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control" required>
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5 col-sm-offset-1">
-			                                    <div class="form-group">
-			                                        <label>Date of Birth</label>
-			                                        <input type="date" name="dob" id = "dob" class="form-control">
+			                                   	<div class="form-group">
+			                                        <label>Telephone Number</label>
+			                                        <input type="text" name="telNum" id = "telNum" pattern="[0-9]{3}-[0-9]{4}" class="form-control" placeholder="e.g. 000-0000" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
-			                                    <div class="form-group">
-			                                        <label>Telephone Number</label>
-			                                        <input type="text" name="telNum" id = "telNum" class="form-control">
+											 	<div class="form-group">
+			                                        <label>Date of Birth</label>
+			                                        <input type="date" name="dob" id = "dob" min="{{date('Y-m-d',  strtotime( '-100 year' ))}}" max="{{date('Y-m-d',  strtotime( '-12 year' ))}}" class="form-control" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Cellphone Number</label>
-			                                        <input type="text" name="cellNum" id = "cellNum" class="form-control">
+			                                        <input type="text" name="cellNum" id = "cellNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000" class="form-control" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Email Address</label>
-			                                        <input type="text" name="emailAdd" id = "emailAdd" class="form-control">
+			                                        <input type="email" name="emailAdd" id = "emailAdd" class="form-control" placeholder="e.g. margarethcateringservices@gmail.com" required="">
 			                                    </div>
 			                                </div>		                                	
 			                                <div class="col-sm-12">
@@ -188,13 +188,13 @@
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Contact Name</label>
-			                                        <input type="text" name="conPerson" id = "conPerson" class="form-control">
+			                                        <input type="text" name="conPerson" id = "conPerson" class="form-control" placeholder="e.g Juana de la Cruz" required="">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Contact Number</label>
-			                                        <input type="text" name="conNum" id = "conNum" class="form-control">
+			                                        <input type="text" name="conNum" id = "conNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}||[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000/000-0000" class="form-control" required="">
 			                                    </div>
 			                                </div>
 		                                </div>
@@ -225,14 +225,14 @@
 		                                	<input type="text" id="dtid" hidden>
 		                                	<input type="text" id="ptids" hidden>
 		                                	<input type="text" id="pmids" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#additionalModal" value="Food"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#additionalModal" value="Food"> &nbsp &nbsp
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#serviceModal" value="Service"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg" data-toggle="modal" href="#serviceModal" value="Service"> &nbsp &nbsp
 		                                    </a>
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-info btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment">
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment">
 		                                    </a>
 		                                </div>
 		                            </div>
@@ -244,7 +244,7 @@
 				                                    <div class="col-sm-6" >
 					                                    <h5 class="info-text"> <i> Payment Term</i> </h5>
 				                                    	@foreach($paymentTerm as $pt)
-				                                        <div class="col-sm-6" id="ppt{{$pt->paymentTermID}}">
+				                                        <div class="col-sm-9 col-sm-offset-2" id="ppt{{$pt->paymentTermID}}">
 															<div class="choice" data-toggle="wizard-checkbox"  style="margin-top: -10px" >
 				                                                <input type="checkbox" name="{{$pt->paymentTermID}}" id="pt{{$pt->paymentTermID}}">
 				                                                <div class="card card-checkboxes card-hover-effect"  id="{{$pt->paymentTermID}}" onclick="getpt(this.id)">
@@ -256,10 +256,10 @@
 				                                    	@endforeach
 				                                    </div>
 				                                    <div class="col-sm-6" >
-					                                        <h5 class="info-text"> <i> Payment Mode</i> </h5>
+					                                    <h5 class="info-text"> <i>Payment Mode</i> </h5>
 					                                    
 				                                    	@foreach($paymentMode as $pm)
-				                                        <div class="col-sm-6 " id="ppm{{$pm->paymentModeID}}" >
+				                                        <div class="col-sm-9 col-sm-offset-1 " id="ppm{{$pm->paymentModeID}}" >
 															<div class="choice" data-toggle="wizard-checkbox" style="margin-top: -10px">
 				                                                <input type="checkbox" name="{{$pm->paymentModeID}}" id="pm{{$pm->paymentModeID}}">
 				                                                <div class="card card-checkboxes card-hover-effect" id="{{$pm->paymentModeID}}" onclick="getpm(this.id)">
@@ -282,7 +282,7 @@
 		                            </div>
 
 		                            <div class="pull-left">
-		                                <input type='button' class='btn btn-previous btn-default btn-wd' name='previous' value='Previous' />
+		                                <input type='button' class='btn btn-previous btn-primary btn-wd' name='previous' value='Previous' />
 		                            </div>
 		                            <div class="clearfix"></div>
 		                        </div>
@@ -421,7 +421,7 @@
 						</small>
 					</div>
 					<div class="pull-right">
-						<button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="{{$pg->packageID}}" id="{{$pg->packageID}}" class="btn btn-info btn-md" onclick="addPack(this.name)">Save</button>
+						<button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="{{$pg->packageID}}" id="{{$pg->packageID}}" class="btn btn-info btn-md" onclick="addPack(this.name)">Add to Cart</button>
 					</div>
 				</div>
 			</div>
@@ -529,7 +529,7 @@
 						</select> <br>
 						<div class="col-sm-6">
 					    	<div class="form-group">
-					    		<label>Quantity</label>
+					    		<label>Count</label>
 					    		<input type="text" name="employee" id = "empqty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity" onchange="comPriceem(this)" onkeyup="comPriceem(this)">
 					    	</div>
 
@@ -719,7 +719,7 @@
 		</div>
 	</div>
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
    			$('#addReservation').bootstrapValidator({
         		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         		feedbackIcons: {
@@ -897,7 +897,7 @@
         	});
 
 
- 		</script>
+ 		</script> -->
 
  		<script>
  			var addCtr = 0;
@@ -917,6 +917,7 @@
 		        	var pckname;
 		        	var price = 0;
 		        	var pckImage;
+		        	var check = 0;
 		        	// alert(pgId);
 					$.ajax({
 						url: '/UserReservationPage-getPIID',
@@ -933,14 +934,12 @@
 								price=([data['pckgid'][i]['packageCost']]);
 								pckgid.push([data['pckgid'][i]['packageInclusionID']]);
 		 						pckname=([data['pckgid'][i]['packageName']]);
-		 						pckImage=([data['pckgid'][i]['packageImage']]);		
+		 						pckImage=([data['pckgid'][i]['packageImage']]);	
+		 						tp=price*parseInt($('#eNum').val());
 		 						// price=price+parseDouble(([data['pckgid'][i]['dishCost']]));
 		 						// alert(price);
 
-							}
-							for(var i = 0; i < data['pckid'].length; i++){
-								document.getElementById("pck"+[data['pckid'][i]['packageID']]).disabled=true;
-							}
+							}							
 							for(var i = 0; i < data['servid'].length; i++){
 								servid.push([data['servid'][i]['serviceID']]);
 							}
@@ -958,42 +957,48 @@
 								var selectedOption = document.getElementById(pckginc[i]);
 		 						dishes[i] = " "+selectedOption.options[selectedOption.selectedIndex].text;
 								dishesVal[i] = selectedOption.options[selectedOption.selectedIndex].value;
+								if ((dishes[i])==" Choose Dish"){
+									check=1;
+								}
 		 					}
-							// alert(dishes);
-							// alert(dishesVal);
-		 					 
-							var table = document.getElementById("cartTable");
-						    var row = table.insertRow(0);
-						    var cell1 = row.insertCell(0);
-						    var cell2 = row.insertCell(1);
-							var cell3 = row.insertCell(2);
-							var cell4 = row.insertCell(3);
-							var cell5 = row.insertCell(4);
-							var cell6 = row.insertCell(5);
-							var cell7 = row.insertCell(6);
-							var cell8 = row.insertCell(7);
-							var cell9 = row.insertCell(8);
+							//alert(dishes);
+							//alert(dishesVal);
+		 					if(check==0){
+		 						for(var i = 0; i < data['pckid'].length; i++){
+									document.getElementById("pck"+[data['pckid'][i]['packageID']]).disabled=true;
+								}
+								var table = document.getElementById("cartTable");
+							    var row = table.insertRow(0);
+							    var cell1 = row.insertCell(0);
+							    var cell2 = row.insertCell(1);
+								var cell3 = row.insertCell(2);
+								var cell4 = row.insertCell(3);
+								var cell5 = row.insertCell(4);
+								var cell6 = row.insertCell(5);
+								var cell7 = row.insertCell(6);
+								var cell8 = row.insertCell(7);
+								var cell9 = row.insertCell(8);
 
-							cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
-							document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
-						    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><small><label id="cartDishes"><i>'+ dishes +'</i></label></small>';
-		 					cell3.innerHTML = '<h6><b>'+price+'</b></h6>';
-						    // cell3.innerHTML = '<h3>'+price+'</h3><br/><button id ="btnRemove" type="button" class="btn btn-info btn-md" onclick="deleteRow(this)">Remove</button>';
-					    	cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRow(this)">&times</button>';
-							cell5.innerHTML = '<input type="text" id="addPackageID" value="'+pgId+'" hidden>';
-							cell6.innerHTML = '<input type="text" id="addDishesAvailed" value="'+dishesVal+'" hidden>';
-							cell7.innerHTML = '<input type="text" id="addServiceAvailed" value="'+servid+'" hidden>';
-							cell8.innerHTML = '<input type="text" id="addEquipmentAvailed" value="'+equipid+'" hidden>';
-							cell9.innerHTML = '<input type="text" id="addEmployeeEmployed" value="'+empid+'" hidden>';
+								cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
+								document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
+							    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><small><label id="cartDishes"><i>'+ dishes +'</i></label></small>';
+			 					cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
+							    // cell3.innerHTML = '<h3>'+price+'</h3><br/><button id ="btnRemove" type="button" class="btn btn-info btn-md" onclick="deleteRow(this)">Remove</button>';
+						    	cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRow(this)">&times</button>';
+								cell5.innerHTML = '<input type="text" id="addPackageID" value="'+pgId+'" hidden>';
+								cell6.innerHTML = '<input type="text" id="addDishesAvailed" value="'+dishesVal+'" hidden>';
+								cell7.innerHTML = '<input type="text" id="addServiceAvailed" value="'+servid+'" hidden>';
+								cell8.innerHTML = '<input type="text" id="addEquipmentAvailed" value="'+equipid+'" hidden>';
+								cell9.innerHTML = '<input type="text" id="addEmployeeEmployed" value="'+empid+'" hidden>';
 
-							var table = document.getElementById('cartTable');
-				        	var subt =0;
-						        for (var r = 0, n = table.rows.length; r < n; r++) {
-						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
-						        }
-							$subt=subt;
-				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-
+								var table = document.getElementById('cartTable');
+					        	var subt =0;
+							        for (var r = 0, n = table.rows.length; r < n; r++) {
+							            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+							        }
+								$subt=subt;
+					    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	}
 						},
 						error: function(result){
 							alert('error');
@@ -1127,7 +1132,6 @@
 						price=parseFloat([data['dish'][0]['dishCost']]);	
 						var dishName=([data['dish'][0]['dishName']]);	
 						var dishImage=([data['dish'][0]['dishImage']]);
-						addCtr=addCtr+1;
 						var qty = $("#addqty"+([data['dish'][0]['dishTypeID']])).val();
 						var notes = $("#addnote"+([data['dish'][0]['dishTypeID']])).val();
 						var tp = $("#addprice"+([data['dish'][0]['dishTypeID']])).val();
@@ -1161,6 +1165,7 @@
 
 						// }
 						if(qty>0){
+							addCtr=addCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1188,7 +1193,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1253,7 +1258,6 @@
 						price=parseFloat([data['serv'][0]['serviceFee']]);	
 						var servName=([data['serv'][0]['serviceName']]);	
 						var servImage=([data['serv'][0]['serviceImage']]);
-						servCtr=servCtr+1;
 						var qty = $("#servqty"+([data['serv'][0]['serviceTypeID']])).val();
 						var notes = $("#servnote"+([data['serv'][0]['serviceTypeID']])).val();
 						var desc = $("#servdesc"+([data['serv'][0]['serviceTypeID']])).val();
@@ -1261,6 +1265,7 @@
 					
 								 
 						if(qty>0){
+							servCtr=servCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1290,7 +1295,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1367,17 +1372,13 @@
 						price=parseFloat([data['equip'][0]['equipmentRatePerHour']]);	
 						var equipName=([data['equip'][0]['equipmentName']]);	
 						var equipImage=([data['equip'][0]['equipmentImage']]);
-						equipCtr=equipCtr+1;
 						var qty = $("#equipqty"+([data['equip'][0]['equipmentTypeID']])).val();
 						var notes = $("#equipnote"+([data['equip'][0]['equipmentTypeID']])).val();
 						var desc = $("#equipdesc"+([data['equip'][0]['equipmentTypeID']])).val();
 						var tp = $("#equipprice"+([data['equip'][0]['equipmentTypeID']])).val();
-						alert(qty);
-						alert(desc);
-						alert(equip);
-						alert(tp);
-								 
+
 						if(qty>0){
+							equipCtr=equipCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1407,7 +1408,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1484,12 +1485,12 @@
 						price=parseFloat([data['emp'][0]['employeeRatePerHour']]);	
 						var empName=([data['emp'][0]['employeeTypeName']]);	
 						var empImage=([data['emp'][0]['employeeTypeImage']]);
-						empCtr=empCtr+1;
 						var qty = $("#empqty").val();
 						var notes = $("#empnote").val();
 						var tp = $("#emptprice").val();
 								 
 						if(qty>0){
+							empCtr=empCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
 						    var cell1 = row.insertCell(0);
@@ -1506,8 +1507,8 @@
 						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowEmp(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="additionalEmployee'+empCtr+'" value="'+emp+'" hidden><h1 style="display:none">'+emp+'</h1>';
-							cell6.innerHTML = '<input type="text" id="additionalEQty" value="'+qty+'" hidden>';
-							cell7.innerHTML = '<input type="text" id="additionalENotes" value="'+notes+'" hidden>';
+							cell6.innerHTML = '<input type="text" id="additionalEmQty'+empCtr+'" value="'+qty+'" hidden>';
+							cell7.innerHTML = '<input type="text" id="additionalEmNotes'+empCtr+'" value="'+notes+'" hidden>';
 				
 
 							var table = document.getElementById('cartTable');
@@ -1517,7 +1518,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
-				    		selectedOption.removeChild([selectedOption.selectedIndex]);
+				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
 							
@@ -1614,8 +1615,31 @@
  				//$("#pckid").val(id)
  				//alert(id)
  				}
- 				$("#btnFinish").click(function(e){	
-						alert('ss');
+ 				function dateday(id){
+ 					var d = new Date($('#eDate').val());
+ 					var n = d.getDay();
+ 					// alert(n);
+ 					if(n==0 || n==6){
+ 						document.getElementById('eTime').setAttribute("max","13:00:00.00");
+ 						document.getElementById('enTime').setAttribute("max","18:00:00.00");
+ 					}
+ 					else{
+ 						document.getElementById('eTime').setAttribute("max","16:00:00.00");
+ 						document.getElementById('enTime').setAttribute("max","21:00:00.00");
+ 					}
+
+ 				}
+ 				function timeChange(id){
+
+ 					var etime = $('#eTime').val();
+ 					var tt = etime.charAt(0)+etime.charAt(1);
+ 					var pp = etime.charAt(3)+etime.charAt(4);
+ 					var ttime = parseInt(tt) + 5;
+ 					var pt= ttime+":"+pp;
+ 					// alert(ttime);
+ 					document.getElementById('enTime').setAttribute("min",pt);
+ 				}
+ 				$("#btnFinish").click(function(e){
 						var addEventIDs = $("#addEventID").val();						
 						var eNames = $("#eName").val();
 						var eDates = $("#eDate").val();
@@ -1635,24 +1659,76 @@
 						var addContactIDs = $("#addContactID").val();
 						var conPersons = $("#conPerson").val();
 						var conNums = $("#conNum").val();
-						var addReservationIDs = $("#addReservationID").val();
-						var addPackIDs = $("#addPackageID").val();
-						var dishIDs = $("#addDishesAvailed").val().split(',');
-						var servIDs = $("#addServiceAvailed").val().split(',');	
-						var equipIDs = $("#addEquipmentAvailed").val().split(',');
-						var empIDs = $("#addEmployeeEmployed").val().split(',');
 						var addDishID = [];
 						var addDishQty = [];
 						var addDishNotes = [];
-						var dishAvailedIDs = [];
+						var addServID = [];
+						var addServQty = [];
+						var addServNotes = [];
+						var addServDescs = [];
+						var addEquipID = [];
+						var addEquipQty = [];
+						var addEquipNotes = [];
+						var addEquipDescs = [];
+						var addEmpID = [];
+						var addEmpQty = [];
+						var addEmpNotes = [];
 						var ptIDs = $("#ptids").val();
 						var pmIDs = $("#pmids").val();
-						for (var i = 1; i <= addCtr; i++){
-							addDishID.push($("#additionalDish"+i+"").val());
-							addDishQty.push($("#additionalQty"+i+"").val());
-							addDishNotes.push($("#additionalNotes"+i+"").val());
+						var addReservationIDs = $("#addReservationID").val();
+						var addPackIDs = $("#addPackageID").val();
+						if(addPackIDs){
+							var dishIDs = $("#addDishesAvailed").val().split(',');
+							var servIDs = $("#addServiceAvailed").val().split(',');	
+							var equipIDs = $("#addEquipmentAvailed").val().split(',');
+							var empIDs = $("#addEmployeeEmployed").val().split(',');
+						}
+						if(addCtr>0){
+							for (var i = 1; i <= addCtr; i++){
+								addDishID.push($("#additionalDish"+i+"").val());
+								addDishQty.push($("#additionalQty"+i+"").val());
+								addDishNotes.push($("#additionalNotes"+i+"").val());
+							}
+							// alert(addDishID);
+							// alert(addDishQty);
+							// alert(addDishNotes);
 						}
 						
+						if(servCtr>0){
+							for (var i = 1; i <= servCtr; i++){
+								addServID.push($("#additionalService"+i+"").val());
+								addServQty.push($("#additionalSQty"+i+"").val());
+								addServNotes.push($("#additionalSNotes"+i+"").val());
+								addServDescs.push($("#additionalSDesc"+i+"").val());
+							}
+							// alert(addServID);
+							// alert(addServQty);
+							// alert(addServNotes);
+							// alert(addServDescs);
+						}
+						if(equipCtr>0){
+							for (var i = 1; i <= equipCtr; i++){
+								addEquipID.push($("#additionalEquipment"+i+"").val());
+								addEquipQty.push($("#additionalEQty"+i+"").val());
+								addEquipNotes.push($("#additionalENotes"+i+"").val());
+								addEquipDescs.push($("#additionalEDesc"+i+"").val());
+							}
+							// alert(addEquipID);
+							// alert(addEquipQty);
+							// alert(addEquipNotes);
+							// alert(addEquipDescs);
+						}
+						if(empCtr>0){
+							for (var i = 1; i <= empCtr; i++){
+								addEmpID.push($("#additionalEmployee"+i+"").val());
+								addEmpQty.push($("#additionalEmQty"+i+"").val());
+								addEmpNotes.push($("#additionalEmNotes"+i+"").val());
+							}
+							// alert(addEmpID);
+							// alert(addEmpQty);
+							// alert(addEmpNotes);
+						}
+							// alert("motherfucker2");
 						// var d = new Date(); 
 						//  dt = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); 
 						// alert(dt)
@@ -1697,6 +1773,19 @@
 						            	addDishID: addDishID,
 						            	addDishQty: addDishQty,
 						            	addDishNotes: addDishNotes,
+						            	addServID: addServID,
+										addServQty: addServQty,
+										addServNotes: addServNotes,
+										addServDescs: addServDescs,
+										addEquipID: addEquipID,
+										addEquipQty: addEquipQty,
+										addEquipNotes: addEquipNotes,
+										addEquipDescs: addEquipDescs,
+										addEmpID: addEmpID,
+										addEmpQty: addEmpQty,
+										addEmpNotes: addEmpNotes,
+										ptIDs: ptIDs,
+										pmIDs: pmIDs,
 						            	
 					         		},
 					                success: function(data){

@@ -71,7 +71,7 @@
 			                                	<input type="text" name="addEventID" id="addEventID" value = "{{ $eventNewID }}" hidden>
 			                                    <div class="form-group">
 			                                        <label>Event Type</label>
-			                                        <select name="eType" id = "eType" class="form-control" required="">
+			                                        <select name="eType" id = "eType" class="form-control" >
 														<option disabled="" selected=""></option>
 														    @foreach($eType as $type)
 														<option value="{{$type->eventTypeID}}">{{$type->eventTypeName}}</option>
@@ -82,13 +82,13 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Name of Event</label>
-			                                        <input type="text" name="eName" id = "eName" maxlength="50" class="form-control" required="">
+			                                        <input type="text" name="eName" id = "eName" maxlength="50" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
-			                                        <label>Do you have a location?</label>
-		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)" required="">
+			                                        <label>Do you have a Venue?</label>
+		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)">
 															<option disabled="" selected=""></option>
 															<option value="Yes">Yes</option>
 															<option value="No">No</option>
@@ -98,20 +98,20 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Date of Event</label>
-			                                        <input type="date" name="eDate" id = "eDate"  min="{{date('Y-m-d',  strtotime( '+7 day' ))}}" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" class="form-control" onchange="dateday(this.id)" required>
+			                                        <input type="date" name="eDate" id = "eDate"  min="{{date('Y-m-d',  strtotime( '+7 day' ))}}" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" class="form-control" onchange="dateday(this.id)">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locYes">
 			                                    <div class="form-group">
-			                                        <label>Location</label>
-			                                        <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="" required="">
+			                                        <label>Venue</label>
+			                                        <input type="text" name="eLoc" id = "eLoc" class="form-control" disabled="">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1" id="locNo" style="display:none">
 			                                    <div class="form-group">
 			                                        <label>Venue</label>
-		                                            <select name="eLoc2" id = "eLoc2" class="form-control" required="">
-														<option disabled="Choose location" selected=""></option>
+		                                            <select name="eLoc2" id = "eLoc2" class="form-control">
+														<option disabled="Choose Venue" selected=""></option>
 														@foreach($location as $loc)
 														<option value="{{$loc->locationID}}">{{$loc->locationName}}</option>
 														@endforeach
@@ -121,19 +121,19 @@
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Number of Guests</label>
-			                                        <input type="number" name="eNum" id = "eNum" min="100" max="400" class="form-control" required="">
+			                                        <input type="number" name="eNum" id = "eNum" min="100" max="400" class="form-control">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Starting Time of Event</label>
-			                                        <input type="time" name="eTime" id = "eTime" min="06:59:00"  class="form-control" onchange="timeChange(this.id)"" required="">
+			                                        <input type="time" name="eTime" id = "eTime" min="06:59:00"  class="form-control" onchange="timeChange(this.id)">
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>End Time of Event</label>
-			                                        <input type="time" name="enTime" id = "enTime" min="11:59:00" class="form-control" required="">
+			                                        <input type="time" name="enTime" id = "enTime" min="11:59:00" class="form-control" onchange="timeChange(this.id)">
 			                                    </div>
 			                                </div>
 		                            	</div>
@@ -145,41 +145,45 @@
 											<input type="text" name="addReservationID" id="addReservationID" value = "{{ $reservationNewID }}" hidden>
 											<input type="text" name="addContactID" id="addContactID" value = "{{ $contactNewID }}" hidden>
 											<input type="text" name="addDishAvailedID" id="addDishAvailedID" value = "{{ $dishAvailedNewID }}" hidden>
+											<input type="text" name="tc" id="tc"  hidden>
+											<input type="text" name="tm3" id="tm3"  hidden>
+											<input type="text" name="tm1" id="tm1" value="9:00" hidden>
+											<input type="text" name="tm2" id="tm2" value="9:00"  hidden>
 
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Full Name</label>
-			                                        <input type="text" name="cusName" id = "cusName" class="form-control" placeholder="e.g. Juan de la Cruz" required>
+			                                        <input type="text" name="cusName" id = "cusName" class="form-control" placeholder="e.g. Juan de la Cruz">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Home Address</label>
-			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control" required>
+			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5 col-sm-offset-1">
-			                                    <div class="form-group">
-			                                        <label>Date of Birth</label>
-			                                        <input type="date" name="dob" id = "dob" min="{{date('Y-m-d',  strtotime( '-100 year' ))}}" max="{{date('Y-m-d',  strtotime( '-12 year' ))}}" class="form-control" required="">
+			                                   	<div class="form-group">
+			                                        <label>Telephone Number</label>
+			                                        <input type="text" name="telNum" id = "telNum" pattern="[0-9]{3}-[0-9]{4}" class="form-control" placeholder="e.g. 000-0000">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
-			                                    <div class="form-group">
-			                                        <label>Telephone Number</label>
-			                                        <input type="text" name="telNum" id = "telNum" pattern="[0-9]{3}-[0-9]{4}" class="form-control" placeholder="e.g. 000-0000" required="">
+											 	<div class="form-group">
+			                                        <label>Date of Birth</label>
+			                                        <input type="date" name="dob" id = "dob" min="{{date('Y-m-d',  strtotime( '-100 year' ))}}" max="{{date('Y-m-d',  strtotime( '-12 year' ))}}" class="form-control">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Cellphone Number</label>
-			                                        <input type="text" name="cellNum" id = "cellNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000" class="form-control" required="">
+			                                        <input type="text" name="cellNum" id = "cellNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000" class="form-control">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Email Address</label>
-			                                        <input type="email" name="emailAdd" id = "emailAdd" class="form-control" placeholder="e.g. margarethcateringservices@gmail.com" required="">
+			                                        <input type="email" name="emailAdd" id = "emailAdd" class="form-control" placeholder="e.g. margarethcateringservices@gmail.com">
 			                                    </div>
 			                                </div>		                                	
 			                                <div class="col-sm-12">
@@ -188,13 +192,13 @@
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Contact Name</label>
-			                                        <input type="text" name="conPerson" id = "conPerson" class="form-control" placeholder="e.g Juana de la Cruz" required="">
+			                                        <input type="text" name="conPerson" id = "conPerson" class="form-control" placeholder="e.g Juana de la Cruz">
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
 			                                    <div class="form-group">
 			                                        <label>Contact Number</label>
-			                                        <input type="text" name="conNum" id = "conNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}||[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000/000-0000" class="form-control" required="">
+			                                        <input type="text" name="conNum" id = "conNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}||[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000/000-0000" class="form-control">
 			                                    </div>
 			                                </div>
 		                                </div>
@@ -362,6 +366,7 @@
 	</div>
 	
 	<!-- PACKAGE MODAL -->
+	<form>
 	@foreach($package as $pg)
 	<div id="packageModal{{$pg->packageID}}" class="modal fade" role="dialog">
 		<div class="col-md-8 col-sm-offset-2">	
@@ -378,7 +383,7 @@
 								<h3 id='dishTypeName'><center>{{$pgi->dishTypeName}}{{$pgi->serviceID}}</center></h3>
 					            <div class="form-group">
 									<img src="{{ asset('images/' . $pgi->dishTypeImage) }}" style="height: 150px; border: 5px" id="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" class="col-md-12 col-sm-12">
-					            	<select class="form-control" name="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" id="dish{{$pgi->packageID}}{{$pgi->packageInclusionID}}" onclick="getdishid(this.id)" onchange="pckdshimg(this.name)">
+					            	<select class="form-control" name="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" id="dish{{$pgi->packageID}}{{$pgi->packageInclusionID}}" onclick="getdishid(this.id)" onchange="pckdshimg(this.name)" required="">
 									<option disabled selected value="">Choose Dish</option>
 										@foreach($dishes as $dishh)
 											@if($pgi->dishTypeID == $dishh->dishTypeID)
@@ -428,6 +433,7 @@
 		</div>
 	</div>
 	@endforeach
+	</form>
 
 	<!-- ADDITIONAL MODAL -->
 	<form class="modal multi-step" id="additionalModal">
@@ -448,7 +454,7 @@
 	            <div class="modal-body step step-{{$i}}" align="center">
 	            	<div class="row">						
 		                <img src="{{ asset('images/' . $dd->dishTypeImage) }}" id="dishTypeImage{{$dd->dishTypeID}}" width="200px" height="150px">
-						<select class="form-control" name="dishTypeImage{{$dd->dishTypeID}}" id="dishType{{$dd->dishTypeID}}" style="width: 200px" onchange="pckdshimg(this.name)">
+						<select class="form-control" name="dishTypeImage{{$dd->dishTypeID}}" id="dishType{{$dd->dishTypeID}}" style="width: 200px" onchange="pckdshimg(this.name)" required="">
 							<option disabled selected value="">Choose Dish</option>
 							@foreach($dishes as $dishh)
 							@if($dd->dishTypeID == $dishh->dishTypeID)
@@ -529,7 +535,7 @@
 						</select> <br>
 						<div class="col-sm-6">
 					    	<div class="form-group">
-					    		<label>Quantity</label>
+					    		<label>Count</label>
 					    		<input type="text" name="employee" id = "empqty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity" onchange="comPriceem(this)" onkeyup="comPriceem(this)">
 					    	</div>
 
@@ -719,185 +725,143 @@
 		</div>
 	</div>
 
-	<!-- <script type="text/javascript">
-   			$('#addReservation').bootstrapValidator({
+	<script type="text/javascript">
+			$.validator.addMethod(
+		        "regex",
+		        function(value, element, regexp) {
+		            var re = new RegExp(regexp);
+		            return this.optional(element) || re.test(value);
+		        },
+		        "Please check your input."
+			);
+   			$('#addReservation').validate({
         		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         		feedbackIcons: {
             		valid: 'fa fa-check',
             		invalid: 'fa fa-close',
             		validating: 'fa fa-refresh',
         		},
-
-        		fields: {
-            		eType: {
-                		validators: {
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-		                }
-		            },
+        		rules:{
+        			eType:{
+        				required:true,
+        			},	        
 		            yesNo: {
-		            	validators: {
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-		                }
+		            	required:true,
 		            },
 		            eLoc: {
-						validators: {
-                  			regexp: {
-				  				regexp: /^[a-zA-Z0-9]+([-',.\s][a-zA-Z0-9]+)*$/,
-                    			message: 'Invalid input.'
-                    		},
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-                  		}
+						required:true,
+						minlength: 2,
 		            },
 		            eLoc2: {
-		            	validators: {
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-		                }
+		            	required:true,
 		            },
 		            eName: {
-		            	validators: {
-		            		regexp: {
-				  				regexp: /^[a-zA-Z]+([-'@\s][a-zA-Z0-9]+)*$/,
-                    			message: 'Invalid input.'
-                    		},
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-		                }
+		            	required:true,
+						rangelength: [5,50],
 		            },
 		            eNum: {
-		            	validators: {
-		            		regexp: {
-                    			regexp: /^\d{1,3}?$/,
-                    				message: 'Invalid input.'
-                  			},
-                  			stringLength: {
-			                    max: 9,
-			                    message: 'Maximum number of guest is 6 digits.'
-                  			},
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-		                }
+		            	required:true,
+		            	digits:true,
+		            	min: 100,
+		            	max: 400,
 		            },
 		            eDate: {
-		            	validators: {
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-		                }
+		            	required:true,
+		            	date: true,
+		            	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
+		            	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
 		            },
 		            eTime: {
-		            	validators: {
-                        	notEmpty: {
-		                        message: 'This field is required.'
-		                    },
-		                }
+		            	required:true,
+		            	min:"06:59:00",
+		            	max: function () { return $('#tm1').val(); },
 		            },
-
+		            enTime: {
+		            	required:true,
+		            	min: function () { return $('#tc').val(); },
+		            	max: function () { return $('#tm2').val(); },
+		            },
 		            cusName: {
-		            	validators: {
-		                  	regexp: {
-						  		regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-		                    	message: 'This can only consist of alphabetical letters, hyphens and apostrophe only.'
-		                  	},
-		                  	notEmpty: {
-		                    	message: 'Please supply your name.'
-		                  	},
-		                  	stringLength: {
-		                    	min: 3,
-		                    	max: 50,
-		                    	message: 'The system allows 3 to 50 characters only.'
-		                  	},
-		                }
+		            	required:true,
+						rangelength: [3,50],
 		            },
 		            homeAdd: {
-		            	validators: {
-					  		regexp: {
-				  				regexp: /^[a-zA-Z0-9]+([-',.\s][a-zA-Z0-9]+)*$/,
-								message: 'Invalid input.'
-					  		},
-					  		notEmpty: {
-								message: 'Please supply your home address.'
-					  		},
-						}
+		            	required:true,
+						rangelength: [5,50],
 		            },
-		            billAdd: {
-		            	validators: {
-					  		regexp: {
-				  				regexp: /^[a-zA-Z0-9]+([-',.\s][a-zA-Z0-9]+)*$/,
-								message: 'Invalid input.'
-					  		},
-					  		notEmpty: {
-								message: 'Please supply your home address.'
-					  		},
-						}
-		            },
-		            cusAge: {
-		            	validators: {
-					  		notEmpty: {
-								message: 'This field is required.'
-					  		},
-						}
+		            dob: {
+		            	required:true,
+		            	date: true,
+		            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
+		            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
 		            },
 		            telNum: {
-		            	validators: {
-						  	regexp: {
-								regexp: /^\d{0,8}?$/,
-								message: 'Invalid input.'
-						  	},
-						}
+		            	required:true,
+						regex: "^[0-9]{3}-[0-9]{4}$",
 		            },
 		            cellNum: {
-		            	validators: {
-						  	regexp: {
-								regexp: /^\d{0,12}?$/,
-								message: 'Invalid input.'
-						  	},
-						}
+		            	required:true,
+						regex: "^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
 		            },
 		            emailAdd: {
-		            	validators: {
-					  		regexp: {
-								regexp: /^[a-zA-Z0-9]+([@.-\s][a-zA-Z0-9]+)*$/,
-								message: 'Invalid input.'
-					  		},
-					  		notEmpty: {
-								message: 'Please supply your email address.'
-					  		},
-						}
+		         	   	required:true,
+		         	   	email:true,
 		            },
 		            conPerson: {
-		            	validators: {
-						  	regexp: {
-								regexp: /^[a-zA-Z]+([-',\s][a-zA-Z]+)*$/,
-								message: 'This can only consist of alphabetical letters, hyphens and apostrophe only.'
-						  	},
-						  	notEmpty: {
-								message: 'Please supply the contact person.'
-						  	},
-						}
+		            	required:true,
+		            	rangelength: [3,50],
+
 		            },
 		            conNum: {
-		            	validators: {
-						  	regexp: {
-								regexp: /^\d{0,12}?$/,
-								message: 'Invalid input.'
-						  	},
-						}
+		            	required:true,
+		            	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+		            },
+            	},
+            	messages:{
+            		eNum: {
+		            	min: "Minimum guest is 100",
+		            	max: "Maximum guest is 400",
+		            },
+		            eType:{
+        				required:"Choose a type of Event.",
+        			},	        
+		            eLoc2:{
+        				required:"Choose a Venue.",
+        			},	        
+		            yesNo: {
+		            	required:"Choose an answer.",
+		            },
+		            telNum:{
+		            	regex: "Please enter a valid telephone number. Format is 000-0000."
+		            },
+		            cellNum:{
+		            	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
+		            },
+		            eDate:{
+		            	min: "Event must be a week at least a week from now.",
+		            	max: "Event must be within these 2 months.",
+		            },
+		            eTime:{
+		            	min: "Business hours starts at 7:00 AM.",
+		            	max: "Event duration must be atleast 5 hours."
+		            },
+		            enTime:{
+		            	min: "Event duration must be atleast 5 hours.",
+		            	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
+		            },
+		            dob: {
+		            	required:"Date of birth is required to determine your age.",
+		            	min: "You are not that old.",
+		            	max: "You must be atleast 12 years old to book an event.",
+		            },
+		            conNum:{
+		            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
 		            },
             	}
         	});
 
 
- 		</script> -->
+ 		</script>
 
  		<script>
  			var addCtr = 0;
@@ -939,6 +903,9 @@
 		 						// price=price+parseDouble(([data['pckgid'][i]['dishCost']]));
 		 						// alert(price);
 
+							}
+							if(!($('#eNum').val())){
+								check=1;
 							}							
 							for(var i = 0; i < data['servid'].length; i++){
 								servid.push([data['servid'][i]['serviceID']]);
@@ -969,15 +936,16 @@
 								}
 								var table = document.getElementById("cartTable");
 							    var row = table.insertRow(0);
-							    var cell1 = row.insertCell(0);
-							    var cell2 = row.insertCell(1);
-								var cell3 = row.insertCell(2);
-								var cell4 = row.insertCell(3);
-								var cell5 = row.insertCell(4);
-								var cell6 = row.insertCell(5);
-								var cell7 = row.insertCell(6);
-								var cell8 = row.insertCell(7);
-								var cell9 = row.insertCell(8);
+								var cell10 = row.insertCell(0);
+							    var cell1 = row.insertCell(1);
+							    var cell2 = row.insertCell(2);
+								var cell3 = row.insertCell(3);
+								var cell4 = row.insertCell(4);
+								var cell5 = row.insertCell(5);
+								var cell6 = row.insertCell(6);
+								var cell7 = row.insertCell(7);
+								var cell8 = row.insertCell(8);
+								var cell9 = row.insertCell(9);
 
 								cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
 								document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
@@ -990,14 +958,18 @@
 								cell7.innerHTML = '<input type="text" id="addServiceAvailed" value="'+servid+'" hidden>';
 								cell8.innerHTML = '<input type="text" id="addEquipmentAvailed" value="'+equipid+'" hidden>';
 								cell9.innerHTML = '<input type="text" id="addEmployeeEmployed" value="'+empid+'" hidden>';
+								cell10.innerHTML = '<input type="text" id="addCheck" value="0" hidden>';
 
 								var table = document.getElementById('cartTable');
 					        	var subt =0;
 							        for (var r = 0, n = table.rows.length; r < n; r++) {
-							            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+							            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 							        }
 								$subt=subt;
 					    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	}
+					    	else{
+					    		alert("Complete choosing your options.");
 					    	}
 						},
 						error: function(result){
@@ -1041,7 +1013,7 @@
 		        	var table = document.getElementById('cartTable');
 		        	var subt =0;
 				        for (var r = 0, n = table.rows.length; r < n; r++) {
-				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 				        }
 				    // alert(subt);
 
@@ -1134,69 +1106,66 @@
 						var dishImage=([data['dish'][0]['dishImage']]);
 						var qty = $("#addqty"+([data['dish'][0]['dishTypeID']])).val();
 						var notes = $("#addnote"+([data['dish'][0]['dishTypeID']])).val();
-						var tp = $("#addprice"+([data['dish'][0]['dishTypeID']])).val();
-						var dishid;
-						var dishqty;
-						var dishnote;
+						// var tp = $("#addprice"+([data['dish'][0]['dishTypeID']])).val();
+						var qqty = 0;
 						var check;
-						// for (var i = addCtr; i>0; i--) {
-						// 	dishid=$('#additionalDish'+(i-1)).val();
-						// 	dishqty=$('#additionalQty'+(i-1)).val();
-						// 	dishnote=$('#additionalNotes'+(i-1)).val();
-							// var table = document.getElementById("cartTable");
-							// for (var r = 0,n=table.rows.length; r <n; r++) {		
-								 
-						 //        	if(dish==parseInt(table.rows[r].cells[4].innerText)){
-						        		
-						 //    		document.getElementById("cartTable").deleteRow(r);
-				   //   					addCtr=addCtr-1;
-							// 			//alert(check);
-										
-						 //        	}
-								
-						 //    }
-				     		
-							// if(dishid==dish){
-							// 	check=i;
-							// 	alert(check);
-							// 	document.getElementById("cartTable").deleteRow(check);
-				   //   			addCtr=addCtr-1;
-							// }
-
-						// }
+						var chec=0;
+						var table = document.getElementById("cartTable");
+						for (var r = 0,n=table.rows.length; r <n; r++) {
+							if(dish==table.rows[r].cells[5].childNodes[0].value){
+								// alert(r);
+								if(table.rows[r].cells[0].childNodes[0].value==1){
+								// alert(r+"a");
+									qqty=parseInt(table.rows[r].cells[6].childNodes[0].value);
+									if(table.rows[r].cells[7].childNodes[0].value){
+										notes=table.rows[r].cells[7].childNodes[0].value;	
+									}				
+									check=r;
+									chec=1;
+				     			}
+							}
+						}
+						if(chec==1 && qty>0){
+							document.getElementById("cartTable").deleteRow(check);
+				     		addCtr=addCtr-1;
+				     	}						
 						if(qty>0){
 							addCtr=addCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
-						    var cell1 = row.insertCell(0);
-						    var cell2 = row.insertCell(1);
-							var cell3 = row.insertCell(2);
-							var cell4 = row.insertCell(3);
-							var cell5 = row.insertCell(4);
-							var cell6 = row.insertCell(5);
-							var cell7 = row.insertCell(6);
+							var cell8 = row.insertCell(0);
+						    var cell1 = row.insertCell(1);
+						    var cell2 = row.insertCell(2);
+							var cell3 = row.insertCell(3);
+							var cell4 = row.insertCell(4);
+							var cell5 = row.insertCell(5);
+							var cell6 = row.insertCell(6);
+							var cell7 = row.insertCell(7);
+							var tq = parseInt(qty)+parseInt(qqty);
+							var tp = tq*price;
 														
 							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
 							document.getElementById("cartImg").src="{!! asset('img/'.'"+ dishImage +"')!!}";
-							cell2.innerHTML = '<h6><b>'+dishName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+							cell2.innerHTML = '<h6><b>'+dishName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+tq+'<br/>Price: '+price+'</i></label></small>';
 						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowFood(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="additionalDish'+addCtr+'" value="'+dish+'" hidden><h1 style="display:none">'+dish+'</h1>';
-							cell6.innerHTML = '<input type="text" id="additionalQty'+addCtr+'" value="'+qty+'" hidden>';
+							cell6.innerHTML = '<input type="text" id="additionalQty'+addCtr+'" value="'+tq+'" hidden>';
 							cell7.innerHTML = '<input type="text" id="additionalNotes'+addCtr+'" value="'+notes+'" hidden>';
+							cell8.innerHTML = '<input type="text" id="addCheck'+addCtr+'" value="1" hidden>';
 				
 
 							var table = document.getElementById('cartTable');
 					       	var subt =0;
 						        for (var r = 0, n = table.rows.length; r < n; r++) {
-						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							
+							alert("Input a Quantity");
 						}						
 						},
 						error: function(result){
@@ -1220,7 +1189,7 @@
 		        	var table = document.getElementById('cartTable');
 		        	var subt =0;
 				        for (var r = 0, n = table.rows.length; r < n; r++) {
-				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 				        }
 				    // alert(subt);
 				    $subt=subt;
@@ -1235,7 +1204,7 @@
 			// 		var table = document.getElementById('cartTable');
 		    //        	var subt =0;
 			// 	        for (var r = 0, n = table.rows.length; r < n; r++) {
-			// 	            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+			// 	            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 			// 	        }
 			// 	    // alert(subt);
 			// 	    $subt=subt;
@@ -1261,44 +1230,73 @@
 						var qty = $("#servqty"+([data['serv'][0]['serviceTypeID']])).val();
 						var notes = $("#servnote"+([data['serv'][0]['serviceTypeID']])).val();
 						var desc = $("#servdesc"+([data['serv'][0]['serviceTypeID']])).val();
-						var tp = $("#servprice"+([data['serv'][0]['serviceTypeID']])).val();
+						// var tp = $("#servprice"+([data['serv'][0]['serviceTypeID']])).val();
+						var qqty = 0;
+						var check;
+						var chec=0;
+						var table = document.getElementById("cartTable");
+						for (var r = 0,n=table.rows.length; r <n; r++) {
+							if(serv==table.rows[r].cells[5].childNodes[0].value){
+								// alert(r);
+								if(table.rows[r].cells[0].childNodes[0].value==2){
+								// alert(r+"a");
+									qqty=parseInt(table.rows[r].cells[6].childNodes[0].value);
+									if(table.rows[r].cells[7].childNodes[0].value){
+										notes=table.rows[r].cells[7].childNodes[0].value;	
+									}
+									if(table.rows[r].cells[8].childNodes[0].value){
+										desc=table.rows[r].cells[8].childNodes[0].value;	
+									}				
+									check=r;
+									chec=1;
+				     			}
+							}
+						}
+						if(chec==1 && qty>0){
+							document.getElementById("cartTable").deleteRow(check);
+				     		servCtr=servCtr-1;
+				     	}		
 					
 								 
 						if(qty>0){
 							servCtr=servCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
-						    var cell1 = row.insertCell(0);
-						    var cell2 = row.insertCell(1);
-							var cell3 = row.insertCell(2);
-							var cell4 = row.insertCell(3);
-							var cell5 = row.insertCell(4);
-							var cell6 = row.insertCell(5);
-							var cell7 = row.insertCell(6);
-							var cell8 = row.insertCell(7);
+							var cell9 = row.insertCell(0);
+						    var cell1 = row.insertCell(1);
+						    var cell2 = row.insertCell(2);
+							var cell3 = row.insertCell(3);
+							var cell4 = row.insertCell(4);
+							var cell5 = row.insertCell(5);
+							var cell6 = row.insertCell(6);
+							var cell7 = row.insertCell(7);
+							var cell8 = row.insertCell(8);
+							var tq = parseInt(qty)+parseInt(qqty);
+							var tp = tq*price;
 											
 							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
 							document.getElementById("cartImg").src="{!! asset('img/'.'"+ servImage +"')!!}";
-							cell2.innerHTML = '<h6><b>'+servName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+							cell2.innerHTML = '<h6><b>'+servName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+tq+'<br/>Price: '+price+'</i></label></small>';
 						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowServ(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="additionalService'+servCtr+'" value="'+serv+'" hidden><h1 style="display:none">'+serv+'</h1>';
-							cell6.innerHTML = '<input type="text" id="additionalSQty'+servCtr+'" value="'+qty+'" hidden>';
+							cell6.innerHTML = '<input type="text" id="additionalSQty'+servCtr+'" value="'+tq+'" hidden>';
 							cell7.innerHTML = '<input type="text" id="additionalSNotes'+servCtr+'" value="'+notes+'" hidden>';
 							cell8.innerHTML = '<input type="text" id="additionalSDesc'+servCtr+'" value="'+desc+'" hidden>';
+							cell9.innerHTML = '<input type="text" id="addSCheck'+servCtr+'" value="2" hidden>';
 				
 
 							var table = document.getElementById('cartTable');
 					       	var subt =0;
 						        for (var r = 0, n = table.rows.length; r < n; r++) {
-						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							
+							alert("Input a Quantity");
 						}
 						},
 						error: function(result){
@@ -1347,7 +1345,7 @@
 		        	var table = document.getElementById('cartTable');
 		        	var subt =0;
 				        for (var r = 0, n = table.rows.length; r < n; r++) {
-				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 				        }
 				    // alert(subt);
 				    $subt=subt;
@@ -1375,43 +1373,73 @@
 						var qty = $("#equipqty"+([data['equip'][0]['equipmentTypeID']])).val();
 						var notes = $("#equipnote"+([data['equip'][0]['equipmentTypeID']])).val();
 						var desc = $("#equipdesc"+([data['equip'][0]['equipmentTypeID']])).val();
-						var tp = $("#equipprice"+([data['equip'][0]['equipmentTypeID']])).val();
+						// var tp = $("#equipprice"+([data['equip'][0]['equipmentTypeID']])).val();
+						var qqty = 0;
+						var check;
+						var chec=0;
+						var table = document.getElementById("cartTable");
+						for (var r = 0,n=table.rows.length; r <n; r++) {
+							if(equip==table.rows[r].cells[5].childNodes[0].value){
+								// alert(r);
+								if(table.rows[r].cells[0].childNodes[0].value==3){
+								// alert(r+"a");
+									qqty=parseInt(table.rows[r].cells[6].childNodes[0].value);
+									if(table.rows[r].cells[7].childNodes[0].value){
+										notes=table.rows[r].cells[7].childNodes[0].value;	
+									}
+									if(table.rows[r].cells[8].childNodes[0].value){
+										desc=table.rows[r].cells[8].childNodes[0].value;	
+									}				
+									check=r;
+									chec=1;
+				     			}
+							}
+						}
+						if(chec==1 && qty>0){
+							document.getElementById("cartTable").deleteRow(check);
+				     		equipCtr=equipCtr-1;
+				     	}		
+					
 
 						if(qty>0){
 							equipCtr=equipCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
-						    var cell1 = row.insertCell(0);
-						    var cell2 = row.insertCell(1);
-							var cell3 = row.insertCell(2);
-							var cell4 = row.insertCell(3);
-							var cell5 = row.insertCell(4);
-							var cell6 = row.insertCell(5);
-							var cell7 = row.insertCell(6);
-							var cell8 = row.insertCell(7);
+							var cell9 = row.insertCell(0);
+						    var cell1 = row.insertCell(1);
+						    var cell2 = row.insertCell(2);
+							var cell3 = row.insertCell(3);
+							var cell4 = row.insertCell(4);
+							var cell5 = row.insertCell(5);
+							var cell6 = row.insertCell(6);
+							var cell7 = row.insertCell(7);
+							var cell8 = row.insertCell(8);
+							var tq = parseInt(qty)+parseInt(qqty);
+							var tp = tq*price;
 											
 							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
 							document.getElementById("cartImg").src="{!! asset('img/'.'"+ equipImage +"')!!}";
-							cell2.innerHTML = '<h6><b>'+equipName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+							cell2.innerHTML = '<h6><b>'+equipName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+tq+'<br/>Price: '+price+'</i></label></small>';
 						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowEquip(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="additionalEquipment'+equipCtr+'" value="'+equip+'" hidden><h1 style="display:none">'+equip+'</h1>';
-							cell6.innerHTML = '<input type="text" id="additionalEQty'+equipCtr+'" value="'+qty+'" hidden>';
+							cell6.innerHTML = '<input type="text" id="additionalEQty'+equipCtr+'" value="'+tq+'" hidden>';
 							cell7.innerHTML = '<input type="text" id="additionalENotes'+equipCtr+'" value="'+notes+'" hidden>';
 							cell8.innerHTML = '<input type="text" id="additionalEDesc'+equipCtr+'" value="'+desc+'" hidden>';
+							cell9.innerHTML = '<input type="text" id="addECheck'+equipCtr+'" value="3" hidden>';
 				
 
 							var table = document.getElementById('cartTable');
 					       	var subt =0;
 						        for (var r = 0, n = table.rows.length; r < n; r++) {
-						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							
+							alert("Input a Quantity");
 						}
 						},
 						error: function(result){
@@ -1460,7 +1488,7 @@
 		        	var table = document.getElementById('cartTable');
 		        	var subt =0;
 				        for (var r = 0, n = table.rows.length; r < n; r++) {
-				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 				        }
 				    // alert(subt);
 				    $subt=subt;
@@ -1487,41 +1515,67 @@
 						var empImage=([data['emp'][0]['employeeTypeImage']]);
 						var qty = $("#empqty").val();
 						var notes = $("#empnote").val();
-						var tp = $("#emptprice").val();
+						// var tp = $("#emptprice").val();
+						var qqty = 0;
+						var check;
+						var chec=0;
+						var table = document.getElementById("cartTable");
+						for (var r = 0,n=table.rows.length; r <n; r++) {
+							if(emp==table.rows[r].cells[5].childNodes[0].value){
+								// alert(r);
+								if(table.rows[r].cells[0].childNodes[0].value==4){
+								// alert(r+"a");
+									qqty=parseInt(table.rows[r].cells[6].childNodes[0].value);
+									if(table.rows[r].cells[7].childNodes[0].value){
+										notes=table.rows[r].cells[7].childNodes[0].value;	
+									}				
+									check=r;
+									chec=1;
+				     			}
+							}
+						}
+						if(chec==1 && qty>0){
+							document.getElementById("cartTable").deleteRow(check);
+				     		empCtr=empCtr-1;
+				     	}						
 								 
 						if(qty>0){
 							empCtr=empCtr+1;
 							var table = document.getElementById("cartTable");
 						    var row = table.insertRow(0);
-						    var cell1 = row.insertCell(0);
-						    var cell2 = row.insertCell(1);
-							var cell3 = row.insertCell(2);
-							var cell4 = row.insertCell(3);
-							var cell5 = row.insertCell(4);
-							var cell6 = row.insertCell(5);
-							var cell7 = row.insertCell(6);
+							var cell8 = row.insertCell(0);
+						    var cell1 = row.insertCell(1);
+						    var cell2 = row.insertCell(2);
+							var cell3 = row.insertCell(3);
+							var cell4 = row.insertCell(4);
+							var cell5 = row.insertCell(5);
+							var cell6 = row.insertCell(6);
+							var cell7 = row.insertCell(7);
+							var tq = parseInt(qty)+parseInt(qqty);
+							var tp = tq*price;
 											
 							cell1.innerHTML = '<h6>Add-On &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
 							document.getElementById("cartImg").src="{!! asset('img/'.'"+ empImage +"')!!}";
-							cell2.innerHTML = '<h6><b>'+empName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+qty+'<br/>Price: '+price+'</i></label></small>';
+							cell2.innerHTML = '<h6><b>'+empName+'</b></h6><small><label id="cartDishes"><i>Quantity: '+tq+'<br/>Price: '+price+'</i></label></small>';
 						    cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 						    cell4.innerHTML = '<button id ="btnRemove" type="button" class="btn btn-danger btn-sm pull-right " onclick="deleteRowEmp(this)">&times</button>';
 							cell5.innerHTML = '<input type="text" id="additionalEmployee'+empCtr+'" value="'+emp+'" hidden><h1 style="display:none">'+emp+'</h1>';
-							cell6.innerHTML = '<input type="text" id="additionalEmQty'+empCtr+'" value="'+qty+'" hidden>';
+							cell6.innerHTML = '<input type="text" id="additionalEmQty'+empCtr+'" value="'+tq+'" hidden>';
 							cell7.innerHTML = '<input type="text" id="additionalEmNotes'+empCtr+'" value="'+notes+'" hidden>';
+							cell8.innerHTML = '<input type="text" id="addEmCheck'+empCtr+'" value="4" hidden>';
 				
 
 							var table = document.getElementById('cartTable');
 					       	var subt =0;
 						        for (var r = 0, n = table.rows.length; r < n; r++) {
-						            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+						            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							
+							alert("Input count");
 						}
 						},
 						error: function(result){
@@ -1569,7 +1623,7 @@
 		        	var table = document.getElementById('cartTable');
 		        	var subt =0;
 				        for (var r = 0, n = table.rows.length; r < n; r++) {
-				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 				        }
 				    // alert(subt);
 				    $subt=subt;
@@ -1589,7 +1643,7 @@
 		        	var table = document.getElementById('cartTable');
 		        	var subt =0;
 				        for (var r = 0, n = table.rows.length; r < n; r++) {
-				            subt =subt+parseFloat(table.rows[r].cells[2].innerText);
+				            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 				        }
 				    // alert(subt);
 				    $subt=subt;
@@ -1620,12 +1674,22 @@
  					var n = d.getDay();
  					// alert(n);
  					if(n==0 || n==6){
+ 						var a = "13:00";
+ 						var b = "18:00";
  						document.getElementById('eTime').setAttribute("max","13:00:00.00");
  						document.getElementById('enTime').setAttribute("max","18:00:00.00");
+ 						$('#tm1').val(a);
+ 						$('#tm2').val(b);
+ 						$('#tm3').val("6:00 PM");
  					}
  					else{
+ 						var a = "16:00";
+ 						var b = "21:00";
  						document.getElementById('eTime').setAttribute("max","16:00:00.00");
  						document.getElementById('enTime').setAttribute("max","21:00:00.00");
+ 						$('#tm1').val(a);
+ 						$('#tm2').val(b);
+ 						$('#tm3').val("9:00 PM");
  					}
 
  				}
@@ -1636,8 +1700,10 @@
  					var pp = etime.charAt(3)+etime.charAt(4);
  					var ttime = parseInt(tt) + 5;
  					var pt= ttime+":"+pp;
+ 					$('#tc').val(pt);
  					// alert(ttime);
  					document.getElementById('enTime').setAttribute("min",pt);
+ 					
  				}
  				$("#btnFinish").click(function(e){
 						var addEventIDs = $("#addEventID").val();						
