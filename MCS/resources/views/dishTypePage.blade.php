@@ -41,7 +41,7 @@
               <tbody>
               @foreach($dishTypeData as $dishTypeData)
                 <tr>
-                  <td><img src="{{ asset('images/' . $dishTypeData->dishTypeImage) }}"  style="width:150px;height:100px;" /></td>
+                  <td><img src="{{ asset('img/' . $dishTypeData->dishTypeImage) }}"  style="width:150px;height:100px;" /></td>
                   <td>{{ $dishTypeData->dishTypeName }}</td>
                   <td>		 
                    <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editDishTypeModal" onclick="getDishType(this.name);" name="{{$dishTypeData->dishTypeID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
@@ -114,7 +114,7 @@
                 
                   <div class="form-group">
                       <div class="col-sm-4" >
-                        <img id="editPhotoIcon" align="middle" src="images/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                        <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
                       </div>
                   </div>
 
@@ -165,7 +165,7 @@
 
                     <div class="form-group">
                       <div class="col-sm-4" >
-                        <img id="photoIcon" align="middle" src="images/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                        <img id="photoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
                       </div>
                     </div>
 

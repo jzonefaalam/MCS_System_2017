@@ -69,7 +69,7 @@
         
                   <div class="form-group">
                       <div class="col-sm-4" >
-                        <img id="photoIcon" align="middle" src="images/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                        <img id="photoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
                       </div>
                   </div>
 
@@ -169,7 +169,7 @@
 
                     <div class="form-group">
                       <div class="col-sm-4" >
-                        <img id="photoIcon" align="middle" src="images/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                        <img id="photoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
                       </div>
                     </div>
 
@@ -278,7 +278,7 @@
               <tbody>
                 @foreach($dishData as $dishData)
                 <tr>
-                  <td><img src="{{ asset('images/' . $dishData->dishImage) }}"  style="width:150px;height:100px;" /></td>
+                  <td><img src="{{ asset('img/' . $dishData->dishImage) }}"  style="width:150px;height:100px;" /></td>
                   <td>{{ $dishData->dishName }}</td>
                   <td>{{ $dishData->dishDescription }}</td>
                   <td>{{ $dishData->dishCost }}</td>
@@ -322,8 +322,8 @@
                 </tr>
                 @endforeach
                 <!-- Enable Package Modal--> 
-              <form role="form" method="POST" action="/EnableDish" class="form-horizontal">
                 <div class="modal fade" id="enableDishModal">
+                <form role="form" method="POST" action="/EnableDish" class="form-horizontal">
                   <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -353,8 +353,8 @@
                           
                     </div>
                   </div>
-                </div>
                 </form>
+                </div>
                 <!-- End Modals-->
 
                 <!-- Disable Package Modal-->
@@ -406,17 +406,17 @@
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
-    <script>
-  $(function () {
-    $('#dishTable').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": false,
-      "info": true,
-      "autoWidth": true
-    });
-  });
+<script>
+$(function () {
+$('#dishTable').DataTable({
+"paging": true,
+"lengthChange": true,
+"searching": true,
+"ordering": false,
+"info": true,
+"autoWidth": true
+});
+});
 </script>
       <script>
         $('#addDishImage').change(function(){

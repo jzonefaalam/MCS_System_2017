@@ -109,17 +109,6 @@
                     </ul>
                   </li>
                   <li>
-                    <a href="/EquipmentPage"><i class="fa fa-circle-o"></i> Equipment
-                    <span class="pull-right-container">
-                      <i class="fa fa-angle-right pull-right"></i>
-                      </span>
-                    </a>
-                    <ul class="treeview-menu">
-                      <li><a href="/EquipmentPage"><i class="fa fa-square-o"></i> Equipment List</a></li>
-                      <li><a href="/EquipmentTypePage"><i class="fa fa-square-o"></i> Equipment Type</a></li>
-                    </ul>
-                  </li>
-                  <li>
                     <a href="/EventPage"><i class="fa fa-circle-o"></i> Event</a>
                   </li>
                   <li>

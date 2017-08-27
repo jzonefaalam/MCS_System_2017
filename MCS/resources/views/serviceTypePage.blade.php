@@ -35,7 +35,7 @@
                 <thead>
                 <tr>
                   <th width="250px">Name</th>
-                  <th width="400px">Description</th>
+                  <!-- <th width="400px">Description</th> -->
                   <th width="100px">Actions</th>
                 </tr>
                 </thead>
@@ -43,7 +43,7 @@
                   @foreach($serviceTypeData as $serviceTypeData)
                   <tr>
                     <td>{{ $serviceTypeData->serviceTypeName }}</td>
-                    <td>{{ $serviceTypeData->serviceTypeDescription }}</td>
+                    <!-- <td>{{ $serviceTypeData->serviceTypeDescription }}</td> -->
                     <td>
                       <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editServiceTypeModal" onclick="getServiceTypeData(this.name);" name="{{$serviceTypeData->serviceTypeID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
                       <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteServiceTypeModal" onclick="getServiceTypeData(this.name);" name="{{$serviceTypeData->serviceTypeID}}"><i class="fa fa-trash fa-fw"></i> Delete</a>
@@ -63,7 +63,7 @@
                     <div class="modal-content">
                         <div class="modal-body">
                           <div class="form-group" style="display:none;">
-                            <label class="col-sm-4 control-label">Delete serviceType</label>
+                            <label class="col-sm-4 control-label">Delete Service Type</label>
                             <div class="col-sm-5 input-group">
                               <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                               <input type="text" class="form-control" name="deleteServiceTypeID" id="deleteServiceTypeID" readonly="">
@@ -109,82 +109,80 @@
                       </div>
                       </div>
 
-                                  <div class="form-group">
-                                    <label class="col-sm-4 control-label"> Name</label>
-                                    <div class="col-sm-6">
-									<div class = "input-group">
-                                     <span class="input-group-addon"><i class="fa fa-car" aria-hidden="true"></i></span>
-                                     <input type="text" class="form-control" name="editServiceTypeName" id="editServiceTypeName" required>
-                                    </div>
-									</div>
-                                  </div>
+                      <div class="form-group">
+                      <label class="col-sm-4 control-label"> Name</label>
+                      <div class="col-sm-6">
+                      <div class = "input-group">
+                      <span class="input-group-addon"><i class="fa fa-car" aria-hidden="true"></i></span>
+                      <input type="text" class="form-control" name="editServiceTypeName" id="editServiceTypeName" required>
+                      </div>
+                      </div>
+                      </div>
 
-                                  <input type="text" class="form-control" name="tempName" id="tempName" style="display: none;">
+                      <input type="text" class="form-control" name="tempName" id="tempName" style="display: none;">
 
-                                  <div class="form-group">
-                                    <label class="col-sm-4 control-label"> Description</label>
-                                    <div class="col-sm-6">
-									<div class = "input-group">
-                                     <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
-                                     <textarea type="text" class="form-control" name="editServiceTypeDesc" id="editServiceTypeDesc" required></textarea>
-                                    </div>
-									</div>
-                                  </div>
+                      <!-- <div class="form-group">
+                      <label class="col-sm-4 control-label"> Description</label>
+                      <div class="col-sm-6">
+                      <div class = "input-group">
+                      <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
+                      <textarea type="text" class="form-control" name="editServiceTypeDesc" id="editServiceTypeDesc" required></textarea>
+                      </div>
+                      </div>
+                      </div> -->
 
                                   
-                          </div>
-                          <div class="modal-footer">
-                              <button type="submit" name="editServiceTypeBtn" class="btn btn-default">Submit</button>
-                          </div>
-                        </div>
+                      </div>
+                      <div class="modal-footer">
+                      <button type="submit" name="editServiceTypeBtn" class="btn btn-default">Submit</button>
+                      </div>
+                      </div>
                   </div>
                 </div>
                 </form>
                         <!-- End Modals -->
 						
                      <!-- addserviceType Modal-->
-                        <div class="panel-body">
-                        <form id = "addserviceTypeForm" role="form" method="POST" action="/ServiceTypePage" class="form-horizontal">
-                              <div class="modal fade" id="addServiceTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title" id="myModalLabel">ADD Service Type</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                        {!! csrf_field() !!}
-                                                <div class="form-group">
-                                                  <label class="col-sm-4 control-label">Service Type Name</label>
-                                                  <div class="col-sm-6">
-												  <div class = "input-group">
-                                                   <span class="input-group-addon"><i class="fa fa-car" aria-hidden="true"></i></span>
-                                                   <input type="text" class="form-control" name="addServiceTypeName" placeholder="Service Type Name" required>
-                                                  </div>
-												  </div>
-                                                </div>
+                      <div class="panel-body">
+                      <form id = "addserviceTypeForm" role="form" method="POST" action="/ServiceTypePage" class="form-horizontal">
+                      <div class="modal fade" id="addServiceTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                      <div class="modal-content">
+                      <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">ADD Service Type</h4>
+                      </div>
+                      <div class="modal-body">
+                      {!! csrf_field() !!}
+                      <div class="form-group">
+                      <label class="col-sm-4 control-label">Service Type Name</label>
+                      <div class="col-sm-6">
+                      <div class = "input-group">
+                      <span class="input-group-addon"><i class="fa fa-car" aria-hidden="true"></i></span>
+                      <input type="text" class="form-control" name="addServiceTypeName" placeholder="Service Type Name" required>
+                      </div>
+                      </div>
+                      </div>
 
-                                                <div class="form-group">
-                                                  <label class="col-sm-4 control-label"> Description</label>
-                                                  <div class="col-sm-6">
-												  <div class = "input-group">
-                                                   <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
-                                                   <textarea type="text" class="form-control" name="addServiceTypeDescription" placeholder="Service Type Description" required></textarea>
-                                                  </div>
-												  </div>
-                                                </div>
+                      <!-- div class="form-group">
+                      <label class="col-sm-4 control-label"> Description</label>
+                      <div class="col-sm-6">
+                      <div class = "input-group">
+                      <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
+                      <textarea type="text" class="form-control" name="addServiceTypeDescription" placeholder="Service Type Description" required></textarea>
+                      </div>
+                      </div>
+                      </div> -->
 
-                                                
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" name="addserviceTypeBtn" class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                          </form>
-                        </div>
+                      </div>
+                      <div class="modal-footer">
+                      <button type="submit" name="addserviceTypeBtn" class="btn btn-primary">Submit</button>
+                      </div>
+                      </div>
+                      </div>
+                      </div>
+                      </form>
+                      </div>
                      <!-- End Modals-->
 
     </section>
@@ -218,7 +216,7 @@
                 $('#editServiceTypeID').val(data['ss'][0]['serviceTypeID']);
                 $('#deleteServiceTypeID').val(data['ss'][0]['serviceTypeID']);
                 $('#editServiceTypeName').val(data['ss'][0]['serviceTypeName']);
-                $('#editServiceTypeDesc').val(data['ss'][0]['serviceTypeDescription']);
+                // $('#editServiceTypeDesc').val(data['ss'][0]['serviceTypeDescription']);
                 },
                 error: function(xhr)
                 {

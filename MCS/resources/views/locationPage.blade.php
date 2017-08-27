@@ -46,7 +46,7 @@
               <tbody>
                 @foreach ($locationData as $locationData)
                 <tr>
-                  <td><img src="{{ asset('images/' . $locationData->locationImage) }}"  style="width:150px;height:100px;" /></td>
+                  <td><img src="{{ asset('img/' . $locationData->locationImage) }}"  style="width:150px;height:100px;" /></td>
                   <td> {{ $locationData->locationName }} </td>
                   <td> {{ $locationData->locationDescription }} </td>
                   <td width="130px"> {{ $locationData->locationAddress }} </td>
@@ -117,8 +117,6 @@
                   </div>
                 </div>
                 <!-- END -->
-
-                
               </tbody>
             </table>
           </div>
@@ -170,6 +168,12 @@
                       <div class="modal-body">
 
                       {!! csrf_field() !!}
+
+                      <div class="form-group">
+                      <div class="col-sm-4" >
+                      <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                      </div>
+                      </div>
 
                       <div class="form-group" style="display:none;">
                       <label class="col-sm-4 control-label">Location ID</label>
@@ -284,6 +288,13 @@
                           </div>
                           <div class="modal-body">
                           {!! csrf_field() !!}
+
+                          <div class="form-group">
+                            <div class="col-sm-4" >
+                              <img id="addPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                            </div>
+                          </div>
+
                             <div class="form-group">
                               <label class="col-sm-4 control-label">Location Name</label>
                               <div class="col-sm-6">
@@ -361,7 +372,7 @@
                              <div class="col-sm-6">
                               <div class="input-group">
                                <div class="input-group-addon">
-                                <input type="file" name="addLocationImage">
+                                <input type="file" name="addLocationImage" id="addLocationImage">
                               </div>
                               </div>
                             </div>
@@ -397,6 +408,44 @@
       "autoWidth": true
     });
   });
+</script>
+
+<script>
+$('#addLocationImage').change(function(){
+
+var file = this.files[0];
+var reader = new FileReader();
+reader.onload = function(){
+// alert("asdsd")
+
+document.getElementById('addPhotoIcon').src = this.result;
+};
+reader.readAsDataURL(file);
+
+var yourImg = document.getElementById('addPhotoIcon');
+if(yourImg && yourImg.style) {
+yourImg.style.height = '150px';
+yourImg.style.width = '150px';
+}
+});
+
+$('#editLocationImage').change(function(){
+
+var file = this.files[0];
+var reader = new FileReader();
+reader.onload = function(){
+// alert("asdsd")
+
+document.getElementById('editPhotoIcon').src = this.result;
+};
+reader.readAsDataURL(file);
+
+var yourImg = document.getElementById('editPhotoIcon');
+if(yourImg && yourImg.style) {
+yourImg.style.height = '150px';
+yourImg.style.width = '150px';
+}
+});
 </script>
 
     <script>
