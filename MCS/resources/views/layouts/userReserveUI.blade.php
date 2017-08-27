@@ -18,14 +18,18 @@
 		<!-- CSS Just for demo purpose, don't include it in your project -->
 		<link href="{{ asset('assets/css/demo.css')}}" rel="stylesheet" />
 
+
 		<!-- Fonts and Icons -->
 	    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.css" rel="stylesheet">
 		<link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
 		<link href="assets/css/themify-icons.css" rel="stylesheet">
-	
+		
+
+
 		<!-- Full Calendar -->		
 		<link href="{{ asset('fullcalendar/fullcalendar.min.css') }}" rel="stylesheet" />
 		<link href="{{ asset('fullcalendar/fullcalendar.print.min.css') }}" rel="stylesheet" media="print" />
+
 
 		<!-- Validator -->		
 		<link rel="stylesheet" type="text/css" href="{{ asset('validator/dist/css/bootstrapValidator.css') }}"/>
@@ -33,6 +37,7 @@
 		<!--     Fonts and icons     -->
 		<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+		
 
 
 	</head>
@@ -81,6 +86,7 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script> 
 
 	
+	
 	<!-- Full Calendar -->
 
 	<!--   Core JS Files   -->
@@ -98,6 +104,8 @@
 	<!--  More information about jquery.validate here: http://jqueryvalidation.org/	 -->
 	<script src="{{ asset('paper/assets/js/jquery.validate.min.js') }}"></script>
 
+	<script src="{{ asset('LTE/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('LTE/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 	<!--  Plugin for the Wizard -->
 	@yield('scripts')
 

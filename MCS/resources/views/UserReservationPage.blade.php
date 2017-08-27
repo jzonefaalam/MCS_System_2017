@@ -229,14 +229,14 @@
 		                                	<input type="text" id="dtid" hidden>
 		                                	<input type="text" id="ptids" hidden>
 		                                	<input type="text" id="pmids" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#additionalModal" value="Food"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#additionalModal" value="Food" onclick="getFck(this)"> &nbsp &nbsp
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg" data-toggle="modal" href="#serviceModal" value="Service"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg" data-toggle="modal" href="#serviceModal" value="Service" onclick="getFck(this)"> &nbsp &nbsp
 		                                    </a>
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment">
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment" onclick="getFck(this)">
 		                                    </a>
 		                                </div>
 		                            </div>
@@ -282,7 +282,7 @@
 		                        <div class="wizard-footer">
 		                        	<div class="pull-right">
 		                                <input type='button' class='btn btn-next btn-fill btn-primary btn-wd' name='next' value='Next'  />
-		                                <input type="button" id="btnFinish" class="btn btn-finish btn-fill btn-primary btn-wd" name="finish" value="Finish"/>
+		                                <input type="button" data-toggle="modal"  value="Finish" class="btn btn-finish btn-fill btn-primary btn-wd" href="#paymentModal" onclick="getFck(this)">
 		                            </div>
 
 		                            <div class="pull-left">
@@ -332,11 +332,11 @@
 		                        <div class="tab-content">
 		                            <div class="tab-pane" id="viewCart">
 		                                <div class="row">
-		                                    <table id="cartTable" class="table table-hover">
+		                                    <table id="cartTable" class="table table-hover" height="300px" style="display: block; overflow-x: hidden; ">
                   								<thead>
                      				
            										</thead>
-                   								<tbody>
+                   								<tbody style="overflow-y: auto;">
                              
                    								</tbody>
           									</table>
@@ -366,9 +366,9 @@
 	</div>
 	
 	<!-- PACKAGE MODAL -->
-	<form>
+	<form id="packageModals">
 	@foreach($package as $pg)
-	<div id="packageModal{{$pg->packageID}}" class="modal fade" role="dialog">
+	<div id="packageModal{{$pg->packageID}}" class="modal fade" role="dialog" >
 		<div class="col-md-8 col-sm-offset-2">	
 			<div class="modal-content" style="margin-top: 50px">
 				<div class="modal-header">
@@ -383,7 +383,7 @@
 								<h3 id='dishTypeName'><center>{{$pgi->dishTypeName}}{{$pgi->serviceID}}</center></h3>
 					            <div class="form-group">
 									<img src="{{ asset('images/' . $pgi->dishTypeImage) }}" style="height: 150px; border: 5px" id="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" class="col-md-12 col-sm-12">
-					            	<select class="form-control" name="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" id="dish{{$pgi->packageID}}{{$pgi->packageInclusionID}}" onclick="getdishid(this.id)" onchange="pckdshimg(this.name)" required="">
+					            	<select class="form-control" name="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" id="dish{{$pgi->packageID}}{{$pgi->packageInclusionID}}" data-error="required"  onclick="getdishid(this.id)" onchange="pckdshimg(this.name)" required="">
 									<option disabled selected value="">Choose Dish</option>
 										@foreach($dishes as $dishh)
 											@if($pgi->dishTypeID == $dishh->dishTypeID)
@@ -707,25 +707,39 @@
 	</form>
 
 	<!-- PAYMENT MODAL -->
-	<div id="paymentModal" class="modal fade" role="dialog"> <br> <br> <br>
-		<div class="col-md-8 col-sm-offset-2">
+	<form class="modal multi-step" id="paymentModal">
+		<div class="modal-dialog"> <br> <br> <br>
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" align="center"> Payment <i class="fa fa-money" aria-hidden="true"></i></h4>
+					<h4 class="modal-title step-1" data-step="1">Confirmation</h4>
+					<h4 class="modal-title step-2" data-step="2">Terms and Conditions</h4>
 				</div>
+
+	            <div class="modal-body step step-1" align="center">
+
+	            </div>
+
+	             <div class="modal-body step step-2" align="center">
+
+	            </div>
 
 				<div class="modal-footer">
 					<div class="pull-right">
-						<button type="button" class="btn btn-success pull-right" data-dismiss="modal">Save</button>
+						<button type="button" class="btn btn-success btn-fill step step-1" data-step="1" onclick="sendEvent('#paymentModal', 2)">Continue</button>
+						<button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-danger btn-fill step step-2" data-step="2" data-dismiss="modal">Confirm</button>
+					</div>
+					<div class="pull-left">
+						<button type="button" class="btn btn-danger step step-1" data-step="1" data-dismiss="modal">Cancel</button>
+						<button type="button" class="btn btn-success step step-2" data-step="2" onclick="sendEvent('#paymentModal', 1)">Back</button>
 					</div>
 				</div>
-			</div>
+			</div>			
 		</div>
-	</div>
+	</form>
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 			$.validator.addMethod(
 		        "regex",
 		        function(value, element, regexp) {
@@ -862,7 +876,7 @@
 
 
  		</script>
-
+ -->
  		<script>
  			var addCtr = 0;
  			var servCtr = 0;
@@ -1651,7 +1665,31 @@
 		        }
  				function getpckid(id){
  				$("#pckid").val(id)
+ 				@foreach($package as $pg)
+ 				@foreach($packageinclusion as $pgi)
+		            	@if($pgi->packageID == $pg->packageID)
+		            		document.getElementById('dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}').src="{!! asset('images/' . $pgi->dishTypeImage) !!}"; 
+		            	@endif
+		         @endforeach
+		         @endforeach
  				// alert(id)
+ 				document.getElementById('packageModals').reset();
+ 				}
+ 				function getFck(id){
+ 				@foreach($dishtype as $dt)
+		            document.getElementById('dishTypeImage{{$dt->dishTypeID}}').src="{!! asset('images/' . $dt->dishTypeImage) !!}";
+		        @endforeach
+ 				@foreach($servicetype as $st)
+		            document.getElementById('serviceTypeImage{{$st->serviceTypeID}}').src="{!! asset('images/' . $st->serviceTypeImage) !!}";
+		        @endforeach
+		        @foreach($equipmenttype as $et)
+		            document.getElementById('equipmentTypeImage{{$et->equipmentTypeID}}').src="{!! asset('images/' . $et->equipmentTypeImage) !!}";
+		        @endforeach
+ 					document.getElementById('empimage').src="{!! asset('images/' . 'avatar5.png') !!}"; 
+ 					document.getElementById('additionalModal').reset();
+ 					document.getElementById('serviceModal').reset();
+ 					document.getElementById('equipmentModal').reset();
+ 					document.getElementById('paymentModal').reset();
  				}
  				function getdishtypeid(id){
  				$("#dtid").val(id)
@@ -1935,6 +1973,9 @@
 							alert('error');
 						}
 		});
+ 		</script>
+ 		<script type="text/javascript">
+	 		
  		</script>
 
  		<script src="/multi/multi-step-modal.js"></script>
