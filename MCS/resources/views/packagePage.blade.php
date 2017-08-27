@@ -43,7 +43,7 @@
               <tbody>
                 @foreach($packageData as $packageData)
                 <tr>
-                  <td><img src="{{ asset('images/' . $packageData->packageImage) }}" style="width:150px;height:100px;" /></td>
+                  <td><img src="{{ asset('img/' . $packageData->packageImage) }}" style="width:150px;height:100px;" /></td>
                   <td>{{ $packageData->packageName }}</td>
                   <td>{{ $packageData->packageDescription }}</td>
                   <td>{{ $packageData->packageCost }}</td>
@@ -151,17 +151,17 @@
                 <!-- End Modals-->
 
                 <!-- View Package Inclusions Modal-->
-                <div class="modal fade viewInclusionsModal" id="viewInclusionsModal">
+                <div class="modal fade" id="viewInclusionsModal">
                 <div class="modal-dialog">
                 <div class="modal-content">
-                <form   role="form" class="form-horizontal" enctype="multipart/form-data">
-
+                <form role="form" id="packageInclusionForm" class="form-horizontal">
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title" id="myModalLabel">Package Inclusions</h4>
                 </div>
 
                 <div class="modal-body">
+                
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                       <li ><a href="#tab_1" data-toggle="tab">Dish </a></li>
@@ -170,30 +170,33 @@
                       <li ><a href="#tab_4" data-toggle="tab">Staff </a></li>
                     </ul>
                     <div class="tab-content">
-                      <div class="tab-pane active" id="tab_1">
-                        <div class="dishInclusionDiv" id="dishInclusionDiv">
-                        <strong><h4>Dish Inclusions</h4></strong>
 
-                        </div>
+                     <div class="tab-pane active" id="tab_1">
+                      <div>
+                      <strong><h4>Dish Inclusions</h4></strong><br>
                       </div>
+                      <div class="dishInclusionDiv" id="dishInclusionDiv">
+                      </div>
+                      </div>
+
                       <div class="tab-pane active" id="tab_2">
-                        <div class="equipmentInclusionDiv" id="equipmentInclusionDiv">
-                        <strong><h4>Equipment Inclusions</h4></strong>
-
-                        </div>
+                      <strong><h4>Equipment Inclusions</h4></strong><br>
+                      <div class="equipmentInclusionDiv" id="equipmentInclusionDiv">
                       </div>
+                      </div>
+
                       <div class="tab-pane active" id="tab_3">
-                        <div class="serviceInclusionDiv" id="serviceInclusionDiv">
-                        <strong><h4>Service Inclusions</h4></strong>
-
-                        </div>
+                      <strong><h4>Service Inclusions</h4></strong><br>
+                      <div class="serviceInclusionDiv" id="serviceInclusionDiv">
                       </div>
+                      </div>
+
                       <div class="tab-pane active" id="tab_4">
+                      <strong><h4>Staff Inclusions</h4></strong><br>
                       <div class="staffInclusionDiv" id="staffInclusionDiv">
-                        <strong><h4>Staff Inclusions</h4></strong>
-
-                        </div>
                       </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -204,79 +207,130 @@
                 <!-- End Modals-->        
 		  
 				<!-- edit package Modal-->
-                    <div class="modal fade" id="editPackageModal">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                        <form id="editPackageForm" role="form" method="POST" action="EditPackagePage" class="form-horizontal" enctype="multipart/form-data">
-                          
-						  <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title" id="myModalLabel">UPDATE PACKAGE</h4>
-                          </div>
-						  
-                          <div class="modal-body">
-						                            {!! csrf_field() !!}
-                            <div class="form-group" style="display: none;">
-                              <label class="col-sm-4 control-label">Package ID</label>
-                              <div class="col-sm-5">
-							  <div class = "input-group">
-                               <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-                               <input type="text" class="form-control" name="editPackageID" id="editPackageID" " readonly="">
-                              </div>
-							  </div>
-                            </div>
-							
-                            <div class="form-group">
-                              <label class="col-sm-4 control-label">Package Name</label>
-                              <div class="col-sm-5">
-							  <div class = "input-group">
-                                <span class="input-group-addon"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="editPackageName" id="editPackageName" placeholder="Package Name" data-error="This field is required">
-                              </div>
-							  </div>
-                            </div>
+                <div class="modal fade" id="editPackageModal">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                <form id="editPackageForm" role="form" method="POST" action="EditPackagePage" class="form-horizontal" enctype="multipart/form-data">
 
-                            <input type="text" class="form-control" name="tempName" id="tempName" style="display: none;">
-							
-                            <div class="form-group has-feedback">
-                              <label class="col-sm-4 control-label"> Description</label>
-                              <div class="col-sm-5">
-							                <div class = "input-group">
-                                <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
-                                <textarea type="text" class="form-control" name="editPackageDesc" id="editPackageDesc" placeholder="Package Description"></textarea>
-                              </div>
-							               </div>
-                            </div>
-							
-                            <div class="form-group ">
-                              <label class="col-sm-4 control-label"> Cost</label>
-                              <div class="col-sm-5">
-							  <div class = "input-group">
-                                <span class="input-group-addon"><i class="fa fa-rouble" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="editPackagePrice" id="editPackagePrice" placeholder="Package Cost">
-                              </div>
-                            </div>
-                          </div>
-						                </div> 
+                <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">UPDATE PACKAGE</h4>
+                </div>
 
-                    <div class="form-group has-feedback">
-                        <label class="col-sm-4 control-label">Package Image</label>
-                       <div class="col-sm-6">
-                        <div class="input-group">
-                         <div class="input-group-addon">
-                          <input type="file" name="editPackageImage">
-                        </div>
-                        </div>
-                      </div>
-                    </div>
+                <div class="modal-body">
+                {!! csrf_field() !!}
 
-                          <div class="modal-footer">
-                            <button type="submit" name="editPackageBtn" class="btn btn-primary">Submit</button>
-                          </div>
-                      </form>
-                      </div>
-                    </div>
-                  </div>
+                <div class="form-group">
+                <div class="col-sm-4" >
+                <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                </div>
+                </div>
+
+                <div class="form-group" style="display: none;">
+                <label class="col-sm-4 control-label">Package ID</label>
+                <div class="col-sm-5">
+                <div class = "input-group">
+                <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="editPackageID" id="editPackageID" " readonly="">
+                </div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Package Name</label>
+                <div class="col-sm-5">
+                <div class = "input-group">
+                <span class="input-group-addon"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="editPackageName" id="editPackageName" placeholder="Package Name" data-error="This field is required">
+                </div>
+                </div>
+                </div>
+
+                <input type="text" class="form-control" name="tempName" id="tempName" style="display: none;">
+
+                <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label"> Description</label>
+                <div class="col-sm-5">
+                <div class = "input-group">
+                <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
+                <textarea type="text" class="form-control" name="editPackageDescription" id="editPackageDescription" placeholder="Package Description"></textarea>
+                </div>
+                </div>
+                </div>
+
+                <div class="form-group ">
+                <label class="col-sm-4 control-label"> Cost</label>
+                <div class="col-sm-5">
+                <div class = "input-group">
+                <span class="input-group-addon"><i class="fa fa-rouble" aria-hidden="true"></i></span>
+                <input type="text" class="form-control" name="editPackageCost" id="editPackageCost" placeholder="Package Cost">
+                </div>
+                </div>
+                </div>
+                </div> 
+
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Courses</label>
+                <div class="col-sm-6">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editDishTypeInclusion[]" name="editDishTypeInclusion[]" style="width: 100%;">
+                @foreach($dishTypeData as $editDishTypeData)
+                <option value="{{ $editDishTypeData->dishTypeID }}">{{ $editDishTypeData->dishTypeName }} </option>
+                @endforeach
+                </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Equipment</label>
+                <div class="col-sm-6">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addEquipmentInclusion[]" style="width: 100%;">
+                @foreach($equipmentData as $editEquipmentData)
+                <option value="{{ $editEquipmentData->equipmentID }}">{{ $editEquipmentData->equipmentName }} </option>
+                @endforeach
+                </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Services</label>
+                <div class="col-sm-6">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addServiceInclusion[]" style="width: 100%;">
+                @foreach($serviceData as $editServiceData)
+                <option value="{{ $editServiceData->serviceID }}">{{ $editServiceData->serviceName }} </option>
+                @endforeach
+                </select>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="col-sm-4 control-label">Staff</label>
+                <div class="col-sm-6">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addStaffInclusion[]" style="width: 100%;">
+                @foreach($staffData as $editStaffData)
+                <option value="{{ $editStaffData->employeeTypeID }}">{{ $editStaffData->employeeTypeName }} </option>
+                @endforeach
+                </select>
+                </div>
+                </div>
+
+                <div class="form-group has-feedback">
+                <label class="col-sm-4 control-label">Package Image</label>
+                <div class="col-sm-6">
+                <div class="input-group">
+                <div class="input-group-addon">
+                <input type="file" name="editPackageImage" id="editPackageImage">
+                </div>
+                </div>
+                </div>
+                </div>
+
+                <div class="modal-footer">
+                <button type="submit" name="editPackageBtn" class="btn btn-primary">Submit</button>
+                </div>
+                </form>
+                </div>
+                </div>
+                </div>
                 <!-- End Modals-->
 				
         <!-- addPackage Modal-->
@@ -291,6 +345,13 @@
                 
                 <div class="modal-body">
                 {!! csrf_field() !!}
+
+                    <div class="form-group">
+                    <div class="col-sm-4" >
+                    <img id="addPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                    </div>
+                    </div>
+
                     <div class="form-group">
                       <label class="col-sm-4 control-label">Package Name</label>
                       <div class="col-sm-6">
@@ -372,7 +433,7 @@
                        <div class="col-sm-6">
                         <div class="input-group">
                          <div class="input-group-addon">
-                          <input type="file" name="addPackageImage">
+                          <input type="file" name="addPackageImage" id="addPackageImage">
                         </div>
                         </div>
                       </div>
@@ -395,17 +456,51 @@
 
 <!-- Select2 -->
 <script src="{{ asset('LTE/plugins/select2/select2.full.min.js') }}"></script>
-<script>
 
+<script>
   $(".select2").select2();
-  $(".viewInclusionsModal").on("hidden.bs.modal", function(){
-    $(".dishInclusionDiv").html("");
-    $(".equipmentInclusionDiv").html("");
-    $(".staffInclusionDiv").html("");
-    $(".serviceInclusionDiv").html("");
-  });
 </script>
-     <script>
+
+<script>
+$('#addPackageImage').change(function(){
+
+var file = this.files[0];
+var reader = new FileReader();
+reader.onload = function(){
+// alert("asdsd")
+
+document.getElementById('addPhotoIcon').src = this.result;
+};
+reader.readAsDataURL(file);
+
+var yourImg = document.getElementById('addPhotoIcon');
+if(yourImg && yourImg.style) {
+yourImg.style.height = '150px';
+yourImg.style.width = '150px';
+}
+});
+
+$('#editPackageImage').change(function(){
+
+var file = this.files[0];
+var reader = new FileReader();
+reader.onload = function(){
+// alert("asdsd")
+
+document.getElementById('editPhotoIcon').src = this.result;
+};
+reader.readAsDataURL(file);
+
+var yourImg = document.getElementById('editPhotoIcon');
+if(yourImg && yourImg.style) {
+yourImg.style.height = '150px';
+yourImg.style.width = '150px';
+}
+});
+</script>
+
+
+<script>
   $(function () {
     $('#packageTable').DataTable({
       "paging": false,
@@ -424,6 +519,22 @@
       "info": true,
       "autoWidth": true
     });
+
+    $(document).on("hidden.bs.modal", "#viewInclusionsModal", function () {
+      $(this).find("#dishInclusionDiv").html(""); // Just clear the contents.
+      $(this).find("#equipmentInclusionDiv").html(""); // Just clear the contents.
+      $(this).find("#serviceInclusionDiv").html(""); // Just clear the contents.
+      $(this).find("#staffInclusionDiv").html(""); // Just clear the contents.
+    });
+
+    $(document).on("hidden.bs.modal", "#editPackageModal", function () {
+      document.getElementById("editPackageForm").reset();
+    });
+
+    $(document).on("hidden.bs.modal", "#addPackageModal", function () {
+      document.getElementById("addPackageForm").reset();
+    });
+    
   });
 </script>
 
@@ -444,6 +555,20 @@
                 $('#editPackageDesc').val(data['ss'][0]['packageDescription']);
                 $('#editPackagePrice').val(data['ss'][0]['packageCost']);
                 $('#editPackageInclusion').val(data['ss'][0]['packageInclusion']);
+                // var opty = document.getElementById('editDishTypeInclusion').options;
+                //     for(var i =0; i<opty.length; i++){
+                //       if(opty[i].value==data['ss'][0]['dishTypeID']){
+                //       $('#editDishTypeInclusion').val(data['ss'][0]['dishTypeID']);
+                //       }
+
+                //     }
+                var selectedValues = new Array();
+                var i = 0;
+                response[1].forEach(function(data){
+                selectedValues[i] = data['ss'][0]['dishTypeID'];
+                i++;
+                })
+                $('#editDishTypeInclusion').val(selectedValues).trigger('change');
                 },
 
                 

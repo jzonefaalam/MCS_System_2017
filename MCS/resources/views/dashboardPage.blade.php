@@ -15,7 +15,7 @@
         <div class="box box-primary">
           <div class="box-body">
             <!-- Other Items -->
-            <div class="col-md-6">
+            <!-- <div class="col-md-6"> -->
               <!-- Info Boxes Style 2 -->
                   <!-- <div class="info-box bg-yellow">
                     <span class="info-box-icon"><i class="ion ion-ios-pricetag-outline"></i></span>
@@ -68,7 +68,7 @@
                     <!-- /.info-box-content -->
                   <!-- </div> -->
               <!-- /.info-box -->
-            </div>
+            <!-- </div> -->
             <!-- Notifications -->
             <div class="col-md-6">
               <!-- TO DO List -->
@@ -86,7 +86,7 @@
                   <table class="table table-bordered table-striped dataTable" id="notificationTable">
                       <thead>
                       <tr>
-                        <th width="150px">Notifs</th>
+                        <th width="150px">Newest Reservations</th>
                       </tr>
                       </thead>
                       <tbody>
@@ -94,7 +94,7 @@
                         <tr>
                           <td>
                             <a href="DishPage">{{ $dashboardData -> eventName}}</a>
-                            <small class="label label-danger pull-right"><i class="fa fa-clock-o"></i> {{ $dashboardData -> eventTime }}</small>
+                            <small class="label label-danger pull-right"><i class="fa fa-calendar-o"></i> {{ $dashboardData -> eventDate }} &nbsp {{ $dashboardData->eventTime }}</small>
                           </td>
                         </tr>
                         @endforeach

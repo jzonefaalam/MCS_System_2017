@@ -198,6 +198,7 @@
 
 
             <!-- Update Modal -->
+            <form id="scheduleForm">
             <div class="modal fade" id="detailModal" style="width:100%;">
             <div class="modal-dialog" style="width:70%; margin-top:5%; margin-left:17%;">
             <div class="modal-content">
@@ -433,6 +434,7 @@
             </div>
             </div>
             </div>
+            </form>
                 <!-- End Update Modal -->     
             <!-- /.box-body -->
           </div>
@@ -470,6 +472,17 @@
     <script src="{{ asset('LTE/fullcalendar/fullcalendar.min.js')}}"'></script>
     <script src="{{ asset('LTE/fullcalendar/gcal.min.js')}}"></script>
 <!-- Page specific script -->
+
+<script>
+$(function () {
+  $(document).on("hidden.bs.modal", "#viewInclusionsModal", function () {
+      $(this).find("#dishInclusionDiv").html(""); // Just clear the contents.
+      $(this).find("#equipmentInclusionDiv").html(""); // Just clear the contents.
+      $(this).find("#serviceInclusionDiv").html(""); // Just clear the contents.
+      $(this).find("#staffInclusionDiv").html(""); // Just clear the contents.
+    });
+});
+</script>
 
 <script>
 
@@ -567,6 +580,7 @@
 
 
                 eventClick: function(calEvent, jsEvent, view) {
+                  document.getElementById('scheduleForm').reset();
                   document.getElementById('contactNumber').innerHTML = '<h2 class="pull-right"><strong> #'+calEvent.customerCellNumberEvent+'</strong></h2>';
                   $('#editCustomerName').val(calEvent.customerNameEvent);
                   $('#editContactNumber').val(calEvent.customerCellNumberEvent);

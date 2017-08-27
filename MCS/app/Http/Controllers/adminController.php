@@ -88,8 +88,9 @@ class adminController extends Controller
 
     public function addDishes(Request $request) 
     {
-        $dishTypeImage = ($_FILES["addDishImage"]["name"]);
-        if($dishTypeImage==null){
+        $dishImage = ($_FILES["addDishImage"]["name"]);
+
+        if($dishImage==null){
             $coursetbl = new coursetbl;
             $coursetbl->dishName = Input::get('addDishName');
             $coursetbl->dishDescription = Input::get('addDishDesc');
@@ -97,12 +98,12 @@ class adminController extends Controller
             $coursetbl->dishTypeID = Input::get('addDishType');
             $coursetbl->dishAvailability = 1;
             $coursetbl->dishStatus = 1;
-            $coursetbl->dishImage = ($_FILES["addDishImage"]["name"]);
+            $coursetbl->dishImage = "No image";
             $coursetbl->save();
             return redirect()->back();
         }
         else{
-        $target_dir = "images\\";
+        $target_dir = "img\\";
         $target_file = $target_dir . basename($_FILES["addDishImage"]["name"]);
         $uploadOk = 1;
         $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -116,13 +117,18 @@ class adminController extends Controller
             }
         }
         // Check if file already exists
-        // if (file_exists($target_file)) {
-        //     $id = Input::get('companyId');
-        //     $company = MCompanyInfo::find($id);
-        //     $company->strCompanyLogo=($_FILES["companylogo"]["name"]);
-        //     $company->save();
-        //     return \Redirect::back();
-        // }
+        if (file_exists($target_file)) {
+            $coursetbl = new coursetbl;
+            $coursetbl->dishName = Input::get('addDishName');
+            $coursetbl->dishDescription = Input::get('addDishDesc');
+            $coursetbl->dishCost = Input::get('addDishPrice');
+            $coursetbl->dishTypeID = Input::get('addDishType');
+            $coursetbl->dishAvailability = 1;
+            $coursetbl->dishStatus = 1;
+            $coursetbl->dishImage = $dishImage;
+            $coursetbl->save();
+            return redirect()->back();
+        }
         // Check file size
         if ($_FILES["addDishImage"]["size"] > 500000) {
             $uploadOk = 0;
@@ -144,11 +150,10 @@ class adminController extends Controller
         $coursetbl->dishTypeID = Input::get('addDishType');
         $coursetbl->dishAvailability = 1;
         $coursetbl->dishStatus = 1;
-        $coursetbl->dishImage = ($_FILES["addDishImage"]["name"]);
+        $coursetbl->dishImage = $dishImage;
         $coursetbl->save();
         return redirect()->back();
         } else {
-            alert('File Not Uploaded!');
             return \Redirect::back();
         }
         }
@@ -157,14 +162,74 @@ class adminController extends Controller
     }
 
     public function editDish(){
+        $dishImage = ($_FILES["editDishImage"]["name"]);
+
+        if($dishImage==null){
         $id = Input::get('editDishID');
         $coursetbl = coursetbl::find($id);
         $coursetbl->dishName= Input::get('editDishName');
         $coursetbl->dishDescription= Input::get('editDishDesc');
         $coursetbl->dishCost= Input::get('editDishPrice');
         $coursetbl->dishTypeID= Input::get('editDishType');
+        $coursetbl->dishImage= "No Image";
         $coursetbl->save();
         return redirect()->back();
+        }
+        else{
+        $target_dir = "img\\";
+        $target_file = $target_dir . basename($_FILES["editDishImage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["editDishImage"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $id = Input::get('editDishID');
+            $coursetbl = coursetbl::find($id);
+            $coursetbl->dishName= Input::get('editDishName');
+            $coursetbl->dishDescription= Input::get('editDishDesc');
+            $coursetbl->dishCost= Input::get('editDishPrice');
+            $coursetbl->dishTypeID= Input::get('editDishType');
+            $coursetbl->dishImage= $dishImage;
+            $coursetbl->save();
+            return redirect()->back();
+        }
+        // Check file size
+        if ($_FILES["editDishImage"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            // if everything is ok, try to upload file
+        } else {
+        if (move_uploaded_file($_FILES["editDishImage"]["tmp_name"], $target_file)) {
+            $id = Input::get('editDishID');
+            $coursetbl = coursetbl::find($id);
+            $coursetbl->dishName= Input::get('editDishName');
+            $coursetbl->dishDescription= Input::get('editDishDesc');
+            $coursetbl->dishCost= Input::get('editDishPrice');
+            $coursetbl->dishTypeID= Input::get('editDishType');
+            $coursetbl->dishImage= $dishImage;
+            $coursetbl->save();
+            return redirect()->back();
+        } else {
+            alert('File Not Uploaded!');
+            return \Redirect::back();
+        }
+        }
+        }
     }
 
     public function deleteDish(){
@@ -198,7 +263,7 @@ class adminController extends Controller
         return redirect()->back();
         }
         else{
-        $target_dir = "images\\";
+        $target_dir = "img\\";
         $target_file = $target_dir . basename($_FILES["addDishTypeImage"]["name"]);
         $uploadOk = 1;
         $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -212,13 +277,15 @@ class adminController extends Controller
             }
         }
         // Check if file already exists
-        // if (file_exists($target_file)) {
-        //     $id = Input::get('companyId');
-        //     $company = MCompanyInfo::find($id);
-        //     $company->strCompanyLogo=($_FILES["companylogo"]["name"]);
-        //     $company->save();
-        //     return \Redirect::back();
-        // }
+        if (file_exists($target_file)) {
+            $courseType = new coursetypetbl;
+            $courseType->dishTypeName = Input::get('addDishTypeName');
+            $courseType->dishTypeStatus = 1;
+            $courseType->dishTypeImage = ($_FILES['addDishTypeImage']['name']);
+            $courseType->save();
+            return redirect()->back();
+
+        }
         // Check file size
         if ($_FILES["addDishTypeImage"]["size"] > 500000) {
             $uploadOk = 0;
@@ -233,16 +300,13 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["addDishTypeImage"]["tmp_name"], $target_file)) {
-        $courseType = new coursetypetbl;
-        $courseType->dishTypeName = Input::get('addDishTypeName');
-        $courseType->dishTypeStatus = 1;
-        $courseType->dishTypeImage = ($_FILES['addDishTypeImage']['name']);
-        $courseType->save();
-        return redirect()->back();
-
-
+            $courseType = new coursetypetbl;
+            $courseType->dishTypeName = Input::get('addDishTypeName');
+            $courseType->dishTypeStatus = 1;
+            $courseType->dishTypeImage = ($_FILES['addDishTypeImage']['name']);
+            $courseType->save();
+            return redirect()->back();
         } else {
-            alert('File Not Uploaded!');
             return \Redirect::back();
         }
         }
@@ -260,16 +324,17 @@ class adminController extends Controller
 
     public function editDishType(){
         $dishTypeImage = ($_FILES["editDishTypeImage"]["name"]);
+
         if($dishTypeImage==null){
         $id = Input::get('editDishTypeID');
         $coursetypetbl = coursetypetbl::find($id);
         $coursetypetbl->dishTypeName= Input::get('editDishTypeName');
-        $courseType->dishTypeImage = ($_FILES['editDishTypeImage']['name']);
+        $coursetypetbl->dishTypeImage = "No Image";
         $coursetypetbl->save();
         return redirect()->back();
         }
         else{
-        $target_dir = "images\\";
+        $target_dir = "img\\";
         $target_file = $target_dir . basename($_FILES["editDishTypeImage"]["name"]);
         $uploadOk = 1;
         $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -283,13 +348,14 @@ class adminController extends Controller
             }
         }
         // Check if file already exists
-        // if (file_exists($target_file)) {
-        //     $id = Input::get('companyId');
-        //     $company = MCompanyInfo::find($id);
-        //     $company->strCompanyLogo=($_FILES["companylogo"]["name"]);
-        //     $company->save();
-        //     return \Redirect::back();
-        // }
+        if (file_exists($target_file)) {
+            $id = Input::get('editDishTypeID');
+            $coursetypetbl = coursetypetbl::find($id);
+            $coursetypetbl->dishTypeName= Input::get('editDishTypeName');
+            $coursetypetbl->dishTypeImage = ($_FILES['editDishTypeImage']['name']);
+            $coursetypetbl->save();
+            return redirect()->back();
+        }
         // Check file size
         if ($_FILES["editDishTypeImage"]["size"] > 500000) {
             $uploadOk = 0;
@@ -537,33 +603,162 @@ class adminController extends Controller
     }
 
     public function addLocation(Request $request){
-        $location = new locationtbl;
-        $location->locationName = Input::get('addLocationName');
-        $location->locationContactPerson = Input::get('addLocationContactPerson');
-        $location->locationDescription = Input::get('addLocationDescription');
-        $location->locationAddress = Input::get('addLocationAddress');
-        $location->locationContactNumber = Input::get('addLocationContactNumber');
-        $location->locationCapacity = Input::get('addLocationCapacity');
-        $location->locationImage = "No Image";
-        $location->locationFee = Input::get('addLocationFee');
-        $location->locationStatus = 1;
-        $location->locationAvailability = 1;
-        $location->save();
-        return redirect()->back();
+        $locationImage = ($_FILES["addLocationImage"]["name"]);
+        if($locationImage==null){
+            $location = new locationtbl;
+            $location->locationName = Input::get('addLocationName');
+            $location->locationContactPerson = Input::get('addLocationContactPerson');
+            $location->locationDescription = Input::get('addLocationDescription');
+            $location->locationAddress = Input::get('addLocationAddress');
+            $location->locationContactNumber = Input::get('addLocationContactNumber');
+            $location->locationCapacity = Input::get('addLocationCapacity');
+            $location->locationImage = "No Image";
+            $location->locationFee = Input::get('addLocationFee');
+            $location->locationStatus = 1;
+            $location->locationAvailability = 1;
+            $location->save();
+            return redirect()->back();
+        }
+        else{
+        $target_dir = "img\\";
+        $target_file = $target_dir . basename($_FILES["addLocationImage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["addLocationImage"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $location = new locationtbl;
+            $location->locationName = Input::get('addLocationName');
+            $location->locationContactPerson = Input::get('addLocationContactPerson');
+            $location->locationDescription = Input::get('addLocationDescription');
+            $location->locationAddress = Input::get('addLocationAddress');
+            $location->locationContactNumber = Input::get('addLocationContactNumber');
+            $location->locationCapacity = Input::get('addLocationCapacity');
+            $location->locationImage = $locationImage;
+            $location->locationFee = Input::get('addLocationFee');
+            $location->locationStatus = 1;
+            $location->locationAvailability = 1;
+            $location->save();
+            return redirect()->back();
+        }
+        // Check file size
+        if ($_FILES["addLocationImage"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            // if everything is ok, try to upload file
+        } else {
+        if (move_uploaded_file($_FILES["addLocationImage"]["tmp_name"], $target_file)) {
+            $location = new locationtbl;
+            $location->locationName = Input::get('addLocationName');
+            $location->locationContactPerson = Input::get('addLocationContactPerson');
+            $location->locationDescription = Input::get('addLocationDescription');
+            $location->locationAddress = Input::get('addLocationAddress');
+            $location->locationContactNumber = Input::get('addLocationContactNumber');
+            $location->locationCapacity = Input::get('addLocationCapacity');
+            $location->locationImage = $locationImage;
+            $location->locationFee = Input::get('addLocationFee');
+            $location->locationStatus = 1;
+            $location->locationAvailability = 1;
+            $location->save();
+            return redirect()->back();
+        } else {
+            return \Redirect::back();
+        }
+        }
+        }
     }
 
     public function editLocation(){
-        $id = Input::get('editLocationID');
-        $location = locationtbl::find($id); 
-        $location->locationName = Input::get('editLocationName');
-        $location->locationContactPerson = Input::get('editLocationContactPerson');
-        $location->locationDescription = Input::get('editLocationDesc');
-        $location->locationAddress = Input::get('editLocationAddress');
-        $location->locationContactNumber = Input::get('editLocationContactNumber');
-        $location->locationCapacity = Input::get('editLocationCapacity');
-        $location->locationFee = Input::get('editLocationPrice');
-        $location->save();
-        return redirect()->back();
+        $locationImage = ($_FILES["editLocationImage"]["name"]);
+        if($locationImage==null){
+            $id = Input::get('editLocationID');
+            $location = locationtbl::find($id); 
+            $location->locationName = Input::get('editLocationName');
+            $location->locationContactPerson = Input::get('editLocationContactPerson');
+            $location->locationDescription = Input::get('editLocationDesc');
+            $location->locationAddress = Input::get('editLocationAddress');
+            $location->locationContactNumber = Input::get('editLocationContactNumber');
+            $location->locationCapacity = Input::get('editLocationCapacity');
+            $location->locationFee = Input::get('editLocationPrice');
+            $location->locationImage = "No Image";
+            $location->save();
+            return redirect()->back();
+        }
+        else{
+        $target_dir = "img\\";
+        $target_file = $target_dir . basename($_FILES["editLocationImage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["editLocationImage"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $id = Input::get('editLocationID');
+            $location = locationtbl::find($id); 
+            $location->locationName = Input::get('editLocationName');
+            $location->locationContactPerson = Input::get('editLocationContactPerson');
+            $location->locationDescription = Input::get('editLocationDesc');
+            $location->locationAddress = Input::get('editLocationAddress');
+            $location->locationContactNumber = Input::get('editLocationContactNumber');
+            $location->locationCapacity = Input::get('editLocationCapacity');
+            $location->locationFee = Input::get('editLocationPrice');
+            $location->locationImage = $locationImage;
+            $location->save();
+            return redirect()->back();
+        }
+        // Check file size
+        if ($_FILES["editLocationImage"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            // if everything is ok, try to upload file
+        } else {
+        if (move_uploaded_file($_FILES["editLocationImage"]["tmp_name"], $target_file)) {
+            $id = Input::get('editLocationID');
+            $location = locationtbl::find($id); 
+            $location->locationName = Input::get('editLocationName');
+            $location->locationContactPerson = Input::get('editLocationContactPerson');
+            $location->locationDescription = Input::get('editLocationDesc');
+            $location->locationAddress = Input::get('editLocationAddress');
+            $location->locationContactNumber = Input::get('editLocationContactNumber');
+            $location->locationCapacity = Input::get('editLocationCapacity');
+            $location->locationFee = Input::get('editLocationPrice');
+            $location->locationImage = $locationImage;
+            $location->save();
+            return redirect()->back();
+        } else {
+            return \Redirect::back();
+        }
+        }
+        }
     }
 
     public function retrieveLocationData(){
@@ -618,55 +813,229 @@ class adminController extends Controller
     }
 
     public function addPackage(Request $request){
-        $package = new packagetbl;
-        $package->packageName = Input::get('addPackageName');
-        $package->packageDescription = Input::get('addPackageDescription');
-        $package->packageCost = Input::get('addPackageCost');
-        $package->packageImage = "No Image";
-        $package->packageStatus = 1;
-        $package->packageAvailability = 1;
-        $package->save();
-        $lastPackageID = DB::table('package_tbl')
-        ->max('packageID');
-        $dti = $_POST['addDishTypeInclusion'];
-        $si = $_POST['addStaffInclusion'];
-        $ei = $_POST['addEquipmentInclusion'];
-        $svi = $_POST['addServiceInclusion'];
-        foreach ($dti as $dtinclusion) {
-            $packageInclusion = new packageinclusiontbl;
-            $packageInclusion->packageID = $lastPackageID;
-            $packageInclusion->dishTypeID = $dtinclusion;
-            $packageInclusion->save();
+        $packageImage = ($_FILES["addPackageImage"]["name"]);
+        if($packageImage==null){
+            $package = new packagetbl;
+            $package->packageName = Input::get('addPackageName');
+            $package->packageDescription = Input::get('addPackageDescription');
+            $package->packageCost = Input::get('addPackageCost');
+            $package->packageImage = "No Image";
+            $package->packageStatus = 1;
+            $package->packageAvailability = 1;
+            $package->save();
+            $lastPackageID = DB::table('package_tbl')
+            ->max('packageID');
+            $dti = $_POST['addDishTypeInclusion'];
+            $si = $_POST['addStaffInclusion'];
+            $ei = $_POST['addEquipmentInclusion'];
+            $svi = $_POST['addServiceInclusion'];
+            foreach ($dti as $dtinclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->dishTypeID = $dtinclusion;
+                $packageInclusion->save();
+            }
+            foreach ($si as $staffInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->employeeTypeID = $staffInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($ei as $equipmentInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->equipmentID = $equipmentInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($svi as $serviceInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->serviceID = $serviceInclusion;
+                $packageInclusion->save();
+            }
+            return redirect()->back();
         }
-        foreach ($si as $staffInclusion) {
-            $packageInclusion = new packageinclusiontbl;
-            $packageInclusion->packageID = $lastPackageID;
-            $packageInclusion->employeeTypeID = $staffInclusion;
-            $packageInclusion->save();
+        else{
+            $target_dir = "img\\";
+            $target_file = $target_dir . basename($_FILES["addPackageImage"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            // Check if image file is a actual image or fake image
+            if(isset($_POST["submit"])) {
+                $check = getimagesize($_FILES["addPackageImage"]["tmp_name"]);
+                if($check !== false) {
+                    $uploadOk = 1;
+                } else {
+                    $uploadOk = 0;
+                }
+            }
+            // Check if file already exists
+            if (file_exists($target_file)) {
+                $package = new packagetbl;
+                $package->packageName = Input::get('addPackageName');
+                $package->packageDescription = Input::get('addPackageDescription');
+                $package->packageCost = Input::get('addPackageCost');
+                $package->packageImage = $packageImage;
+                $package->packageStatus = 1;
+                $package->packageAvailability = 1;
+                $package->save();
+                $lastPackageID = DB::table('package_tbl')
+                ->max('packageID');
+                $dti = $_POST['addDishTypeInclusion'];
+                $si = $_POST['addStaffInclusion'];
+                $ei = $_POST['addEquipmentInclusion'];
+                $svi = $_POST['addServiceInclusion'];
+                foreach ($dti as $dtinclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->dishTypeID = $dtinclusion;
+                    $packageInclusion->save();
+                }
+                foreach ($si as $staffInclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->employeeTypeID = $staffInclusion;
+                    $packageInclusion->save();
+                }
+                foreach ($ei as $equipmentInclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->equipmentID = $equipmentInclusion;
+                    $packageInclusion->save();
+                }
+                foreach ($svi as $serviceInclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->serviceID = $serviceInclusion;
+                    $packageInclusion->save();
+                }
+                return redirect()->back();
+            }
+            // Check file size
+            if ($_FILES["addPackageImage"]["size"] > 500000) {
+                $uploadOk = 0;
+            }
+            // Allow certain file formats
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+            && $imageFileType != "gif" ) {
+                $uploadOk = 0;
+            }
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                // if everything is ok, try to upload file
+            } else {
+            if (move_uploaded_file($_FILES["addPackageImage"]["tmp_name"], $target_file)) {
+                $package = new packagetbl;
+                $package->packageName = Input::get('addPackageName');
+                $package->packageDescription = Input::get('addPackageDescription');
+                $package->packageCost = Input::get('addPackageCost');
+                $package->packageImage = $packageImage;
+                $package->packageStatus = 1;
+                $package->packageAvailability = 1;
+                $package->save();
+                $lastPackageID = DB::table('package_tbl')
+                ->max('packageID');
+                $dti = $_POST['addDishTypeInclusion'];
+                $si = $_POST['addStaffInclusion'];
+                $ei = $_POST['addEquipmentInclusion'];
+                $svi = $_POST['addServiceInclusion'];
+                foreach ($dti as $dtinclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->dishTypeID = $dtinclusion;
+                    $packageInclusion->save();
+                }
+                foreach ($si as $staffInclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->employeeTypeID = $staffInclusion;
+                    $packageInclusion->save();
+                }
+                foreach ($ei as $equipmentInclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->equipmentID = $equipmentInclusion;
+                    $packageInclusion->save();
+                }
+                foreach ($svi as $serviceInclusion) {
+                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion->packageID = $lastPackageID;
+                    $packageInclusion->serviceID = $serviceInclusion;
+                    $packageInclusion->save();
+                }
+                return redirect()->back();
+            } else {
+                return \Redirect::back();
+            }
+            }
         }
-        foreach ($ei as $equipmentInclusion) {
-            $packageInclusion = new packageinclusiontbl;
-            $packageInclusion->packageID = $lastPackageID;
-            $packageInclusion->equipmentID = $equipmentInclusion;
-            $packageInclusion->save();
-        }
-        foreach ($svi as $serviceInclusion) {
-            $packageInclusion = new packageinclusiontbl;
-            $packageInclusion->packageID = $lastPackageID;
-            $packageInclusion->serviceID = $serviceInclusion;
-            $packageInclusion->save();
-        }
-        return redirect()->back();
+        
     }
 
     public function editPackage(){
-        $id = Input::get('editPackageID');
-        $package = packagetbl::find($id); 
-        $package->packageName = Input::get('editPackageName');
-        $package->packageDescription = Input::get('editPackageDescription');
-        $package->packageCost = Input::get('editPackageCost');
-        $package->save();
-        return redirect()->back();
+        $packageImage = ($_FILES["editPackageImage"]["name"]);
+        if($packageImage==null){
+            $id = Input::get('editPackageID');
+            $package = packagetbl::find($id); 
+            $package->packageName = Input::get('editPackageName');
+            $package->packageDescription = Input::get('editPackageDescription');
+            $package->packageCost = Input::get('editPackageCost');
+            $package->packageImage = "No Image";
+            $package->save();
+            return redirect()->back();
+        }
+        else{
+        $target_dir = "img\\";
+        $target_file = $target_dir . basename($_FILES["editPackageImage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["editPackageImage"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+           $id = Input::get('editPackageID');
+            $package = packagetbl::find($id); 
+            $package->packageName = Input::get('editPackageName');
+            $package->packageDescription = Input::get('editPackageDescription');
+            $package->packageCost = Input::get('editPackageCost');
+            $package->packageImage = $packageImage;
+            $package->save();
+            return redirect()->back();
+        }
+        // Check file size
+        if ($_FILES["editPackageImage"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            // if everything is ok, try to upload file
+        } else {
+        if (move_uploaded_file($_FILES["editPackageImage"]["tmp_name"], $target_file)) {
+           $id = Input::get('editPackageID');
+            $package = packagetbl::find($id); 
+            $package->packageName = Input::get('editPackageName');
+            $package->packageDescription = Input::get('editPackageDescription');
+            $package->packageCost = Input::get('editPackageCost');
+            $package->packageImage = $packageImage;
+            $package->save();
+            return redirect()->back();
+        } else {
+            return \Redirect::back();
+        }
+        }
+        }
     }
 
     public function retrievePackageData(){
@@ -931,27 +1300,143 @@ class adminController extends Controller
     }
 
     public function addService(){
-        $service = new servicetbl;
-        $service->serviceName = Input::get('addServiceName');
-        $service->serviceDescription = Input::get('addServiceDescription');
-        $service->serviceFee = Input::get('addServiceFee');
-        $service->serviceTypeID = Input::get('addServiceType');
-        $service->serviceStatus = 1;
-        $service->serviceAvailability = 1;
-        $service->serviceImage = 1;
-        $service->save();
-        return redirect()->back();
+       $serviceImage = ($_FILES["addServiceImage"]["name"]);
+        if($serviceImage==null){
+            $service = new servicetbl;
+            $service->serviceName = Input::get('addServiceName');
+            $service->serviceDescription = Input::get('addServiceDescription');
+            $service->serviceFee = Input::get('addServiceFee');
+            $service->serviceTypeID = Input::get('addServiceType');
+            $service->serviceStatus = 1;
+            $service->serviceAvailability = 1;
+            $service->serviceImage = "No Image";
+            $service->save();
+            return redirect()->back();
+        }
+        else{
+        $target_dir = "img\\";
+        $target_file = $target_dir . basename($_FILES["addServiceImage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["addServiceImage"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $service = new servicetbl;
+            $service->serviceName = Input::get('addServiceName');
+            $service->serviceDescription = Input::get('addServiceDescription');
+            $service->serviceFee = Input::get('addServiceFee');
+            $service->serviceTypeID = Input::get('addServiceType');
+            $service->serviceStatus = 1;
+            $service->serviceAvailability = 1;
+            $service->serviceImage = $serviceImage;
+            $service->save();
+            return redirect()->back();
+        }
+        // Check file size
+        if ($_FILES["addServiceImage"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            // if everything is ok, try to upload file
+        } else {
+        if (move_uploaded_file($_FILES["addServiceImage"]["tmp_name"], $target_file)) {
+            $service = new servicetbl;
+            $service->serviceName = Input::get('addServiceName');
+            $service->serviceDescription = Input::get('addServiceDescription');
+            $service->serviceFee = Input::get('addServiceFee');
+            $service->serviceTypeID = Input::get('addServiceType');
+            $service->serviceStatus = 1;
+            $service->serviceAvailability = 1;
+            $service->serviceImage = $serviceImage;
+            $service->save();
+            return redirect()->back();
+        } else {
+            return \Redirect::back();
+        }
+        }
+        }
     }
 
     public function editService(){
-        $id = Input::get('editServiceID');
-        $service = servicetbl::find($id); 
-        $service->serviceName = Input::get('editServiceName');
-        $service->serviceDescription = Input::get('editServiceDescription');
-        $service->serviceFee = Input::get('editServiceFee');
-        $service->serviceTypeID = Input::get('editServiceType');
-        $service->save();
-        return redirect()->back();
+        $serviceImage = ($_FILES["editServiceImage"]["name"]);
+        if($serviceImage==null){
+            $id = Input::get('editServiceID');
+            $service = servicetbl::find($id); 
+            $service->serviceName = Input::get('editServiceName');
+            $service->serviceDescription = Input::get('editServiceDescription');
+            $service->serviceFee = Input::get('editServiceFee');
+            $service->serviceTypeID = Input::get('editServiceType');
+            $service->save();
+            return redirect()->back();
+        }
+        else{
+        $target_dir = "img\\";
+        $target_file = $target_dir . basename($_FILES["editServiceImage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["editServiceImage"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $id = Input::get('editServiceID');
+            $service = servicetbl::find($id); 
+            $service->serviceName = Input::get('editServiceName');
+            $service->serviceDescription = Input::get('editServiceDescription');
+            $service->serviceFee = Input::get('editServiceFee');
+            $service->serviceTypeID = Input::get('editServiceType');
+            $service->serviceImage = $serviceImage;
+            $service->save();
+            return redirect()->back();
+        }
+        // Check file size
+        if ($_FILES["editServiceImage"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            // if everything is ok, try to upload file
+        } else {
+        if (move_uploaded_file($_FILES["editServiceImage"]["tmp_name"], $target_file)) {
+            $id = Input::get('editServiceID');
+            $service = servicetbl::find($id); 
+            $service->serviceName = Input::get('editServiceName');
+            $service->serviceDescription = Input::get('editServiceDescription');
+            $service->serviceFee = Input::get('editServiceFee');
+            $service->serviceTypeID = Input::get('editServiceType');
+            $service->serviceImage = $serviceImage;
+            $service->save();
+            return redirect()->back();
+        } else {
+            return \Redirect::back();
+        }
+        }
+        }
     }
 
     public function retrieveServiceData(){
@@ -983,7 +1468,7 @@ class adminController extends Controller
     public function addServiceType(){
         $serviceType = new servicetypetbl;
         $serviceType->serviceTypeName = Input::get('addServiceTypeName');
-        $serviceType->serviceTypeDescription = Input::get('addServiceTypeDescription');
+        // $serviceType->serviceTypeDescription = Input::get('addServiceTypeDescription');
         $serviceType->serviceTypeStatus = 1;
         $serviceType->serviceTypeAvailability = 1;
         $serviceType->save();
@@ -994,7 +1479,7 @@ class adminController extends Controller
         $id = Input::get('editServiceTypeID');
         $serviceType = servicetypetbl::find($id); 
         $serviceType->serviceTypeName = Input::get('editServiceTypeName');
-        $serviceType->serviceTypeDescription = Input::get('editServiceTypeDesc');
+        // $serviceType->serviceTypeDescription = Input::get('editServiceTypeDesc');
         $serviceType->save();
         return redirect()->back();
     }
