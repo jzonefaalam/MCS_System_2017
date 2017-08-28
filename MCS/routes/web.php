@@ -25,8 +25,9 @@ Route::get('/RegisterAccount', function () {
     return view('registerAccount');
 });
 
-Route::post("/ReservationEmail", array("uses"=>"adminController@sendEmail"));
-
+Route::post("/ApproveReservationEmail", array("uses"=>"adminController@sendApprovalEmail"));
+Route::post("/DenyReservationEmail", array("uses"=>"adminController@sendDenyEmail"));
+// Route::post('/ReservationEmail', 'adminController@sendEmail');
 
 Route::get('/Logout', 'adminController@authenticateLogout');
 
@@ -119,6 +120,7 @@ Route::get('/RetrieveSchedule', 'adminController@retrieveScheduleData');
 //Transaction Reservation
 Route::get('/ReservationPage', 'adminController@reservationPage');
 Route::get('/RetrieveReservation', 'adminController@retrieveReservationData');
+Route::get('/RetrieveReservationID', 'adminController@retrieveReservationId');
 Route::post("/EditReservation", array("uses"=>"adminController@editReservation"));
 
 //Inventory Dish

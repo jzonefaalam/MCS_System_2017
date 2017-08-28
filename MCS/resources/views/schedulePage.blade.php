@@ -172,24 +172,24 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <div class="box box-solid">
             <div class="box-header with-border">
               <h4 class="box-title">Events</h4>
             </div>
             <div class="box-body">
-              <!-- the events -->
-              <div id="external-events">
+              <! the events -->
+              <!-- <div id="external-events">
                <div class="external-event bg-green">Not Available/Holiday</div>
-              </div>
-            </div>
+              </div>  -->
+            <!-- </div> -->
             <!-- /.box-body -->
-          </div>
+          <!-- </div> -->
           <!-- /. box -->
           
-        </div>
+        <!-- </div> -->
         <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
@@ -198,7 +198,7 @@
 
 
             <!-- Update Modal -->
-            <form id="scheduleForm">
+            <form id="scheduleForm" method="POST">
             <div class="modal fade" id="detailModal" style="width:100%;">
             <div class="modal-dialog" style="width:70%; margin-top:5%; margin-left:17%;">
             <div class="modal-content">
@@ -219,6 +219,9 @@
                             </div>
                             <div class="col-sm-6" id="contactNumber">
                               
+                            </div>
+                            <div class="col-sm-6" style="display:none;">
+                              <input type="text"  name="reservationNumber" id="reservationNumber" >
                             </div>
                           </div>
                         </div>
@@ -433,22 +436,78 @@
                   </div>
                   <!-- nav-tabs-custom -->
             </div>
-            <div class="modal-footer" style="margin-left:50%">
-              <a class="btn btn-app" style="display:none;">
-                  <i class="fa fa-save"></i> APPROVE
-              </a>
-              <a style="margin-left:50%" class="btn btn-app" type="submit" id="approveBtn" name="approveBtn">
+            <div class="modal-footer" >
+            <a  style="display:none;" data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
                   <i class="fa fa-check" ></i> APPROVE
               </a>
-              <a class="btn btn-app" data-target="#addPackageModal" data-toggle="modal">
-                  <i class="fa fa-times"></i> DENY
+              <a  data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-check" ></i> APPROVE
+              </a>
+              <a data-target="#sendDenyEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-times" ></i> DENY
               </a>
             </div>
             </div>
             </div>
             </div>
             </form>
-                <!-- End Update Modal -->     
+                <!-- End Update Modal -->  
+
+                      <!-- Delete service Modal-->
+                      <form role="form" method="POST" action="ApproveReservationEmail" class="form-horizontal">
+                      <div class="modal fade" id="sendApproveEmailModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                             <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Reservation ID</label>
+                                  <div class="col-sm-5 input-group">
+                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                  </div>
+                                </div>
+                                {!! csrf_field() !!}
+                                <div>
+                                  <h5> Are you sure you want to approve this reservation? </h5>
+                                </div>
+                                <div style="text-align: center;">
+                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                      <!-- End Modals-->
+
+                      <!-- Delete service Modal-->
+                      <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
+                      <div class="modal fade" id="sendDenyEmailModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                             <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Reservation ID</label>
+                                  <div class="col-sm-5 input-group">
+                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                  </div>
+                                </div>
+                                {!! csrf_field() !!}
+                                <div>
+                                  <h5> Are you sure you want to deny this reservation? </h5>
+                                </div>
+                                <div style="text-align: center;">
+                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                      <!-- End Modals-->      
             <!-- /.box-body -->
           </div>
           <!-- /. box -->
@@ -486,13 +545,13 @@
     <script src="{{ asset('LTE/fullcalendar/gcal.min.js')}}"></script>
 <!-- Page specific script -->
 
-<script>
+<!-- <script>
 
     //if submit button is clicked
     $("#approveBtn").click(function(e){
         var randomID = 1;
         $.ajax({
-          url:  "/ReservationEmail",
+          url:  "ReservationEmail",
           type: "POST",
             beforeSend: function (xhr) {
               var token = $('meta[name="csrf_token"]').attr('content');
@@ -510,11 +569,34 @@
           },
           error: function(xhr)
           {
+          alert('Mali');
           alert($.parseJSON(xhr.responseText)['error']['message']);
           }                  
         });
       }); 
-</script> 
+</script>  -->
+
+<script>
+      function getReservation(id){
+        $.ajax({
+                type: "GET",
+                url:  "/RetrieveReservationID",
+                data: 
+                {
+                    sdid: id
+                },
+                success: function(data){
+                $('#sendReservationId').val(data['ss'][0]['reservationID']);
+                },
+                error: function(xhr)
+                {
+                    alert("mali");
+                    alert($.parseJSON(xhr.responseText)['error']['message']);
+                }                
+            });
+      }
+
+    </script>
 
 <script>
 $(function () {
@@ -640,6 +722,7 @@ $(function () {
                   $('#editEventGuestCount').val(calEvent.guestCountEvent);
                   $('#editEventStartTime').val(calEvent.startTimeEvent);
                   $('#editEventEndTime').val(calEvent.endTimeEvent);
+                  $('#reservationNumber').val(calEvent.id);
                   var opty = document.getElementById('editPackage').options;
                   for(var i =0; i<opty.length; i++){
                     if(opty[i].value==(calEvent.packageIdEvent)){
