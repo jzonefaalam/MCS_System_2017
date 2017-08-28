@@ -172,24 +172,24 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <div class="box box-solid">
             <div class="box-header with-border">
               <h4 class="box-title">Events</h4>
             </div>
             <div class="box-body">
-              <!-- the events -->
-              <div id="external-events">
+              <! the events -->
+              <!-- <div id="external-events">
                <div class="external-event bg-green">Not Available/Holiday</div>
-              </div>
-            </div>
+              </div>  -->
+            <!-- </div> -->
             <!-- /.box-body -->
-          </div>
+          <!-- </div> -->
           <!-- /. box -->
           
-        </div>
+        <!-- </div> -->
         <!-- /.col -->
-        <div class="col-md-9">
+        <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
@@ -198,7 +198,7 @@
 
 
             <!-- Update Modal -->
-            <form id="scheduleForm">
+            <form id="scheduleForm" method="POST">
             <div class="modal fade" id="detailModal" style="width:100%;">
             <div class="modal-dialog" style="width:70%; margin-top:5%; margin-left:17%;">
             <div class="modal-content">
@@ -219,6 +219,9 @@
                             </div>
                             <div class="col-sm-6" id="contactNumber">
                               
+                            </div>
+                            <div class="col-sm-6" style="display:none;">
+                              <input type="text"  name="reservationNumber" id="reservationNumber" >
                             </div>
                           </div>
                         </div>
@@ -387,6 +390,8 @@
                           </div>
                           <!-- End Reservation Tab -->
 
+                              {!! csrf_field() !!}
+                          <input type="hidden" id="token" value="{{ csrf_token() }}">
                           <!-- Additional Equipment Tab -->
                           <div class="tab-pane active" id="tab_4">
                             <div class="box">
@@ -431,11 +436,78 @@
                   </div>
                   <!-- nav-tabs-custom -->
             </div>
+            <div class="modal-footer" >
+            <a  style="display:none;" data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-check" ></i> APPROVE
+              </a>
+              <a  data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-check" ></i> APPROVE
+              </a>
+              <a data-target="#sendDenyEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-times" ></i> DENY
+              </a>
+            </div>
             </div>
             </div>
             </div>
             </form>
-                <!-- End Update Modal -->     
+                <!-- End Update Modal -->  
+
+                      <!-- Delete service Modal-->
+                      <form role="form" method="POST" action="ApproveReservationEmail" class="form-horizontal">
+                      <div class="modal fade" id="sendApproveEmailModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                             <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Reservation ID</label>
+                                  <div class="col-sm-5 input-group">
+                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                  </div>
+                                </div>
+                                {!! csrf_field() !!}
+                                <div>
+                                  <h5> Are you sure you want to approve this reservation? </h5>
+                                </div>
+                                <div style="text-align: center;">
+                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                      <!-- End Modals-->
+
+                      <!-- Delete service Modal-->
+                      <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
+                      <div class="modal fade" id="sendDenyEmailModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                             <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Reservation ID</label>
+                                  <div class="col-sm-5 input-group">
+                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                  </div>
+                                </div>
+                                {!! csrf_field() !!}
+                                <div>
+                                  <h5> Are you sure you want to deny this reservation? </h5>
+                                </div>
+                                <div style="text-align: center;">
+                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                </div>
+                              </div>
+                          </div>
+                        </div>
+                      </div>
+                      </form>
+                      <!-- End Modals-->      
             <!-- /.box-body -->
           </div>
           <!-- /. box -->
@@ -473,13 +545,69 @@
     <script src="{{ asset('LTE/fullcalendar/gcal.min.js')}}"></script>
 <!-- Page specific script -->
 
+<!-- <script>
+
+    //if submit button is clicked
+    $("#approveBtn").click(function(e){
+        var randomID = 1;
+        $.ajax({
+          url:  "ReservationEmail",
+          type: "POST",
+            beforeSend: function (xhr) {
+              var token = $('meta[name="csrf_token"]').attr('content');
+              if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+              }
+          },
+          data: {
+             id: randomID,
+            '_token': $('#token').val()
+          },
+          success: function(data){
+            alert('An Email was sent to the customer.');
+            window.location.href = "ReservationPage";      
+          },
+          error: function(xhr)
+          {
+          alert('Mali');
+          alert($.parseJSON(xhr.responseText)['error']['message']);
+          }                  
+        });
+      }); 
+</script>  -->
+
+<script>
+      function getReservation(id){
+        $.ajax({
+                type: "GET",
+                url:  "/RetrieveReservationID",
+                data: 
+                {
+                    sdid: id
+                },
+                success: function(data){
+                $('#sendReservationId').val(data['ss'][0]['reservationID']);
+                },
+                error: function(xhr)
+                {
+                    alert("mali");
+                    alert($.parseJSON(xhr.responseText)['error']['message']);
+                }                
+            });
+      }
+
+    </script>
+
 <script>
 $(function () {
-  $(document).on("hidden.bs.modal", "#viewInclusionsModal", function () {
-      $(this).find("#dishInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#equipmentInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#serviceInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#staffInclusionDiv").html(""); // Just clear the contents.
+  $(document).on("hidden.bs.modal", "#detailModal", function () {
+      $(this).find("#additionalDishDiv").html(""); // Just clear the contents.
+      $(this).find("#additionalServiceDiv").html(""); // Just clear the contents.
+      $(this).find("#additionalEquipmentDiv").html(""); // Just clear the contents.
+      $(this).find("#dishInclusion").html(""); // Just clear the contents.
+      $(this).find("#serviceInclusion").html(""); // Just clear the contents.
+      $(this).find("#equipmentInclusion").html(""); // Just clear the contents.
+      $(this).find("#employeeInclusion").html(""); // Just clear the contents.
     });
 });
 </script>
@@ -581,6 +709,7 @@ $(function () {
 
                 eventClick: function(calEvent, jsEvent, view) {
                   document.getElementById('scheduleForm').reset();
+                  $(this).find("#scheduleForm").html("");
                   document.getElementById('contactNumber').innerHTML = '<h2 class="pull-right"><strong> #'+calEvent.customerCellNumberEvent+'</strong></h2>';
                   $('#editCustomerName').val(calEvent.customerNameEvent);
                   $('#editContactNumber').val(calEvent.customerCellNumberEvent);
@@ -593,6 +722,7 @@ $(function () {
                   $('#editEventGuestCount').val(calEvent.guestCountEvent);
                   $('#editEventStartTime').val(calEvent.startTimeEvent);
                   $('#editEventEndTime').val(calEvent.endTimeEvent);
+                  $('#reservationNumber').val(calEvent.id);
                   var opty = document.getElementById('editPackage').options;
                   for(var i =0; i<opty.length; i++){
                     if(opty[i].value==(calEvent.packageIdEvent)){

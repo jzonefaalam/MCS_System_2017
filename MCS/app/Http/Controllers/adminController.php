@@ -24,10 +24,46 @@ use App\eventtbl;
 use App\customertbl;
 use App\packageinclusiontbl;
 use App\equipmentlogtbl;
-
-
+use Mail;
 class adminController extends Controller
 {
+
+    public function sendApprovalEmail(Request $request){
+        // $data = array(
+        //     'email' => "jsooooon017@gmail.com",
+        //     'subject' => "Test Approval",
+        //     'bodyMessage' => 'Sample'
+        //     );
+        // Mail::send('emails.approval', $data, function($message) use ($data){
+        //     $message->from($data['email']);
+        //     $message->to('jzone_faalam@yahoo.com');
+        //     $message->subject($data['subject']);
+        // });
+        $id = Input::get('sendReservationId');
+        $reservationtbl = reservationtbl::find($id);
+        $reservationtbl->reservationStatus = 1;
+        $reservationtbl->save();
+        return redirect()->back();
+    }
+
+    public function sendDenyEmail(Request $request){
+        // $data = array(
+        //     'email' => "jsooooon017@gmail.com",
+        //     'subject' => "Test Approval",
+        //     'bodyMessage' => 'Sample'
+        //     );
+        // Mail::send('emails.approval', $data, function($message) use ($data){
+        //     $message->from($data['email']);
+        //     $message->to('jzone_faalam@yahoo.com');
+        //     $message->subject($data['subject']);
+        // });
+        $id = Input::get('sendReservationId');
+        $reservationtbl = reservationtbl::find($id);
+        $reservationtbl->reservationStatus = 2;
+        $reservationtbl->save();
+        return redirect()->back();
+    }
+
     public function authenticateLogin(){
         $usernameLogin = Input::get('usernameLogin');
         $passwordLogin = Input::get('passwordLogin');
@@ -1518,7 +1554,6 @@ class adminController extends Controller
               ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
               ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
               ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
-              ->where('reservation_tbl.reservationStatus', '=', 1)
               ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
     }
@@ -1530,8 +1565,8 @@ class adminController extends Controller
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
-        ->where('reservation_tbl.reservationStatus', 1)
-        ->get();
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->get();    
 
         $addReservationData = DB::table('package_tbl')
         ->select('*')
@@ -1554,6 +1589,14 @@ class adminController extends Controller
 
     }
 
+    public function retrieveReservationId(){
+       $ss = DB::table('reservation_tbl')
+        ->where('reservationID', Input::get('sdid'))
+        ->get();
+
+        return \Response::json(['ss'=>$ss]);
+
+    }
     public function editReservation(){
         $eventID = DB::table('reservation_tbl')
         ->where('reservationID',Input::get('editReservationID'))

@@ -22,7 +22,7 @@
                 <h2>Reservation List</h2>
               </div>
               <div class="col-md-12">
-              	<table id="reservationListTable" class="table table-bordered table-striped dataTable">
+                  <table id="reservationListTable" class="table table-bordered table-striped dataTable">
                 <thead>
                 <tr>
                   <th>Reservation ID</th>
@@ -31,6 +31,19 @@
                   <th width="130 px">Date</th>
                   <th>Package</th>
                   <th>Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
+                  <th style="display:none">Status</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -43,15 +56,28 @@
                   <td>{{ $reservationData->packageName }}</td>
                   <td>
                   <?php if (($reservationData->reservationStatus)==0): ?>
-                    <span class="label label-success">Not Available</span>
+                    <span class="label label-warning">Not Available</span>
                   <?php endif ?>
                   <?php if (($reservationData->reservationStatus)==1): ?>
                     <span class="label label-success">Confirmed</span>
                   <?php endif ?>
                   <?php if (($reservationData->reservationStatus)==2): ?>
-                    <span class="label label-success">Not Fully Paid</span>
+                    <span class="label label-warning">Denied</span>
                   <?php endif ?>
                   </td>
+                  <td style="display:none">{{ $reservationData->homeAddress }} </td>
+                  <td style="display:none">{{ $reservationData->billingAddress }} </td>
+                  <td style="display:none">{{ $reservationData->emailAddress }} </td>
+                  <td style="display:none">{{ $reservationData->cellNum }} </td>
+                  <td style="display:none">{{ $reservationData->telNum }} </td>
+                  <td style="display:none">{{ $reservationData->dateOfBirth }} </td>
+                  <td style="display:none">{{ $reservationData->packageCost }} </td>
+                  <td style="display:none">{{ $reservationData->eventTime }} </td>
+                  <td style="display:none">{{ $reservationData->endTime }} </td>
+                  <td style="display:none">{{ $reservationData->eventLocation }} </td>
+                  <td style="display:none">{{ $reservationData->guestCount }} </td>
+                  <td style="display:none">{{ $reservationData->packageID }} </td>
+                  <td style="display:none">{{ $reservationData->eventID }} </td>
                 </tr>
               @endforeach
                 </tbody>
@@ -60,7 +86,8 @@
             </div>
           </div>
 
-          <!-- Update Modal -->
+           <!-- Update Modal -->
+            <form id="scheduleForm" method="POST">
             <div class="modal fade" id="detailModal" style="width:100%;">
             <div class="modal-dialog" style="width:70%; margin-top:5%; margin-left:17%;">
             <div class="modal-content">
@@ -69,292 +96,307 @@
               <h4 class="modal-title" id="myModalLabel">Update Reservation</h4>
             </div>
             <div class="modal-body" style="width:100%;">
-              <div>
-              <!-- Custom Tabs -->
-              <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li class="active"><a href="#tab_1" data-toggle="tab">Reservation Info</a></li>
-                  <li class=""><a href="#tab_2" data-toggle="tab">Date & Time </a></li>
-                  <li class=""><a href="#tab_3" data-toggle="tab">Package & Menu </a></li>
-                  <li class=""><a href="#tab_4" data-toggle="tab">Equipment, Services & Staff </a></li>
-                  <li class=""><a href="#tab_5" data-toggle="tab">Confirmation </a></li>
-                </ul>
-                <div class="tab-content">
-                  <!-- Reservation Info Tab -->
-                  <div class="tab-pane active" id="tab_1">
-                    <form  id="editReservationForm" role="form" method="POST" class="form-horizontal" enctype="multipart/form-data">
-                    <div class="row">
-                      <div class="col-sm-6">
-                    {!! csrf_field() !!}
-
-                    <div class="form-group">
-                    <label class="col-sm-4 control-label">Reservation ID</label>
-                    <div class="col-sm-6">
-                    <div class = "input-group">
-                    <div class="input-group-addon">
-                    </div>
-                    <input type="text" class="form-control" name="editReservationID" id="editReservationID" required readonly="">
-                    </div>
-                    </div>
-                    </div>
-
-                    <div class="form-group">
-                    <label class="col-sm-4 control-label"> Event Name</label>
-                    <div class="col-sm-6">
-                    <div class = "input-group">
-                    <div class="input-group-addon">
-                    </div>
-                    <input type="text" class="form-control" name="editEventName" id="editEventName" required readonly="">
-                    </div>
-                    </div>
-                    </div>
-
-                    </div>
-
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                      <label class="col-sm-4 control-label">Customer Name</label>
-                      <div class="col-sm-6">
-                      <div class = "input-group">
-                      <div class="input-group-addon">
+              <div class="box">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <div class="box">
+                        <div class="box-header">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <h4><strong>Customer Details</strong></h4>
+                            </div>
+                            <div class="col-sm-6" id="contactNumber">
+                              
+                            </div>
+                            <div class="col-sm-6" style="display:none;">
+                              <input type="text"  name="reservationNumber" id="reservationNumber" >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="box-body">
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <label>Customer Name</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editCustomerName" id="editCustomerName" column="20" required >
+                              </div>
+                              <label>Home Address</label>
+                              <br>
+                              <div>
+                                <input type="text" " name="editHomeAddress" id="editHomeAddress" required >
+                              </div>
+                              <label>Email Address</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEmailAddress" id="editEmailAddress" required >
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>Contact Number</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editContactNumber" id="editContactNumber" required >
+                              </div>
+                              <label>Date of Birth</label>
+                              <br>
+                              <div>
+                                <input type="text" name="editDateOfBirth" id="editDateOfBirth" required >
+                              </div>
+                            </div>
+                          </div>
+                          <!-- End Row -->
+                        </div>
                       </div>
-                      <input type="text" class="form-control" name="editCustomerName" id="editCustomerName" required>
+                      <div class="box">
+                        <div class="box-header">
+                          <h4><strong>Event Details</strong></h4>
+                        </div>
+                        <div class="box-body">
+                           <div class="row">
+                            <div class="col-sm-6">
+                              <label>Event Name</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventName" id="editEventName" column="20" required >
+                              </div>
+                              <label>Event Date</label>
+                              <br>
+                              <div>
+                                <input type="text" " name="editEventDate" id="editEventDate" required >
+                              </div>
+                              <label>Event Location</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventLocation" id="editEventLocation" required >
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <label>Number of Guests</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventGuestCount" id="editEventGuestCount" required >
+                              </div>
+                              <label>Start Time</label>
+                              <br>
+                              <div>
+                                <input type="text" name="editEventStartTime" id="editEventStartTime" required >
+                              </div>
+                              <label>End Time</label>
+                              <br>
+                              <div>
+                                <input type="text"  name="editEventEndTime" id="editEventEndTime" required >
+                              </div>
+                            </div>
+                          </div>
+                          <!-- End Row -->
+                        </div>
                       </div>
-                      </div>
-                      </div>
-
-                      <div class="form-group">
-                      <label class="col-sm-4 control-label">Contact Number</label>
-                      <div class="col-sm-6">
-                      <div class = "input-group">
-                      <div class="input-group-addon">
-                      </div>
-                      <input type="text" class="form-control" name="editContactNumber" id="editContactNumber" required>
-                      </div>
-                      </div>
-                      </div>
+                      <!-- End Box -->
                     </div>
                     <!-- End Column -->
-
-                    </div>
-                    <!-- End Row -->
-
-                    <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                    <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                    </div>
-                    </form>
                   </div>
-                  <!-- End Reservation Info Tab -->
+                  <!-- End Row -->
+                  <div class="box">
+                    <div class="box-body">
+                      <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                          <li ><a href="#tab_2" data-toggle="tab">Package </a></li>
+                          <li ><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
+                          <li ><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
+                          <li ><a href="#tab_5" data-toggle="tab">Additional Service & Staff </a></li>
+                        </ul>
+                        <div class="tab-content">
 
-                  <!-- Date & Time Tab -->
-                  <div class="tab-pane active" id="tab_2">
-                    <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
-                    {!! csrf_field() !!}
+                          <!-- Package Tab -->
+                          <div class="tab-pane active" id="tab_2">
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Package Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                                <div>
+                                  <label>Package Name</label>
+                                  <br>
+                                  <div> 
+                                    <select class="form-control" name="editPackage" id="editPackage">
+                                    @foreach($addReservationData as $packageData)
+                                    <option value="{{ $packageData->packageID }}">{{ $packageData->packageName }} </option>
+                                    @endforeach
+                                    </select>
+                                  </div>
+                                </div>
+                                  <br>
+                                  <h3><strong> Package Inclusions </strong></h3>
+                                 <div class="row">
+                                  <div class="col-sm-3">
+                                  <h4> Dish Included </h4>
+                                    <div id="dishInclusion">
+                                      
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                  <h4> Equipment Included </h4>
+                                    <div id="equipmentInclusion">
 
-                    <div class="row">
-                      <div class="col-sm-6">
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                  <h4> Services & Staff Included </h4>
+                                    <div id="serviceInclusion">
 
-                        <br>
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label">Date</label>
-                        <div class="col-sm-6">
-                        <div class = "input-group">
-                        <div class="input-group-addon">
-                        <i class="fa fa-calendar"></i>
-                        </div>
-                        <input type="text" class="form-control pull-right" id="datepicker">
-                        </div>
-                        </div>
-                        </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-sm-3">
+                                  <h4> Services & Staff Included </h4>
+                                    <div id="employeeInclusion">
 
-                        <div class="bootstrap-timepicker">
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label">Start Time</label>
-                        <div class="col-sm-6">
-                        <div class = "input-group">
-                        <div class="input-group-addon">
-                        <i class="fa fa-clock-o"></i>
-                        </div>
-                        <input type="text" class="form-control timepicker">
-                        </div>
-                        </div>
-                        </div>
-                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- End Row -->
+                              </div>
+                            </div>
+                            <!-- End Box -->
+                          </div>
+                          <!-- End Reservation Info Tab -->
 
-                        <div class="bootstrap-timepicker">
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label">End Time</label>
-                        <div class="col-sm-6">
-                        <div class = "input-group">
-                        <div class="input-group-addon">
-                        <i class="fa fa-clock-o"></i>
-                        </div>
-                        <input type="text" class="form-control timepicker">
-                        </div>
-                        </div>
-                        </div>
-                        </div>
+                          <!-- Additional Food Tab -->
+                          <div class="tab-pane active" id="tab_3">
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Additional Food Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                              <h4> Lists </h4>
+                                <div id="additionalDishDiv">
 
+                                </div>
+                              </div>
+                            </div>
+                            <!-- End Box -->
+                          </div>
+                          <!-- End Reservation Tab -->
+
+                              {!! csrf_field() !!}
+                          <input type="hidden" id="token" value="{{ csrf_token() }}">
+                          <!-- Additional Equipment Tab -->
+                          <div class="tab-pane active" id="tab_4">
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Additional Equipment Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                                <h4> Lists </h4>
+                                <div id="additionalEquipmentDiv">
+
+                                </div>
+                              </div>
+                            </div>
+                            <!-- End Box -->
+                          </div>
+                          <!-- End Reservation Info Tab -->
+
+                          <!-- Additional Service & Staff Tab -->
+                          <div class="tab-pane active" id="tab_5">
+                            <div class="box">
+                              <div class="box-header">
+                                <h4><strong>Additional Service Details</strong></h4>
+                              </div>
+                              <div class="box-body">
+                                <h4> Lists </h4>
+                                <div id="additionalServiceDiv">
+
+                                </div>
+                              </div>
+                            </div>
+                            <!-- End Box -->
+                          </div>
+                          <!-- End Reservation Info Tab -->
+
+                        </div>
+                        <!-- /.tab-pane -->
                       </div>
-                      <!-- End Column -->
+                      <!-- /.tab-content -->
+                    </div>
+                    </div>
+                  </div>
+                  </div>
+                  <!-- nav-tabs-custom -->
+            </div>
+            <div class="modal-footer" >
+            <a  style="display:none;" data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-check" ></i> APPROVE
+              </a>
+              <a  data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-check" ></i> APPROVE
+              </a>
+              <a data-target="#sendDenyEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+                  <i class="fa fa-times" ></i> DENY
+              </a>
+            </div>
+            </div>
+            </div>
+            </div>
+            </form>
+                <!-- End Update Modal -->  
 
-                      <div class="col-sm-6">
-                        <div class="box">
-                          <div class="box-body">
-                            <div id="calendar"></div>
+                      <!-- Delete service Modal-->
+                      <form role="form" method="POST" action="ApproveReservationEmail" class="form-horizontal">
+                      <div class="modal fade" id="sendApproveEmailModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                             <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Reservation ID</label>
+                                  <div class="col-sm-5 input-group">
+                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                  </div>
+                                </div>
+                                {!! csrf_field() !!}
+                                <div>
+                                  <h5> Are you sure you want to approve this reservation? </h5>
+                                </div>
+                                <div style="text-align: center;">
+                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                </div>
+                              </div>
                           </div>
                         </div>
                       </div>
-                      <!-- End Column -->
-                      </div>
-                      <!-- End Row -->
-                    <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                    <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                    </div>
+                      </form>
+                      <!-- End Modals-->
 
-                    </form>
-                  </div>
-                  <!-- End Reservation Info Tab -->
-
-                  <!-- Package & Menu Info Tab -->
-                  <div class="tab-pane active" id="tab_3">
-                    <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
-                    {!! csrf_field() !!}
-
-                    <div class="row">
-                      <div class="col-sm-6"> 
-                        <div class="form-group" style="display: none;">
-                        <label class="col-sm-4 control-label">Equipment ID</label>
-                        <div class="col-sm-6">
-                        <div class = "input-group">
-                        <div class="input-group-addon">
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                        </div>
-                        <input type="text" class="form-control" name="editEquipmentID" id="editEquipmentID" readonly="">
-                        </div>
-                        </div>
-                        </div>
-
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label">Package Name</label>
-                        <div class="col-sm-6">
-                        <div class = "input-group">
-                        <div class="input-group-addon">
-                        <i class="fa fa-cube" aria-hidden="true"></i>
-                        </div>
-                        <input type="text" class="form-control" name="editEquipmentName" id="editEquipmentName" required>
-                        </div>
-                        </div>
-                        </div>
-
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label"> Description</label>
-                        <div class="col-sm-6">
-                        <div class = "input-group">
-                        <div class="input-group-addon">
-                        <i class="fa fa-quote-right" aria-hidden="true"></i>
-                        </div>
-                        <textarea type="text" required class="form-control" name="editEquipmentDescription" id="editEquipmentDescription"></textarea>
-                        </div>
-                        </div>
+                      <!-- Delete service Modal-->
+                      <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
+                      <div class="modal fade" id="sendDenyEmailModal">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                             <div class="modal-body">
+                                <div class="form-group">
+                                  <label class="col-sm-4 control-label">Reservation ID</label>
+                                  <div class="col-sm-5 input-group">
+                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                  </div>
+                                </div>
+                                {!! csrf_field() !!}
+                                <div>
+                                  <h5> Are you sure you want to deny this reservation? </h5>
+                                </div>
+                                <div style="text-align: center;">
+                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                </div>
+                              </div>
+                          </div>
                         </div>
                       </div>
-                      <!-- End Column -->
-
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label">Courses</label>
-                        <div class="col-sm-6">
-                        <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addDishTypeInclusion[]" style="width: 100%;">
-                        </select>
-                        </div>
-                        </div>
-                      </div>
-                      <!-- End Column -->
-                      </div>
-                      <!-- End Row -->
-
-                    <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                    <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                    </div>
-
-                    </form>
-                  </div>
-                  <!-- End Reservation Tab -->
-
-                  <!-- Equipment, Service & Staff Tab -->
-                  <div class="tab-pane active" id="tab_4">
-                    <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
-                    {!! csrf_field() !!}
-                    <div class="row">
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label">Equipment</label>
-                        <div class="col-sm-6">
-                        <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addDishTypeInclusion[]" style="width: 100%;">
-                        </select>
-                        </div>
-                        </div>
-                      </div>
-                      <!-- End Column -->
-
-                      <div class="col-sm-6">
-                        <div class="form-group">
-                        <label class="col-sm-4 control-label">Services & Staff</label>
-                        <div class="col-sm-6">
-                        <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addDishTypeInclusion[]" style="width: 100%;">
-                        </select>
-                        </div>
-                        </div>
-                      </div>
-                      <!-- End Column -->
-                    </div>
-
-                    <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                    <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                    </div>
-
-                    </form>
-                  </div>
-                  <!-- End Reservation Info Tab -->
-
-                  <!-- Confirmation Tab -->
-                  <div class="tab-pane active" id="tab_5">
-                    <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
-                    {!! csrf_field() !!}
-                    
-                    <div class="box">
-                      <div class="box-body">
-                          asdasd
-                      </div>
-                    </div>
-                    <!-- End Box -->
-
-                    <div style="text-align: center;">
-                    <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                    <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                    </div>
-
-                    </form>
-                  </div>
-                  <!-- End Reservation Info Tab -->
-
-                </div>
-                <!-- /.tab-pane -->
-              </div>
-              <!-- /.tab-content -->
-              </div>
-              <!-- nav-tabs-custom -->
-            </div>
-              
-            </div>
-            </div>
-            </div>
-                <!-- End Update Modal -->     
+                      </form>
+                      <!-- End Modals-->
         </div>
           <!-- /.box -->
       </section>
@@ -447,18 +489,87 @@
         var reservationCustomerNameVar = data[2];
         var reservationDateVar = data[3];
         var reservationPackageVar = data[4];
+        var customerHomeAddressVar = data[6];
+        var customerBillingAddressVar = data[7];
+        var customerEmailAddressVar = data[8];
+        var customerCellNumVar = data[9];
+        var customerTelNumVar = data[10];
+        var customerDateOfBirthVar = data[11];
+        var reservationPackageCostVar = data[12];
+        var reservationEventTimeVar = data[13];
+        var reservartionEndTimeVar = data[14];
+        var reservationEventLocationVar = data[15];
+        var reservationGuestCountVar = data[16];
+        var reservationPackageID = data[17];
+        var reservationEventID = data[18];
         $('#editReservationID').val(reservationIDVar);
         $('#editCustomerName').val(reservationCustomerNameVar);
         $('#editEventName').val(reservationEventNameVar);
-        $("#detailModal").modal("show");
+        $('#reservationNumber').val(reservationIDVar);
+        $('#editHomeAddress').val(customerHomeAddressVar);
+        $('#editEmailAddress').val(customerEmailAddressVar);
+        $('#editContactNumber').val(customerCellNumVar);
+        $('#editDateOfBirth').val(customerDateOfBirthVar);
+        $('#editEventName').val(reservationEventNameVar);
+        $('#editEventDate').val(reservationDateVar);
+        $('#editEventLocation').val(reservationEventLocationVar);
+        $('#editEventGuestCount').val(reservationGuestCountVar);
+        $('#editEventStartTime').val(reservationEventTimeVar);
+        $('#editEventEndTime').val(reservartionEndTimeVar);
+        var opty = document.getElementById('editPackage').options;
+          for(var i =0; i<opty.length; i++){
+            if(opty[i].value==(reservationPackageID)){
+              $('#editPackage').val(reservationPackageID);
+              break;
+            }
+          }
+                  $.ajax({
+
+                    type: "GET",
+                    url:  "/RetrievePackageInclusion",
+                    data: 
+                    {     
+                      sdid: reservationPackageID,
+                      sendReservationID: reservationEventID
+                    },
+                    success: function(data){
+                      for (var i = 0; i < data['ss'].length; i++) {
+                        document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['dd'].length; i++) {
+                        document.getElementById('serviceInclusion').innerHTML += '<h6>'+data['dd'][i]['serviceName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['ff'].length; i++) {
+                        document.getElementById('equipmentInclusion').innerHTML += '<h6>'+data['ff'][i]['equipmentName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['gg'].length; i++) {
+                        document.getElementById('employeeInclusion').innerHTML += '<h6>'+data['gg'][i]['employeeTypeName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['additionalDish'].length; i++) {
+                        document.getElementById('additionalDishDiv').innerHTML += '<h6>'+data['additionalDish'][i]['dishName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['additionalService'].length; i++) {
+                        document.getElementById('additionalServiceDiv').innerHTML += '<h6>'+data['additionalService'][i]['serviceName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['additionalEquipment'].length; i++) {
+                        document.getElementById('additionalEquipmentDiv').innerHTML += '<h6>'+data['additionalEquipment'][i]['equipmentName']+'</h6>';
+                      }
+                      $("#detailModal").modal("show");     
+                    },
+                    error: function(xhr)
+                    {
+                      alert("mali");
+                      alert($.parseJSON(xhr.responseText)['error']['message']);
+                    }                
+                  });
         } );
-    $('#datepicker').datepicker({
-      autoclose: true
-    });
-    //Timepicker
-    $(".timepicker").timepicker({
-      showInputs: true
-    });
+    // $('#datepicker').datepicker({
+    //   autoclose: true
+    // });
+    // //Timepicker
+    // $(".timepicker").timepicker({
+    //   showInputs: true
+    // });
 } );
 </script>
 
