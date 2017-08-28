@@ -25,6 +25,8 @@ Route::get('/RegisterAccount', function () {
     return view('registerAccount');
 });
 
+Route::post("/ReservationEmail", array("uses"=>"adminController@sendEmail"));
+
 
 Route::get('/Logout', 'adminController@authenticateLogout');
 

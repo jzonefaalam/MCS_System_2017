@@ -387,6 +387,8 @@
                           </div>
                           <!-- End Reservation Tab -->
 
+                              {!! csrf_field() !!}
+                          <input type="hidden" id="token" value="{{ csrf_token() }}">
                           <!-- Additional Equipment Tab -->
                           <div class="tab-pane active" id="tab_4">
                             <div class="box">
@@ -431,6 +433,17 @@
                   </div>
                   <!-- nav-tabs-custom -->
             </div>
+            <div class="modal-footer" style="margin-left:50%">
+              <a class="btn btn-app" style="display:none;">
+                  <i class="fa fa-save"></i> APPROVE
+              </a>
+              <a style="margin-left:50%" class="btn btn-app" type="submit" id="approveBtn" name="approveBtn">
+                  <i class="fa fa-check" ></i> APPROVE
+              </a>
+              <a class="btn btn-app" data-target="#addPackageModal" data-toggle="modal">
+                  <i class="fa fa-times"></i> DENY
+              </a>
+            </div>
             </div>
             </div>
             </div>
@@ -474,12 +487,45 @@
 <!-- Page specific script -->
 
 <script>
+
+    //if submit button is clicked
+    $("#approveBtn").click(function(e){
+        var randomID = 1;
+        $.ajax({
+          url:  "/ReservationEmail",
+          type: "POST",
+            beforeSend: function (xhr) {
+              var token = $('meta[name="csrf_token"]').attr('content');
+              if (token) {
+                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+              }
+          },
+          data: {
+             id: randomID,
+            '_token': $('#token').val()
+          },
+          success: function(data){
+            alert('An Email was sent to the customer.');
+            window.location.href = "ReservationPage";      
+          },
+          error: function(xhr)
+          {
+          alert($.parseJSON(xhr.responseText)['error']['message']);
+          }                  
+        });
+      }); 
+</script> 
+
+<script>
 $(function () {
-  $(document).on("hidden.bs.modal", "#viewInclusionsModal", function () {
-      $(this).find("#dishInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#equipmentInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#serviceInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#staffInclusionDiv").html(""); // Just clear the contents.
+  $(document).on("hidden.bs.modal", "#detailModal", function () {
+      $(this).find("#additionalDishDiv").html(""); // Just clear the contents.
+      $(this).find("#additionalServiceDiv").html(""); // Just clear the contents.
+      $(this).find("#additionalEquipmentDiv").html(""); // Just clear the contents.
+      $(this).find("#dishInclusion").html(""); // Just clear the contents.
+      $(this).find("#serviceInclusion").html(""); // Just clear the contents.
+      $(this).find("#equipmentInclusion").html(""); // Just clear the contents.
+      $(this).find("#employeeInclusion").html(""); // Just clear the contents.
     });
 });
 </script>
@@ -581,6 +627,7 @@ $(function () {
 
                 eventClick: function(calEvent, jsEvent, view) {
                   document.getElementById('scheduleForm').reset();
+                  $(this).find("#scheduleForm").html("");
                   document.getElementById('contactNumber').innerHTML = '<h2 class="pull-right"><strong> #'+calEvent.customerCellNumberEvent+'</strong></h2>';
                   $('#editCustomerName').val(calEvent.customerNameEvent);
                   $('#editContactNumber').val(calEvent.customerCellNumberEvent);

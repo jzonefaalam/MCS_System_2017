@@ -24,10 +24,27 @@ use App\eventtbl;
 use App\customertbl;
 use App\packageinclusiontbl;
 use App\equipmentlogtbl;
-
-
 class adminController extends Controller
 {
+
+    public function sendEmail(){
+        include(app_path(). '\Library\PHPMailer\PHPMailerAutoload.php');
+        $mail = new PHPMailer();
+        $mail->isSMTP();
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'ssl';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = '465';
+        $mail->isHTML();
+        $mail->Username = 'jsooooon017@gmail.com';
+        $mail->Password = 'F44l4m1997';
+        $mail->setFrom('no-reply@mcs.org');
+        $mail->Subject('MCS Reservation');
+        $mail->Body = 'Denied Reservation';
+        $mail->AddAddress('jzone_faalam@yahoo.com');
+        $mail->Send();
+    }
+
     public function authenticateLogin(){
         $usernameLogin = Input::get('usernameLogin');
         $passwordLogin = Input::get('passwordLogin');
