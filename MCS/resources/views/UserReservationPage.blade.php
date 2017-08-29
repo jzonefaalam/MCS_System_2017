@@ -74,7 +74,7 @@
 			                                        <select name="eType" id = "eType" class="form-control" >
 														<option disabled="" selected=""></option>
 														    @foreach($eType as $type)
-														<option value="{{$type->eventTypeID}}">{{$type->eventTypeName}}</option>
+														<option value="{{$type->eventTypeID}}" id="{{$type->eventTypeName}}">{{$type->eventTypeName}}</option>
 														    @endforeach
 		                                            </select>
 			                                    </div>
@@ -209,6 +209,11 @@
 		                                	<div class="col-sm-12">
 		                                        <h5 class="info-text"> <i> Choose your package </i> </h5>
 		                                    </div>
+		                                	<input type="text" id="pprice" hidden>
+		                                	<input type="text" id="dprice" hidden>
+		                                	<input type="text" id="sprice" hidden>
+		                                	<input type="text" id="eprice" hidden>
+		                                	<input type="text" id="emprice" hidden>
 		                                    @foreach($package as $pg)
 		                                	<input type="text" id="pckid" hidden>
 		                                    <input type="button" style = "width: 550px" class="btn btn-warning btn-sm"  data-toggle="modal" href="#packageModal{{$pg->packageID}}" id = "pck{{$pg->packageID}}" name='{{$pg->packageID}}' onclick="getpckid(this.name)" value="{{$pg->packageName}}">
@@ -250,7 +255,7 @@
 				                                    	@foreach($paymentTerm as $pt)
 				                                        <div class="col-sm-9 col-sm-offset-2" id="ppt{{$pt->paymentTermID}}">
 															<div class="choice" data-toggle="wizard-checkbox"  style="margin-top: -10px" >
-				                                                <input type="checkbox" name="{{$pt->paymentTermID}}" id="pt{{$pt->paymentTermID}}">
+				                                                <input type="checkbox" name="{{$pt->paymentTermID}}" id="pt{{$pt->paymentTermID}}" onchange="getpt(this.name)">
 				                                                <div class="card card-checkboxes card-hover-effect"  id="{{$pt->paymentTermID}}" onclick="getpt(this.id)">
 				                                                    <i class="{{$pt->paymentTermIco}}"></i>
 																	<p>{{$pt->paymentTermName}}</p>
@@ -265,7 +270,7 @@
 				                                    	@foreach($paymentMode as $pm)
 				                                        <div class="col-sm-9 col-sm-offset-1 " id="ppm{{$pm->paymentModeID}}" >
 															<div class="choice" data-toggle="wizard-checkbox" style="margin-top: -10px">
-				                                                <input type="checkbox" name="{{$pm->paymentModeID}}" id="pm{{$pm->paymentModeID}}">
+				                                                <input type="checkbox" name="{{$pm->paymentModeID}}" id="pm{{$pm->paymentModeID}}" onchange="getpm(this.name)">
 				                                                <div class="card card-checkboxes card-hover-effect" id="{{$pm->paymentModeID}}" onclick="getpm(this.id)">
 				                                                    <i class="{{$pm->paymentModeIco}}"></i>
 																	<p>{{$pm->paymentModeName}}</p>
@@ -282,7 +287,7 @@
 		                        <div class="wizard-footer">
 		                        	<div class="pull-right">
 		                                <input type='button' class='btn btn-next btn-fill btn-primary btn-wd' name='next' value='Next'  />
-		                                <input type="button" data-toggle="modal"  value="Finish" class="btn btn-finish btn-fill btn-primary btn-wd" href="#paymentModal" onclick="getFck(this)">
+		                                <input type="button" data-toggle="modal"  value="Finish" class="btn btn-finish btn-fill btn-primary btn-wd" href="#paymentModal" onclick="getFuck(this)">
 		                            </div>
 
 		                            <div class="pull-left">
@@ -382,7 +387,7 @@
 		            		<div class = "col-md-3 col-sm-3">
 								<h3 id='dishTypeName'><center>{{$pgi->dishTypeName}}{{$pgi->serviceID}}</center></h3>
 					            <div class="form-group">
-									<img src="{{ asset('images/' . $pgi->dishTypeImage) }}" style="height: 150px; border: 5px" id="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" class="col-md-12 col-sm-12">
+									<img src="{{ asset('img/' . $pgi->dishTypeImage) }}" style="height: 150px; border: 5px" id="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" class="col-md-12 col-sm-12">
 					            	<select class="form-control" name="dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}" id="dish{{$pgi->packageID}}{{$pgi->packageInclusionID}}" data-error="required"  onclick="getdishid(this.id)" onchange="pckdshimg(this.name)" required="">
 									<option disabled selected value="">Choose Dish</option>
 										@foreach($dishes as $dishh)
@@ -453,7 +458,7 @@
 				@foreach($dishtype as $dd)
 	            <div class="modal-body step step-{{$i}}" align="center">
 	            	<div class="row">						
-		                <img src="{{ asset('images/' . $dd->dishTypeImage) }}" id="dishTypeImage{{$dd->dishTypeID}}" width="200px" height="150px">
+		                <img src="{{ asset('img/' . $dd->dishTypeImage) }}" id="dishTypeImage{{$dd->dishTypeID}}" width="200px" height="150px">
 						<select class="form-control" name="dishTypeImage{{$dd->dishTypeID}}" id="dishType{{$dd->dishTypeID}}" style="width: 200px" onchange="pckdshimg(this.name)" required="">
 							<option disabled selected value="">Choose Dish</option>
 							@foreach($dishes as $dishh)
@@ -526,7 +531,7 @@
 				<input id="empprice" hidden>
 	            <div class="modal-body step step-1" align="center">
 	                <div class="row">
-		                <img src="{{ asset('images/' . 'avatar5.png') }}"  id="empimage" style="width: 200px;height: 150px"> <br> <br>
+		                <img src="{{ asset('img/' . 'avatar5.png') }}"  id="empimage" style="width: 200px;height: 150px"> <br> <br>
 		                <select class="form-control" name="empimage" id="employeetype" style="width: 200px"  onchange="pckempimg(this.name)">
 							<option disabled selected value="">Choose Staff</option>
 							@foreach($employeetype as $et)
@@ -707,7 +712,7 @@
 	</form>
 
 	<!-- PAYMENT MODAL -->
-	<form class="modal multi-step" id="paymentModal">
+	<form class="modal multi-step" id="paymentModal" data-backdrop="static" data-keyboard="false">
 		<div class="modal-dialog"> <br> <br> <br>
 			<div class="modal-content">
 				<div class="modal-header">
@@ -715,31 +720,86 @@
 					<span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title step-1" data-step="1">Confirmation</h4>
 					<h4 class="modal-title step-2" data-step="2">Terms and Conditions</h4>
+					<h4 class="modal-title step-3" data-step="3">Confirmation</h4>
 				</div>
 
 	            <div class="modal-body step step-1" align="center">
+	            	<div id="review">
 
+	            	</div>
 	            </div>
 
-	             <div class="modal-body step step-2" align="center">
+	            <div class="modal-body step step-2" align="center">
+					<textarea class="form-control" style="width: 550px; height:300px; overflow-y: auto;" value="" disabled>1) Reservation of your date with Margareth’s Catering 
+a) Must reserve your date as early as 6-8 weeks before, during peak seasons. (Christmas, Graduation, Holidays) and 2-4 weeks during normal days. 
+b) Event reservations must be confirmed in writing by the Client thru signing of Contract.
+c) All bookings are subject to minimum guest numbers; these will be confirmed by Margareth’s Catering to the Clients.
+
+2) Initial Payment: 30:70
+a) An amount of initial payment will be given to the client by Margareth’s Catering once your reservation was confirmed.
+b) Initial payment consists of 30% of total cost. It must be given to Margareth’s Catering after finalizing the event details.
+c) Payment methods available include bank transfer, cheque and cash. 
+
+3) Booking Confirmation
+a) Once the Clients deposit has been received, Margareth’s Catering will issue a receipt. And a confirmation will follow about your event details. 
+
+4) Total Cost
+a) Payment in full is required for all catering services to be provided by Cloverdale Catering prior to the event. 
+b) The information provided at this point will be used to produce your total event cost invoice, arrange staff and co-ordinate with your venue. Once our invoice is received by the Client payment must be received no later than 3 working days before the event.
+c) Margareth’s Catering must be advised of any changes to event requirements (including the reduction of guest numbers) 7 days before the event date.
+ 
+6) Cancellation of Event
+a) Events cancelled due to valid reason Margareth’s Catering must be informed about cancellations. Total refundable amount was only 70% of total price computed upon finalizing the event. 
+•	70% - 1 week before the event.
+•	20% - 2 days before the event. 
+b) The total event cost will be based on the numbers of guests scheduled, at the agreed price.
+
+8) Food 
+a) Due to health regulations and for the safety of our guests, food not consumed may not be taken from catered events. All leftover food remains the property of the client. 
+b) While for Allergies, we cannot however take responsibility for any guests unless advised in advance (no less than 5 working days before the event).
+
+9) Margareth’s Catering Properties, and Venue Guidelines
+a) Venue Guidelines Margareth’s Catering will be happy to advise and arrange for specialty linens, floral arrangements, tents, chairs and tables. If you wish to display any signs or materials, please let the event planner know in advance and we will be happy to assist you. 
+Please note: 
+• Use of tape on walls, doors, ceilings, etc. is prohibited. 
+• Open flames policy varies in each building. Consult event planner for more information. 
+• Confetti or similar materials may be used. 
+• No objects can be suspended from the ceiling.
+b) Margareth’s Catering will not be held responsible for the theft, lost or damage to any personal effects of the Client.
+
+10) Lost, Damaged Equipments
+a) Margareth’s Catering will charge the client for lost equipments. (Ask for further information)
+b) While damage fees will be applied for damaged equipments. (Ask for further information)
+
+11) Margareth’s Rental of Equipment Service
+a) Staffed Limited Service. This set-up includes a tablecloth for the food items ordered and all appropriate service ware. One (1) catering staff member will stay on-site to oversee the event. The staff member will replenish food and beverages throughout the event and keep the food buffet tidy and appealing to the guests.
+					</textarea>	
+					<div class="form-group">
+					<input type="checkbox" id="concheck" onchange="getfm(this.id)" class="pull-left" value="1" style="margin-top: 3px;"><h6 style="font-size: 16px"> I have read and understand this agreement and I accept and agree to all of its terms and conditions.</h6>
+					</div>
+	            </div>
+
+	            <div class="modal-body step step-3" align="center">
 
 	            </div>
 
 				<div class="modal-footer">
 					<div class="pull-right">
 						<button type="button" class="btn btn-success btn-fill step step-1" data-step="1" onclick="sendEvent('#paymentModal', 2)">Continue</button>
-						<button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-danger btn-fill step step-2" data-step="2" data-dismiss="modal">Confirm</button>
+						<button type="button" id="btnch" class="btn btn-success btn-fill step step-2" data-step="2" disabled="" onclick="sendEvent('#paymentModal', 3)">Continue</button>
+						<button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-danger btn-fill step step-3" data-step="3" data-dismiss="modal">Confirm</button>
 					</div>
 					<div class="pull-left">
 						<button type="button" class="btn btn-danger step step-1" data-step="1" data-dismiss="modal">Cancel</button>
 						<button type="button" class="btn btn-success step step-2" data-step="2" onclick="sendEvent('#paymentModal', 1)">Back</button>
+						<button type="button" class="btn btn-success step step-3" data-step="3" onclick="sendEvent('#paymentModal', 2)">Back</button>
 					</div>
 				</div>
 			</div>			
 		</div>
 	</form>
 
-	<!-- <script type="text/javascript">
+	<script type="text/javascript">
 			$.validator.addMethod(
 		        "regex",
 		        function(value, element, regexp) {
@@ -876,7 +936,7 @@
 
 
  		</script>
- -->
+
  		<script>
  			var addCtr = 0;
  			var servCtr = 0;
@@ -962,7 +1022,7 @@
 								var cell9 = row.insertCell(9);
 
 								cell1.innerHTML = '<h6>Package &nbsp |</h6><img id="cartImg" src="" width="80px" height="60px">';
-								document.getElementById("cartImg").src="{!! asset('images/'.'"+ pckImage +"')!!}";
+								document.getElementById("cartImg").src="{!! asset('img/'.'"+ pckImage +"')!!}";
 							    cell2.innerHTML = '<h6><b>'+pckname+'</b></h6><small><label id="cartDishes"><i>'+ dishes +'</i></label></small>';
 			 					cell3.innerHTML = '<h6><b>'+tp+'</b></h6>';
 							    // cell3.innerHTML = '<h3>'+price+'</h3><br/><button id ="btnRemove" type="button" class="btn btn-info btn-md" onclick="deleteRow(this)">Remove</button>';
@@ -981,6 +1041,7 @@
 							        }
 								$subt=subt;
 					    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    		$('#pprice').val(tp);
 					    	}
 					    	else{
 					    		alert("Complete choosing your options.");
@@ -1177,6 +1238,7 @@
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
+					    	$('#dprice').val(price);
 						}
 						else{
 							alert("Input a Quantity");
@@ -1307,6 +1369,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	$('#sprice').val(price);
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
@@ -1450,6 +1513,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	$('#eprice').val(price);
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
@@ -1586,6 +1650,7 @@
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	$('#emprice').val(price);
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
@@ -1668,7 +1733,7 @@
  				@foreach($package as $pg)
  				@foreach($packageinclusion as $pgi)
 		            	@if($pgi->packageID == $pg->packageID)
-		            		document.getElementById('dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}').src="{!! asset('images/' . $pgi->dishTypeImage) !!}"; 
+		            		document.getElementById('dishimg{{$pgi->packageID}}{{$pgi->packageInclusionID}}').src="{!! asset('img/' . $pgi->dishTypeImage) !!}"; 
 		            	@endif
 		         @endforeach
 		         @endforeach
@@ -1677,20 +1742,309 @@
  				}
  				function getFck(id){
  				@foreach($dishtype as $dt)
-		            document.getElementById('dishTypeImage{{$dt->dishTypeID}}').src="{!! asset('images/' . $dt->dishTypeImage) !!}";
+		            document.getElementById('dishTypeImage{{$dt->dishTypeID}}').src="{!! asset('img/' . $dt->dishTypeImage) !!}";
 		        @endforeach
  				@foreach($servicetype as $st)
-		            document.getElementById('serviceTypeImage{{$st->serviceTypeID}}').src="{!! asset('images/' . $st->serviceTypeImage) !!}";
+		            document.getElementById('serviceTypeImage{{$st->serviceTypeID}}').src="{!! asset('img/' . $st->serviceTypeImage) !!}";
 		        @endforeach
 		        @foreach($equipmenttype as $et)
-		            document.getElementById('equipmentTypeImage{{$et->equipmentTypeID}}').src="{!! asset('images/' . $et->equipmentTypeImage) !!}";
+		            document.getElementById('equipmentTypeImage{{$et->equipmentTypeID}}').src="{!! asset('img/' . $et->equipmentTypeImage) !!}";
 		        @endforeach
- 					document.getElementById('empimage').src="{!! asset('images/' . 'avatar5.png') !!}"; 
+ 					document.getElementById('empimage').src="{!! asset('img/' . 'avatar5.png') !!}"; 
  					document.getElementById('additionalModal').reset();
  					document.getElementById('serviceModal').reset();
  					document.getElementById('equipmentModal').reset();
- 					document.getElementById('paymentModal').reset();
  				}
+ 				function getfm(id){
+ 					if(document.getElementById(id).checked==true){
+ 						document.getElementById('btnch').disabled=false; 						
+ 					}
+ 					else{
+ 						document.getElementById('btnch').disabled=true;
+ 					}
+ 				} 				
+ 				function getFuck(id){
+ 					document.getElementById('paymentModal').reset();
+ 					sendEvent('#paymentModal', 1);
+ 					var addEventIDs = $("#addEventID").val();						
+					var eNames = $("#eName").val();
+					var eDates = $("#eDate").val();
+					var eTimes = $("#eTime").val();
+					var enTimes = $("#enTime").val();
+					var eLocs = $("#eLoc").val();
+					var eLoc2s = $("#eLoc2 :selected").text();
+					var eNums = $("#eNum").val();
+					var eTypes = $("#eType :selected").text();
+					var addCustomerIDs = $("#addCustomerID").val();
+					var cusNames = $("#cusName").val();
+					var homeAdds = $("#homeAdd").val();
+					var emailAdds = $("#emailAdd").val();
+					var telNums = $("#telNum").val();
+					var cellNums = $("#cellNum").val();
+					var dobs = $("#dob").val();
+					var addContactIDs = $("#addContactID").val();
+					var conPersons = $("#conPerson").val();
+					var conNums = $("#conNum").val();
+					var addDishID = [];
+					var addDishQty = [];
+					var addDishNotes = [];
+					var addServID = [];
+					var addServQty = [];
+					var addServNotes = [];
+					var addServDescs = [];
+					var addEquipID = [];
+					var addEquipQty = [];
+					var addEquipNotes = [];
+					var addEquipDescs = [];
+					var addEmpID = [];
+					var addEmpQty = [];
+					var addEmpNotes = [];
+					var ptIDs = $("#ptids").val();
+					var pmIDs = $("#pmids").val();
+					var addReservationIDs = $("#addReservationID").val();
+					var addPackIDs = $("#addPackageID").val();
+					var venues;
+					if($('#yesNo').val()=="Yes"){
+						venues=eLocs;
+					}
+					else{
+						venues=eLoc2s;
+					}
+					document.getElementById('review').innerHTML='<p align="left">Hi '+cusNames+'! Here are the details of your reservation. Kindly review and verify:</p><textarea id="txt" class="form-control" style="width: 550px; height:300px; overflow-y: auto;" value="" disabled></textarea>';
+					$('#txt').append("\t\t\t\t\t\tEVENT DETAILS:");
+					$('#txt').append("\n\tEvent Name: \t\t\t\t"+eNames);
+					$('#txt').append("\n\tEvent Type: \t\t\t\t"+eTypes);
+					$('#txt').append("\n\tNumber of Guests: \t\t"+eNums);
+					$('#txt').append("\n\tEvent Date: \t\t\t\t"+eDates);
+					$('#txt').append("\n\tEvent Venue: \t\t\t"+venues);
+					$('#txt').append("\n\tStart Time: \t\t\t\t"+eTimes);
+					$('#txt').append("\n\tEnd Time: \t\t\t\t"+enTimes);
+					$('#txt').append("\n\t_____________________________________________________________");
+					$('#txt').append("\n\n\t\t\t\t\t\tCUSTOMER DETAILS:");
+					$('#txt').append("\n\tCustomer Name: \t\t\t"+cusNames);
+					$('#txt').append("\n\tHome Address: \t\t\t"+homeAdds);
+					$('#txt').append("\n\tEmail Address: \t\t\t"+emailAdds);
+					$('#txt').append("\n\tDate of Birth: \t\t\t"+dobs);
+					$('#txt').append("\n\tTelephone Number: \t\t"+telNums);
+					$('#txt').append("\n\tCellphone Number: \t\t"+cellNums);
+					$('#txt').append("\n\tContact Person: \t\t\t"+conPersons);
+					$('#txt').append("\n\tContact Number: \t\t\t"+conNums);
+					$('#txt').append("\n\t_____________________________________________________________");
+					var tot=0;
+					if(addPackIDs){
+					$('#txt').append("\n\n\t\t\t\t\t\tPACKAGE DETAILS:");
+						$.ajax({
+							url: '/UserReservationPage-getPIID',
+							type: 'POST',
+							data: {
+								"_token": "{{ csrf_token() }}",
+								pg_id: addPackIDs
+							},
+							success: function(data){
+								$('#txt').append("\n\tPackage Name: \t\t\t"+data['pckid'][0]['packageName']);
+								var price;
+								var pckgid=[];
+								var tp;
+								for(var i = 0; i < data['pckgid'].length; i++){
+								price=([data['pckgid'][i]['packageCost']]);
+								pckgid.push([data['pckgid'][i]['packageInclusionID']]);
+		 						tp=price*parseInt($('#eNum').val());
+
+								}
+								$('#txt').append("\n\tPrice: \t\t\t\t\t"+price+" per head");
+								var pckginc = [];
+			 					for (var i = 0; i < pckgid.length; i++){
+			 						pckginc.push(["dish" +addPackIDs+""+pckgid[i]]);
+			 					}
+			 					$('#txt').append("\n\tDish Included:");
+								for (var i = 0; i < pckginc.length; i++){
+									var selectedOption = document.getElementById(pckginc[i]);
+			 						$('#txt').append("\n\t\t\t\t\t\t\t"+selectedOption.options[selectedOption.selectedIndex].text);
+									
+			 					}
+			 					$('#txt').append("\n\tServices Included:");
+								for(var i = 0; i < data['servid'].length; i++){
+									$('#txt').append("\n\t\t\t\t\t\t\t"+[data['servid'][i]['serviceName']]);
+								}
+			 					$('#txt').append("\n\tEquipment Included:");
+								for(var i = 0; i < data['equipid'].length; i++){
+									$('#txt').append("\n\t\t\t\t\t\t\t"+[data['equipid'][i]['equipmentName']]);
+								}
+			 					$('#txt').append("\n\tStaff Included:");
+								for(var i = 0; i < data['empid'].length; i++){
+									$('#txt').append("\n\t\t\t\t\t\t\t"+[data['empid'][i]['employeeTypeName']]);
+								}
+								$('#txt').append("\n\t_____________________________________________________________");
+								$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");
+							},
+							error: function(result){
+								alert('error');
+							}
+						}); 
+					}
+					if(addCtr>0||servCtr>0||equipCtr>0||empCtr>0){
+						$('#txt').append("\n\n\t\t\t\t\t\tADDITIONAL DETAILS:");
+							if(addCtr>0){
+								var j=1;
+								for (var i = 1; i <= addCtr; i++){
+									addDishID=($("#additionalDish"+i+"").val());
+										$.ajax({
+											url: '/UserReservationPage-getAdd',
+											type: 'POST',
+											data: {
+											"_token": "{{ csrf_token() }}",
+											ad_id: addDishID
+												},
+												success: function(data){
+												var price=parseFloat([data['dish'][0]['dishCost']]);
+												$('#txt').append("\n\tAdditional Dish "+j+": \t\t"+data['dish'][0]['dishName']);
+												if($("#additionalNotes"+j+"").val()){
+													$('#txt').append("\n\tNote: \t\t\t\t\t"+($('#additionalNotes'+j+'').val()));
+												}
+												$('#txt').append("\n\tPrice: \t\t\t\t\t"+price);
+												$('#txt').append("\n\tQuantity: \t\t\t\t"+($('#additionalQty'+j+'').val()));
+												tp=price*($("#additionalQty"+j+"").val());
+												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
+												j++;
+												},
+												error: function(result){
+													alert('error');
+												}
+											}); 
+									
+								}
+							}
+							
+							if(servCtr>0){
+								var k=1;
+								for (var i = 1; i <= servCtr; i++){
+									addServID=($("#additionalService"+i+"").val());
+									$.ajax({
+											url: '/UserReservationPage-getServ',
+											type: 'POST',
+											data: {
+											"_token": "{{ csrf_token() }}",
+											as_id: addServID
+												},
+												success: function(data){
+												var price=parseFloat([data['serv'][0]['serviceFee']]);
+												$('#txt').append("\n\tAdditional Service "+k+": \t\t"+data['serv'][0]['serviceName']);
+												if($("#additionalSNotes"+k+"").val()){
+													$('#txt').append("\n\tNote: \t\t\t\t\t"+($('#additionalSNotes'+k+'').val()));
+												}
+												if($("#additionalSDesc"+k+"").val()){
+													$('#txt').append("\n\tDescription: \t\t\t\t"+($('#additionalSDesc'+k+'').val()));
+												}
+												$('#txt').append("\n\tPrice: \t\t\t\t\t"+price);
+												$('#txt').append("\n\tQuantity: \t\t\t\t"+($('#additionalSQty'+k+'').val()));
+												tp=price*($("#additionalSQty"+k+"").val());
+												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
+												k++;
+												},
+												error: function(result){
+													alert('error');
+												}
+											}); 
+								}
+							}
+							if(equipCtr>0){
+								var l = 1;
+								for (var i = 1; i <= equipCtr; i++){
+									addEquipID=($("#additionalEquipment"+i+"").val());
+									$.ajax({
+											url: '/UserReservationPage-getEquip',
+											type: 'POST',
+											data: {
+											"_token": "{{ csrf_token() }}",
+											ae_id: addEquipID
+												},
+												success: function(data){
+												var price=parseFloat([data['equip'][0]['equipmentRatePerHour']]);
+												$('#txt').append("\n\tAdditional Equipment "+l+": \t"+data['equip'][0]['equipmentName']);
+												if($("#additionalENotes"+l+"").val()){
+													$('#txt').append("\n\tNote: \t\t\t\t\t"+($('#additionalENotes'+l+'').val()));
+												}
+												if($("#additionalEDesc"+l+"").val()){
+													$('#txt').append("\n\tDescription: \t\t\t\t"+($('#additionalEDesc'+l+'').val()));
+												}
+												$('#txt').append("\n\tPrice: \t\t\t\t\t"+price);
+												$('#txt').append("\n\tQuantity: \t\t\t\t"+($('#additionalEQty'+l+'').val()));
+												tp=price*($("#additionalEQty"+l+"").val());
+												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
+												l++;
+												},
+												error: function(result){
+													alert('error');
+												}
+											}); 
+								}
+							}
+							if(empCtr>0){
+								var m =1;
+								for (var i = 1; i <= empCtr; i++){
+									addEmpID.push($("#additionalEmployee"+i+"").val());
+									$.ajax({
+											url: '/UserReservationPage-getEmp',
+											type: 'POST',
+											data: {
+											"_token": "{{ csrf_token() }}",
+											ae_id: addEmpID
+												},
+												success: function(data){
+												var price=parseFloat([data['emp'][0]['employeeRatePerHour']]);
+												$('#txt').append("\n\tAdditional Staff "+m+": \t\t"+data['emp'][0]['employeeTypeName']);
+												if($("#additionalEmNotes"+m+"").val()){
+													$('#txt').append("\n\tNote: \t\t\t\t\t"+($('#additionalEmNotes'+m+'').val()));
+												}
+												$('#txt').append("\n\tPrice: \t\t\t\t\t"+price);
+												$('#txt').append("\n\tQuantity: \t\t\t\t"+($('#additionalEmQty'+m+'').val()));
+												tp=price*($("#additionalEmQty"+m+"").val());
+												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
+												m++;
+												},
+												error: function(result){
+													alert('error');
+												}
+											}); 
+								}
+							}
+						}
+						$('#txt').one("scroll", function(){
+							if(addPackIDs){
+							tot=tot+parseFloat($('#pprice').val());
+							}
+							if(addCtr>0){
+								for(var i=1;i<=addCtr;i++){
+									var dprice=parseFloat($('#dprice').val())*parseInt($('#additionalQty'+i+'').val());
+									tot=tot+dprice;
+								}
+							}
+							if(servCtr>0){
+								for(var i=1;i<=servCtr;i++){
+									var dprice =parseFloat($('#sprice').val())*parseFloat($('#additionalSQty'+i+'').val());
+									tot=tot+dprice;
+								}
+							}
+							if(equipCtr>0){
+								for(var i=1;i<=equipCtr;i++){
+									var dprice =parseFloat($('#eprice').val())*parseFloat($('#additionalEQty'+i+'').val());
+									tot=tot+dprice;
+								}
+							}
+							if(empCtr>0){
+								for(var i=1;i<=empCtr;i++){
+									var dprice =parseFloat($('#emprice').val())*parseFloat($('#additionalEmQty'+i+'').val());
+									tot=tot+dprice;
+								}
+							}
+							// alert(tot);
+			 				$('#txt').append("\n\t_____________________________________________________________");
+							$('#txt').append("\n\tTOTAL:\t\t\t\t\t\t\t\t\t\t\t"+tot+".00");
+
+		 				});	
+						
+ 				}
+ 				
  				function getdishtypeid(id){
  				$("#dtid").val(id)
  				//alert(id)
