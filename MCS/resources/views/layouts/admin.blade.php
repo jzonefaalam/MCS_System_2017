@@ -136,12 +136,6 @@
             </li>
 
             <li class="treeview">
-              <a href="/SchedulePage">
-                <i class="fa fa-calendar"></i> <span>Schedule</span>
-              </a>
-            </li>
-
-            <li class="treeview">
               <a href="/ReservationPage">
                 <i class="fa fa-file-text-o"></i> <span>Reservation</span>
               </a>

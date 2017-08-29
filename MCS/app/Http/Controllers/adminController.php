@@ -39,7 +39,7 @@ class adminController extends Controller
         //     $message->to('jzone_faalam@yahoo.com');
         //     $message->subject($data['subject']);
         // });
-        $id = Input::get('sendReservationId');
+        $id = Input::get('approveReservationId');
         $reservationtbl = reservationtbl::find($id);
         $reservationtbl->reservationStatus = 1;
         $reservationtbl->save();
@@ -57,7 +57,7 @@ class adminController extends Controller
         //     $message->to('jzone_faalam@yahoo.com');
         //     $message->subject($data['subject']);
         // });
-        $id = Input::get('sendReservationId');
+        $id = Input::get('denyReservationId');
         $reservationtbl = reservationtbl::find($id);
         $reservationtbl->reservationStatus = 2;
         $reservationtbl->save();
@@ -82,18 +82,18 @@ class adminController extends Controller
     }
 
     //Dashboard Page functions-------------------------------------------------------------------------->
-    public function dashboardPage(){ 
-        $dateTime = Date_create('now');
-        $dateToday = $dateTime->format('n.j.Y');
-        $dashboardData = DB::table('reservation_tbl')
-          ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-          ->orderBy('reservation_tbl.created_at', 'desc')
-          ->where('reservation_tbl.reservationStatus', '=', 1)
-          ->where('reservation_tbl.created_at', '<=', Carbon::now())
-          ->get();
-        return View::make('/DashboardPage')
-        ->with('dashboardData', $dashboardData);
-    }
+    // public function dashboardPage(){ 
+    //     $dateTime = Date_create('now');
+    //     $dateToday = $dateTime->format('n.j.Y');
+    //     $dashboardData = DB::table('reservation_tbl')
+    //       ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+    //       ->orderBy('reservation_tbl.created_at', 'desc')
+    //       ->where('reservation_tbl.reservationStatus', '=', 1)
+    //       ->where('reservation_tbl.created_at', '<=', Carbon::now())
+    //       ->get();
+    //     return View::make('/DashboardPage')
+    //     ->with('dashboardData', $dashboardData);
+    // }
 
     //Dish Page functions-------------------------------------------------------------------------->
     public function dishPage(){
@@ -1018,6 +1018,34 @@ class adminController extends Controller
             $package->packageCost = Input::get('editPackageCost');
             $package->packageImage = "No Image";
             $package->save();
+            $dti = $_POST['editDishTypeInclusion'];
+            $si = $_POST['editStaffInclusion'];
+            $ei = $_POST['editEquipmentInclusion'];
+            $svi = $_POST['editServiceInclusion'];
+            foreach ($dti as $dtinclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->dishTypeID = $dtinclusion;
+                $packageInclusion->save();
+            }
+            foreach ($si as $staffInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->employeeTypeID = $staffInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($ei as $equipmentInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->equipmentID = $equipmentInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($svi as $serviceInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->serviceID = $serviceInclusion;
+                $packageInclusion->save();
+            }
             return redirect()->back();
         }
         else{
@@ -1079,6 +1107,28 @@ class adminController extends Controller
         ->select('*')
         ->where('packageID', Input::get('sdid'))
         ->get();
+
+        $dd = DB::table('packageinclusion_tbl')
+        ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->get();
+
+        $ff = DB::table('packageinclusion_tbl')
+        ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->get();
+
+        $gg = DB::table('packageinclusion_tbl')
+        ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->get();
+
+        $dishInclusion = DB::table('packageinclusion_tbl')
+        ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
+        ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->get();
+
+
         return \Response::json(['ss'=>$ss]);
     }
 
@@ -1154,7 +1204,6 @@ class adminController extends Controller
     public function inventoryEquipmentPage(){
         $equipmentData = DB::table('equipment_tbl')
         ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
-        ->join('equipmentlog_tbl','equipmentlog_tbl.equipmentID','=','equipment_tbl.equipmentID')
         ->select('*')
         ->where('equipmentStatus', 1)
         ->get();
@@ -1193,7 +1242,7 @@ class adminController extends Controller
         return redirect()->back();
         }
         else{
-        $target_dir = "images\\";
+        $target_dir = "img\\";
         $target_file = $target_dir . basename($_FILES["addEquipmentImage"]["name"]);
         $uploadOk = 1;
         $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
@@ -1207,13 +1256,26 @@ class adminController extends Controller
             }
         }
         // Check if file already exists
-        // if (file_exists($target_file)) {
-        //     $id = Input::get('companyId');
-        //     $company = MCompanyInfo::find($id);
-        //     $company->strCompanyLogo=($_FILES["companylogo"]["name"]);
-        //     $company->save();
-        //     return \Redirect::back();
-        // }
+        if (file_exists($target_file)) {
+            $equipment = new equipmenttbl;
+            $equipment->equipmentName = Input::get('addEquipmentName');
+            $equipment->equipmentDescription = Input::get('addEquipmentDescription');
+            $equipment->equipmentRatePerHour = Input::get('addEquipmentRatePerHour');
+            $equipment->equipmentAvailability = 1;
+            $equipment->equipmentStatus = 1;
+            $equipment->equipmentTypeID = Input::get('addEquipmentType');
+            $equipment->equipmentImage = $equipmentImage;
+            $equipment->save();
+            $getEquipmentID = DB::table('equipment_tbl')
+            ->MAX('equipmentID');
+            $equipmentlog = new equipmentlogtbl;
+            $equipmentlog->equipmentID = $getEquipmentID;
+            $equipmentlog->equipmentQuantityIn = 0;
+            $equipmentlog->equipmentQuantityOut = 0;
+            $equipmentlog->equipmentLogDate = Date_create('now');
+            $equipmentlog->save();
+            return redirect()->back();
+        }
         // Check file size
         if ($_FILES["addEquipmentImage"]["size"] > 500000) {
             $uploadOk = 0;
@@ -1248,6 +1310,8 @@ class adminController extends Controller
     }
 
     public function editEquipment(){
+        $equipmentImage = ($_FILES["editEquipmentImage"]["name"]);
+        if($equipmentImage==null){
         $id = Input::get('editEquipmentID');
         $equipment = equipmenttbl::find($id);
         $equipment->equipmentName = Input::get('editEquipmentName');
@@ -1256,6 +1320,63 @@ class adminController extends Controller
         $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
         $equipment->save();
         return redirect()->back();
+        }
+        else{
+        $target_dir = "img\\";
+        $target_file = $target_dir . basename($_FILES["editEquipmentImage"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+        // Check if image file is a actual image or fake image
+        if(isset($_POST["submit"])) {
+            $check = getimagesize($_FILES["editEquipmentImage"]["tmp_name"]);
+            if($check !== false) {
+                $uploadOk = 1;
+            } else {
+                $uploadOk = 0;
+            }
+        }
+        // Check if file already exists
+        if (file_exists($target_file)) {
+            $id = Input::get('editEquipmentID');
+            $equipment = equipmenttbl::find($id);
+            $equipment->equipmentName = Input::get('editEquipmentName');
+            $equipment->equipmentDescription = Input::get('editEquipmentDescription');
+            $equipment->equipmentTypeID = Input::get('editEquipmentTypeID');
+            $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
+            $equipment->equipmentImage = $equipmentImage;
+            $equipment->save();
+            return redirect()->back();
+        }
+        // Check file size
+        if ($_FILES["editEquipmentImage"]["size"] > 500000) {
+            $uploadOk = 0;
+        }
+        // Allow certain file formats
+        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+        && $imageFileType != "gif" ) {
+            $uploadOk = 0;
+        }
+        // Check if $uploadOk is set to 0 by an error
+        if ($uploadOk == 0) {
+            // if everything is ok, try to upload file
+        } else {
+        if (move_uploaded_file($_FILES["editEquipmentImage"]["tmp_name"], $target_file)) {
+            $id = Input::get('editEquipmentID');
+            $equipment = equipmenttbl::find($id);
+            $equipment->equipmentName = Input::get('editEquipmentName');
+            $equipment->equipmentDescription = Input::get('editEquipmentDescription');
+            $equipment->equipmentTypeID = Input::get('editEquipmentTypeID');
+            $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
+            $equipment->equipmentImage = $equipmentImage;
+            $equipment->save();
+            return redirect()->back();
+
+        } else {
+            alert('File Not Uploaded!');
+            return \Redirect::back();
+        }
+        }
+        }
     }
 
     public function retrieveEquipmentData(){
@@ -1536,15 +1657,32 @@ class adminController extends Controller
         return redirect()->back();
     }
 
-    public function schedulePage(){
+    public function dashboardPage(){
         $packageData = DB::table('package_tbl')
         ->where('packageStatus', 1)->where('packageAvailability',1)
         ->get();
 
-        // $packageInclusionData = DB::table('packageinclusion_tbl')
-        // ->get
-        return View::make('/schedulePage')
-        ->with('packageData',$packageData);
+        $dateTime = Date_create('now');
+        $dateToday = $dateTime->format('n.j.Y');
+        $dashboardData =  DB::table('reservation_tbl')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->orderBy('reservation_tbl.created_at', 'desc')
+        ->where('reservation_tbl.reservationStatus', '=', 1)
+        ->where('reservation_tbl.created_at', '>=', Carbon::now())
+        ->get();  
+        // $dashboardData = DB::table('reservation_tbl')
+        //   ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        //   ->orderBy('reservation_tbl.created_at', 'desc')
+        //   ->where('reservation_tbl.reservationStatus', '=', 1)
+        //   ->where('reservation_tbl.created_at', '<=', Carbon::now())
+        //   ->get();
+
+        return View::make('/dashboardPage')
+        ->with('packageData',$packageData)
+        ->with('dashboardData', $dashboardData);
     }//Schedule function------------------------------------------------------------------------------>
     
 
@@ -1554,6 +1692,7 @@ class adminController extends Controller
               ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
               ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
               ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+              ->where('reservation_tbl.reservationStatus', '=', 1)
               ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
     }

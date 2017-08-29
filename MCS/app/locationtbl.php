@@ -8,7 +8,7 @@ class locationtbl extends Model
 {
     protected $table = 'location_tbl';
 	protected $primaryKey = 'locationID';
-	protected $fillable = array('locationName', 'locationContactPerson', 'locationContactNumber', 'locationDescription', 'locationFee', 'locationAddress', 'locationAvailability', 'locationStatus', 'locationImage');
+	protected $fillable = array('locationName', 'locationContactPerson', 'locationAddress', 'locationContactNumber', 'locationDescription', 'locationFee', 'locationAddress', 'locationAvailability', 'locationStatus', 'locationImage');
 	public $timestamps = false;
 }
 

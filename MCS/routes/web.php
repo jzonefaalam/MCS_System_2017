@@ -31,9 +31,6 @@ Route::post("/DenyReservationEmail", array("uses"=>"adminController@sendDenyEmai
 
 Route::get('/Logout', 'adminController@authenticateLogout');
 
-//DashBoardPage
-Route::get('/DashboardPage', 'adminController@dashboardPage');
-
 //DishPage
 Route::get('/DishPage', 'adminController@dishPage');
 Route::get('/RetrieveDish', 'adminController@retrieveDishData');
@@ -113,8 +110,8 @@ Route::post("/EditServiceTypePage", array("uses"=>"adminController@EditServiceTy
 Route::get('/RetrieveServiceType', 'adminController@retrieveServiceTypeData');
 Route::post("/DeleteServiceTypePage", array("uses"=>"adminController@deleteServiceType"));
 
-//SchedulePage
-Route::get('/SchedulePage', 'adminController@schedulePage');
+//DashboardPage
+Route::get('/DashboardPage', 'adminController@dashboardPage');
 Route::get('/RetrieveSchedule', 'adminController@retrieveScheduleData');
 
 //Transaction Reservation

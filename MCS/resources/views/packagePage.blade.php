@@ -552,9 +552,8 @@ yourImg.style.width = '150px';
                 $('#editPackageID').val(data['ss'][0]['packageID']);
                 $('#deletePackageID').val(data['ss'][0]['packageID']);
                 $('#editPackageName').val(data['ss'][0]['packageName']);
-                $('#editPackageDesc').val(data['ss'][0]['packageDescription']);
-                $('#editPackagePrice').val(data['ss'][0]['packageCost']);
-                $('#editPackageInclusion').val(data['ss'][0]['packageInclusion']);
+                $('#editPackageDescription').val(data['ss'][0]['packageDescription']);
+                $('#editPackageCost').val(data['ss'][0]['packageCost']);
                 // var opty = document.getElementById('editDishTypeInclusion').options;
                 //     for(var i =0; i<opty.length; i++){
                 //       if(opty[i].value==data['ss'][0]['dishTypeID']){
@@ -562,13 +561,13 @@ yourImg.style.width = '150px';
                 //       }
 
                 //     }
-                var selectedValues = new Array();
-                var i = 0;
-                response[1].forEach(function(data){
-                selectedValues[i] = data['ss'][0]['dishTypeID'];
-                i++;
-                })
-                $('#editDishTypeInclusion').val(selectedValues).trigger('change');
+                // var selectedValues = new Array();
+                // var i = 0;
+                // data[4].forEach(function(data){
+                // selectedValues[i] = data['dishInclusion'][0]['dishTypeID'];
+                // i++;
+                // })
+                // $('#editDishTypeInclusion').val(selectedValues).trigger('change');
                 },
 
                 

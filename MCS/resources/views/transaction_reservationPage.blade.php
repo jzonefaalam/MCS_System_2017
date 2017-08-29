@@ -22,7 +22,7 @@
                 <h2>Reservation List</h2>
               </div>
               <div class="col-md-12">
-                  <table id="reservationListTable" class="table table-bordered table-striped dataTable">
+                <table id="reservationListTable" class="table table-bordered table-striped dataTable">
                 <thead>
                 <tr>
                   <th>Reservation ID</th>
@@ -96,16 +96,17 @@
               <h4 class="modal-title" id="myModalLabel">Update Reservation</h4>
             </div>
             <div class="modal-body" style="width:100%;">
-              <div class="box">
-                <div class="box-body">
+              <div>
+                <div>
                   <div class="row">
                     <div class="col-sm-12">
-                      <div class="box">
-                        <div class="box-header">
+                      <div>
+                        <div>
+                          <div>
+                            <h4><strong><center>Customer Details</center></strong></h4>
+                          </div>
                           <div class="row">
-                            <div class="col-sm-6">
-                              <h4><strong>Customer Details</strong></h4>
-                            </div>
+                            
                             <div class="col-sm-6" id="contactNumber">
                               
                             </div>
@@ -114,7 +115,7 @@
                             </div>
                           </div>
                         </div>
-                        <div class="box-body">
+                        <div>
                           <div class="row">
                             <div class="col-sm-6">
                               <label>Customer Name</label>
@@ -149,11 +150,12 @@
                           <!-- End Row -->
                         </div>
                       </div>
-                      <div class="box">
-                        <div class="box-header">
-                          <h4><strong>Event Details</strong></h4>
+                      <hr>
+                      <div>
+                        <div >
+                          <h4><strong><center>Event Details</center></strong></h4>
                         </div>
-                        <div class="box-body">
+                        <div >
                            <div class="row">
                             <div class="col-sm-6">
                               <label>Event Name</label>
@@ -198,8 +200,9 @@
                     <!-- End Column -->
                   </div>
                   <!-- End Row -->
-                  <div class="box">
-                    <div class="box-body">
+                  <hr>
+                  <div >
+                    <div>
                       <div class="nav-tabs-custom">
                         <ul class="nav nav-tabs">
                           <li ><a href="#tab_2" data-toggle="tab">Package </a></li>
@@ -211,11 +214,11 @@
 
                           <!-- Package Tab -->
                           <div class="tab-pane active" id="tab_2">
-                            <div class="box">
-                              <div class="box-header">
-                                <h4><strong>Package Details</strong></h4>
+                            <div>
+                              <div>
+                                <h4><strong><center>Package Details</center></strong></h4>
                               </div>
-                              <div class="box-body">
+                              <div>
                                 <div>
                                   <label>Package Name</label>
                                   <br>
@@ -228,7 +231,7 @@
                                   </div>
                                 </div>
                                   <br>
-                                  <h3><strong> Package Inclusions </strong></h3>
+                                  <h3><strong><center>Package Inclusions</center></strong></h3>
                                  <div class="row">
                                   <div class="col-sm-3">
                                   <h4> Dish Included </h4>
@@ -264,11 +267,11 @@
 
                           <!-- Additional Food Tab -->
                           <div class="tab-pane active" id="tab_3">
-                            <div class="box">
-                              <div class="box-header">
-                                <h4><strong>Additional Food Details</strong></h4>
+                            <div>
+                              <div>
+                                <h4><strong><center>Additional Food Details</center></strong></h4>
                               </div>
-                              <div class="box-body">
+                              <div>
                               <h4> Lists </h4>
                                 <div id="additionalDishDiv">
 
@@ -283,11 +286,11 @@
                           <input type="hidden" id="token" value="{{ csrf_token() }}">
                           <!-- Additional Equipment Tab -->
                           <div class="tab-pane active" id="tab_4">
-                            <div class="box">
-                              <div class="box-header">
-                                <h4><strong>Additional Equipment Details</strong></h4>
+                            <div>
+                              <div>
+                                <h4><strong><center>Additional Equipment Details</center></strong></h4>
                               </div>
-                              <div class="box-body">
+                              <div >
                                 <h4> Lists </h4>
                                 <div id="additionalEquipmentDiv">
 
@@ -300,11 +303,11 @@
 
                           <!-- Additional Service & Staff Tab -->
                           <div class="tab-pane active" id="tab_5">
-                            <div class="box">
-                              <div class="box-header">
-                                <h4><strong>Additional Service Details</strong></h4>
+                            <div >
+                              <div >
+                                <h4><strong><center>Additional Service Details</center></strong></h4>
                               </div>
-                              <div class="box-body">
+                              <div >
                                 <h4> Lists </h4>
                                 <div id="additionalServiceDiv">
 
@@ -326,7 +329,7 @@
                   <!-- nav-tabs-custom -->
             </div>
             <div class="modal-footer" >
-            <a  style="display:none;" data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
+            <a style="display:none;" data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
                   <i class="fa fa-check" ></i> APPROVE
               </a>
               <a  data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
@@ -352,7 +355,7 @@
                                   <label class="col-sm-4 control-label">Reservation ID</label>
                                   <div class="col-sm-5 input-group">
                                     <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                    <input type="text" class="form-control" name="approveReservationId" id="approveReservationId" readonly="">
                                   </div>
                                 </div>
                                 {!! csrf_field() !!}
@@ -380,7 +383,7 @@
                                   <label class="col-sm-4 control-label">Reservation ID</label>
                                   <div class="col-sm-5 input-group">
                                     <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="sendReservationId" id="sendReservationId" readonly="">
+                                    <input type="text" class="form-control" name="denyReservationId" id="denyReservationId" readonly="">
                                   </div>
                                 </div>
                                 {!! csrf_field() !!}
@@ -412,7 +415,28 @@
 <!-- Page specific script -->
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>  
+<script>
+      function getReservation(id){
+        $.ajax({
+                type: "GET",
+                url:  "/RetrieveReservationID",
+                data: 
+                {
+                    sdid: id
+                },
+                success: function(data){
+                $('#approveReservationId').val(data['ss'][0]['reservationID']);
+                $('#denyReservationId').val(data['ss'][0]['reservationID']);
+                },
+                error: function(xhr)
+                {
+                    alert("mali");
+                    alert($.parseJSON(xhr.responseText)['error']['message']);
+                }                
+            });
+      }
 
+    </script>
 <script>
       var datee=[];
       var start=[];
