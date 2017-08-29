@@ -720,7 +720,7 @@
 					<span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title step-1" data-step="1">Confirmation</h4>
 					<h4 class="modal-title step-2" data-step="2">Terms and Conditions</h4>
-					<h4 class="modal-title step-3" data-step="3">Confirmation</h4>
+					<!-- <h4 class="modal-title step-3" data-step="3">Confirmation</h4> -->
 				</div>
 
 	            <div class="modal-body step step-1" align="center">
@@ -779,20 +779,16 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					</div>
 	            </div>
 
-	            <div class="modal-body step step-3" align="center">
-
-	            </div>
-
 				<div class="modal-footer">
 					<div class="pull-right">
 						<button type="button" class="btn btn-success btn-fill step step-1" data-step="1" onclick="sendEvent('#paymentModal', 2)">Continue</button>
-						<button type="button" id="btnch" class="btn btn-success btn-fill step step-2" data-step="2" disabled="" onclick="sendEvent('#paymentModal', 3)">Continue</button>
-						<button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-danger btn-fill step step-3" data-step="3" data-dismiss="modal">Confirm</button>
+						<button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-success btn-fill step step-2" data-step="2" disabled="" >Confirm</button>
+						<!-- <button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-danger btn-fill step step-3" data-step="3" data-dismiss="modal">Confirm</button> -->
 					</div>
 					<div class="pull-left">
 						<button type="button" class="btn btn-danger step step-1" data-step="1" data-dismiss="modal">Cancel</button>
 						<button type="button" class="btn btn-success step step-2" data-step="2" onclick="sendEvent('#paymentModal', 1)">Back</button>
-						<button type="button" class="btn btn-success step step-3" data-step="3" onclick="sendEvent('#paymentModal', 2)">Back</button>
+						<!-- <button type="button" class="btn btn-success step step-3" data-step="3" onclick="sendEvent('#paymentModal', 2)">Back</button> -->
 					</div>
 				</div>
 			</div>			
@@ -805,180 +801,48 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 	
 
 	<script type="text/javascript">
-			// $.validator.addMethod(
-		 //        "regex",
-		 //        function(value, element, regexp) {
-		 //            var re = new RegExp(regexp);
-		 //            return this.optional(element) || re.test(value);
-		 //        },
-		 //        "Please check your input."
-			// );
-   // 			$('#addReservation').validate({
-   //      		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-   //      		feedbackIcons: {
-   //          		valid: 'fa fa-check',
-   //          		invalid: 'fa fa-close',
-   //          		validating: 'fa fa-refresh',
-   //      		},
-   //      		rules:{
-   //      			eType:{
-   //      				required:true,
-   //      			},	        
-		 //            yesNo: {
-		 //            	required:true,
-		 //            },
-		 //            eLoc: {
-			// 			required:true,
-			// 			minlength: 2,
-		 //            },
-		 //            eLoc2: {
-		 //            	required:true,
-		 //            },
-		 //            eName: {
-		 //            	required:true,
-			// 			rangelength: [5,50],
-		 //            },
-		 //            eNum: {
-		 //            	required:true,
-		 //            	digits:true,
-		 //            	min: 100,
-		 //            	max: 400,
-		 //            },
-		 //            eDate: {
-		 //            	required:true,
-		 //            	date: true,
-		 //            	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
-		 //            	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
-		 //            },
-		 //            eTime: {
-		 //            	required:true,
-		 //            	min:"06:59:00",
-		 //            	max: function () { return $('#tm1').val(); },
-		 //            },
-		 //            enTime: {
-		 //            	required:true,
-		 //            	min: function () { return $('#tc').val(); },
-		 //            	max: function () { return $('#tm2').val(); },
-		 //            },
-		 //            cusName: {
-		 //            	required:true,
-			// 			rangelength: [3,50],
-		 //            },
-		 //            homeAdd: {
-		 //            	required:true,
-			// 			rangelength: [5,50],
-		 //            },
-		 //            dob: {
-		 //            	required:true,
-		 //            	date: true,
-		 //            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
-		 //            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
-		 //            },
-		 //            telNum: {
-		 //            	required:true,
-			// 			regex: "^[0-9]{3}-[0-9]{4}$",
-		 //            },
-		 //            cellNum: {
-		 //            	required:true,
-			// 			regex: "^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		 //            },
-		 //            emailAdd: {
-		 //         	   	required:true,
-		 //         	   	email:true,
-		 //            },
-		 //            conPerson: {
-		 //            	required:true,
-		 //            	rangelength: [3,50],
-
-		 //            },
-		 //            conNum: {
-		 //            	required:true,
-		 //            	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		 //            },
-   //          	},
-   //          	messages:{
-   //          		eNum: {
-		 //            	min: "Minimum guest is 100",
-		 //            	max: "Maximum guest is 400",
-		 //            },
-		 //            eType:{
-   //      				required:"Choose a type of Event.",
-   //      			},	        
-		 //            eLoc2:{
-   //      				required:"Choose a Venue.",
-   //      			},	        
-		 //            yesNo: {
-		 //            	required:"Choose an answer.",
-		 //            },
-		 //            telNum:{
-		 //            	regex: "Please enter a valid telephone number. Format is 000-0000."
-		 //            },
-		 //            cellNum:{
-		 //            	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
-		 //            },
-		 //            eDate:{
-		 //            	min: "Event must be a week at least a week from now.",
-		 //            	max: "Event must be within these 2 months.",
-		 //            },
-		 //            eTime:{
-		 //            	min: "Business hours starts at 7:00 AM.",
-		 //            	max: "Event duration must be atleast 5 hours."
-		 //            },
-		 //            enTime:{
-		 //            	min: "Event duration must be atleast 5 hours.",
-		 //            	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
-		 //            },
-		 //            dob: {
-		 //            	required:"Date of birth is required to determine your age.",
-		 //            	min: "You are not that old.",
-		 //            	max: "You must be atleast 12 years old to book an event.",
-		 //            },
-		 //            conNum:{
-		 //            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
-		 //            },
-   //          	}
-   //      	});
+			                                                                                                                                                  
  		</script>
 
  	<script type="text/javascript">
-      $('#serviceModal').bootstrapValidator({
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                empqty: {
-                    validators: {
-                          stringLength: {
-                          max: 2,
-                          message:'Limit reached.'
-                        },
-                        regexp: {
-                                regexp: /^[0-9]+$/,
-                                message: 'Invalid input.'
-                        },
-                            notEmpty: {
-                            message: 'This field is required.'
-                        },
-                    }
-				},
+    //   $('#serviceModal').bootstrapValidator({
+    //         feedbackIcons: {
+    //             valid: 'glyphicon glyphicon-ok',
+    //             invalid: 'glyphicon glyphicon-remove',
+    //             validating: 'glyphicon glyphicon-refresh'
+    //         },
+    //         fields: {
+    //             empqty: {
+    //                 validators: {
+    //                       stringLength: {
+    //                       max: 2,
+    //                       message:'Limit reached.'
+    //                     },
+    //                     regexp: {
+    //                             regexp: /^[0-9]+$/,
+    //                             message: 'Invalid input.'
+    //                     },
+    //                         notEmpty: {
+    //                         message: 'This field is required.'
+    //                     },
+    //                 }
+				// },
 
-                empnote: {
-                    validators: {
-                          stringLength: {
-                          min: 2,
-                          max: 50,
-                          message:'Limit reached.'
-                        }, 
-                        notEmpty: {
-                            message: 'This field is required.'
-                        },
-                    }
-				},
-            }
+    //             empnote: {
+    //                 validators: {
+    //                       stringLength: {
+    //                       min: 2,
+    //                       max: 50,
+    //                       message:'Limit reached.'
+    //                     }, 
+    //                     notEmpty: {
+    //                         message: 'This field is required.'
+    //                     },
+    //                 }
+				// },
+    //         }
                 
-        });
+    //     });
       </script>
 
  		<script>
@@ -1801,10 +1665,10 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
  				}
  				function getfm(id){
  					if(document.getElementById(id).checked==true){
- 						document.getElementById('btnch').disabled=false; 						
+ 						document.getElementById('btnFinish').disabled=false; 						
  					}
  					else{
- 						document.getElementById('btnch').disabled=true;
+ 						document.getElementById('btnFinish').disabled=true;
  					}
  				} 				
  				function getFuck(id){
@@ -2185,6 +2049,9 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 							var equipIDs = $("#addEquipmentAvailed").val().split(',');
 							var empIDs = $("#addEmployeeEmployed").val().split(',');
 						}
+						else{
+							addPackIDs = 0;
+						}
 						if(addCtr>0){
 							for (var i = 1; i <= addCtr; i++){
 								addDishID.push($("#additionalDish"+i+"").val());
@@ -2291,7 +2158,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						            	
 					         		},
 					                success: function(data){
-						            	alert("Success");
+						            	alert("Please accept a call within a day.");
 										       
 										window.location.href = "UserReservationPage";
 					                },
