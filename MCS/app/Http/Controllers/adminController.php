@@ -1129,7 +1129,7 @@ class adminController extends Controller
         ->get();
 
 
-        return \Response::json(['ss'=>$ss, 'dishInclusion'=>$dishInclusion]);
+        return \Response::json(['ss'=>$ss]);
     }
 
     public function retrievePackageInclusion(){
@@ -1670,7 +1670,6 @@ class adminController extends Controller
         ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
         ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
         ->orderBy('reservation_tbl.created_at', 'desc')
-        ->where('reservation_tbl.reservationStatus', '=', 1)
         ->where('reservation_tbl.created_at', '>=', Carbon::now())
         ->get();  
         // $dashboardData = DB::table('reservation_tbl')
@@ -1688,12 +1687,11 @@ class adminController extends Controller
 
     public function retrieveScheduleData(Request $request){
         $rsvtn = DB::table('reservation_tbl')
-              ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-              ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
-              ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
-              ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
-              ->where('reservation_tbl.reservationStatus', '=', 1)
-              ->get();
+        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
     }
 

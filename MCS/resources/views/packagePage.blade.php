@@ -210,7 +210,7 @@
                 <div class="modal fade" id="editPackageModal">
                 <div class="modal-dialog">
                 <div class="modal-content">
-                <form id="editPackageForm" role="form" method="POST" action="EditPackagePage" class="form-horizontal" enctype="multipart/form-data">
+                <form id="editPackageForm" role="form" method="POST" action="EditPackagePage" class="form-horizontal editPackageValidator" enctype="multipart/form-data">
 
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -537,6 +537,153 @@ yourImg.style.width = '150px';
     
   });
 </script>
+
+<script type="text/javascript">
+    $('#addPackageForm').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              addPackageName: {
+                  validators: {
+                      stringLength: {
+                        min: 4,
+                        max: 20,
+                        message:'Package name should be at least 4 characters long, and should not exceed 20 characters.'
+                      },
+                      regexp: {
+                        regexp: /^[a-zA-Z0-9]+([-'\s][a-zA-Z0-9]+)*$/,
+                        message: 'This field should contain letters, hyphen & apostrophe only.'
+                      },
+                      notEmpty: {
+                        message: 'This field is required.'
+                      }
+                  }
+              },
+
+              addPackageDescription: {
+                validators: {
+                        stringLength: {
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
+                    },
+                  }
+              },
+
+              addPackageCost: {
+                validators: {
+                        stringLength: {
+                        max: 9,
+                        message:'Price limit reached.'
+                    },
+                          regexp: {
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
+                        },
+                 }
+              },
+
+              addDishTypeInclusion: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+              addServiceInclusion: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+              addStaffInclusion: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+              addPackageImage: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+            }
+        });
+      </script>
+
+
+    <script type="text/javascript">
+    $('.editPackageValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              editPackageName: {
+                  validators: {
+                      stringLength: {
+                        min: 4,
+                        max: 20,
+                        message:'Package name should be at least 4 characters long, and should not exceed 20 characters.'
+                      },
+                      regexp: {
+                        regexp: /^[a-zA-Z0-9]+([-'\s][a-zA-Z0-9]+)*$/,
+                        message: 'This field should contain alphanumeric, hyphen & apostrophe only.'
+                      },
+                      notEmpty: {
+                        message: 'This field is required.'
+                      }
+                  }
+              },
+
+              editPackageDesc: {
+                validators: {
+                        stringLength: {
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
+                    },
+                  }
+              },
+
+              editPackageCost: {
+                validators: {
+                        stringLength: {
+                        max: 9,
+                        message:'Price limit reached.'
+                    },
+                          regexp: {
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
+                        },
+                 }
+              },
+
+              editPackageImage: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+            }
+        });
+      </script>
 
     <script>
       function getPackage(id){

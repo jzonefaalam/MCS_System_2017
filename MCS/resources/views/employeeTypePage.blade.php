@@ -214,32 +214,8 @@
     });
   });
 </script>
-    <script>
-      function getEmployeeType(id){
-        $.ajax({
-                type: "GET",
-                url:  "/RetrieveEmployeeTypePage",
-                data: 
-                {
-                    sdid: id
-                },
-                success: function(data){
-                $('#editEmployeeTypeID').val(data['ss'][0]['employeeTypeID']);
-                $('#deleteEmployeeTypeID').val(data['ss'][0]['employeeTypeID']);
-                $('#editEmployeeTypeName').val(data['ss'][0]['employeeTypeName']);
-                $('#editEmployeeRatePerHour').val(data['ss'][0]['employeeRatePerHour']);                
-                },
-                error: function(xhr)
-                {
-                    alert("mali");
-                    alert($.parseJSON(xhr.responseText)['error']['message']);
-                }                
-            });
-      }
 
-    </script>
-
-    <script type="text/javascript">
+<script type="text/javascript">
     $('.editEmployeeTypeValidator').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
@@ -253,12 +229,12 @@
                   validators: {
                         stringLength: {
                         min: 2,
-                        max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        max: 50,
+                          message:'Employee type name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              regexp: /^[a-zA-Z]+([-'.\s][a-zA-Z]+)*$/,
+                              message: 'This field should contain letters, hyphen, period & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -269,8 +245,8 @@
                editEmployeeRatePerHour: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 8,
+                        message:'Please supply a valid rate.'
                     },
                           regexp: {
                             regexp: /^\d+(?:\.\d{1,2})?$/,
@@ -296,12 +272,12 @@
                   validators: {
                         stringLength: {
                         min: 2,
-                        max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        max: 50,
+                          message:'Employee type name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              regexp: /^[a-zA-Z]+([-'.\s][a-zA-Z]+)+([-'.\s]+)+([a-zA-Z]+)*$/,
+                              message: 'This field should contain letters, hyphen, period & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -312,8 +288,8 @@
                addEmployeeRatePerHour: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 8,
+                        message:'Please supply a valid rate.'
                     },
                           regexp: {
                             regexp: /^\d+(?:\.\d{1,2})?$/,
@@ -324,4 +300,29 @@
               }
           });
       </script>
+
+    <script>
+      function getEmployeeType(id){
+        $.ajax({
+                type: "GET",
+                url:  "/RetrieveEmployeeTypePage",
+                data: 
+                {
+                    sdid: id
+                },
+                success: function(data){
+                $('#editEmployeeTypeID').val(data['ss'][0]['employeeTypeID']);
+                $('#deleteEmployeeTypeID').val(data['ss'][0]['employeeTypeID']);
+                $('#editEmployeeTypeName').val(data['ss'][0]['employeeTypeName']);
+                $('#editEmployeeRatePerHour').val(data['ss'][0]['employeeRatePerHour']);                
+                },
+                error: function(xhr)
+                {
+                    alert("mali");
+                    alert($.parseJSON(xhr.responseText)['error']['message']);
+                }                
+            });
+      }
+
+    </script>
     @endsection

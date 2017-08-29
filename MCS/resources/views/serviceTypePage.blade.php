@@ -85,7 +85,7 @@
                 <!-- End Modals-->
 
                 <!-- Update Modal -->
-                <form id = "editServiceTypeForm" role="form" method="POST" action="/EditServiceTypePage" class="form-horizontal">
+                <form id = "editServiceTypeForm" role="form" method="POST" action="/EditServiceTypePage" class="form-horizontal editServiceTypeValidator">
                 <div class="modal fade" id="editServiceTypeModal">
                   <div class="modal-dialog">
                       <div class="modal-content">
@@ -143,7 +143,7 @@
 						
                      <!-- addserviceType Modal-->
                       <div class="panel-body">
-                      <form id = "addserviceTypeForm" role="form" method="POST" action="/ServiceTypePage" class="form-horizontal">
+                      <form id = "addServiceTypeForm" role="form" method="POST" action="/ServiceTypePage" class="form-horizontal">
                       <div class="modal fade" id="addServiceTypeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                       <div class="modal-dialog">
                       <div class="modal-content">
@@ -202,6 +202,68 @@
     });
   });
 </script>
+
+<script type="text/javascript">
+    $('#addServiceTypeForm').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              addServiceTypeName: {
+                  validators: {
+                      stringLength: {
+                        min: 3,
+                        max: 20,
+                        message:'Service type name should be at least 3 characters long, and should not exceed 20 characters.'
+                      },
+                      regexp: {
+                        regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                        message: 'This field should contain letters, hyphen & apostrophe only.'
+                      },
+                      notEmpty: {
+                        message: 'This field is required.'
+                      }
+                  }
+              },
+            }
+          });
+      </script>
+
+      <script type="text/javascript">
+    $('.editServiceTypeValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              editServiceTypeName: {
+                  validators: {
+                        stringLength: {
+                        min: 3,
+                        max: 20,
+                        message:'Service type name should be at least 3 characters long, and should not exceed 20 characters.'
+                      },
+                          regexp: {
+                        regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                        message: 'This field should contain letters, hyphen & apostrophe only.'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+
+              },
+            }
+          });
+      </script>
+
  <script>
       function getServiceTypeData(id){
         $.ajax({

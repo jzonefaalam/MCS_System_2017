@@ -292,6 +292,99 @@
 
     </script>
 
+    <script type="text/javascript">
+    $('.editEmployeeValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              editEmployeeName: {
+                  validators: {
+                        stringLength: {
+                        min: 2,
+                        max: 20,
+                        message:'Employee name should be at least 2 characters and not exceed 20 characters.'
+                      },
+                          regexp: {
+                              regexp: /^[a-zA-Z]+([-'.\s][a-zA-Z]+)*$/,
+                              message: 'This field should contain letters, hyphen, period & apostrophe only.'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+              },
+
+              editEmployeeType: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+              },
+
+              editEmployeeImage: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+              },
+
+            }
+          });
+      </script>
+    
+    <script type="text/javascript">
+    $('#addEmployeeForm').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              addEmployeeName: {
+                  validators: {
+                        stringLength: {
+                        min: 2,
+                        max: 20,
+                          message:'Employee name should be at least 2 characters and not exceed 20 characters.'
+                      },
+                          regexp: {
+                              regexp: /^[a-zA-Z]+([-'.\s][a-zA-Z]+)*$/,
+                              message: 'This field should contain letters, hyphen, period & apostrophe only.'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+              },
+
+              addEmployeeType: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+              },
+
+              addEmployeeImage: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+              },
+            }
+          });
+      </script>
+
     <script>
       function editEmployee(id){
         $.ajax({
@@ -325,68 +418,4 @@
 
     </script>
 
-    
-
-
-    <script type="text/javascript">
-    $('.editEmployeeValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              editEmployeeName: {
-                  validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
-                      },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-
-              }
-              }
-          });
-      </script>
-    
-    <script type="text/javascript">
-    $('.addEmployeeValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              addEmployeeName: {
-                  validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
-                      },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-
-              }
-              }
-          });
-      </script>
 @endsection

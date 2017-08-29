@@ -158,7 +158,7 @@
                     <div class="modal fade" id="editLocationModal">
                       <div class="modal-dialog">
                       <div class="modal-content">
-                      <form id="editLocationForm" role="form" method="POST" action="EditLocationPage" class="form-horizontal " enctype="multipart/form-data">
+                      <form id="editLocationForm" role="form" method="POST" action="EditLocationPage" class="form-horizontal editLocationValidator" enctype="multipart/form-data">
 
                       <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -477,7 +477,7 @@ yourImg.style.width = '150px';
       }
 
     </script>
-    <script type="text/javascript">
+   <script type="text/javascript">
     $('.editLocationValidator').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
@@ -492,11 +492,11 @@ yourImg.style.width = '150px';
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Location name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              regexp: /^[a-zA-Z0-9]+([-'\s][a-zA-Z0-9]+)*$/,
+                                message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -507,12 +507,12 @@ yourImg.style.width = '150px';
                editLocationAddress: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 150,
+                        message:'Location address should be at least 2 characters and not exceed 20 characters.'
                     },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
+                                regexp: /^[a-zA-Z0-9]+([-'.#\s][a-zA-Z0-9]+)*$/,
+                                message: 'Invalid input.'
                         
                         },
                     }
@@ -520,21 +520,17 @@ yourImg.style.width = '150px';
                 editLocationDesc: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
                     },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
+                  }
                 },
+
                 editLocationContactPerson: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 50,
+                        message:'Contact name should be at least 2 characters and not exceed 20 characters.'
                     },
                           regexp: {
                                 regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
@@ -545,49 +541,51 @@ yourImg.style.width = '150px';
                 },
                 editLocationContactNumber: {
                     validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
+                                regexp: /^[1-9(0)]+$/,
+                                message: 'Invalid input.'
                         },
                     }
                 },
                 editLocationCapacity: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 3,
+                        message:'Capacity should not exceed to thousand.'
                     },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
+                                regexp: /^[1-9(0)]+$/,
+                                message: 'Invalid input.'
                         },
                     }
                 },
                 editLocationPrice: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 9,
+                        message:'Price limit reached.'
                     },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
                         },
                     }
                 },
+
+              editLocationImage: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+
+              },
               }
           });
       </script>
 
       <script type="text/javascript">
-    $('.addLocationValidator').bootstrapValidator({
+    $('#addLocationForm').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
           feedbackIcons: {
@@ -601,11 +599,11 @@ yourImg.style.width = '150px';
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Location name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              regexp: /^[a-zA-Z0-9]+([-'\s][a-zA-Z0-9]+)*$/,
+                                message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -613,84 +611,87 @@ yourImg.style.width = '150px';
                   }
 
               },
+
                addLocationAddress: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 150,
+                        message:'Location address should be at least 2 characters and not exceed 20 characters.'
                     },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
+                                regexp: /^[a-zA-Z0-9]+([-'.#\s][a-zA-Z0-9]+)*$/,
+                                message: 'Invalid input.'
                         
                         },
                     }
                 },
+
                 addLocationDescription: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
                     },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
+                  }
                 },
+
                 addLocationContactPerson: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 50,
+                        message:'Please supply a valid contact name.'
                     },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                                regexp: /^[a-zA-Z]+([-' \s][a-zA-Z]+)*$/,
                                 message: 'This field should contain letters only.'
                         
                         },
                     }
                 },
+
                 addLocationContactNumber: {
                     validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
+                                regexp: /^[1-9(0)]+$/,
+                                message: 'Invalid input.'
                         },
                     }
                 },
+
                 addLocationCapacity: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 3,
+                        message:'Capacity should not exceed to thousand.'
                     },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
+                                regexp: /^[1-9(0)]+$/,
+                                message: 'Invalid input.'
                         },
                     }
                 },
+
                 addLocationFee: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 9,
+                        message:'Price limit reached.'
                     },
                           regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
                         },
                     }
                 },
+
+              addLocationImage: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+
+              },
               }
           });
       </script>

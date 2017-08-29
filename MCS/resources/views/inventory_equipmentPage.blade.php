@@ -556,7 +556,141 @@ yourImg.style.width = '150px';
 
     </script>
 
+<script type="text/javascript">
+    $('.editEquipmentValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              editEquipmentName: {
+                  validators: {
+                        stringLength: {
+                        min: 2,
+                        max: 20,
+                        message:'Please supply a valid equipment name.'
+                      },
+                          regexp: {
+                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                              message: 'This field should contain letters, hyphen & apostrophe only.'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
 
+              },
+               editEquipmentDescription: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Description should not to exceed 20 characters.'
+                    },
+                    }
+                },
+
+                editEquipmentRatePerHour: {
+                    validators: {
+                        stringLength: {
+                        max: 7,
+                        message:'Price limit reached.'
+                    },
+                          regexp: {
+                            regexp: /^\d+(?:\.\d{1,2})?$/,
+                            message: 'Invalid Input.'
+                    },
+                    }
+                },
+                
+                editEquipmentTypeID: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                    }
+                },
+
+                editEquipmentImage: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                    }
+                },
+              }
+          });
+      </script>
+
+      <script type="text/javascript">
+    $('.addEquipmentValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              addEquipmentName: {
+                  validators: {
+                        stringLength: {
+                        min: 2,
+                        max: 20,
+                          message:'Equipment name should be at least 2 characters and not exceed 20 characters.'
+                      },
+                          regexp: {
+                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                              message: 'This field should contain letters, hyphen & apostrophe only.'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+
+              },
+               addEquipmentDescription: {
+                    validators: {
+                        stringLength: {
+                        max: 20,
+                        message:'Description should not to exceed 20 characters.'
+                    },
+                    }
+                },
+
+                addEquipmentRatePerHour: {
+                    validators: {
+                        stringLength: {
+                        max: 7,
+                        message:'Price limit reached.'
+                    },
+                          regexp: {
+                            regexp: /^\d+(?:\.\d{1,2})?$/,
+                            message: 'Invalid Input.'
+                    },
+                    }
+                },
+                
+                addEquipmentType: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                    }
+                },
+
+                editEquipmentImage: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                    }
+                },
+              }
+          });
+      </script>
 
     <script>
   $(function () {
@@ -595,139 +729,4 @@ yourImg.style.width = '150px';
 } );
 </script>
 
-    <script type="text/javascript">
-    $('.editEquipmentValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              editEquipmentName: {
-                  validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
-                      },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-
-              },
-               editEquipmentDescription: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                },
-                editEquipmentUnit: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-                editEquipmentRatePerHour: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-              }
-          });
-      </script>
-
-      <script type="text/javascript">
-    $('.addEquipmentValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              addEquipmentName: {
-                  validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
-                      },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-
-              },
-               addEquipmentDescription: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                },
-                addEquipmentUnit: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-                addEquipmentRatePerHour: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-              }
-          });
-      </script>
   @endsection

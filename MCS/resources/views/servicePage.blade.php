@@ -73,7 +73,7 @@
                           <div class="modal-content">
                              <div class="modal-body">
                                 <div class="form-group" style="display: none;">
-                                  <label class="col-sm-4 control-label">service ID</label>
+                                  <label class="col-sm-4 control-label">Service ID</label>
                                   <div class="col-sm-5 input-group">
                                     <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                                     <input type="text" class="form-control" name="deleteServiceID" id="deleteServiceID" readonly="">
@@ -98,7 +98,7 @@
                     <div class="modal fade" id="editServiceModal">
                     <div class="modal-dialog">
                     <div class="modal-content">
-                    <form  id="editserviceForm" role="form" method="POST" action="EditServicePage" class="form-horizontal editserviceValidator" enctype="multipart/form-data" >
+                    <form  id="editserviceForm" role="form" method="POST" action="EditServicePage" class="form-horizontal editServiceValidator" enctype="multipart/form-data" >
                     <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="myModalLabel">UPDATE SERVICE</h4>
@@ -198,7 +198,7 @@
                     <!-- End Modals-->
 
                     <!-- addservice Modal-->
-                    <form id="addserviceForm" role="form" method="POST" action="/ServicePage" class="form-horizontal addserviceValidator" enctype="multipart/form-data">
+                    <form id="addServiceForm" role="form" method="POST" action="/ServicePage" class="form-horizontal addserviceValidator" enctype="multipart/form-data">
                     <div class="panel-body">
                      
                         <div class="modal fade" id="addserviceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
@@ -206,7 +206,7 @@
                             <div class="modal-content">
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                <h4 class="modal-title" id="myModalLabel">ADD Service</h4>
+                                <h4 class="modal-title" id="myModalLabel">ADD SERVICE</h4>
                               </div>
                               
                               <div class="modal-body">
@@ -225,7 +225,7 @@
                                     <div class="input-group-addon">
                                       <i class="fa fa-cube" aria-hidden="true"></i>
                                     </div>
-                                    <input type="text" class="form-control" name="addServiceName" ID="addServiceName" placeholder="service Name" required>
+                                    <input type="text" class="form-control" name="addServiceName" ID="addServiceName" placeholder="Service Name" required>
                                     </div>
                                   </div>
                                 </div>
@@ -237,7 +237,7 @@
                                       <div class="input-group-addon">
                                         <i class="fa fa-quote-right" aria-hidden="true"></i>
                                       </div>
-                                      <textarea type="text" class="form-control" name="addServiceDescription" ID="addServiceDescription" placeholder="service Description" required></textarea>
+                                      <textarea type="text" class="form-control" name="addServiceDescription" ID="addServiceDescription" placeholder="Service Description" required></textarea>
                                     </div>
                                   </div>
                                 </div>
@@ -247,7 +247,7 @@
                                 <div class="col-sm-6">
                                 <div class = "input-group">
                                 <span class="input-group-addon"><i class="fa fa-rouble" aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" name="addServiceFee" id="addServiceFee" required>
+                                <input type="text" class="form-control" name="addServiceFee" id="addServiceFee" placeholder="Service Fee" required>
                                 </div>
                                 </div>
                                 </div>
@@ -384,7 +384,7 @@ yourImg.style.width = '150px';
     </script>
 
     <script type="text/javascript">
-    $('.editserviceValidator').bootstrapValidator({
+    $('#addServiceForm').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
           feedbackIcons: {
@@ -393,66 +393,70 @@ yourImg.style.width = '150px';
               validating: 'glyphicon glyphicon-refresh'
           },
           fields: {
-              editserviceName: {
+              addServiceName: {
                   validators: {
-                        stringLength: {
-                        min: 2,
+                      stringLength: {
+                        min: 3,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Service name should be at least 3 characters long, and should not exceed 20 characters.'
                       },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                      regexp: {
+                        regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                        message: 'This field should contain letters, hyphen & apostrophe only.'
+                      },
+                      notEmpty: {
+                        message: 'This field is required.'
+                      }
+                  }
+              },
+
+              addServiceDescription: {
+                validators: {
+                      stringLength: {
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
+                      },
+                  }
+              },
+
+              addServiceFee: {
+                validators: {
+                      regexp: {
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
+                      },
+                      stringLength: {
+                          max: 8,
+                          message:'Price limit reached'
                       },
                           notEmpty: {
                           message: 'This field is required.'
-                      },
-                  }
-
+                      }
+                 }
               },
-               editserviceDescription: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                },
-                editserviceUnit: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-                editserviceRatePerHour: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-              }
-          });
+
+              addServiceType: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+              addServiceImage: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+            }
+        });
       </script>
 
-      <script type="text/javascript">
-    $('.addserviceValidator').bootstrapValidator({
+    <script type="text/javascript">
+    $('.editServiceValidator').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
           feedbackIcons: {
@@ -461,61 +465,66 @@ yourImg.style.width = '150px';
               validating: 'glyphicon glyphicon-refresh'
           },
           fields: {
-              addserviceName: {
+              editServiceName: {
                   validators: {
-                        stringLength: {
+                      stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Service name should be at least 3 characters long, and should not exceed 20 characters.'
                       },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                      regexp: {
+                        regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                        message: 'This field should contain letters, hyphen & apostrophe only.' 
+                      },
+                      notEmpty: {
+                        message: 'This field is required.'
+                      }
+                  }
+              },
+
+              editServiceDescription: {
+                validators: {
+                      stringLength: {
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
+                      }
+                  }
+              },
+
+              editServiceFee: {
+                validators: {
+                      regexp: {
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
+                      },
+                      stringLength: {
+                          max: 8,
+                          message:'Price limit reached'
                       },
                           notEmpty: {
                           message: 'This field is required.'
-                      },
-                  }
-
+                      }
+                 }
               },
-               addserviceDescription: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                },
-                addserviceUnit: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-                addserviceRatePerHour: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-              }
-          });
+
+              editServiceType: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+              editServiceImage: {
+                validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                 }
+              },
+
+            }
+        });
       </script>
+
   @endsection

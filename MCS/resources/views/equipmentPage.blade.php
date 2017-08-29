@@ -353,11 +353,11 @@
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Please supply a valid equipment name.'
                       },
                           regexp: {
                               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -368,38 +368,38 @@
                editEquipmentDescription: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                },
-                editEquipmentUnit: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
+                        max: 50,
+                        message:'Description should not to exceed 50 characters.'
                     },
                     }
                 },
+
                 editEquipmentRatePerHour: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 7,
+                        message:'Price limit reached.'
                     },
                           regexp: {
                             regexp: /^\d+(?:\.\d{1,2})?$/,
                             message: 'Invalid Input.'
                     },
+                    }
+                },
+                
+                editEquipmentType: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                    }
+                },
+
+                editEquipmentImage: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
                     }
                 },
               }
@@ -421,11 +421,11 @@
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Please supply a valid equipment name.'
                       },
                           regexp: {
                               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -437,37 +437,37 @@
                     validators: {
                         stringLength: {
                         max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                },
-                addEquipmentUnit: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
+                        message:'Description should not to exceed 20 characters.'
                     },
                     }
                 },
+
                 addEquipmentRatePerHour: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 7,
+                        message:'Price limit reached.'
                     },
                           regexp: {
                             regexp: /^\d+(?:\.\d{1,2})?$/,
                             message: 'Invalid Input.'
                     },
+                    }
+                },
+                
+                addEquipmentImage: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                    }
+                },
+
+                editEquipmentImage: {
+                    validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
                     }
                 },
               }

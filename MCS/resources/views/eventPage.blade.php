@@ -313,11 +313,11 @@
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Event name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
                               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -328,15 +328,10 @@
                editEventTypeDesc: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
                     },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
+                  }
                 }
               }
           });
@@ -357,11 +352,11 @@
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Event name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
                               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -372,17 +367,12 @@
                addEventDescription: {
                     validators: {
                         stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
                     },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
+                  }
                 }
               }
           });
       </script>
-    @endsection
+@endsection

@@ -453,7 +453,149 @@ $('#dishTable').DataTable({
             });
       </script>
 
-      
+      <script type="text/javascript">
+    $('#addDishForm').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              addDishName: {
+                  validators: {
+                          stringLength: {
+                          min: 2,
+                          max: 20,
+                          message:'Dish name should be at least 2 characters and not exceed 20 characters.'
+                        },
+                            regexp: {
+                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                                message: 'This field should contain letters, hyphen & apostrophe only.'
+                        },
+                            notEmpty: {
+                            message: 'This field is required.'
+                        }
+                    }
+              },
+
+              addDishPrice: {
+                      validators: {
+                      regexp: {
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
+                      },
+                      stringLength: {
+                          max: 7,
+                          message:'Price limit reached'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                  }
+
+              },
+
+               addDishDesc: {
+                    validators: {
+                        stringLength: {
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
+                    },
+                  }
+                },
+
+                addDishType: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+                },
+
+                addDishImage: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+                }
+              }
+          });
+      </script>
+
+      <script type="text/javascript">
+    $('.editDishValidator').bootstrapValidator({
+        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        
+          feedbackIcons: {
+              valid: 'glyphicon glyphicon-ok',
+              invalid: 'glyphicon glyphicon-remove',
+              validating: 'glyphicon glyphicon-refresh'
+          },
+          fields: {
+              editDishName: {
+                  validators: {
+                          stringLength: {
+                          min: 2,
+                          max: 30,
+                          message:'Dish name should be at least 2 characters and not exceed 20 characters.'
+                        },
+                            regexp: {
+                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                                message: 'This field should contain letters only.'
+                        },
+                            notEmpty: {
+                            message: 'This field is required.'
+                        }
+                    }
+              },
+
+              editDishPrice: {
+                      validators: {
+                      regexp: {
+                              regexp: /^\d+(?:\.\d{1,2})?$/,
+                              message: 'Invalid Input.'
+                      },
+                      stringLength: {
+                          max: 6,
+                          message:'Price limit reached'
+                      },
+                          notEmpty: {
+                          message: 'This field is required.'
+                      }
+                  }
+
+              },
+
+               editDishDesc: {
+                    validators: {
+                        stringLength: {
+                        max: 150,
+                        message:'Description should not exceed 150 characters.'
+                    },
+                  }
+                },
+
+                editDishType: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+                },
+
+                editDishImage: {
+                  validators: {
+                          notEmpty: {
+                          message: 'This field is required.'
+                      },
+                  }
+                }
+              }
+          });
+      </script>
 
       <script>
         function editdishget(id){
@@ -490,123 +632,4 @@ $('#dishTable').DataTable({
               });
         }
       </script>
-
-      <script type="text/javascript">
-      $('#addDishForm').bootstrapValidator({
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                addDishName: {
-                    validators: {
-                          stringLength: {
-                          min: 2,
-                          max: 20,
-                          message:'First name should be at least 2 characters and not exceed 20 characters.'
-                        },
-                            regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        },
-                            notEmpty: {
-                            message: 'This field is required.'
-                        }
-                    }
-
-                },
-                 addDishDesc: {
-                      validators: {
-                          stringLength: {
-                            max: 20,
-                            message:'Middle name should not exceed 20 characters.'
-                          },
-                            regexp: {
-                                  regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                  message: 'This field should contain letters only.'
-                          
-                          }
-                      }
-                  }
-                },
-                addDishPrice: {
-                      validators: {
-                      regexp: {
-                              regexp: /^\d+(?:\.\d{1,2})?$/,
-                              message: 'Invalid Input.'
-                      },
-                      stringLength: {
-                          max: 9,
-                          message:'Price limit reached'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      }
-                  }
-                }
-                }
-            });
-      </script>
-
-      <script type="text/javascript">
-      $('.editDishValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              editDishName: {
-                  validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
-                      },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-
-              },
-               editDishDesc: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                }
-              },
-              editDishPrice: {
-                    validators: {
-                    regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    stringLength: {
-                        max: 9,
-                        message:'Price limit reached'
-                    },
-                        notEmpty: {
-                        message: 'This field is required.'
-                    },
-                }
-              }
-              }
-          });
-      </script>
-
 @endsection

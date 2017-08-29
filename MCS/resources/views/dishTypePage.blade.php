@@ -276,7 +276,8 @@ var yourImg = document.getElementById('editPhotoIcon');
       });
 
 </script>
-    <script type="text/javascript">
+
+<script type="text/javascript">
     $('#addDishTypeForm').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
@@ -291,29 +292,23 @@ var yourImg = document.getElementById('editPhotoIcon');
                       stringLength: {
                         min: 2,
                         max: 20,
-                        message:'Dish Type Name should be at least 3 characters long, and should not exceed 20 characters.'
+                        message:'Dish type name should be at least 3 characters long, and should not exceed 20 characters.'
                       },
                       regexp: {
-                        regexp: /^[a-zA-Z'-a-z,]+[0-9-a-zA-Z,]+([,\s][,0-9-a-zA-Z'-]+)*$/,
-                        message: 'This field does not accept special characters.'
+                        regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                        message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                       notEmpty: {
                         message: 'This field is required.'
                       }
                   }
               },
-               addDishTypeDescription: {
+               addDishTypeImage: {
                     validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Description should not exceed 150 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
+                      notEmpty: {
+                        message: 'This field is required.'
+                      }
+                  }
                 },
               }
           });
@@ -334,11 +329,11 @@ var yourImg = document.getElementById('editPhotoIcon');
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Dish type name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
                               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters only.'
+                              message: 'This field should contain letters, hyphen & apostrophe only.'
                       },
                           notEmpty: {
                           message: 'This field is required.'
@@ -346,23 +341,17 @@ var yourImg = document.getElementById('editPhotoIcon');
                   }
 
               },
-               editDishTypeDescription: {
+               editDishTypeImage: {
                     validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                        },
-                        regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                }
+                      notEmpty: {
+                        message: 'This field is required.'
+                      }
+                  }
+                },
               }
           });
       </script>
-
+   
      <script>
       function getDishType(id){
         $.ajax({

@@ -224,12 +224,12 @@
               validating: 'glyphicon glyphicon-refresh'
           },
           fields: {
-              editEquipmentName: {
+              editEquipmentTypeName: {
                   validators: {
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Equipment type name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
                               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
@@ -239,45 +239,7 @@
                           message: 'This field is required.'
                       },
                   }
-
-              },
-               editEquipmentDescription: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        
-                        },
-                    }
-                },
-                editEquipmentUnit: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-                editEquipmentRatePerHour: {
-                    validators: {
-                        stringLength: {
-                        max: 20,
-                        message:'Middle name should not exceed 20 characters.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
+                }
               }
           });
       </script>
@@ -292,12 +254,12 @@
               validating: 'glyphicon glyphicon-refresh'
           },
           fields: {
-              addEquipmentName: {
+              addEquipmentTypeName: {
                   validators: {
                         stringLength: {
                         min: 2,
                         max: 20,
-                        message:'First name should be at least 2 characters and not exceed 20 characters.'
+                        message:'Equipment type name should be at least 2 characters and not exceed 20 characters.'
                       },
                           regexp: {
                               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
