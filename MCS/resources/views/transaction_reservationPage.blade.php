@@ -55,13 +55,13 @@
                   <td>{{ $reservationData->eventDate }}</td>
                   <td>{{ $reservationData->packageName }}</td>
                   <td>
-                  <?php if (($reservationData->reservationStatus)==0): ?>
-                    <span class="label label-warning">Not Available</span>
-                  <?php endif ?>
                   <?php if (($reservationData->reservationStatus)==1): ?>
-                    <span class="label label-success">Confirmed</span>
+                    <span class="label label-warning">Pending</span>
                   <?php endif ?>
                   <?php if (($reservationData->reservationStatus)==2): ?>
+                    <span class="label label-success">Confirmed</span>
+                  <?php endif ?>
+                  <?php if (($reservationData->reservationStatus)==3): ?>
                     <span class="label label-warning">Denied</span>
                   <?php endif ?>
                   </td>
@@ -208,7 +208,8 @@
                           <li ><a href="#tab_2" data-toggle="tab">Package </a></li>
                           <li ><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
                           <li ><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
-                          <li ><a href="#tab_5" data-toggle="tab">Additional Service & Staff </a></li>
+                          <li ><a href="#tab_5" data-toggle="tab">Additional Service </a></li>
+                          <li ><a href="#tab_6" data-toggle="tab">Additional Staff </a></li>
                         </ul>
                         <div class="tab-content">
 
@@ -318,6 +319,23 @@
                           </div>
                           <!-- End Reservation Info Tab -->
 
+                          <!-- Additional Service & Staff Tab -->
+                          <div class="tab-pane active" id="tab_6">
+                            <div >
+                              <div >
+                                <h4><strong><center>Additional Staff Details</center></strong></h4>
+                              </div>
+                              <div >
+                                <h4> Lists </h4>
+                                <div id="additionalEmployeeDiv">
+
+                                </div>
+                              </div>
+                            </div>
+                            <!-- End Box -->
+                          </div>
+                          <!-- End Reservation Info Tab -->
+
                         </div>
                         <!-- /.tab-pane -->
                       </div>
@@ -351,9 +369,9 @@
                         <div class="modal-dialog">
                           <div class="modal-content">
                              <div class="modal-body">
-                                <div class="form-group">
+                                <div class="form-group" style="display:none;">
                                   <label class="col-sm-4 control-label">Reservation ID</label>
-                                  <div class="col-sm-5 input-group">
+                                  <div class="col-sm-5 input-group" >
                                     <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                                     <input type="text" class="form-control" name="approveReservationId" id="approveReservationId" readonly="">
                                   </div>
@@ -379,9 +397,9 @@
                         <div class="modal-dialog">
                           <div class="modal-content">
                              <div class="modal-body">
-                                <div class="form-group">
+                                <div class="form-group" style="display:none;">
                                   <label class="col-sm-4 control-label">Reservation ID</label>
-                                  <div class="col-sm-5 input-group">
+                                  <div class="col-sm-5 input-group" >
                                     <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                                     <input type="text" class="form-control" name="denyReservationId" id="denyReservationId" readonly="">
                                   </div>
@@ -577,6 +595,9 @@
                       }
                       for (var i = 0; i < data['additionalEquipment'].length; i++) {
                         document.getElementById('additionalEquipmentDiv').innerHTML += '<h6>'+data['additionalEquipment'][i]['equipmentName']+'</h6>';
+                      }
+                      for (var i = 0; i < data['additionalEmployee'].length; i++) {
+                        document.getElementById('additionalEmployeeDiv').innerHTML += '<h6>'+data['additionalEmployee'][i]['employeeTypeName']+'</h6>';
                       }
                       $("#detailModal").modal("show");     
                     },

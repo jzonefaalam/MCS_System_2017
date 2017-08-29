@@ -272,7 +272,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Courses</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editDishTypeInclusion[]" name="editDishTypeInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" id="editDishTypeInclusion" name="editDishTypeInclusion[]" style="width: 100%;">
                 @foreach($dishTypeData as $editDishTypeData)
                 <option value="{{ $editDishTypeData->dishTypeID }}">{{ $editDishTypeData->dishTypeName }} </option>
                 @endforeach
@@ -283,7 +283,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Equipment</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addEquipmentInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editEquipmentInclusion[]" style="width: 100%;">
                 @foreach($equipmentData as $editEquipmentData)
                 <option value="{{ $editEquipmentData->equipmentID }}">{{ $editEquipmentData->equipmentName }} </option>
                 @endforeach
@@ -294,7 +294,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Services</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addServiceInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editServiceInclusion[]" style="width: 100%;">
                 @foreach($serviceData as $editServiceData)
                 <option value="{{ $editServiceData->serviceID }}">{{ $editServiceData->serviceName }} </option>
                 @endforeach
@@ -305,7 +305,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Staff</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="addStaffInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editStaffInclusion[]" style="width: 100%;">
                 @foreach($staffData as $editStaffData)
                 <option value="{{ $editStaffData->employeeTypeID }}">{{ $editStaffData->employeeTypeName }} </option>
                 @endforeach
@@ -568,6 +568,15 @@ yourImg.style.width = '150px';
                 // i++;
                 // })
                 // $('#editDishTypeInclusion').val(selectedValues).trigger('change');
+                $('#editDishTypeInclusion option').each(function(){
+                  for(var i = 0; i < data['dishInclusion'].length; i++){
+                    if($(this).val() == data['dishInclusion'][i].dishTypeID){
+                      $('#editDishTypeInclusion option[value='+$(this).val()+']').attr('selected', true);
+                      $('#editDishTypeInclusion').trigger('change');
+                    }
+                  }
+                });
+
                 },
 
                 

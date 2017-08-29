@@ -41,7 +41,7 @@ class adminController extends Controller
         // });
         $id = Input::get('approveReservationId');
         $reservationtbl = reservationtbl::find($id);
-        $reservationtbl->reservationStatus = 1;
+        $reservationtbl->reservationStatus = 2;
         $reservationtbl->save();
         return redirect()->back();
     }
@@ -59,7 +59,7 @@ class adminController extends Controller
         // });
         $id = Input::get('denyReservationId');
         $reservationtbl = reservationtbl::find($id);
-        $reservationtbl->reservationStatus = 2;
+        $reservationtbl->reservationStatus = 3;
         $reservationtbl->save();
         return redirect()->back();
     }
@@ -1129,7 +1129,7 @@ class adminController extends Controller
         ->get();
 
 
-        return \Response::json(['ss'=>$ss]);
+        return \Response::json(['ss'=>$ss, 'dishInclusion'=>$dishInclusion]);
     }
 
     public function retrievePackageInclusion(){
