@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Calendar</title>
+  <title>MCS</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -238,7 +238,7 @@
                         <td style="display:none">{{ $dashboardData->guestCount }} </td>
                         <td style="display:none">{{ $dashboardData->packageID }} </td>
                         <td style="display:none">{{ $dashboardData->eventID }} </td>
-                          <td>
+                        <td>
                             <a >{{ $dashboardData -> eventName}}</a>
                             <small class="label label-danger pull-right"><i class="fa fa-calendar-o"></i> {{ $dashboardData -> eventDate }} &nbsp {{ $dashboardData->eventTime }}</small>
                           </td>
@@ -394,6 +394,7 @@
                                   <br>
                                   <div> 
                                     <select class="form-control" name="editPackage" id="editPackage">
+                                    <option disabled>Select Package</option>
                                     @foreach($packageData as $packageData)
                                     <option value="{{ $packageData->packageID }}">{{ $packageData->packageName }} </option>
                                     @endforeach
@@ -693,7 +694,6 @@
         var reservationEventID = data[18];
         $('#editReservationID').val(reservationIDVar);
         $('#editCustomerName').val(reservationCustomerNameVar);
-        $('#editEventName').val(reservationEventNameVar);
         $('#reservationNumber').val(reservationIDVar);
         $('#editHomeAddress').val(customerHomeAddressVar);
         $('#editEmailAddress').val(customerEmailAddressVar);

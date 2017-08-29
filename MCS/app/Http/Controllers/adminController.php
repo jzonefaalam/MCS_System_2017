@@ -1665,12 +1665,12 @@ class adminController extends Controller
         $dateTime = Date_create('now');
         $dateToday = $dateTime->format('n.j.Y');
         $dashboardData =  DB::table('reservation_tbl')
-        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
-        ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
+        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
         ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
         ->orderBy('reservation_tbl.created_at', 'desc')
-        ->where('reservation_tbl.created_at', '>=', Carbon::now())
+        ->where('reservation_tbl.created_at', '>=', $dateToday)
         ->get();  
         // $dashboardData = DB::table('reservation_tbl')
         //   ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')

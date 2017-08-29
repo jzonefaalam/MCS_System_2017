@@ -811,129 +811,129 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 			);
    			$('#addReservation').validate({
         		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-      //   		feedbackIcons: {
-      //       		valid: 'fa fa-check',
-      //       		invalid: 'fa fa-close',
-      //       		validating: 'fa fa-refresh',
-      //   		},
-      //   		rules:{
-      //   			eType:{
-      //   				required:true,
-      //   			},	        
-		    //         yesNo: {
-		    //         	required:true,
-		    //         },
-		    //         eLoc: {
-						// required:true,
-						// minlength: 2,
-		    //         },
-		    //         eLoc2: {
-		    //         	required:true,
-		    //         },
-		    //         eName: {
-		    //         	required:true,
-						// rangelength: [5,50],
-		    //         },
-		    //         eNum: {
-		    //         	required:true,
-		    //         	digits:true,
-		    //         	min: 100,
-		    //         	max: 400,
-		    //         },
-		    //         eDate: {
-		    //         	required:true,
-		    //         	date: true,
-		    //         	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
-		    //         	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
-		    //         },
-		    //         eTime: {
-		    //         	required:true,
-		    //         	min:"06:59:00",
-		    //         	max: function () { return $('#tm1').val(); },
-		    //         },
-		    //         enTime: {
-		    //         	required:true,
-		    //         	min: function () { return $('#tc').val(); },
-		    //         	max: function () { return $('#tm2').val(); },
-		    //         },
-		    //         cusName: {
-		    //         	required:true,
-						// rangelength: [3,50],
-		    //         },
-		    //         homeAdd: {
-		    //         	required:true,
-						// rangelength: [5,50],
-		    //         },
-		    //         dob: {
-		    //         	required:true,
-		    //         	date: true,
-		    //         	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
-		    //         	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
-		    //         },
-		    //         telNum: {
-		    //         	required:true,
-						// regex: "^[0-9]{3}-[0-9]{4}$",
-		    //         },
-		    //         cellNum: {
-		    //         	required:true,
-						// regex: "^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		    //         },
-		    //         emailAdd: {
-		    //      	   	required:true,
-		    //      	   	email:true,
-		    //         },
-		    //         conPerson: {
-		    //         	required:true,
-		    //         	rangelength: [3,50],
+        		feedbackIcons: {
+            		valid: 'fa fa-check',
+            		invalid: 'fa fa-close',
+            		validating: 'fa fa-refresh',
+        		},
+        		rules:{
+        			eType:{
+        				required:true,
+        			},	        
+		            yesNo: {
+		            	required:true,
+		            },
+		            eLoc: {
+						required:true,
+						minlength: 2,
+		            },
+		            eLoc2: {
+		            	required:true,
+		            },
+		            eName: {
+		            	required:true,
+						rangelength: [5,50],
+		            },
+		            eNum: {
+		            	required:true,
+		            	digits:true,
+		            	min: 100,
+		            	max: 400,
+		            },
+		            eDate: {
+		            	required:true,
+		            	date: true,
+		            	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
+		            	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
+		            },
+		            eTime: {
+		            	required:true,
+		            	min:"06:59:00",
+		            	max: function () { return $('#tm1').val(); },
+		            },
+		            enTime: {
+		            	required:true,
+		            	min: function () { return $('#tc').val(); },
+		            	max: function () { return $('#tm2').val(); },
+		            },
+		            cusName: {
+		            	required:true,
+						rangelength: [3,50],
+		            },
+		            homeAdd: {
+		            	required:true,
+						rangelength: [5,50],
+		            },
+		            dob: {
+		            	required:true,
+		            	date: true,
+		            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
+		            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
+		            },
+		            telNum: {
+		            	required:true,
+						regex: "^[0-9]{3}-[0-9]{4}$",
+		            },
+		            cellNum: {
+		            	required:true,
+						regex: "^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+		            },
+		            emailAdd: {
+		         	   	required:true,
+		         	   	email:true,
+		            },
+		            conPerson: {
+		            	required:true,
+		            	rangelength: [3,50],
 
-		    //         },
-		    //         conNum: {
-		    //         	required:true,
-		    //         	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		    //         },
-      //       	},
-      //       	messages:{
-      //       		eNum: {
-		    //         	min: "Minimum guest is 100",
-		    //         	max: "Maximum guest is 400",
-		    //         },
-		    //         eType:{
-      //   				required:"Choose a type of Event.",
-      //   			},	        
-		    //         eLoc2:{
-      //   				required:"Choose a Venue.",
-      //   			},	        
-		    //         yesNo: {
-		    //         	required:"Choose an answer.",
-		    //         },
-		    //         telNum:{
-		    //         	regex: "Please enter a valid telephone number. Format is 000-0000."
-		    //         },
-		    //         cellNum:{
-		    //         	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
-		    //         },
-		    //         eDate:{
-		    //         	min: "Event must be a week at least a week from now.",
-		    //         	max: "Event must be within these 2 months.",
-		    //         },
-		    //         eTime:{
-		    //         	min: "Business hours starts at 7:00 AM.",
-		    //         	max: "Event duration must be atleast 5 hours."
-		    //         },
-		    //         enTime:{
-		    //         	min: "Event duration must be atleast 5 hours.",
-		    //         	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
-		    //         },
-		    //         dob: {
-		    //         	required:"Date of birth is required to determine your age.",
-		    //         	min: "You are not that old.",
-		    //         	max: "You must be atleast 12 years old to book an event.",
-		    //         },
-		    //         conNum:{
-		    //         	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
-		    //         },
-      //       	}
-      //   	});     
+		            },
+		            conNum: {
+		            	required:true,
+		            	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+		            },
+            	},
+            	messages:{
+            		eNum: {
+		            	min: "Minimum guest is 100",
+		            	max: "Maximum guest is 400",
+		            },
+		            eType:{
+        				required:"Choose a type of Event.",
+        			},	        
+		            eLoc2:{
+        				required:"Choose a Venue.",
+        			},	        
+		            yesNo: {
+		            	required:"Choose an answer.",
+		            },
+		            telNum:{
+		            	regex: "Please enter a valid telephone number. Format is 000-0000."
+		            },
+		            cellNum:{
+		            	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
+		            },
+		            eDate:{
+		            	min: "Event must be a week at least a week from now.",
+		            	max: "Event must be within these 2 months.",
+		            },
+		            eTime:{
+		            	min: "Business hours starts at 7:00 AM.",
+		            	max: "Event duration must be atleast 5 hours."
+		            },
+		            enTime:{
+		            	min: "Event duration must be atleast 5 hours.",
+		            	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
+		            },
+		            dob: {
+		            	required:"Date of birth is required to determine your age.",
+		            	min: "You are not that old.",
+		            	max: "You must be atleast 12 years old to book an event.",
+		            },
+		            conNum:{
+		            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
+		            },
+            	}
+        	});     
  		</script>
 
  	<script type="text/javascript">

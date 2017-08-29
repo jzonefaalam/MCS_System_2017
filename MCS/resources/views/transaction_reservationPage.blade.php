@@ -225,6 +225,7 @@
                                   <br>
                                   <div> 
                                     <select class="form-control" name="editPackage" id="editPackage">
+                                    <option disabled>Select Package</option>
                                     @foreach($addReservationData as $packageData)
                                     <option value="{{ $packageData->packageID }}">{{ $packageData->packageName }} </option>
                                     @endforeach
@@ -508,6 +509,20 @@
         
         
       // });
+</script>
+<script>
+$(function () {
+  $(document).on("hidden.bs.modal", "#detailModal", function () {
+      $(this).find("#additionalDishDiv").html(""); // Just clear the contents.
+      $(this).find("#additionalServiceDiv").html(""); // Just clear the contents.
+      $(this).find("#additionalEquipmentDiv").html(""); // Just clear the contents.
+      $(this).find("#additionalEmployeeDiv").html(""); // Just clear the contents.
+      $(this).find("#dishInclusion").html(""); // Just clear the contents.
+      $(this).find("#serviceInclusion").html(""); // Just clear the contents.
+      $(this).find("#equipmentInclusion").html(""); // Just clear the contents.
+      $(this).find("#employeeInclusion").html(""); // Just clear the contents.
+    });
+});
 </script>
 <script>
   $(function () {
