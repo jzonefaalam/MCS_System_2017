@@ -467,6 +467,7 @@ yourImg.style.width = '150px';
                 $('#editLocationCapacity').val(data['ss'][0]['locationCapacity']);
                 $('#editLocationContactPerson').val(data['ss'][0]['locationContactPerson']);
                 $('#editLocationContactNumber').val(data['ss'][0]['locationContactNumber']);
+                document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['locationImage']);
                 },
                 error: function(xhr)
                 {

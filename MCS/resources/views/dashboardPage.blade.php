@@ -84,7 +84,7 @@
                       </span>
                     </a>
                     <ul class="treeview-menu">
-                      <li><a href="/EmployeePage"><i class="fa fa-square-o"></i> Employee List</a></li>
+                      <!-- <li><a href="/EmployeePage"><i class="fa fa-square-o"></i> Employee List</a></li> -->
                       <li><a href="/EmployeeTypePage"><i class="fa fa-square-o"></i> Employee Type</a></li>
                     </ul>
                   </li>

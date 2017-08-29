@@ -366,6 +366,7 @@ var yourImg = document.getElementById('editPhotoIcon');
                 $('#editDishTypeName').val(data['ss'][0]['dishTypeName']);
                 $editDishTypePhoto = (data['ss'][0]['dishTypeImage']);
                 $('#deleteDishTypeID').val(data['ss'][0]['dishTypeID']);
+                document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['dishTypeImage']);
                 },
                 error: function(xhr)
                 {

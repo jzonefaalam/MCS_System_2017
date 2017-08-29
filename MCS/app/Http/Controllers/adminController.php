@@ -1408,6 +1408,7 @@ class adminController extends Controller
         $equipmentType = new equipmenttypetbl;
         $equipmentType->equipmentTypeName = Input::get('addEquipmentTypeName');
         $equipmentType->equipmentTypeStatus = 1;
+        $equipmentType->equipmentTypeImage = "No Image";
         $equipmentType->save();
         return redirect()->back();
     }

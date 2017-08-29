@@ -701,6 +701,7 @@ yourImg.style.width = '150px';
                 $('#editPackageName').val(data['ss'][0]['packageName']);
                 $('#editPackageDescription').val(data['ss'][0]['packageDescription']);
                 $('#editPackageCost').val(data['ss'][0]['packageCost']);
+                  document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['packageImage']);
                 // var opty = document.getElementById('editDishTypeInclusion').options;
                 //     for(var i =0; i<opty.length; i++){
                 //       if(opty[i].value==data['ss'][0]['dishTypeID']){

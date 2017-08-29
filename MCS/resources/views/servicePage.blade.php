@@ -365,6 +365,7 @@ yourImg.style.width = '150px';
                 $('#editServiceName').val(data['ss'][0]['serviceName']);
                 $('#editServiceFee').val(data['ss'][0]['serviceFee']);
                 $('#editServiceDescription').val(data['ss'][0]['serviceDescription']);
+                document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['serviceImage']);
                 var opty = document.getElementById('editServiceType').options;
                   for(var i =0; i<opty.length; i++){
                     if(opty[i].value==data['ss'][0]['serviceTypeID']){

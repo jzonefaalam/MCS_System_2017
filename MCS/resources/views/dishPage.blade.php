@@ -69,7 +69,7 @@
         
                   <div class="form-group">
                       <div class="col-sm-4" >
-                        <img id="photoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                        <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
                       </div>
                   </div>
 
@@ -169,7 +169,7 @@
 
                     <div class="form-group">
                       <div class="col-sm-4" >
-                        <img id="photoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                        <img id="photoIcon" align="middle"  src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
                       </div>
                     </div>
 
@@ -419,40 +419,44 @@ $('#dishTable').DataTable({
 });
 </script>
       <script>
-        $('#addDishImage').change(function(){
 
-          var file = this.files[0];
-          var reader = new FileReader();
-          reader.onload = function(){
-          document.getElementById('photoIcon').src = this.result;
-          };
-          reader.readAsDataURL(file);
-          var yourImg = document.getElementById('photoIcon');
-          if(yourImg && yourImg.style) {
-          yourImg.style.height = '150px';
-          yourImg.style.width = '150px';
-        }
-            });
+  $('#addDishImage').change(function(){
 
-          $('#editDishImage').change(function(){
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(){
+      // alert("asdsd")
 
-          var file = this.files[0];
-          var reader = new FileReader();
-          reader.onload = function(){
-            // alert("asdsd")
+        document.getElementById('photoIcon').src = this.result;
+        };
+    reader.readAsDataURL(file);
 
-              document.getElementById('editPhotoIcon').src = this.result;
-              };
-          reader.readAsDataURL(file);
+    var yourImg = document.getElementById('photoIcon');
+    if(yourImg && yourImg.style) {
+    yourImg.style.height = '150px';
+    yourImg.style.width = '150px';
+}
+      });
 
-        var yourImg = document.getElementById('editPhotoIcon');
-            if(yourImg && yourImg.style) {
-            yourImg.style.height = '150px';
-            yourImg.style.width = '150px';
-        }
-            });
-      </script>
+    $('#editDishImage').change(function(){
 
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(){
+      // alert("asdsd")
+
+        document.getElementById('editPhotoIcon').src = this.result;
+        };
+    reader.readAsDataURL(file);
+
+var yourImg = document.getElementById('editPhotoIcon');
+    if(yourImg && yourImg.style) {
+    yourImg.style.height = '150px';
+    yourImg.style.width = '150px';
+}
+      });
+
+</script>
       <script type="text/javascript">
     $('#addDishForm').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
@@ -614,6 +618,7 @@ $('#dishTable').DataTable({
                   $('#editDishPrice').val(data['ss'][0]['dishCost']);
                   $('#disableDishID').val(data['ss'][0]['dishID']);
                   $('#enableDishID').val(data['ss'][0]['dishID']);
+                  document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['dishImage']);
                   var opty = document.getElementById('editDishType').options;
                   
                     for(var i =0; i<opty.length; i++){
