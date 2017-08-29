@@ -47,14 +47,14 @@
                   <table id="inventoryEquipmentTable" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>
-                      <th width="150px">Date</th>
+                      <th width="150px">Image</th>
                       <th width="180px">Category</th>
                       <th> Brand</th>
                       <th> Equipment Description</th>
                       <th width="80px">Rate</th>
-                      <th width="50px">Total Quantity</th>
-                      <th width="50px">Remaining Quantity</th>
-                      <th> In use</th> 
+                      <!-- <th width="50px">Total Quantity</th> -->
+                      <!-- <th width="50px">Remaining Quantity</th> -->
+                      <!-- <th> In use</th>  -->
                       <th style="display:none;">Equipment Type ID</th>
                       <th style="display:none;">Equipment ID</th>
                     </tr>
@@ -62,14 +62,11 @@
                     <tbody>
                       @foreach ($equipmentData as $equipmentData)
                       <tr>
-                        <td>{{ $equipmentData->equipmentLogDate }}</td>
+                        <td><img src="{{ asset('img/' . $equipmentData->equipmentImage) }}"  style="width:150px;height:100px;" /></td>
                         <td>{{ $equipmentData->equipmentTypeName }}</td>
                         <td>{{ $equipmentData->equipmentName }}</td>
                         <td>{{ $equipmentData->equipmentDescription }}</td>
-                        <td>{{ $equipmentData->equipmentRatePerHour }}</td>
-                        <td>{{ ($equipmentData->equipmentQuantityIn) + ($equipmentData->equipmentQuantityOut) }} </td>
-                        <td>{{ $equipmentData->equipmentQuantityIn }}</td>
-                        <td>{{ $equipmentData->equipmentQuantityOut }}</td>  
+                        <td>{{ $equipmentData->equipmentRatePerHour }}</td> 
                         <td style="display:none">{{ $equipmentData->equipmentTypeID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentID }}</td>
                       
@@ -99,6 +96,12 @@
                               
                               <div class="modal-body">
                                 {!! csrf_field() !!}
+
+                                <div class="form-group">
+                                <div class="col-sm-4" >
+                                <img id="addPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                                </div>
+                                </div>
 
                                 <div class="form-group">
                                   <label class="col-sm-4 control-label">Brand Name</label>
@@ -153,7 +156,7 @@
                                 </div>
 
                                 <div class="form-group has-feedback">
-                                  <label class="col-sm-4 control-label">Equipment Image</label>
+                                  <label class="col-sm-4 control-label">Image</label>
                                   <div class="col-sm-6">
                                     <div class="input-group">
                                       <div class="input-group-addon">
@@ -162,9 +165,6 @@
                                     </div>
                                   </div>
                                 </div>
-
-                                
-                                
 
                                 <div class="modal-footer">
                                   <button type="submit" name="addEquipmentBtn" class="btn btn-primary">Save</button>
@@ -260,6 +260,13 @@
                             <div class="tab-pane active" id="tab_1">
                               <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
                               {!! csrf_field() !!}
+
+                              <div class="form-group">
+                              <div class="col-sm-4" >
+                              <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                              </div>
+                              </div>
+
                               <div class="form-group" style="display: none;">
                               <label class="col-sm-4 control-label">Equipment ID</label>
                               <div class="col-sm-6">
@@ -318,7 +325,7 @@
                               <div class="input-group-addon">
                               <i class="fa fa-navicon" aria-hidden="true"></i>
                               </div>
-                              <select class="form-control" name="editEquipmentType" id="editEquipmentType">
+                              <select class="form-control" name="editEquipmentTypeID" id="editEquipmentTypeID">
                               @foreach($addEquipmentData as $equipmentTypeData)
                               <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
                               @endforeach
@@ -332,7 +339,7 @@
                               <div class="col-sm-6">
                               <div class="input-group">
                               <div class="input-group-addon">
-                              <input type="file" name="editEquipmentImage">
+                              <input type="file" name="editEquipmentImage" id="editEquipmentImage">
                               </div>
                               </div>
                               </div>
@@ -439,7 +446,43 @@
   <!-- /.content-wrapper -->
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+<script>
+$('#addEquipmentImage').change(function(){
 
+var file = this.files[0];
+var reader = new FileReader();
+reader.onload = function(){
+// alert("asdsd")
+
+document.getElementById('addPhotoIcon').src = this.result;
+};
+reader.readAsDataURL(file);
+
+var yourImg = document.getElementById('addPhotoIcon');
+if(yourImg && yourImg.style) {
+yourImg.style.height = '150px';
+yourImg.style.width = '150px';
+}
+});
+
+$('#editEquipmentImage').change(function(){
+
+var file = this.files[0];
+var reader = new FileReader();
+reader.onload = function(){
+// alert("asdsd")
+
+document.getElementById('editPhotoIcon').src = this.result;
+};
+reader.readAsDataURL(file);
+
+var yourImg = document.getElementById('editPhotoIcon');
+if(yourImg && yourImg.style) {
+yourImg.style.height = '150px';
+yourImg.style.width = '150px';
+}
+});
+</script>
 <script>
 
     //if submit button is clicked
@@ -539,7 +582,7 @@
         var equipmentUnitVar= data[5];
         var equipmentTypeVar = data[8];
         var equipmentIDVar = data[9];
-         $('#editEquipmentType option[value="' + equipmentTypeVar + '"]').prop("selected", true);
+         $('#editEquipmentTypeID option[value="' + equipmentTypeVar + '"]').prop("selected", true);
          $('#editEquipmentName').val(equipmentNameVar);
          $('#editEquipmentDescription').val(equipmentDescriptionVar);
          $('#editEquipmentRatePerHour').val(equipmentRatePerHourVar);

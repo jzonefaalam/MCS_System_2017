@@ -43,7 +43,6 @@
                   @foreach($serviceTypeData as $serviceTypeData)
                   <tr>
                     <td>{{ $serviceTypeData->serviceTypeName }}</td>
-                    <!-- <td>{{ $serviceTypeData->serviceTypeDescription }}</td> -->
                     <td>
                       <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editServiceTypeModal" onclick="getServiceTypeData(this.name);" name="{{$serviceTypeData->serviceTypeID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
                       <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteServiceTypeModal" onclick="getServiceTypeData(this.name);" name="{{$serviceTypeData->serviceTypeID}}"><i class="fa fa-trash fa-fw"></i> Delete</a>
