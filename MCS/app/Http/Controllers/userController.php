@@ -145,6 +145,7 @@ class userController extends Controller
 
         $package = DB::table('package_tbl')
                     ->where('package_tbl.packageStatus', 1)
+                    ->orderBy('package_tbl.packageName')
                     ->get();
 
         $packageinclusion = DB::table('packageinclusion_tbl')
