@@ -441,7 +441,7 @@
 	</form>
 
 	<!-- ADDITIONAL MODAL -->
-	<form class="modal multi-step" id="additionalModal">
+	<form class="modal multi-step" id="additionalModal" role="form" method="POST" action="/UserReservationPage">
 	    <div class="modal-dialog">
 	        <div class="modal-content">
 	            <div class="modal-header">
@@ -532,7 +532,7 @@
 	            <div class="modal-body step step-1" align="center">
 	                <div class="row">
 		                <img src="{{ asset('img/' . 'avatar5.png') }}"  id="empimage" style="width: 200px;height: 150px"> <br> <br>
-		                <select class="form-control" name="empimage" id="employeetype" style="width: 200px"  onchange="pckempimg(this.name)">
+		                <select class="form-control" name="employeetype	" id="employeetype" style="width: 200px"  onchange="pckempimg(this.name)">
 							<option disabled selected value="">Choose Staff</option>
 							@foreach($employeetype as $et)
 								<option value="{{$et->employeeTypeID}}">{{$et->employeeTypeName}}</option>
@@ -541,7 +541,7 @@
 						<div class="col-sm-6">
 					    	<div class="form-group">
 					    		<label>Count</label>
-					    		<input type="text" name="employee" id = "empqty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity" onchange="comPriceem(this)" onkeyup="comPriceem(this)">
+					    		<input type="text" name="empqty" id = "empqty" maxlength="50" class="form-control" style="width: 250px" placeholder="Quantity" onchange="comPriceem(this)" onkeyup="comPriceem(this)">
 					    	</div>
 
 					    	<div class="form-group">
@@ -552,7 +552,7 @@
 						<div class="col-sm-6">
 						    <div class="col-sm-offset-1">
 						    	<label>Note / Comment</label>
-						    	<textarea name="note" id = "empnote" maxlength="50" class="form-control" style="width: 300px; height: 120px" placeholder="Note"></textarea>
+						    	<textarea name="empnote" id = "empnote" class="form-control" style="width: 300px; height: 120px" placeholder="Note"></textarea>
 						    </div>
 						</div>
 					</div>
@@ -799,143 +799,187 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 		</div>
 	</form>
 
+	<!-- <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
+	<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+	
+
 	<script type="text/javascript">
-			$.validator.addMethod(
-		        "regex",
-		        function(value, element, regexp) {
-		            var re = new RegExp(regexp);
-		            return this.optional(element) || re.test(value);
-		        },
-		        "Please check your input."
-			);
-   			$('#addReservation').validate({
-        		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        		feedbackIcons: {
-            		valid: 'fa fa-check',
-            		invalid: 'fa fa-close',
-            		validating: 'fa fa-refresh',
-        		},
-        		rules:{
-        			eType:{
-        				required:true,
-        			},	        
-		            yesNo: {
-		            	required:true,
-		            },
-		            eLoc: {
-						required:true,
-						minlength: 2,
-		            },
-		            eLoc2: {
-		            	required:true,
-		            },
-		            eName: {
-		            	required:true,
-						rangelength: [5,50],
-		            },
-		            eNum: {
-		            	required:true,
-		            	digits:true,
-		            	min: 100,
-		            	max: 400,
-		            },
-		            eDate: {
-		            	required:true,
-		            	date: true,
-		            	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
-		            	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
-		            },
-		            eTime: {
-		            	required:true,
-		            	min:"06:59:00",
-		            	max: function () { return $('#tm1').val(); },
-		            },
-		            enTime: {
-		            	required:true,
-		            	min: function () { return $('#tc').val(); },
-		            	max: function () { return $('#tm2').val(); },
-		            },
-		            cusName: {
-		            	required:true,
-						rangelength: [3,50],
-		            },
-		            homeAdd: {
-		            	required:true,
-						rangelength: [5,50],
-		            },
-		            dob: {
-		            	required:true,
-		            	date: true,
-		            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
-		            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
-		            },
-		            telNum: {
-		            	required:true,
-						regex: "^[0-9]{3}-[0-9]{4}$",
-		            },
-		            cellNum: {
-		            	required:true,
-						regex: "^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		            },
-		            emailAdd: {
-		         	   	required:true,
-		         	   	email:true,
-		            },
-		            conPerson: {
-		            	required:true,
-		            	rangelength: [3,50],
+			// $.validator.addMethod(
+		 //        "regex",
+		 //        function(value, element, regexp) {
+		 //            var re = new RegExp(regexp);
+		 //            return this.optional(element) || re.test(value);
+		 //        },
+		 //        "Please check your input."
+			// );
+   // 			$('#addReservation').validate({
+   //      		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+   //      		feedbackIcons: {
+   //          		valid: 'fa fa-check',
+   //          		invalid: 'fa fa-close',
+   //          		validating: 'fa fa-refresh',
+   //      		},
+   //      		rules:{
+   //      			eType:{
+   //      				required:true,
+   //      			},	        
+		 //            yesNo: {
+		 //            	required:true,
+		 //            },
+		 //            eLoc: {
+			// 			required:true,
+			// 			minlength: 2,
+		 //            },
+		 //            eLoc2: {
+		 //            	required:true,
+		 //            },
+		 //            eName: {
+		 //            	required:true,
+			// 			rangelength: [5,50],
+		 //            },
+		 //            eNum: {
+		 //            	required:true,
+		 //            	digits:true,
+		 //            	min: 100,
+		 //            	max: 400,
+		 //            },
+		 //            eDate: {
+		 //            	required:true,
+		 //            	date: true,
+		 //            	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
+		 //            	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
+		 //            },
+		 //            eTime: {
+		 //            	required:true,
+		 //            	min:"06:59:00",
+		 //            	max: function () { return $('#tm1').val(); },
+		 //            },
+		 //            enTime: {
+		 //            	required:true,
+		 //            	min: function () { return $('#tc').val(); },
+		 //            	max: function () { return $('#tm2').val(); },
+		 //            },
+		 //            cusName: {
+		 //            	required:true,
+			// 			rangelength: [3,50],
+		 //            },
+		 //            homeAdd: {
+		 //            	required:true,
+			// 			rangelength: [5,50],
+		 //            },
+		 //            dob: {
+		 //            	required:true,
+		 //            	date: true,
+		 //            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
+		 //            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
+		 //            },
+		 //            telNum: {
+		 //            	required:true,
+			// 			regex: "^[0-9]{3}-[0-9]{4}$",
+		 //            },
+		 //            cellNum: {
+		 //            	required:true,
+			// 			regex: "^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+		 //            },
+		 //            emailAdd: {
+		 //         	   	required:true,
+		 //         	   	email:true,
+		 //            },
+		 //            conPerson: {
+		 //            	required:true,
+		 //            	rangelength: [3,50],
 
-		            },
-		            conNum: {
-		            	required:true,
-		            	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		            },
-            	},
-            	messages:{
-            		eNum: {
-		            	min: "Minimum guest is 100",
-		            	max: "Maximum guest is 400",
-		            },
-		            eType:{
-        				required:"Choose a type of Event.",
-        			},	        
-		            eLoc2:{
-        				required:"Choose a Venue.",
-        			},	        
-		            yesNo: {
-		            	required:"Choose an answer.",
-		            },
-		            telNum:{
-		            	regex: "Please enter a valid telephone number. Format is 000-0000."
-		            },
-		            cellNum:{
-		            	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
-		            },
-		            eDate:{
-		            	min: "Event must be a week at least a week from now.",
-		            	max: "Event must be within these 2 months.",
-		            },
-		            eTime:{
-		            	min: "Business hours starts at 7:00 AM.",
-		            	max: "Event duration must be atleast 5 hours."
-		            },
-		            enTime:{
-		            	min: "Event duration must be atleast 5 hours.",
-		            	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
-		            },
-		            dob: {
-		            	required:"Date of birth is required to determine your age.",
-		            	min: "You are not that old.",
-		            	max: "You must be atleast 12 years old to book an event.",
-		            },
-		            conNum:{
-		            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
-		            },
-            	}
-        	});
-
-
+		 //            },
+		 //            conNum: {
+		 //            	required:true,
+		 //            	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+		 //            },
+   //          	},
+   //          	messages:{
+   //          		eNum: {
+		 //            	min: "Minimum guest is 100",
+		 //            	max: "Maximum guest is 400",
+		 //            },
+		 //            eType:{
+   //      				required:"Choose a type of Event.",
+   //      			},	        
+		 //            eLoc2:{
+   //      				required:"Choose a Venue.",
+   //      			},	        
+		 //            yesNo: {
+		 //            	required:"Choose an answer.",
+		 //            },
+		 //            telNum:{
+		 //            	regex: "Please enter a valid telephone number. Format is 000-0000."
+		 //            },
+		 //            cellNum:{
+		 //            	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
+		 //            },
+		 //            eDate:{
+		 //            	min: "Event must be a week at least a week from now.",
+		 //            	max: "Event must be within these 2 months.",
+		 //            },
+		 //            eTime:{
+		 //            	min: "Business hours starts at 7:00 AM.",
+		 //            	max: "Event duration must be atleast 5 hours."
+		 //            },
+		 //            enTime:{
+		 //            	min: "Event duration must be atleast 5 hours.",
+		 //            	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
+		 //            },
+		 //            dob: {
+		 //            	required:"Date of birth is required to determine your age.",
+		 //            	min: "You are not that old.",
+		 //            	max: "You must be atleast 12 years old to book an event.",
+		 //            },
+		 //            conNum:{
+		 //            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
+		 //            },
+   //          	}
+   //      	});
  		</script>
+
+ 	<script type="text/javascript">
+      $('#serviceModal').bootstrapValidator({
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                empqty: {
+                    validators: {
+                          stringLength: {
+                          max: 2,
+                          message:'Limit reached.'
+                        },
+                        regexp: {
+                                regexp: /^[0-9]+$/,
+                                message: 'Invalid input.'
+                        },
+                            notEmpty: {
+                            message: 'This field is required.'
+                        },
+                    }
+				},
+
+                empnote: {
+                    validators: {
+                          stringLength: {
+                          min: 2,
+                          max: 50,
+                          message:'Limit reached.'
+                        }, 
+                        notEmpty: {
+                            message: 'This field is required.'
+                        },
+                    }
+				},
+            }
+                
+        });
+      </script>
 
  		<script>
  			var addCtr = 0;
@@ -2273,6 +2317,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
  					}
  				}
  		</script>
+
+
  		<script>
  		var datee=[];
  		var start=[];
