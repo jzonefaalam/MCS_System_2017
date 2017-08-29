@@ -220,6 +220,7 @@ class userController extends Controller
 
     public function getPIID(Request $request){
       $pckid = DB::table('package_tbl')
+              ->where('package_tbl.packageStatus', 1)
               ->get();
       $pckgid = DB::table('packageinclusion_tbl')
               ->join('package_tbl','package_tbl.packageID','=','packageinclusion_tbl.packageID')
@@ -396,7 +397,7 @@ class userController extends Controller
         $dishAvailedNewID = $maxDishAvailedID + 1;
         $da = dishavailed_tbl::create(array(
         'dishAvailedID' => $dishAvailedNewID,
-        'dishID' =>$dishID[$i][0],
+        'dishID' =>$dishID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $da->save();
@@ -408,7 +409,7 @@ class userController extends Controller
         $servAvailedNewID = $maxServAvailedID + 1;
         $sa = serviceavailed_tbl::create(array(
         'serviceAvailedID' => $servAvailedNewID,
-        'serviceID' =>$servID[$i][0],
+        'serviceID' =>$servID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $sa->save();
@@ -420,7 +421,7 @@ class userController extends Controller
         $equipAvailedNewID = $maxEquipAvailedID + 1;
         $ea = equipmentavailed_tbl::create(array(
         'equipmentAvailedID' => $equipAvailedNewID,
-        'equipmentID' =>$equipID[$i][0],
+        'equipmentID' =>$equipID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $ea->save();
@@ -432,7 +433,7 @@ class userController extends Controller
         $empEmployedID = $maxEmpEmployedID + 1;
         $ee = employeeemployed_tbl::create(array(
         'employeeEmployedID' => $empEmployedID,
-        'employeeTypeID' =>$empID[$i][0],
+        'employeeTypeID' =>$empID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $ee->save();
@@ -444,9 +445,9 @@ class userController extends Controller
         $additionalDishID = $maxAddDishID + 1;
         $ad = dishadditional_tbl::create(array(
         'additionalID' => $additionalDishID,
-        'additionalServing' => $addDishQty[$i][0],
-        'additionalNotes' => $addDishNotes[$i][0],
-        'dishID' =>$addDishID[$i][0],
+        'additionalServing' => $addDishQty[$i],
+        'additionalNotes' => $addDishNotes[$i],
+        'dishID' =>$addDishID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $ad->save();
@@ -458,10 +459,10 @@ class userController extends Controller
         $additionalServID = $maxAddServID + 1;
         $as = serviceadditional_tbl::create(array(
         'serviceAdditionalID' => $additionalServID,
-        'serviceAdditionalQty' => $addServQty[$i][0],
-        'serviceAdditionalNotes' => $addServNotes[$i][0],
-        'serviceAdditionalDesc' => $addServDescs[$i][0],
-        'serviceID' =>$addServID[$i][0],
+        'serviceAdditionalQty' => $addServQty[$i],
+        'serviceAdditionalNotes' => $addServNotes[$i],
+        'serviceAdditionalDesc' => $addServDescs[$i],
+        'serviceID' =>$addServID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $as->save();
@@ -473,10 +474,10 @@ class userController extends Controller
         $additionalEquipID = $maxAddEquipID + 1;
         $ae = equipmentadditional_tbl::create(array(
         'equipmentAdditionalID' => $additionalEquipID,
-        'equipmentAdditionalQty' => $addEquipQty[$i][0],
-        'equipmentAdditionalNotes' => $addEquipNotes[$i][0],
-        'equipmentAdditionalDesc' => $addEquipDescs[$i][0],
-        'equipmentID' =>$addEquipID[$i][0],
+        'equipmentAdditionalQty' => $addEquipQty[$i],
+        'equipmentAdditionalNotes' => $addEquipNotes[$i],
+        'equipmentAdditionalDesc' => $addEquipDescs[$i],
+        'equipmentID' =>$addEquipID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $ae->save();
@@ -488,9 +489,9 @@ class userController extends Controller
         $additionalEmpID = $maxAddEmpID + 1;
         $aem = employeeadditional_tbl::create(array(
         'employeeAdditionalID' => $additionalEmpID,
-        'employeeAdditionalQty' => $addEmpQty[$i][0],
-        'employeeAdditionalNotes' => $addEmpNotes[$i][0],
-        'employeeTypeID' =>$addEmpID[$i][0],
+        'employeeAdditionalQty' => $addEmpQty[$i],
+        'employeeAdditionalNotes' => $addEmpNotes[$i],
+        'employeeTypeID' =>$addEmpID[$i],
         'reservationID' =>Input::get('addReservationID')
         ));
         $aem->save();
