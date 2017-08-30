@@ -1204,6 +1204,7 @@ class adminController extends Controller
     public function inventoryEquipmentPage(){
         $equipmentData = DB::table('equipment_tbl')
         ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
+        // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
         ->select('*')
         ->where('equipmentStatus', 1)
         ->get();

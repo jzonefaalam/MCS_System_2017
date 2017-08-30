@@ -25,17 +25,17 @@
                 <h2>EQUIPMENT</h2>
               </div>
               <div class="col-md-6">
-                <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
+                <!-- <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
                   <i class="fa fa-save"></i> LOGS
-                </a>
+                </a> -->
                 <a class="btn btn-app" href="EquipmentTypePage" style="float:right">
-                  <i class="fa fa-save"></i> CATEGORIES  
+                  <i class="fa fa-list"></i> CATEGORIES  
                 </a>
-                <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
+                <!-- <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
                   <i class="fa fa-save"></i> REPORTS  
-                </a>
+                </a> -->
                 <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
-                  <i class="fa fa-save"></i> ADD
+                  <i class="fa fa-plus"></i> ADD
                 </a>
               </div>
             </div>
@@ -57,6 +57,7 @@
                       <!-- <th> In use</th>  -->
                       <th style="display:none;">Equipment Type ID</th>
                       <th style="display:none;">Equipment ID</th>
+                      <th style="display:none;">Equipment Image</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -69,6 +70,7 @@
                         <td>{{ $equipmentData->equipmentRatePerHour }}</td> 
                         <td style="display:none">{{ $equipmentData->equipmentTypeID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentID }}</td>
+                        <td style="display:none">{{ $equipmentData->equipmentImage }}</td>
                       
                        </tr>
                       @endforeach
@@ -716,14 +718,16 @@ yourImg.style.width = '150px';
         var equipmentUnitVar= data[5];
         var equipmentTypeVar = data[1];
         var equipmentIDVar = data[6];
+        var equipmentImageVar = data[7];
          $('#editEquipmentTypeID option[value="' + equipmentTypeVar + '"]').prop("selected", true);
          $('#editEquipmentName').val(equipmentNameVar);
          $('#editEquipmentDescription').val(equipmentDescriptionVar);
          $('#editEquipmentRatePerHour').val(equipmentRatePerHourVar);
          $('#editEquipmentID').val(equipmentIDVar);
-         // $('#addQuantityEquipmentID').val(equipmentIDVar);
-         // $('#addQuantityEquipmentName').val(equipmentNameVar);
-         // $('#equipmentQuantityFake').val(equipmentUnitVar);
+         $('#addQuantityEquipmentID').val(equipmentIDVar);
+         $('#addQuantityEquipmentName').val(equipmentNameVar);
+         $('#equipmentQuantityFake').val(equipmentUnitVar);
+         document.getElementById("editPhotoIcon").src="img/" + equipmentImageVar;
          $("#editEquipmentModal").modal("show");
         } );
 } );

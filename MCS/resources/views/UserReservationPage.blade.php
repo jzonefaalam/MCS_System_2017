@@ -2181,9 +2181,9 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 							var equipIDs = $("#addEquipmentAvailed").val().split(',');
 							var empIDs = $("#addEmployeeEmployed").val().split(',');
 						}
-						else{
-							addPackIDs = 0;
-						}
+						// else{
+						// 	addPackIDs = 0;
+						// }
 						if(addCtr>0){
 							for (var i = 1; i <= addCtr; i++){
 								addDishID.push($("#additionalDish"+i+"").val());
