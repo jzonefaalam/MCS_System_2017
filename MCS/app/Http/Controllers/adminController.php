@@ -1018,31 +1018,34 @@ class adminController extends Controller
             $package->packageCost = Input::get('editPackageCost');
             $package->packageImage = "No Image";
             $package->save();
+            DB::table('packageinclusion_tbl')
+            ->where('packageID', $id)
+            ->update(['packageInclusionStatus' => 0]);
             $dti = $_POST['editDishTypeInclusion'];
             $si = $_POST['editStaffInclusion'];
             $ei = $_POST['editEquipmentInclusion'];
             $svi = $_POST['editServiceInclusion'];
             foreach ($dti as $dtinclusion) {
                 $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
                 $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
                 $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
                 $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
@@ -1064,13 +1067,44 @@ class adminController extends Controller
         }
         // Check if file already exists
         if (file_exists($target_file)) {
-           $id = Input::get('editPackageID');
+            $id = Input::get('editPackageID');
             $package = packagetbl::find($id); 
             $package->packageName = Input::get('editPackageName');
             $package->packageDescription = Input::get('editPackageDescription');
             $package->packageCost = Input::get('editPackageCost');
-            $package->packageImage = $packageImage;
+            $package->packageImage = "No Image";
             $package->save();
+            DB::table('packageinclusion_tbl')
+            ->where('packageID', $id)
+            ->update(['packageInclusionStatus' => 0]);
+            $dti = $_POST['editDishTypeInclusion'];
+            $si = $_POST['editStaffInclusion'];
+            $ei = $_POST['editEquipmentInclusion'];
+            $svi = $_POST['editServiceInclusion'];
+            foreach ($dti as $dtinclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->dishTypeID = $dtinclusion;
+                $packageInclusion->save();
+            }
+            foreach ($si as $staffInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->employeeTypeID = $staffInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($ei as $equipmentInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->equipmentID = $equipmentInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($svi as $serviceInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->serviceID = $serviceInclusion;
+                $packageInclusion->save();
+            }
             return redirect()->back();
         }
         // Check file size
@@ -1087,13 +1121,44 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["editPackageImage"]["tmp_name"], $target_file)) {
-           $id = Input::get('editPackageID');
+            $id = Input::get('editPackageID');
             $package = packagetbl::find($id); 
             $package->packageName = Input::get('editPackageName');
             $package->packageDescription = Input::get('editPackageDescription');
             $package->packageCost = Input::get('editPackageCost');
-            $package->packageImage = $packageImage;
+            $package->packageImage = "No Image";
             $package->save();
+            DB::table('packageinclusion_tbl')
+            ->where('packageID', $id)
+            ->update(['packageInclusionStatus' => 0]);
+            $dti = $_POST['editDishTypeInclusion'];
+            $si = $_POST['editStaffInclusion'];
+            $ei = $_POST['editEquipmentInclusion'];
+            $svi = $_POST['editServiceInclusion'];
+            foreach ($dti as $dtinclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->dishTypeID = $dtinclusion;
+                $packageInclusion->save();
+            }
+            foreach ($si as $staffInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->employeeTypeID = $staffInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($ei as $equipmentInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->equipmentID = $equipmentInclusion;
+                $packageInclusion->save();
+            }
+            foreach ($svi as $serviceInclusion) {
+                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion->packageID = $id;
+                $packageInclusion->serviceID = $serviceInclusion;
+                $packageInclusion->save();
+            }
             return redirect()->back();
         } else {
             return \Redirect::back();
@@ -1111,25 +1176,29 @@ class adminController extends Controller
         $dd = DB::table('packageinclusion_tbl')
         ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $ff = DB::table('packageinclusion_tbl')
         ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $gg = DB::table('packageinclusion_tbl')
         ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishInclusion = DB::table('packageinclusion_tbl')
         ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
 
-        return \Response::json(['ss'=>$ss]);
+        return \Response::json(['ss'=>$ss, 'dishInclusion'=>$dishInclusion, 'dd'=>$dd, 'ff'=>$ff, 'gg'=>$gg]);
     }
 
     public function retrievePackageInclusion(){
@@ -1142,21 +1211,25 @@ class adminController extends Controller
         $dd = DB::table('packageinclusion_tbl')
         ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $ff = DB::table('packageinclusion_tbl')
         ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $gg = DB::table('packageinclusion_tbl')
         ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishInclusion = DB::table('packageinclusion_tbl')
         ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishData = DB::table('dish_tbl')
