@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/sendEmail', 'mailController@send');
+
 
 Route::get('/Login', function () {
     return view('Login');
