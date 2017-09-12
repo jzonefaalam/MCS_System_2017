@@ -1848,17 +1848,6 @@ class adminController extends Controller
         return redirect()->back();
     }
 
-    public function transactionPage(){
-        $transactionData =  DB::table('transaction_tbl')
-        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
-        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
-        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
-        ->get();  
-        return View::make('/transactionPage')
-        ->with('transactionData', $transactionData);
-    }
-
 
     //VALIDATIONS
     ////DISH TYPE
