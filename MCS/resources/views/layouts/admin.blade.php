@@ -151,12 +151,6 @@
             </li>
 
             <li class="treeview">
-              <a href="/TransactionPage">
-                <i class="fa fa-file-text"></i> <span>Transactions</span>
-              </a>  
-            </li>
-
-            <li class="treeview">
               <a href="#">
                 <i class="fa fa-file-text"></i> <span>Reports</span>
               </a>  
