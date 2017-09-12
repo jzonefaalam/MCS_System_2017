@@ -45,7 +45,7 @@
             <tbody>
               @foreach ($transactionData as $transactionData)
               <tr>
-                <td>{{ $transactionData->transactionNumber }}</td>
+                <td>{{ $transactionData->transactionID }}</td>
                 <td>{{ $transactionData->eventName }}</td>
                 <td>{{ $transactionData->fullName }}</td>
                 <td>{{ $transactionData->totalFee }}</td>

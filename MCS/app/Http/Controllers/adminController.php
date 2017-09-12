@@ -24,6 +24,7 @@ use App\eventtbl;
 use App\customertbl;
 use App\packageinclusiontbl;
 use App\equipmentlogtbl;
+use App\transactiontbl;
 use Mail;
 class adminController extends Controller
 {
@@ -43,6 +44,11 @@ class adminController extends Controller
         $reservationtbl = reservationtbl::find($id);
         $reservationtbl->reservationStatus = 2;
         $reservationtbl->save();
+        $transactiontbl = new transactiontbl;
+        $transactiontbl->transactionStatus = 0;
+        $transactiontbl->totalFee = Input::get('totalReservationFee');
+        $transactiontbl->reservationID = $id;
+        $transactiontbl->save();
         return redirect()->back();
     }
 

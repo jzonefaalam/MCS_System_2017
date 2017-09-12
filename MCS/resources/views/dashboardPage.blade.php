@@ -544,6 +544,7 @@
                                   <div class="col-sm-5 input-group" >
                                     <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                                     <input type="text" class="form-control" name="approveReservationId" id="approveReservationId" readonly="">
+                                    <input type="text" class="form-control" name="totalReservationFee" id="totalReservationFee" readonly="">
                                   </div>
                                 </div>
                                 {!! csrf_field() !!}
@@ -673,6 +674,12 @@
     var table = $('#notificationTable').DataTable();
      
     $('#notificationTable tbody').on('dblclick', 'tr', function () {
+        var totalFeeTemp;
+        var totalFeePerm;
+        var additionalDishFee;
+        var additionalServiceFee;
+        var additionalEquipmentFee;
+        var additionalEmployeeFee;
         var data = table.row( this ).data();
         var reservationIDVar = data[0];
         var reservationEventNameVar = data[1];
@@ -705,6 +712,7 @@
         $('#editEventGuestCount').val(reservationGuestCountVar);
         $('#editEventStartTime').val(reservationEventTimeVar);
         $('#editEventEndTime').val(reservartionEndTimeVar);
+        totalFeeTemp = reservationGuestCountVar * reservationPackageCostVar;
         var opty = document.getElementById('editPackage').options;
           for(var i =0; i<opty.length; i++){
             if(opty[i].value==(reservationPackageID)){
@@ -734,18 +742,56 @@
                       for (var i = 0; i < data['gg'].length; i++) {
                         document.getElementById('employeeInclusion').innerHTML += '<h6>'+data['gg'][i]['employeeTypeName']+'</h6>';
                       }
-                      for (var i = 0; i < data['additionalDish'].length; i++) {
-                        document.getElementById('additionalDishDiv').innerHTML += '<h6>'+data['additionalDish'][i]['dishName']+'</h6>';
+                      if((data['additionalDish'].length)>0){
+                        for (var i = 0; i < data['additionalDish'].length; i++) {
+                          document.getElementById('additionalDishDiv').innerHTML += '<h6>'+data['additionalDish'][i]['dishName']+'</h6>';
+                          var additionalDishMultiplier = parseFloat(data['additionalDish'][i]['additionalServing']);
+                          var additionalDishCost = parseFloat(data['additionalDish'][i]['dishCost']);
+                          var newAdditionalDishCost = (additionalDishMultiplier * additionalDishCost);
+                          additionalDishFee = newAdditionalDishCost;
+                        }
                       }
-                      for (var i = 0; i < data['additionalService'].length; i++) {
-                        document.getElementById('additionalServiceDiv').innerHTML += '<h6>'+data['additionalService'][i]['serviceName']+'</h6>';
+                      else{
+                        additionalDishFee = 0;
                       }
-                      for (var i = 0; i < data['additionalEquipment'].length; i++) {
-                        document.getElementById('additionalEquipmentDiv').innerHTML += '<h6>'+data['additionalEquipment'][i]['equipmentName']+'</h6>';
+                      if((data['additionalService'].length)>0){
+                        for (var i = 0; i < data['additionalService'].length; i++) {
+                          document.getElementById('additionalServiceDiv').innerHTML += '<h6>'+data['additionalService'][i]['serviceName']+'</h6>';
+                          var additionalServiceMultiplier = parseFloat(data['additionalService'][i]['serviceAdditionalQty']);
+                          var additionalServiceCost = parseFloat(data['additionalService'][i]['serviceFee']);
+                          var newAdditionalServiceCost = (additionalServiceMultiplier * additionalServiceCost);
+                          additionalServiceFee = newAdditionalServiceCost;
+                        }
                       }
-                      for (var i = 0; i < data['additionalEmployee'].length; i++) {
-                        document.getElementById('additionalEmployeeDiv').innerHTML += '<h6>'+data['additionalEmployee'][i]['employeeTypeName']+'</h6>';
+                      else{
+                        additionalServiceFee = 0;
                       }
+                      if((data['additionalEquipment'].length)>0){
+                        for (var i = 0; i < data['additionalEquipment'].length; i++) {
+                          document.getElementById('additionalEquipmentDiv').innerHTML += '<h6>'+data['additionalEquipment'][i]['equipmentName']+'</h6>';
+                          var additionalEquipmentMultiplier = parseFloat(data['additionalEquipment'][i]['equipmentAdditionalQty']);
+                          var additionalEquipmentCost = parseFloat(data['additionalEquipment'][i]['equipmentRatePerHour']);
+                          var newAdditionalEquipmentCost = (additionalEquipmentMultiplier * additionalEquipmentCost);
+                          additionalEquipmentFee = newAdditionalEquipmentCost;
+                        }
+                      }
+                      else{
+                        additionalEquipmentFee = 0;
+                      }
+                      if((data['additionalEquipment'].length)>0){
+                        for (var i = 0; i < data['additionalEmployee'].length; i++) {
+                          document.getElementById('additionalEmployeeDiv').innerHTML += '<h6>'+data['additionalEmployee'][i]['employeeTypeName']+'</h6>';
+                          var additionalEmployeeMultiplier = parseFloat(data['additionalEmployee'][i]['employeeAdditionalQty']);
+                          var additionalEmployeeCost = parseFloat(data['additionalEmployee'][i]['employeeRatePerHour']);
+                          var newAdditionalEmployeeCost = (additionalEmployeeMultiplier * additionalEmployeeCost);
+                          additionalEmployeeFee = newAdditionalEmployeeCost;
+                        }
+                      }
+                      else{
+                        additionalEmployeeFee = 0;
+                      }
+                      totalFeePerm = totalFeeTemp + additionalDishFee + additionalServiceFee + additionalEmployeeFee + additionalEquipmentFee; 
+                      $('#totalReservationFee').val(totalFeePerm);
                       $("#detailModal").modal("show");     
                     },
                     error: function(xhr)
