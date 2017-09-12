@@ -116,29 +116,22 @@ Route::post("/DeleteServiceTypePage", array("uses"=>"adminController@deleteServi
 Route::get('/DashboardPage', 'adminController@dashboardPage');
 Route::get('/RetrieveSchedule', 'adminController@retrieveScheduleData');
 
-//Transaction Reservation
+//Reservation Page
 Route::get('/ReservationPage', 'adminController@reservationPage');
 Route::get('/RetrieveReservation', 'adminController@retrieveReservationData');
 Route::get('/RetrieveReservationID', 'adminController@retrieveReservationId');
 Route::post("/EditReservation", array("uses"=>"adminController@editReservation"));
 
-//Inventory Dish
-Route::get('/InventoryDishPage', 'adminController@inventoryDishPage');
-Route::post("/EnableDish", array("uses"=>"adminController@enableDish"));
-Route::post("/DisableDish", array("uses"=>"adminController@disableDish"));
-Route::get('/InvetoryRetrieveDish', 'adminController@retrieveInventoryDishID');
-
-//Inventory Equipment
+//Inventory Equipment Page
 Route::get('/InventoryEquipmentPage', 'adminController@inventoryEquipmentPage');
 Route::post("/EnableEquipment", array("uses"=>"adminController@enableEquipment"));
 Route::post("/DisableEquipment", array("uses"=>"adminController@disableEquipment"));
 Route::post("/UpdateEquipmentUnit", array("uses"=>"adminController@addEquipmentUnit"));
 Route::get('/InventoryPOPage', 'adminController@inventoryPOPage');
 
-//Inventory Location
-Route::get('/InventoryLocationPage', 'adminController@inventoryLocationPage');
-Route::post("/EnableLocation", array("uses"=>"adminController@enableLocation"));
-Route::post("/DisableLocation", array("uses"=>"adminController@disableLocation"));
+//Transaction Page
+Route::get('/TransactionPage', 'adminController@transactionPage');
+
 
 ///// USER ROUTING /////
 
