@@ -1292,24 +1292,6 @@ class adminController extends Controller
         ->with('addEquipmentData', $addEquipmentData);
     }
 
-    public function inventoryPOPage(){
-        $equipmentData = DB::table('equipment_tbl')
-        ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
-        // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
-        ->select('*')
-        ->where('equipmentStatus', 1)
-        ->get();
-
-        $addEquipmentData = DB::table('equipmenttype_tbl')
-        ->select('*')
-        ->where('equipmentTypeStatus', 1)
-        ->get();
-
-        return View::make('/inventory_purchaseOrderPage')
-        ->with('equipmentData', $equipmentData)
-        ->with('addEquipmentData', $addEquipmentData);
-    }
-
     public function addEquipment(Request $request){
         
         $equipmentImage = ($_FILES["addEquipmentImage"]["name"]);
