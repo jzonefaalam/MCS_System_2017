@@ -13,7 +13,8 @@
       <br>
         <ol class="breadcrumb">
           <li><a><i class="fa fa-wrench"></i> Inventory</a></li>
-          <li class="active"><a href = "/InventoryEquipmentPage"><i class="fa fa-cube"></i>Equipment</a></li>
+          <li><a href = "/InventoryEquipmentPage"><i class="fa fa-cube"></i>Equipment</a></li>
+          <li class="active"><a href = "/InventoryPOPage"><i class="fa fa-cube"></i>Purchase Order</a></li>
         </ol>
       </section>
 
@@ -22,10 +23,10 @@
             <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>EQUIPMENT</h2>
+                <h2>PURCHASE ORDER</h2>
               </div>
               <div class="col-md-6">
-                <a class="btn btn-app" href="InventoryPOPage" style="float:right">
+                <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
                   <i class="fa fa-save"></i> PURCHASE ORDER
                 </a>
                 <a class="btn btn-app" href="EquipmentTypePage" style="float:right">

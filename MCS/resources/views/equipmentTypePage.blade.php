@@ -7,8 +7,9 @@
     <section class="content-header">
       <br>
         <ol class="breadcrumb">
-          <li><a href="menu.php"><i class="fa fa-wrench"></i> Maintenance</a></li>
-          <li class="active"><a href = "#"><i class="fa fa-cube"></i>Equipment</a></li>
+          <li><a><i class="fa fa-wrench"></i> Maintenance</a></li>
+          <li><a href = "/InventoryEquipmentPage"><i class="fa fa-cube"></i>Equipment</a></li>
+          <li class="active"><a href = "/EquipmentTypePage"><i class="fa fa-cube"></i>Equipment Type</a></li>
         </ol>
       </section>
 
@@ -17,7 +18,7 @@
             <div class="box-header with-border">
               <div class="row">
                 <div class="col-md-6">
-                  <h2>Equipment</h2>
+                  <h2>Equipment Type</h2>
                 </div>
                 <div class="col-md-6">
                       <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
