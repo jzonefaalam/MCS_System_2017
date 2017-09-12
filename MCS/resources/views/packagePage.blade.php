@@ -283,7 +283,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Equipment</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" id="editEquipmentInclusion" name="editEquipmentInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editEquipmentInclusion[]" style="width: 100%;">
                 @foreach($equipmentData as $editEquipmentData)
                 <option value="{{ $editEquipmentData->equipmentID }}">{{ $editEquipmentData->equipmentName }} </option>
                 @endforeach
@@ -294,7 +294,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Services</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" id="editServiceInclusion" name="editServiceInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editServiceInclusion[]" style="width: 100%;">
                 @foreach($serviceData as $editServiceData)
                 <option value="{{ $editServiceData->serviceID }}">{{ $editServiceData->serviceName }} </option>
                 @endforeach
@@ -305,7 +305,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Staff</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" id="editStaffInclusion" name="editStaffInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editStaffInclusion[]" style="width: 100%;">
                 @foreach($staffData as $editStaffData)
                 <option value="{{ $editStaffData->employeeTypeID }}">{{ $editStaffData->employeeTypeName }} </option>
                 @endforeach
@@ -451,7 +451,7 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
 <!-- Select2 -->
@@ -709,52 +709,21 @@ yourImg.style.width = '150px';
                 //       }
 
                 //     }
+                // var selectedValues = new Array();
                 // var i = 0;
                 // data[4].forEach(function(data){
                 // selectedValues[i] = data['dishInclusion'][0]['dishTypeID'];
                 // i++;
                 // })
                 // $('#editDishTypeInclusion').val(selectedValues).trigger('change');
-                var selectedValuesDish = new Array();
-                var selectedValuesEquipment = new Array();
-                var selectedValuesStaff = new Array();
-                var selectedValuesService = new Array();
                 $('#editDishTypeInclusion option').each(function(){
                   for(var i = 0; i < data['dishInclusion'].length; i++){
-                    if($(this).val() == data['dishInclusion'][i]['dishTypeID']){
-                      selectedValuesDish.push(data['dishInclusion'][i]['dishTypeID']);
-                      $("#editDishTypeInclusion").val(selectedValuesDish).trigger('change');
+                    if($(this).val() == data['dishInclusion'][i].dishTypeID){
+                      $('#editDishTypeInclusion option[value='+$(this).val()+']').attr('selected', true);
+                      $('#editDishTypeInclusion').trigger('change');
                     }
                   }
                 });
-
-                $('#editEquipmentInclusion option').each(function(){
-                  for(var i = 0; i < data['ff'].length; i++){
-                    if($(this).val() == data['ff'][i]['equipmentID']){
-                      selectedValuesEquipment.push(data['ff'][i]['equipmentID']);
-                      $("#editEquipmentInclusion").val(selectedValuesEquipment).trigger('change');
-                    }
-                  }
-                });
-
-                $('#editStaffInclusion option').each(function(){
-                  for(var i = 0; i < data['gg'].length; i++){
-                    if($(this).val() == data['gg'][i]['employeeTypeID']){
-                      selectedValuesStaff.push(data['gg'][i]['employeeTypeID']);
-                      $("#editStaffInclusion").val(selectedValuesStaff).trigger('change');
-                    }
-                  }
-                });
-
-                $('#editServiceInclusion option').each(function(){
-                  for(var i = 0; i < data['dd'].length; i++){
-                    if($(this).val() == data['dd'][i]['serviceID']){
-                      selectedValuesService.push(data['dd'][i]['serviceID']);
-                      $("#editServiceInclusion").val(selectedValuesService).trigger('change');
-                    }
-                  }
-                });
-
 
                 },
 
