@@ -12,8 +12,8 @@
     <section class="content-header">
       <br>
         <ol class="breadcrumb">
-          <li><a><i class="fa fa-wrench"></i> Inventory</a></li>
-          <li class="active"><a href = "/InventoryEquipmentPage"><i class="fa fa-cube"></i>Equipment</a></li>
+          <li><a href="menu.php"><i class="fa fa-wrench"></i> Maintenance</a></li>
+          <li class="active"><a href = "#"><i class="fa fa-cube"></i>Equipment</a></li>
         </ol>
       </section>
 
@@ -25,9 +25,9 @@
                 <h2>EQUIPMENT</h2>
               </div>
               <div class="col-md-6">
-                <a class="btn btn-app" href="InventoryPOPage" style="float:right">
-                  <i class="fa fa-save"></i> PURCHASE ORDER
-                </a>
+                <!-- <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
+                  <i class="fa fa-save"></i> LOGS
+                </a> -->
                 <a class="btn btn-app" href="EquipmentTypePage" style="float:right">
                   <i class="fa fa-list"></i> CATEGORIES  
                 </a>
@@ -35,7 +35,7 @@
                   <i class="fa fa-save"></i> REPORTS  
                 </a> -->
                 <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
-                  <i class="fa fa-plus"></i> NEW
+                  <i class="fa fa-plus"></i> ADD
                 </a>
               </div>
             </div>
@@ -52,8 +52,9 @@
                       <th> Brand</th>
                       <th> Equipment Description</th>
                       <th width="80px">Rate</th>
-                      <th width="50px">IN</th>
-                      <th>OUT</th> 
+                      <!-- <th width="50px">Total Quantity</th> -->
+                      <!-- <th width="50px">Remaining Quantity</th> -->
+                      <!-- <th> In use</th>  -->
                       <th style="display:none;">Equipment Type ID</th>
                       <th style="display:none;">Equipment ID</th>
                       <th style="display:none;">Equipment Image</th>
@@ -70,8 +71,7 @@
                         <td style="display:none">{{ $equipmentData->equipmentTypeID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentImage }}</td>
-                        <td> </td>
-                        <td> </td>                      
+                      
                        </tr>
                       @endforeach
                       </tbody>
@@ -255,7 +255,7 @@
                         <div class="nav-tabs-custom">
                           <ul class="nav nav-tabs">
                             <li class="active"><a  href="#tab_1" data-toggle="tab">Update Equipment Details</a></li>
-                            <!-- <li class=""><a href="#tab_2" data-toggle="tab">Add Equipment Unit</a></li> -->
+                            <li class=""><a href="#tab_2" data-toggle="tab">Add Equipment Unit</a></li>
                           </ul>
                           <div class="tab-content">
 
@@ -355,7 +355,7 @@
                               </form>
                             </div>
 
-                            <!-- <div class="tab-pane active" id="tab_2">
+                            <div class="tab-pane active" id="tab_2">
                               <form id="updateEquipmentQuantityForm" class="form-horizontal">
 
                               <div class="form-group" style="display: none;">
@@ -401,13 +401,24 @@
                               <div class="col-sm-6">
                               <div class="input-group">
                               <span class="input-group-addon">
-                              <i class="fa fa-cube" aria-hidden="true"></i>
+                              <input type="checkbox" id="addCheckBox" name="addCheckBox">
                               </span>
                               <input type="text" name="addEquipmentQuantity" id="addEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
                               </div>
                               </div>
                               </div>
 
+                              <div class="form-group">
+                              <label class="col-sm-4 control-label">Minus Quantity</label>
+                              <div class="col-sm-6">
+                              <div class="input-group">
+                              <span class="input-group-addon">
+                              <input type="checkbox" id="minusCheckBox" name="minusCheckBox">
+                              </span>
+                              <input type="text" name="minusEquipmentQuantity" id="minusEquipmentQuantity" class="form-control" placeholder="Enter Quantity">
+                              </div>
+                              </div>
+                              </div>
 
                               
                               <div style="text-align: center;">
@@ -417,7 +428,7 @@
 
                               </form>
 
-                            </div> -->
+                            </div>
                            
                           </div>
                           <!-- /.tab-pane -->

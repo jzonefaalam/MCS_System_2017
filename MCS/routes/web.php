@@ -125,7 +125,6 @@ Route::get('/InventoryEquipmentPage', 'adminController@inventoryEquipmentPage');
 Route::post("/EnableEquipment", array("uses"=>"adminController@enableEquipment"));
 Route::post("/DisableEquipment", array("uses"=>"adminController@disableEquipment"));
 Route::post("/UpdateEquipmentUnit", array("uses"=>"adminController@addEquipmentUnit"));
-Route::get('/InventoryPOPage', 'adminController@inventoryPOPage');
 
 //Transaction Page
 Route::get('/TransactionPage', 'adminController@transactionPage');
