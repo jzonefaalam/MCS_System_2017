@@ -129,6 +129,7 @@ Route::get('/InventoryPOPage', 'adminController@inventoryPOPage');
 
 //Transaction Page
 Route::get('/TransactionPage', 'adminController@transactionPage');
+Route::get('/RetrieveTransaction', 'adminController@retrieveTransactionData');
 
 
 ///// USER ROUTING /////
