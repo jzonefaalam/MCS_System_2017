@@ -100,6 +100,7 @@
                     <p id="parBalanceFee"></p>
                     <p id="parPaymentTerm"></p>
                     <p id="parPaymentStatus"></p>
+                    <p id="parTransactionId" style="display: none;">Payment Status: </p>
                   </div>
                 </div>
               </div>
@@ -112,10 +113,9 @@
               <a class="btn btn-app" href="#" style="float:right">
                 <i class="fa fa-check"></i>Confirm Payment
               </a>
-              <a class="btn btn-app" style="float:right">
+              <a class="btn btn-app" href="#" style="float:right" onclick="getReservation(document.getElementById('parTransactionId').value);">
                 <i class="fa fa-print"></i>Print
               </a>
-
             </div>
             <!-- /Modal Footer -->
           </div>
@@ -139,6 +139,96 @@ $(function () {
   });
 });
 </script>
+
+<script>
+  function getReservation(id){
+    var frame1 = $('<iframe />');
+    frame1[0].name = "frame1";
+    frame1.css({ "position": "absolute", "top": "-1000000px" });
+    $("body").append(frame1);
+    var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+    frameDoc.document.open();
+    frameDoc.document.write('<html><head>');
+    frameDoc.document.write('</head><body>');
+    frameDoc.document.write('<style> .invoice-box{ max-width:800px; margin:auto; padding:30px; border:1px solid #eee; box-shadow:0 0 10px rgba(0, 0, 0, .15); font-size:16px; line-height:24px; font-family:"Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; color:#555; } .invoice-box table{ width:100%; line-height:inherit; text-align:left; } .invoice-box table td{ padding:5px; vertical-align:top; } .invoice-box table tr td:nth-child(2){ text-align:right; } .invoice-box table tr.top table td{ padding-bottom:20px; } .invoice-box table tr.top table td.title{ font-size:45px; line-height:45px; color:#333; } .invoice-box table tr.information table td{ padding-bottom:40px; } .invoice-box table tr.heading td{ background:#eee; border-bottom:1px solid #ddd; font-weight:bold; } .invoice-box table tr.details td{ padding-bottom:20px; } .invoice-box table tr.item td{ border-bottom:1px solid #eee; } .invoice-box table tr.item.last td{ border-bottom:none; } .invoice-box table tr.total td:nth-child(2){ border-top:2px solid #eee; font-weight:bold; } @media only screen and (max-width: 600px) { .invoice-box table tr.top table td{ width:100%; display:block; text-align:center; } .invoice-box table tr.information table td{ width:100%; display:block; text-align:center; } } </style>');
+    frameDoc.document.write('<html><body> <div > <table cellpadding="0" cellspacing="0"> <tr class="top"> <td colspan="2">   ');
+    frameDoc.document.write('<image src = "logo.png" align = "pullcenter"  width = "130" height = "100" style ="padding-left:10px"> ');
+    frameDoc.document.write('<p align = "Center">Margareth Catering Services </br> ');
+    frameDoc.document.write(' B4 L5 Ph7 JP Rizal St., New San Mateo Subd., Gitnangbayan I, San Mateo, Rizal </br> ');
+    frameDoc.document.write(' 696-4528 | (+63) 928-297-2321 | (+63) 907-208-3331 </br>');
+    frameDoc.document.write(' margarethcateringservices@gmail.com </p></br></br>');
+    frameDoc.document.write(' <p align= "right" style ="padding-right:16%">MM/DD/YYYY</p>');
+    frameDoc.document.write(' <p align = "left" style = "padding-left:20%">');
+    frameDoc.document.write(' Dear (client name),</br></br> ');
+    frameDoc.document.write(' </br>We recieved your inquiry and we would like confirm the agreement made during the phone conversation.</br> ');
+    frameDoc.document.write(' Thank you for making a reservation.');
+    frameDoc.document.write('     Here is the full details of your reservation. Kindly check if all the information is correct.</br>');
+    frameDoc.document.write(' </br></br></br>Event Date: ');
+    frameDoc.document.write(' </br>Event Time: ');
+    frameDoc.document.write(' </br>Event Name:');
+    frameDoc.document.write(' </br>Package Availed:');
+    frameDoc.document.write(' </br>Chosen Dish/Dishes: ');
+    frameDoc.document.write(' </br>Number of Guest:');
+    frameDoc.document.write(' </br>Add-ons:');
+    frameDoc.document.write(' </br>Service Availed:');
+    frameDoc.document.write(' </br>Location:</br>');
+    frameDoc.document.write(' </br>As agreed upon the first payment will be made at (date) and the second payment will be at (date).</br>');
+    frameDoc.document.write(' This letter will serve as our contract. For further question you can reach us in our phone number 696-4528</br>');
+    frameDoc.document.write(' (+63) 928-297-2321 | (+63) 907-208-3331or you can email us at margarethcateringservices@gmail.com</br>');
+    frameDoc.document.write(' </br></br></br>');
+    frameDoc.document.write('</div></body></html>');
+    frameDoc.document.close();
+    setTimeout(function () {
+      window.frames["frame1"].focus();
+      window.frames["frame1"].print();
+      frame1.remove();
+    }, 500);
+  }
+</script>
+
+
+
+
+<html>
+  <head><center>
+    <link rel="icon" type="image/gif" href="logo.png">
+    <title>Confirmation</title>
+  </head>
+    <body></br>
+    <image src = "logo.png" align = "pullcenter"  width = "130" height = "100" style ="padding-left:10px">
+    <p align = "Center">Margareth Catering Services </br>
+    B4 L5 Ph7 JP Rizal St., New San Mateo Subd., Gitnangbayan I, San Mateo, Rizal </br>
+    696-4528 | (+63) 928-297-2321 | (+63) 907-208-3331 </br>
+    margarethcateringservices@gmail.com </p></br></br>
+    
+    <p align= "right" style ="padding-right:16%">MM/DD/YYYY</p>
+    <p align = "left" style = "padding-left:20%">
+    Dear (client name),</br></br>
+    </br>We recieved your inquiry and we would like confirm the agreement made during the phone conversation.</br>
+    Thank you for making a reservation.
+    Here is the full details of your reservation. Kindly check if all the information is correct.</br>
+    </br></br></br>Event Date:
+    </br>Event Time:
+    </br>Event Name:
+    </br>Package Availed:
+    </br>Number of Guest:
+    </br>Chosen Dish/Dishes:
+    </br>Add-ons:
+    </br>Service Availed:
+    </br>Location:</br>
+    </br>As agreed upon the first payment will be made at (date) and the second payment will be at (date).</br>
+    This letter will serve as our contract. For further question you can reach us in our phone number 696-4528</br>
+    (+63) 928-297-2321 | (+63) 907-208-3331or you can email us at margarethcateringservices@gmail.com</br>
+    </br></br></br>
+    <pre>______________________________         ______________________________
+    </br>                     Owner's printed name and Signature        Cliets's printed name and Signature                    </br></pre>
+    
+    
+    
+    </body>
+    </center>
+    </html>
+  
 <script>
   $(document).ready(function() {
     var table = $('#transactionTable').DataTable();
@@ -155,6 +245,7 @@ $(function () {
           getId: transactionId
         },
         success: function(data){
+        document.getElementById("parTransactionId").innerHTML = transactionId;
         document.getElementById("parCustomerName").innerHTML = data['tdata'][0]['fullName'];
         document.getElementById("parContactNumber").innerHTML = data['tdata'][0]['cellNum'];
         document.getElementById("parEventName").innerHTML = data['tdata'][0]['eventName'];

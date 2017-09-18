@@ -40,6 +40,7 @@ class adminController extends Controller
         //     $message->to('jzone_faalam@yahoo.com');
         //     $message->subject($data['subject']);
         // });
+
         $id = Input::get('approveReservationId');
         $reservationtbl = reservationtbl::find($id);
         $reservationtbl->reservationStatus = 2;
@@ -49,6 +50,11 @@ class adminController extends Controller
         $transactiontbl->totalFee = Input::get('totalReservationFee');
         $transactiontbl->reservationID = $id;
         $transactiontbl->save();
+        Mail::send(   ['html'=>'mail'],['name','MCS'],function ($message){
+            $message->to('jsooooon017@gmail.com', 'To Jayson')
+                    ->subject('Test Email');
+            $message->from('jsooooon017@gmail.com', 'From Jayson');
+        });
         return redirect()->back();
     }
 
