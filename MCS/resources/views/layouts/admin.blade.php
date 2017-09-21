@@ -157,7 +157,7 @@
             </li>
 
             <li class="treeview">
-              <a href="#">
+              <a href="/ReportPage">
                 <i class="fa fa-file-text"></i> <span>Reports</span>
               </a>  
             </li>

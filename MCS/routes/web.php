@@ -23,9 +23,9 @@ Route::get('/Login', function () {
 });
 Route::post("/doLogin", array("uses"=>"adminController@authenticateLogin"));
 
-Route::get('/RegisterAccount', function () {
-    return view('registerAccount');
-});
+//REPORTS PAGE
+Route::get('/ReportPage', 'adminController@reportPage');
+Route::get('/RetrieveMonthlyTransaction', 'adminController@retrieveMonthlyTransaction');
 
 Route::post("/ApproveReservationEmail", array("uses"=>"adminController@sendApprovalEmail"));
 Route::post("/DenyReservationEmail", array("uses"=>"adminController@sendDenyEmail"));

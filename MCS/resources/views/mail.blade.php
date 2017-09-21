@@ -20,7 +20,7 @@ Here is the full details of your reservation. Kindly check if all the informatio
 <br><br><br>Event Date:
 <br>Event Time:
 <br>Event Name:
-<br>Package Availed:
+<br>Package Availed: 
 <br>Number of Guest:
 <br>Chosen Dish/Dishes:
 <br>Add-ons:

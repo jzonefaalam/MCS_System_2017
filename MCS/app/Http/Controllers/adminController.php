@@ -50,10 +50,13 @@ class adminController extends Controller
         $transactiontbl->totalFee = Input::get('totalReservationFee');
         $transactiontbl->reservationID = $id;
         $transactiontbl->save();
-        Mail::send(   ['html'=>'mail'],['name','MCS'],function ($message){
-            $message->to('jsooooon017@gmail.com', 'To Jayson')
-                    ->subject('Test Email');
-            $message->from('jsooooon017@gmail.com', 'From Jayson');
+        $mailEventLocation = Input::get('mailEventLocation');
+        $mailPackageAvailed = Input::get('mailPackageAvailed');
+        $data = array(
+         'mailEventLocation' => $mailEventLocation,
+         'mailPackageAvailed' => $mailPackageAvailed
+        );
+        Mail::send('mail', $data, function($message) use ($data){$message->to("jsooooon017@gmail.com",'Products')->subject('Receipt');
         });
         return redirect()->back();
     }
@@ -106,6 +109,25 @@ class adminController extends Controller
     //     return View::make('/DashboardPage')
     //     ->with('dashboardData', $dashboardData);
     // }
+
+    //Reports Page functions-------------------------------------------------------------------------->
+    public function reportPage(){
+        return View::make('/ReportPage');
+    }
+
+    public function retrieveMonthlyTransaction(){
+        $currentMonth = date('m');
+        $transactionData =  DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*')
+        // ->whereRaw('MONTH(transaction_tbl.created_at) = ?',[$currentMonth])
+        ->get();  
+        return \Response::json(['transactionData'=>$transactionData]);
+    }
+
 
     //Dish Page functions-------------------------------------------------------------------------->
     public function dishPage(){

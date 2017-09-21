@@ -148,7 +148,7 @@
             </li>
 
             <li class="treeview">
-              <a href="#">
+              <a href="ReportPage">
                 <i class="fa fa-file-text"></i> <span>Reports</span>
               </a>  
             </li>
@@ -539,34 +539,45 @@
             </form>
                 <!-- End Update Modal -->  
 
-                      <!-- Delete service Modal-->
-                      <form role="form" method="POST" action="ApproveReservationEmail" class="form-horizontal">
-                      <div class="modal fade" id="sendApproveEmailModal">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                             <div class="modal-body">
-                                <div class="form-group" style="display:none;">
-                                  <label class="col-sm-4 control-label">Reservation ID</label>
-                                  <div class="col-sm-5 input-group" >
-                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="approveReservationId" id="approveReservationId" readonly="">
-                                    <input type="text" class="form-control" name="totalReservationFee" id="totalReservationFee" readonly="">
-                                  </div>
-                                </div>
-                                {!! csrf_field() !!}
-                                <div>
-                                  <h5> Are you sure you want to approve this reservation? </h5>
-                                </div>
-                                <div style="text-align: center;">
-                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                                </div>
-                              </div>
-                          </div>
+            <!-- APPROVAL MODAL -->
+            <form role="form" method="POST" action="ApproveReservationEmail" class="form-horizontal">
+            <div class="modal fade" id="sendApproveEmailModal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                   <div class="modal-body">
+                      <div class="form-group" style="display:none;">
+                        <label class="col-sm-4 control-label">Reservation ID</label>
+                        <div class="col-sm-5 input-group" >
+                          <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                          <input type="text" class="form-control" name="approveReservationId" id="approveReservationId" readonly="">
+                          <input type="text" class="form-control" name="totalReservationFee" id="totalReservationFee" readonly="">
+                          <input type="text" class="form-control" name="mailEventDate" id="mailEventDate" readonly="">
+                          <input type="text" class="form-control" name="mailEventStartTime" id="mailEventStartTime" readonly="">
+                          <input type="text" class="form-control" name="mailEventEndTime" id="mailEventEndTime" readonly="">
+                          <input type="text" class="form-control" name="mailPackageAvailed" id="mailPackageAvailed" readonly="">
+                          <input type="text" class="form-control" name="mailNumOfGuest" id="mailNumOfGuest" readonly="">
+                          <input type="text" class="form-control" name="mailDishInclusion" id="mailDishInclusion" readonly="">
+                          <input type="text" class="form-control" name="mailDishAdditional" id="mailDishAdditional" readonly="">
+                          <input type="text" class="form-control" name="mailServiceAdditional" id="mailServiceAdditional" readonly="">
+                          <input type="text" class="form-control" name="mailEmployeeAdditional" id="mailEmployeeAdditional" readonly="">
+                          <input type="text" class="form-control" name="mailEquipmentAdditional" id="mailEquipmentAdditional" readonly="">
+                          <input type="text" class="form-control" name="mailEventLocation" id="mailEventLocation" readonly="">
                         </div>
                       </div>
-                      </form>
-                      <!-- End Modals-->
+                      {!! csrf_field() !!}
+                      <div>
+                        <h5> Are you sure you want to approve this reservation? </h5>
+                      </div>
+                      <div style="text-align: center;">
+                        <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                        <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            </form>
+            <!-- End Modals-->
 
                       <!-- Delete service Modal-->
                       <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
@@ -798,6 +809,13 @@
                       }
                       totalFeePerm = totalFeeTemp + additionalDishFee + additionalServiceFee + additionalEmployeeFee + additionalEquipmentFee; 
                       $('#totalReservationFee').val(totalFeePerm);
+                      $('#mailEventLocation').val(reservationEventLocationVar);
+                      $('#mailPackageAvailed').val(reservationPackageVar);
+                      $('#mailEventDate').val(reservationDateVar);
+                      // $('#totalReservationFee').val(totalFeePerm);
+                      // $('#totalReservationFee').val(totalFeePerm);
+                      // $('#totalReservationFee').val(totalFeePerm);
+                      // $('#totalReservationFee').val(totalFeePerm);
                       $("#detailModal").modal("show");     
                     },
                     error: function(xhr)
