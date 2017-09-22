@@ -25,6 +25,8 @@ use App\customertbl;
 use App\packageinclusiontbl;
 use App\equipmentlogtbl;
 use App\transactiontbl;
+use App\purchaseordertypetbl;
+use App\purchaseordertbl;
 use Mail;
 class adminController extends Controller
 {
@@ -52,11 +54,17 @@ class adminController extends Controller
         $transactiontbl->save();
         $mailEventLocation = Input::get('mailEventLocation');
         $mailPackageAvailed = Input::get('mailPackageAvailed');
+        $currentMonth = date('m');
+        $currentDay = date('d');
+        $currentYear = date('Y');
         $data = array(
          'mailEventLocation' => $mailEventLocation,
-         'mailPackageAvailed' => $mailPackageAvailed
+         'mailPackageAvailed' => $mailPackageAvailed,
+         'currentMonth' => $currentMonth,
+         'currentDay' => $currentDay, 
+         'currentYear' => $currentYear
         );
-        Mail::send('mail', $data, function($message) use ($data){$message->to("jsooooon017@gmail.com",'Products')->subject('Receipt');
+        Mail::send('mail', $data, function($message) use ($data){$message->to("mcssystem2017@gmail.com",'Products')->subject('Receipt');
         });
         return redirect()->back();
     }
@@ -1254,21 +1262,76 @@ class adminController extends Controller
     }
 
     public function inventoryPOPage(){
-        $equipmentData = DB::table('equipment_tbl')
-        ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
-        // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
+        $poData = DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
         ->select('*')
-        ->where('equipmentStatus', 1)
+        ->where('poStatus', 1)
         ->get();
 
-        $addEquipmentData = DB::table('equipmenttype_tbl')
+        $poTypeData = DB::table('purchaseordertype_tbl')
         ->select('*')
-        ->where('equipmentTypeStatus', 1)
+        ->where('poTypeStatus', 1)
         ->get();
 
         return View::make('/inventory_purchaseOrderPage')
-        ->with('equipmentData', $equipmentData)
-        ->with('addEquipmentData', $addEquipmentData);
+        ->with('poData', $poData)
+        ->with('poTypeData', $poTypeData);
+    }
+
+    public function addPO(Request $request){
+        $po = new purchaseordertbl;
+        $po->poItemName = Input::get('addPOName');
+        $po->poDescription = Input::get('addPODescription');
+        $po->poTypeId = Input::get('addPOType');
+        $po->poSupplier = Input::get('addPOSupplier');
+        $po->poSupplierAddress = Input::get('addPOSupplierAddress');
+        $po->poQty = Input::get('addPOQty');
+        $po->poPrice = Input::get('addPOPrice');
+        $po->poStatus = 1;
+        $po->save();
+        return redirect()->back();
+    }
+
+    public function inventoryPOTypePage(){
+        $poTypeData = DB::table('purchaseordertype_tbl')
+        ->select('*')
+        ->where('poTypeStatus',1)
+        ->get();
+
+        return View::make('/inventory_purchaseOrderTypePage')
+        ->with('poTypeData', $poTypeData);
+    }
+
+    public function addPOType(Request $request){
+        $poType = new purchaseordertypetbl;
+        $poType->poTypeName = Input::get('addPOCategoryName');
+        $poType->poTypeStatus = 1;
+        $poType->save();
+        return redirect()->back();
+    }
+
+    public function retrievePOTypeData(){
+        $poTypeData = DB::table('purchaseordertype_tbl')
+        ->select('*')
+        ->where('poTypeId', Input::get('getId'))
+        ->get();
+        return \Response::json(['poTypeData'=>$poTypeData]);
+    }
+
+    public function editPOType(){
+        $id = Input::get('editPOTypeId');
+        $poType = purchaseordertypetbl::find($id);
+        $poType->poTypeName = Input::get('editPOTypeName');
+        $poType->save();
+        return redirect()->back();
+    }
+
+    public function deletePOType(){
+        $id = Input::get('deletePOTypeId');
+        $poType = purchaseordertypetbl::find($id);
+        $poType->poTypeStatus = 0;
+        $poType->save();
+        return redirect()->back();
     }
 
     public function addEquipment(Request $request){
