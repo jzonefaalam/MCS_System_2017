@@ -26,6 +26,8 @@ Route::post("/doLogin", array("uses"=>"adminController@authenticateLogin"));
 //REPORTS PAGE
 Route::get('/ReportPage', 'adminController@reportPage');
 Route::get('/RetrieveMonthlyTransaction', 'adminController@retrieveMonthlyTransaction');
+Route::get('/RetrieveYearlyTransaction', 'adminController@retrieveYearlyTransaction');
+Route::get('/RetrieveAllTransaction', 'adminController@retrieveAllTransaction');
 
 Route::post("/ApproveReservationEmail", array("uses"=>"adminController@sendApprovalEmail"));
 Route::post("/DenyReservationEmail", array("uses"=>"adminController@sendDenyEmail"));
@@ -46,7 +48,8 @@ Route::get('/RetrieveDishType', 'adminController@retrieveDishTypeData');
 Route::post("/DishTypePage", array("uses"=>"adminController@addDishType"));
 Route::post("/EditDishTypePage", array("uses"=>"adminController@editDishType"));
 Route::post("/DeleteDishTypePage", array("uses"=>"adminController@deleteDishType"));
-Route::get('/DishTypeValidator', 'adminController@validateDishTypeName');
+Route::post("/DishTypeValidator", array("uses"=>"adminController@validateDishTypeName"));
+// Route::get('/DishTypeValidator', 'adminController@validateDishTypeName');
 
 //EmployeePage
 Route::get('/EmployeePage', 'adminController@employeePage');

@@ -125,13 +125,39 @@ class adminController extends Controller
 
     public function retrieveMonthlyTransaction(){
         $currentMonth = date('m');
+        $currentYear = date('Y');
         $transactionData =  DB::table('transaction_tbl')
         ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
         ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
         ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
         ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*')
-        // ->whereRaw('MONTH(transaction_tbl.created_at) = ?',[$currentMonth])
+        ->whereMonth('transaction_tbl.created_at', $currentMonth)
+        ->whereYear('transaction_tbl.created_at', $currentYear)
+        ->get();  
+        return \Response::json(['transactionData'=>$transactionData]);
+    }
+
+    public function retrieveYearlyTransaction(){
+        $currentYear= date('Y');
+        $transactionData =  DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*')
+        ->whereYear('transaction_tbl.created_at', $currentYear)
+        ->get();  
+        return \Response::json(['transactionData'=>$transactionData]);
+    }
+
+     public function retrieveAllTransaction(){
+        $transactionData =  DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*')
         ->get();  
         return \Response::json(['transactionData'=>$transactionData]);
     }
@@ -1995,13 +2021,13 @@ class adminController extends Controller
         $avail = DB::table('dishtype_tbl')
             ->where('dishTypeName', Input::get('addDishTypeName'))
             ->count();
+        // dd($avail);
         if($avail == 0)
         {
             $isAvailable = true;
             echo json_encode(array(
             'valid' => $isAvailable
             ));
-    
         }else{
             $isAvailable = False;
             echo json_encode(array(
@@ -2009,7 +2035,6 @@ class adminController extends Controller
             ));
         }
     }
-
       
 
 }

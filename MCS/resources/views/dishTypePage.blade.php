@@ -154,7 +154,7 @@
 
         <!-- Add Dish Type Modal -->
           <form id="addDishTypeForm" role="form" method="POST" action="/DishTypePage" class="form-horizontal addDishTypeValidator" enctype="multipart/form-data">
-            <div class="modal fade" id="addDishTypeModal" class="addDishTypeModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addDishTypeModal" style="width:100%;">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -217,8 +217,21 @@
       </section>
       <!-- /.content -->
     </div>
+
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+<script>
+  $(function () {
+    $(document).on("hidden.bs.modal", "#addDishTypeModal", function () {
+      $("#addDishTypeName").val("");
+      $("#addDishTypeImage").val("");
+      document.getElementById('photoIcon').src = "img/imageIcon.png";
+    });
+  });
+</script>
+
 <script>
   $(function () {
     $('#dishTypeTable').DataTable({
@@ -233,149 +246,142 @@
 </script>
 
 <script>
-
-
   $("#addDishTypeModal").on("hidden.bs.modal", function(){
-    $("#addDishTypeName").val("");
-  });
-
-  $('#addDishTypeImage').change(function(){
-
+    });
+    $('#addDishTypeImage').change(function(){
     var file = this.files[0];
     var reader = new FileReader();
     reader.onload = function(){
-      // alert("asdsd")
-
-        document.getElementById('photoIcon').src = this.result;
-        };
+    // alert("asdsd")
+    document.getElementById('photoIcon').src = this.result;
+    };
     reader.readAsDataURL(file);
-
     var yourImg = document.getElementById('photoIcon');
     if(yourImg && yourImg.style) {
     yourImg.style.height = '150px';
     yourImg.style.width = '150px';
-}
-      });
+    }
+  });
 
-    $('#editDishTypeImage').change(function(){
-
+  $('#editDishTypeImage').change(function(){
     var file = this.files[0];
     var reader = new FileReader();
     reader.onload = function(){
-      // alert("asdsd")
+    // alert("asdsd")
 
-        document.getElementById('editPhotoIcon').src = this.result;
-        };
+    document.getElementById('editPhotoIcon').src = this.result;
+    };
     reader.readAsDataURL(file);
 
-var yourImg = document.getElementById('editPhotoIcon');
+    var yourImg = document.getElementById('editPhotoIcon');
     if(yourImg && yourImg.style) {
     yourImg.style.height = '150px';
     yourImg.style.width = '150px';
-}
-      });
-
+    }
+  });
 </script>
 
 <script type="text/javascript">
-    $('#addDishTypeForm').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              addDishTypeName: {
-                  validators: {
-                      stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'Dish type name should be at least 3 characters long, and should not exceed 20 characters.'
-                      },
-                      regexp: {
+  $('#addDishTypeForm').bootstrapValidator({
+      // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+      addDishTypeName: {
+          validators: {
+            stringLength: {
+              min: 2,
+              max: 20,
+              message:'Dish type name should be at least 3 characters long, and should not exceed 20 characters.'
+            },
+            regexp: {
+              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+              message: 'This field should contain letters, hyphen & apostrophe only.'
+            },
+            remote: {
+              url: '/',
+              message: 'The username is not available'
+            },
+            notEmpty: {
+              message: 'This field is required.'
+            }
+          }
+      },
+      addDishTypeImage: {
+        validators: {
+          notEmpty: {
+            message: 'This field is required.'
+          }
+        }
+      },
+    }
+  });
+</script>
+
+<script type="text/javascript">
+  $('.editDishTypeValidator').bootstrapValidator({
+  // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+  
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        editDishTypeName: {
+            validators: {
+                  stringLength: {
+                  min: 2,
+                  max: 20,
+                  message:'Dish type name should be at least 2 characters and not exceed 20 characters.'
+                },
+                    regexp: {
                         regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
                         message: 'This field should contain letters, hyphen & apostrophe only.'
-                      },
-                      notEmpty: {
-                        message: 'This field is required.'
-                      }
-                  }
-              },
-               addDishTypeImage: {
-                    validators: {
-                      notEmpty: {
-                        message: 'This field is required.'
-                      }
-                  }
                 },
-              }
-          });
-      </script>
+                    notEmpty: {
+                    message: 'This field is required.'
+                },
+            }
 
-      <script type="text/javascript">
-    $('.editDishTypeValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
+        },
+         editDishTypeImage: {
+              validators: {
+                notEmpty: {
+                  message: 'This field is required.'
+                }
+            }
           },
-          fields: {
-              editDishTypeName: {
-                  validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'Dish type name should be at least 2 characters and not exceed 20 characters.'
-                      },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters, hyphen & apostrophe only.'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-
-              },
-               editDishTypeImage: {
-                    validators: {
-                      notEmpty: {
-                        message: 'This field is required.'
-                      }
-                  }
-                },
-              }
-          });
-      </script>
+        }
+    });
+</script>
    
-     <script>
-      function getDishType(id){
-        $.ajax({
-                type: "GET",
-                url:  "/RetrieveDishType",
-                data: 
-                {
-                    sdid: id
-                },
-                success: function(data){
-                $('#editDishTypeID').val(data['ss'][0]['dishTypeID']);
-                $('#editDishTypeName').val(data['ss'][0]['dishTypeName']);
-                $editDishTypePhoto = (data['ss'][0]['dishTypeImage']);
-                $('#deleteDishTypeID').val(data['ss'][0]['dishTypeID']);
-                document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['dishTypeImage']);
-                },
-                error: function(xhr)
-                {
-                    alert("mali");
-                    alert($.parseJSON(xhr.responseText)['error']['message']);
-                }                
-            });
-      }
-
-    </script>
+<script>
+  function getDishType(id){
+    $.ajax({
+            type: "GET",
+            url:  "/RetrieveDishType",
+            data: 
+            {
+                sdid: id
+            },
+            success: function(data){
+            $('#editDishTypeID').val(data['ss'][0]['dishTypeID']);
+            $('#editDishTypeName').val(data['ss'][0]['dishTypeName']);
+            $editDishTypePhoto = (data['ss'][0]['dishTypeImage']);
+            $('#deleteDishTypeID').val(data['ss'][0]['dishTypeID']);
+            document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['dishTypeImage']);
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+        });
+  }
+</script>
     <!-- /.content-wrapper -->
-    @endsection
+@endsection
