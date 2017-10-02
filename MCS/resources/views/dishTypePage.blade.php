@@ -301,10 +301,11 @@
               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
               message: 'This field should contain letters, hyphen & apostrophe only.'
             },
-            remote: {
-              url: '/',
-              message: 'The username is not available'
-            },
+            // remote: {
+            //   type: 'GET',
+            //   url: '/public/js/dishTypeValidator.php',
+            //   message: 'The employee email is available'
+            // },
             notEmpty: {
               message: 'This field is required.'
             }

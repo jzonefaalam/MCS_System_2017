@@ -29,7 +29,7 @@ use App\purchaseordertypetbl;
 use App\purchaseordertbl;
 use Mail;
 class adminController extends Controller
-{
+{   
 
     public function sendApprovalEmail(Request $request){
         // $data = array(
