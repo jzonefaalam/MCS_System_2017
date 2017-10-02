@@ -1,6 +1,5 @@
 @extends('layouts.admin')
-@section('activeDishPage','active')
-@section('activeDishListPage','active')
+
 @section('content')
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
