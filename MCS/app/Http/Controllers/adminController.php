@@ -415,7 +415,6 @@ class adminController extends Controller
         }
         }
         }
-       
     }
 
     public function retrieveDishTypeData(){
@@ -2018,22 +2017,12 @@ class adminController extends Controller
     //VALIDATIONS
     ////DISH TYPE
     public function validateDishTypeName(){
-        $avail = DB::table('dishtype_tbl')
-            ->where('dishTypeName', Input::get('addDishTypeName'))
-            ->count();
-        // dd($avail);
-        if($avail == 0)
-        {
-            $isAvailable = true;
-            echo json_encode(array(
-            'valid' => $isAvailable
-            ));
-        }else{
-            $isAvailable = False;
-            echo json_encode(array(
-            'valid' => $isAvailable
-            ));
-        }
+        $ss = DB::table('dishtype_tbl')
+        ->select('*')
+        ->where('dishTypeStatus', 1)
+        ->get();
+
+        return \Response::json(['ss'=>$ss]);
     }
       
 

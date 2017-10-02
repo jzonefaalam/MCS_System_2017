@@ -209,6 +209,7 @@
                         <th style="display:none">Status</th>
                         <th style="display:none">Status</th>
                         <th style="display:none">Status</th>
+                        <th style="display:none">Status</th>
                         <th width="150px">Newest Reservations</th> 
                       </tr>
                       </thead>
@@ -244,6 +245,7 @@
                         <td style="display:none">{{ $dashboardData->guestCount }} </td>
                         <td style="display:none">{{ $dashboardData->packageID }} </td>
                         <td style="display:none">{{ $dashboardData->eventID }} </td>
+                        <td style="display:none">{{ $dashboardData->reservationStatus }} </td>
                         <td>
                             <a >{{ $dashboardData -> eventName}}</a>
                             <small class="label label-danger pull-right"><i class="fa fa-calendar-o"></i> {{ $dashboardData -> eventDate }} &nbsp {{ $dashboardData->eventTime }}</small>
@@ -522,7 +524,7 @@
                   </div>
                   <!-- nav-tabs-custom -->
             </div>
-            <div class="modal-footer" >
+            <div id="confirmationDiv" class="modal-footer" >
               <a  style="display:none;" data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
                   <i class="fa fa-check" ></i> APPROVE
               </a>
@@ -716,6 +718,7 @@
         var reservationGuestCountVar = data[16];
         var reservationPackageID = data[17];
         var reservationEventID = data[18];
+        var reservationStatus = data[19];
         $('#editReservationID').val(reservationIDVar);
         $('#editCustomerName').val(reservationCustomerNameVar);
         $('#reservationNumber').val(reservationIDVar);
@@ -816,6 +819,10 @@
                       // $('#totalReservationFee').val(totalFeePerm);
                       // $('#totalReservationFee').val(totalFeePerm);
                       // $('#totalReservationFee').val(totalFeePerm);
+                      if( reservationStatus == 2){
+                        var x = document.getElementById('confirmationDiv');
+                        x.style.display = 'none';
+                      }
                       $("#detailModal").modal("show");     
                     },
                     error: function(xhr)

@@ -7,6 +7,10 @@
   <link rel="icon" type="image/gif" href="ggg.png"/>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+  <!-- FORM VALIDATION -->
+  <link rel="stylesheet" href="{{ asset('formvalidation/dist/css/formValidation.min.css') }}">
+  
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="{{ asset('LTE/bootstrap/css/bootstrap.min.css') }}">
 
@@ -186,6 +190,11 @@
 <script>
   $.widget.bridge('uibutton', $.ui.button);
 </script>
+
+
+  <!-- FORM VALIDATION -->
+  <link rel="stylesheet" href="{{ asset('formvalidation/dist/js/formValidation.min.js') }}">
+
 <!-- Bootstrap 3.3.6 -->
 <script src="{{ asset('LTE/bootstrap/js/bootstrap.min.js') }}"></script>
 <!-- Morris.js charts -->

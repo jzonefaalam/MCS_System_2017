@@ -48,8 +48,8 @@ Route::get('/RetrieveDishType', 'adminController@retrieveDishTypeData');
 Route::post("/DishTypePage", array("uses"=>"adminController@addDishType"));
 Route::post("/EditDishTypePage", array("uses"=>"adminController@editDishType"));
 Route::post("/DeleteDishTypePage", array("uses"=>"adminController@deleteDishType"));
-Route::post("/DishTypeValidator", array("uses"=>"adminController@validateDishTypeName"));
-// Route::get('/DishTypeValidator', 'adminController@validateDishTypeName');
+// Route::post("/DishTypeValidator", array("uses"=>"adminController@validateDishTypeName"));
+Route::get('/DishTypeValidator', 'adminController@validateDishTypeName');
 
 //EmployeePage
 Route::get('/EmployeePage', 'adminController@employeePage');

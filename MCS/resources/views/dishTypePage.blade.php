@@ -201,7 +201,8 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary" name="addDishTypeBtn" id="addDishTypeBtn">Submit</button>
+                      <button type="submit" class="btn btn-primary" name="addDishTypeBtn" id="addDishTypeBtn" 
+                      onclick="validateDishTypeName(document.getElementById('addDishTypeName').value);" >Submit</button>
                     </div>
 
                   </div>
@@ -301,10 +302,6 @@
               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
               message: 'This field should contain letters, hyphen & apostrophe only.'
             },
-            remote: {
-              url: '/',
-              message: 'The username is not available'
-            },
             notEmpty: {
               message: 'This field is required.'
             }
@@ -374,6 +371,40 @@
             $editDishTypePhoto = (data['ss'][0]['dishTypeImage']);
             $('#deleteDishTypeID').val(data['ss'][0]['dishTypeID']);
             document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['dishTypeImage']);
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+        });
+  }
+</script>
+
+<script>
+  function validateDishTypeName(id){
+    var checkDishTypeName = id;
+    var checker;
+    $.ajax({
+            type: "GET",
+            url:  "/DishTypeValidator",
+            success: function(data){
+              for (var i = 0; i < data['ss'].length; i++) {
+                var result = $.trim(data['ss'][i]['dishTypeName']);
+                if(result==checkDishTypeName){
+                  checker = true;
+                }
+                else{
+                  checker = false;
+                }
+              }
+              if(checker==true){
+                // $('#addDishTypeForm').on('submit',function(event){
+                //   event.preventDefault() ;
+                //   alert('Existing Dish Type!');
+                // });
+                alert('Existing Dish Type!');
+              }
             },
             error: function(xhr)
             {
