@@ -139,6 +139,12 @@
               </ul>
             </li>
 
+            <!-- <li class="treeview">
+              <a href="/EventListPage">
+                <i class="fa fa-file-text-o"></i> <span>Events</span>
+              </a>
+            </li> -->
+
             <li class="treeview">
               <a href="/ReservationPage">
                 <i class="fa fa-file-text-o"></i> <span>Reservation</span>

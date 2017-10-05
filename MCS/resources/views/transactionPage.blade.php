@@ -39,7 +39,9 @@
                 <th>Event Name</th>
                 <th>Customer</th>
                 <th>Payment</th>
-                <th>Status</th>
+                <th>Payment Status</th>
+                <th>Event Status</th>
+                <th style="display: none;">Event Date</th>
               </tr>
             </thead>
             <tbody>
@@ -50,6 +52,8 @@
                 <td>{{ $transactionData->fullName }}</td>
                 <td>{{ $transactionData->totalFee }}</td>
                 <td>{{ $transactionData->transactionStatus }}</td>
+                <td>None</td>
+                <td style="display: none;">{{ $transactionData->eventDate }}</td>
               </tr>
               @endforeach
             </tbody>
@@ -60,7 +64,7 @@
       <!-- /Box -->
     </section>
     <!-- /Content -->
-    <!-- Delete service Modal-->
+    <!-- Transaction Modal-->
     <form role="form" method="POST" action="#" class="form-horizontal">
       <div  class="modal fade" id="transactionModal">
         <!-- <div class="modal-dialog"> -->
@@ -113,6 +117,12 @@
               <a class="btn btn-app" href="#" style="float:right">
                 <i class="fa fa-check"></i>Confirm Payment
               </a>
+              <a class="btn btn-app" id="returnBtn" href="#" style="float:right;">
+                <i class="fa fa-print"></i>Return Equipment
+              </a>
+              <a class="btn btn-app" id="assignBtn" href="#" style="float:right;" onclick="assignEquipment(document.getElementById('parTransactionId').value);">
+                <i class="fa fa-print"></i>Assign Equipment
+              </a>
               <a class="btn btn-app" href="#" style="float:right" onclick="getReservation(document.getElementById('parTransactionId').value);">
                 <i class="fa fa-print"></i>Print
               </a>
@@ -122,22 +132,109 @@
         </div>
       </div>
     </form>
-    <!-- End Modals-->   
+    <!-- End Modals-->
+
+    <!-- Transaction Modal-->
+    <form role="form" method="POST" action="#" class="form-horizontal">
+      <div  class="modal fade" id="assignEquipmentModal">
+        <!-- <div class="modal-dialog"> -->
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              Assignment of Equipment
+            </div>
+            <!-- /Modal Header -->
+            <div class="modal-body">
+              {!! csrf_field() !!}
+              <div>
+                <table class="table table-bordered table-striped" id="">
+                <thead>
+                <tr>
+                  <th >Equipment Name</th>
+                  <th >Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      abc
+                    </td>
+                    <td>
+                      abc
+                    </td>
+                  </tr>
+                </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /Modal Body -->
+            <div class="modal-footer">
+              
+            </div>
+            <!-- /Modal Footer -->
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- End Modals--> 
   </div>
   <!-- /Content-wrapper -->
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
 <script>
-$(function () {
-  $('#transactionTable').DataTable({
-    "paging": true,
-    "lengthChange": false,
-    "searching": false,
-    "ordering": false,
-    "info": true,
-    "autoWidth": true
+  $(function () {
+    $('#transactionTable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
   });
-});
+</script>
+
+<script>
+  function assignEquipment(id){
+    $('#transactionModal').modal('hide');
+    $.ajax({
+      type: "GET",
+      url:  "/AssignEquipment",
+      data: 
+      {
+        getId: id
+      },
+      success: function(data){
+        alert(data['transacData'][0]['fullName']);
+        //Another Ajax for Equipment List
+        // $.ajax({
+        //   type: "GET",
+        //   url:  "/RetrievePackageInclusion",
+        //   data: 
+        //   {
+        //     sdid: data['tdata'][0]['packageID'],
+        //     sendReservationID: data['tdata'][0]['eventID']
+        //   },
+        //   success: function(datax){
+        //     alert('2');
+        //     alert('success!');
+        //   }, 
+        //   error: function(xhr)
+        //   {
+        //     alert('ajax 2');
+        //     alert($.parseJSON(xhr.responseText)['error']['message']);
+        //   }                
+        // });
+        //End of Ajax
+      }, 
+      error: function(xhr)
+      {
+        alert('ajax 1');
+        alert($.parseJSON(xhr.responseText)['error']['message']);
+      }                
+    });
+  }
 </script>
 
 <script>
@@ -188,12 +285,35 @@ $(function () {
 
 <script>
   $(document).ready(function() {
+    
+
     var table = $('#transactionTable').DataTable();
     $('#transactionTable tbody').on('dblclick', 'tr', function () {
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+
+      var yyyy = today.getFullYear();
+      if(dd<10){
+      dd='0'+dd;
+      } 
+      if(mm<10){
+      mm='0'+mm;
+      }
+      var newDate = yyyy+'-'+mm+'-'+dd;
       var data = table.row( this ).data();
       var transactionId = data[0];
+      var eventDate = data[6];
       var packageID;
       var eventID;
+      if(newDate > eventDate){
+        document.getElementById('returnBtn').style.display='block';
+        document.getElementById('assignBtn').style.display='none';
+      }
+      if(newDate < eventDate){
+        document.getElementById('returnBtn').style.display='none';
+        document.getElementById('assignBtn').style.display='block';
+      }
       $.ajax({
         type: "GET",
         url:  "/RetrieveTransaction",

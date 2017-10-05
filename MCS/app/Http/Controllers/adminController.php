@@ -415,6 +415,7 @@ class adminController extends Controller
         }
         }
         }
+       
     }
 
     public function retrieveDishTypeData(){
@@ -2013,16 +2014,39 @@ class adminController extends Controller
         return \Response::json(['tdata'=>$transactionData]);
     }
 
+    public function assignEquipmentData(){
+        $transactionData =  DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('package_tbl', 'package_tbl.packageID','=','reservation_tbl.packageID')
+        ->join('paymentterm_tbl', 'paymentterm_tbl.paymentTermID','=','reservation_tbl.paymentTermID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*', 'paymentterm_tbl.*')
+        ->where('transaction_tbl.transactionID', Input::get('getId'))
+        ->get();
+        return \Response::json(['transacData'=>$transactionData]);
+    }
+
 
     //VALIDATIONS
     ////DISH TYPE
     public function validateDishTypeName(){
-        $ss = DB::table('dishtype_tbl')
-        ->select('*')
-        ->where('dishTypeStatus', 1)
-        ->get();
-
-        return \Response::json(['ss'=>$ss]);
+        $avail = DB::table('dishtype_tbl')
+            ->where('dishTypeName', Input::get('addDishTypeName'))
+            ->count();
+        // dd($avail);
+        if($avail == 0)
+        {
+            $isAvailable = true;
+            echo json_encode(array(
+            'valid' => $isAvailable
+            ));
+        }else{
+            $isAvailable = False;
+            echo json_encode(array(
+            'valid' => $isAvailable
+            ));
+        }
     }
       
 
