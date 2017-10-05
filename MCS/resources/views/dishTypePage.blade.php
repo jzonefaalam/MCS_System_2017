@@ -192,7 +192,7 @@
                        <div class="col-sm-6">
                         <div class="input-group"> 
                          <div class="input-group-addon">
-                          <input type="file" name="addDishTypeImage" id="addDishTypeImage">
+                          <input type="file" name="addDishTypeImage" id="addDishTypeImage" disabled="true">
                         </div>
                         </div>
                       </div>
@@ -201,8 +201,7 @@
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary" name="addDishTypeBtn" id="addDishTypeBtn" 
-                      onclick="validateDishTypeName(document.getElementById('addDishTypeName').value);" >Submit</button>
+                      <input class="btn btn-primary" id="send" type="submit" value="Submit">
                     </div>
 
                   </div>
@@ -382,28 +381,33 @@
 </script>
 
 <script>
-  function validateDishTypeName(id){
-    var checkDishTypeName = id;
-    var checker;
-    $.ajax({
+  $(document).ready(function() {
+    $("#send").click(function(e) {
+      e.preventDefault();
+      var checkDishTypeName = $("#addDishTypeName").val();
+      var checker = 0;
+      $.ajax({
             type: "GET",
             url:  "/DishTypeValidator",
             success: function(data){
               for (var i = 0; i < data['ss'].length; i++) {
                 var result = $.trim(data['ss'][i]['dishTypeName']);
                 if(result==checkDishTypeName){
-                  checker = true;
+                  checker = 1;
+                  break;
                 }
                 else{
-                  checker = false;
+                  checker = 0;
                 }
               }
-              if(checker==true){
-                // $('#addDishTypeForm').on('submit',function(event){
-                //   event.preventDefault() ;
-                //   alert('Existing Dish Type!');
-                // });
+              if(checker > 0){
                 alert('Existing Dish Type!');
+              }
+              else{
+                document.getElementById("addDishTypeImage").disabled = false;
+                if(document.getElementById("addDishTypeImage").value != "") {
+                  document.getElementById("addDishTypeForm").submit();
+                }
               }
             },
             error: function(xhr)
@@ -412,7 +416,8 @@
                 alert($.parseJSON(xhr.responseText)['error']['message']);
             }                
         });
-  }
+    });
+  });
 </script>
     <!-- /.content-wrapper -->
 @endsection
