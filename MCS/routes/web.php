@@ -145,7 +145,7 @@ Route::post("/DeletePOType", array("uses"=>"adminController@dseletePOType"));
 //Transaction Page
 Route::get('/TransactionPage', 'adminController@transactionPage');
 Route::get('/RetrieveTransaction', 'adminController@retrieveTransactionData');
-Route::get('/AssignEquipment', 'adminController@assignEquipmentData');
+Route::get('/GetTransactionData', 'adminController@getTransactionData');
 
 
 ///// USER ROUTING /////

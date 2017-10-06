@@ -2014,17 +2014,15 @@ class adminController extends Controller
         return \Response::json(['tdata'=>$transactionData]);
     }
 
-    public function assignEquipmentData(){
-        $transactionData =  DB::table('transaction_tbl')
+    public function getTransactionData(){
+        $transactionDetails =  DB::table('transaction_tbl')
         ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
         ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-        ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
         ->join('package_tbl', 'package_tbl.packageID','=','reservation_tbl.packageID')
-        ->join('paymentterm_tbl', 'paymentterm_tbl.paymentTermID','=','reservation_tbl.paymentTermID')
-        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*', 'paymentterm_tbl.*')
-        ->where('transaction_tbl.transactionID', Input::get('getId'))
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','package_tbl.*')
+        ->where('transaction_tbl.transactionID', Input::get('transacId'))
         ->get();
-        return \Response::json(['transacData'=>$transactionData]);
+        return \Response::json(['transactionDetails'=>$transactionDetails]);
     }
 
 

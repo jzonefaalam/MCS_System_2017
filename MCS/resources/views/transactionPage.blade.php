@@ -104,7 +104,7 @@
                     <p id="parBalanceFee"></p>
                     <p id="parPaymentTerm"></p>
                     <p id="parPaymentStatus"></p>
-                    <p id="parTransactionId" style="display: none;">Payment Status: </p>
+                    <input type="text"  name="parTransactionId" id="parTransactionId" style="display: none;">
                   </div>
                 </div>
               </div>
@@ -120,8 +120,8 @@
               <a class="btn btn-app" id="returnBtn" href="#" style="float:right;">
                 <i class="fa fa-print"></i>Return Equipment
               </a>
-              <a class="btn btn-app" id="assignBtn" href="#" style="float:right;" onclick="assignEquipment(document.getElementById('parTransactionId').value);">
-                <i class="fa fa-print"></i>Assign Equipment
+              <a onclick="assignEquipment(document.getElementById('parTransactionId').value);" style="float:right;" class="btn btn-app" id="assignBtn">
+                  <i class="fa fa-check" ></i> Assign Equipment
               </a>
               <a class="btn btn-app" href="#" style="float:right" onclick="getReservation(document.getElementById('parTransactionId').value);">
                 <i class="fa fa-print"></i>Print
@@ -147,24 +147,21 @@
             <div class="modal-body">
               {!! csrf_field() !!}
               <div>
-                <table class="table table-bordered table-striped" id="">
-                <thead>
-                <tr>
-                  <th >Equipment Name</th>
-                  <th >Quantity</th>
-                </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      abc
-                    </td>
-                    <td>
-                      abc
-                    </td>
-                  </tr>
-                </tbody>
+                <table id="equipmentTbl" class="table table-striped table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Equipment Name</th>
+                      <th>Quantity</th>
+                      <th style="display: none;">Id</th>
+                    </tr>
+                  </thead>
+                  <tbody id="equipmentTblBody">
+
+                  </tbody>
                 </table>
+                <a class="btn btn-app" style="float:right">
+                  <i class="fa fa-save"></i>Submit
+                </a>
               </div>
             </div>
             <!-- /Modal Body -->
@@ -192,6 +189,15 @@
       "info": true,
       "autoWidth": true
     });
+
+    $('#equipmentTbl').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": true
+    });
   });
 </script>
 
@@ -200,32 +206,55 @@
     $('#transactionModal').modal('hide');
     $.ajax({
       type: "GET",
-      url:  "/AssignEquipment",
+      url:  "/GetTransactionData",
       data: 
       {
-        getId: id
+        transacId: id
       },
       success: function(data){
-        alert(data['transacData'][0]['fullName']);
         //Another Ajax for Equipment List
-        // $.ajax({
-        //   type: "GET",
-        //   url:  "/RetrievePackageInclusion",
-        //   data: 
-        //   {
-        //     sdid: data['tdata'][0]['packageID'],
-        //     sendReservationID: data['tdata'][0]['eventID']
-        //   },
-        //   success: function(datax){
-        //     alert('2');
-        //     alert('success!');
-        //   }, 
-        //   error: function(xhr)
-        //   {
-        //     alert('ajax 2');
-        //     alert($.parseJSON(xhr.responseText)['error']['message']);
-        //   }                
-        // });
+        var sendPackageId = data['transactionDetails'][0]['packageID'];
+        var sendEventId = data['transactionDetails'][0]['eventID'];
+        $.ajax({
+          type: "GET",
+          url:  "/RetrievePackageInclusion",
+          data: 
+          {
+            sdid: sendPackageId,
+            sendReservationID: sendEventId
+          },
+          success: function(data){
+            var tblSDet = $('#equipmentTbl').DataTable();
+            var itemName;
+            var itemQty;
+            var qtyCounter;
+            var nameCounter;
+            tblSDet.clear();
+            tblSDet.draw(true);
+            for (var i = 0; i < data['ff'].length; i++) {
+              qtyCounter = "itemQty" + i;
+              nameCounter = "itemName" + i;
+              itemName = data['ff'][i]['equipmentName'];
+              itemId = '<input  style="display: none;" type="text" id="' + nameCounter + '" value="' + data['ff'][i]['equipmentID'] +'"></input>';
+              itemQty = '<input type="number" id="' + qtyCounter + '"></input>';
+              // itemQty = document.createElement('input');
+              // itemQty.type = 'number';
+              // itemQty.name = 'myInput_' + i;
+              // itemQty.id = 'myInput_' + i;
+              tblSDet.row.add([
+                itemName,
+                itemQty,
+                itemId
+              ]).draw(true);
+            }
+            $('#assignEquipmentModal').modal('show');
+          }, 
+          error: function(xhr)
+          {
+            alert('ajax 2');
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+          }                
+        });
         //End of Ajax
       }, 
       error: function(xhr)
@@ -322,7 +351,7 @@
           getId: transactionId
         },
         success: function(data){
-        document.getElementById("parTransactionId").innerHTML = transactionId;
+        $('#parTransactionId').val(transactionId);
         document.getElementById("parCustomerName").innerHTML = data['tdata'][0]['fullName'];
         document.getElementById("parContactNumber").innerHTML = data['tdata'][0]['cellNum'];
         document.getElementById("parEventName").innerHTML = data['tdata'][0]['eventName'];
