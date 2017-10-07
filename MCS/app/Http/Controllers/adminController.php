@@ -66,7 +66,7 @@ class adminController extends Controller
         );
         Mail::send('mail', $data, function($message) use ($data){$message->to("mcssystem2017@gmail.com",'Products')->subject('Receipt');
         });
-        return redirect()->back();
+        return redirect()->back();  
     }
 
     public function sendDenyEmail(Request $request){
@@ -1815,16 +1815,25 @@ class adminController extends Controller
         ->orderBy('reservation_tbl.created_at', 'desc')
         ->where('reservation_tbl.created_at', '>=', $dateToday)
         ->get();  
-        // $dashboardData = DB::table('reservation_tbl')
-        //   ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-        //   ->orderBy('reservation_tbl.created_at', 'desc')
-        //   ->where('reservation_tbl.reservationStatus', '=', 1)
-        //   ->where('reservation_tbl.created_at', '<=', Carbon::now())
-        //   ->get();
 
+
+        $date = strtotime('2010-11-28');
+
+        if (strtotime('-7 days') < $date && $date < strtotime('+7 days')) {
+        // yup
+        }
+        $latestEvents = DB::table('reservation_tbl')
+        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->where('reservation_tbl.reservationStatus', 2)
+        ->get();
+          
         return View::make('/dashboardPage')
         ->with('packageData',$packageData)
-        ->with('dashboardData', $dashboardData);
+        ->with('dashboardData', $dashboardData)
+        ->with('latestEvents', $latestEvents);
     }//Schedule function------------------------------------------------------------------------------>
     
 

@@ -174,19 +174,50 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
+        <!-- Notifications -->
         <div class="col-md-6">
-              <!-- TO DO List -->
-              <div class="box box-primary">
-                <div class="box-header">
-                  <i class="ion ion-clipboard"></i>
-
-                  <h3 class="box-title">NOTIFICATIONS</h3>
-
-                  <div class="box-tools pull-right">
-                  </div>
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
+          <div class="box box-primary">
+            <div class="box-header">
+              <i class="ion ion-clipboard"></i>
+              <h3 class="box-title">NOTIFICATIONS</h3>
+              <div class="box-tools pull-right">
+              </div>
+            </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <!-- Table for Upcoming events -->
+                  <table class="table table-bordered table-striped dataTable">
+                    <thead>
+                      <tr>
+                        <th>Upcoming Events</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @foreach($latestEvents as $latestEvents)
+                      <tr>
+                        <?php 
+                          date_default_timezone_set('Asia/Manila');
+                          $date1 = date('Y-m-d H:i:s');
+                          $date1 = strtotime($date1);
+                          $eventDate = $latestEvents->eventDate;
+                          $newDate = strtotime($eventDate);
+                          $seconds_diff = floor(($newDate - $date1)/3600/24);
+                        if ((($seconds_diff)<=7) && (($seconds_diff)>=1)): ?>
+                          <td>
+                            <a >{{ $latestEvents -> eventName}}</a>
+                            <small style="width: 100px;" class="label label-danger pull-right">
+                              <i class="fa fa-calendar-o"></i> 
+                              {{ $latestEvents->eventTime }}
+                            </small>
+                          </td>
+                        <?php endif ?>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                  <hr>
+                  <!-- Table for New Reservations-->
                   <table class="table table-bordered table-striped dataTable" id="notificationTable">
                       <thead>
                       <tr>
@@ -253,11 +284,16 @@
                         </tr>
                         @endforeach
                         </tbody>
-                    </table>
+                  </table>
                 </div>
               </div>
-              <!-- /.box -->
+              
             </div>
+          </div>
+        </div>
+        <!-- End of Notifications -->
+
+        <!-- Calendar -->
         <div class="col-md-6">
           <div class="box box-primary">
             <div class="box-body no-padding">
@@ -612,7 +648,8 @@
           </div>
           <!-- /. box -->
         </div>
-        <!-- /.col -->
+        <!-- End of Calendar -->
+
       </div>
       <!-- /.row -->
     </section>
@@ -881,8 +918,6 @@ $(function () {
 </script>
 
 <script>
-
-
       var eventDate=[];
       var eventStart=[];
       var eventEnd=[];

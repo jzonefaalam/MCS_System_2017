@@ -224,11 +224,12 @@
             sendReservationID: sendEventId
           },
           success: function(data){
-            var tblSDet = $('#equipmentTbl').DataTable();
+            
             var itemName;
             var itemQty;
             var qtyCounter;
             var nameCounter;
+            var tblSDet = $('#equipmentTbl').DataTable();
             tblSDet.clear();
             tblSDet.draw(true);
             for (var i = 0; i < data['ff'].length; i++) {
