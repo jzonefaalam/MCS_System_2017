@@ -112,6 +112,19 @@
                       <li><a href="/EmployeeTypePage"><i class="fa fa-square-o"></i> Employee Type</a></li>
                     </ul>
                   </li>
+
+                  <li>
+                    <a href="/EquipmentPage"><i class="fa fa-circle-o"></i> Equipment
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-right pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a href="/EquipmentPage"><i class="fa fa-square-o"></i> Equipment List</a></li>
+                      <li><a href="/EquipmentTypePage"><i class="fa fa-square-o"></i> Equipment Type</a></li>
+                    </ul>
+                  </li>
+
                   <li>
                     <a href="/EventPage"><i class="fa fa-circle-o"></i> Event</a>
                   </li>
@@ -152,11 +165,21 @@
             </li>
 
             <li class="treeview">
-              <a href="/InventoryDishPage">
-                <i class="fa fa-book"></i>  <span>Inventory</span>
+              <a href="/InventoryEquipmentPage">
+                <i class="fa fa-book"></i><span>Inventory</span>
+              </a>
+              <!-- <ul class="treeview-menu">
+                <li><a href="/InventoryEquipmentPage"><i class="fa fa-square-o"></i> Equipment</a></li>
+              </ul> -->
+            </li>
+
+            <li class="treeview">
+              <a href="/#">
+                <i class="fa fa-book"></i><span>Purchase Order</span>
               </a>
               <ul class="treeview-menu">
-                <li><a href="/InventoryEquipmentPage"><i class="fa fa-square-o"></i> Equipment</a></li>
+                <li><a href="/PurchaseOrderPage"><i class="fa fa-square-o"></i> List</a></li>
+                <li><a href="/PurchaseOrderTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
               </ul>
             </li>
 

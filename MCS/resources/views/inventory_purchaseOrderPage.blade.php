@@ -29,9 +29,6 @@
               <a class="btn btn-app" data-target="#addPurchaseOrderModal" data-toggle="modal" style="float:right">
                 <i class="fa fa-plus"></i> NEW
               </a>
-              <a class="btn btn-app" href="/InventoryPOTypePage" style="float:right">
-                <i class="fa fa-list"></i> CATEGORIES
-              </a>
             </div>
           </div>
         </div>
@@ -42,8 +39,6 @@
                 <th>Name</th>
                 <th>Category</th>
                 <th>Description</th>
-                <th>Supplier</th>
-                <th>Supplier's Address</th>
                 <th>Puchase Date</th>
                 <th>Price</th>
                 <th>Quantity</th>
@@ -56,8 +51,6 @@
                   <td> {{ $poData->poItemName }} </td>
                   <td> {{ $poData->poTypeName }} </td>
                   <td> {{ $poData->poDescription }} </td>
-                  <td> {{ $poData->poSupplier }} </td>
-                  <td> {{ $poData->poSupplierAddress }} </td>
                   <td> {{ $poData->poDate }} </td>
                   <td> {{ $poData->poPrice }} </td>
                   <td> {{ $poData->poQty }} </td>
@@ -116,7 +109,7 @@
                           <div class="input-group-addon">
                             <i class="fa fa-text-o" aria-hidden="true"></i>
                           </div>
-                          <select class="form-control" name="addPOType" id="addPOType">
+                          <select class="form-control" name="addPOType" id="addPOType" onChange="enableEquipmentType();">
                             <!-- <option disabled="">Select Category</option> -->
                             @foreach($poTypeData as $poTypeData)
                               <option value="{{ $poTypeData->poTypeId }}">{{ $poTypeData->poTypeName }} </option>
@@ -126,24 +119,16 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-sm-4 control-label">Supplier</label>
+                      <label class="col-sm-4 control-label">Equipment Type</label>
                       <div class="col-sm-6">
                         <div class="input-group">
                           <div class="input-group-addon">
                             <i class="fa fa-text-o" aria-hidden="true"></i>
                           </div>
-                          <input type="text" class="form-control" name="addPOSupplier" id="addPOSupplier" data-error="This field is required">
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-sm-4 control-label">Supplier's Address</label>
-                      <div class="col-sm-6">
-                        <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
-                          <textarea type="text" required class="form-control" name="addPOSupplierAddress" id="addPOSupplierAddress"></textarea>
+                          <select disabled class="form-control" name="addEquipmentType" id="addEquipmentType">
+                            <!-- <option disabled="">Select Category</option> -->
+                            <option>Select Equipment Type</option>
+                          </select>
                         </div>
                       </div>
                     </div>
@@ -182,5 +167,17 @@
   </div>
   <!-- /.content-wrapper -->
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+<script type="text/javascript">
+function enableEquipmentType()
+{
+  ​document.getElementById('addPOType').onchange = function () {
+    document.getElementById("addEquipmentType").disabled = false;
+  }​​​​​​ ​
+}
+</script>
+
+
 @endsection

@@ -36,8 +36,9 @@
                       <th width="150px">Image</th>
                       <th width="180px">Name</th>
                       <th width="200px">Description</th>
-                      <th width="80px">Rate Per Hour</th>
                       <th width="80px">Type</th>
+                      <th width="80px">Rate Per Hour</th>
+                      <th width="80px">Total Quantity</th>
                       <th width="150px">Actions</th>
                     </tr>
                     </thead>
@@ -47,11 +48,12 @@
                         <td><img src="{{ asset('images/' . $equipmentData->equipmentImage) }}"  style="width:150px;height:100px;" /></td>
                         <td>{{ $equipmentData->equipmentName }}</td>
                         <td>{{ $equipmentData->equipmentDescription }}</td>
-                        <td>{{ $equipmentData->equipmentRatePerHour }}</td>
                         <td>{{ $equipmentData->equipmentTypeName }}</td>
+                        <td>{{ $equipmentData->equipmentRatePerHour }}</td>
+                        <td>Total Quantity</td>
                        <td>
-                        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
-                        <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-trash fa-fw"></i> Delete</a>
+                        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-wrench fa-fw"></i> </a>
+                        <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-trash fa-fw"></i> </a>
                        </td>
                       </tr>
                       @endforeach

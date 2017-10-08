@@ -25,18 +25,6 @@
                 <h2>EQUIPMENT</h2>
               </div>
               <div class="col-md-6">
-                <a class="btn btn-app" href="InventoryPOPage" style="float:right">
-                  <i class="fa fa-save"></i> PURCHASE ORDER
-                </a>
-                <a class="btn btn-app" href="EquipmentTypePage" style="float:right">
-                  <i class="fa fa-list"></i> CATEGORIES  
-                </a>
-                <!-- <a class="btn btn-app" data-target="#addDishTypeModal" data-toggle="modal" style="float:right">
-                  <i class="fa fa-save"></i> REPORTS  
-                </a> -->
-                <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
-                  <i class="fa fa-plus"></i> NEW
-                </a>
               </div>
             </div>
           </div>
@@ -48,30 +36,37 @@
                     <thead>
                     <tr>
                       <th width="150px">Image</th>
+                      <th> Name</th>
                       <th width="180px">Category</th>
-                      <th> Brand</th>
-                      <th> Equipment Description</th>
-                      <th width="80px">Rate</th>
+                      <!-- <th> Equipment Description</th> -->
+                      <!-- <th width="80px">Rate</th> -->
                       <th width="50px">IN</th>
                       <th>OUT</th> 
                       <th style="display:none;">Equipment Type ID</th>
                       <th style="display:none;">Equipment ID</th>
                       <th style="display:none;">Equipment Image</th>
+                      <th>Status</th>
+                      <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                       @foreach ($equipmentData as $equipmentData)
                       <tr>
                         <td><img src="{{ asset('img/' . $equipmentData->equipmentImage) }}"  style="width:150px;height:100px;" /></td>
-                        <td>{{ $equipmentData->equipmentTypeName }}</td>
                         <td>{{ $equipmentData->equipmentName }}</td>
-                        <td>{{ $equipmentData->equipmentDescription }}</td>
-                        <td>{{ $equipmentData->equipmentRatePerHour }}</td> 
+                        <td>{{ $equipmentData->equipmentTypeName }}</td>
+                        <!-- <td>{{ $equipmentData->equipmentDescription }}</td> -->
+                        <!-- <td>{{ $equipmentData->equipmentRatePerHour }}</td>  -->
                         <td style="display:none">{{ $equipmentData->equipmentTypeID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentImage }}</td>
-                        <td> </td>
-                        <td> </td>                      
+                        <td></td>
+                        <td></td>
+                        <td>Status</td>
+                        <td>
+                          <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editEquipmentModal"><i class="fa fa-wrench fa-fw"></i> </a>
+                          <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteEquipmentModal"><i class="fa fa-trash fa-fw"></i> </a>
+                        </td>                   
                        </tr>
                       @endforeach
                       </tbody>

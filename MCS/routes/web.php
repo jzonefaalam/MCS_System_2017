@@ -132,15 +132,15 @@ Route::post("/DisableEquipment", array("uses"=>"adminController@disableEquipment
 Route::post("/UpdateEquipmentUnit", array("uses"=>"adminController@addEquipmentUnit"));
 
 //Purchase Order Page
-Route::get('/InventoryPOPage', 'adminController@inventoryPOPage');
+Route::get('/PurchaseOrderPage', 'adminController@inventoryPOPage');
 Route::post("/InventoryPOPage", array("uses"=>"adminController@addPO"));
 
 //Purchase Order Type Page
-Route::get('/InventoryPOTypePage', 'adminController@inventoryPOTypePage');
+Route::get('/PurchaseOrderTypePage', 'adminController@inventoryPOTypePage');
 Route::post("/InventoryPOTypePage", array("uses"=>"adminController@addPOType"));
 Route::get('/RetrievePOTypeData', 'adminController@retrievePOTypeData');
 Route::post("/EditPOType", array("uses"=>"adminController@editPOType"));
-Route::post("/DeletePOType", array("uses"=>"adminController@dseletePOType"));
+Route::post("/DeletePOType", array("uses"=>"adminController@deletePOType"));
 
 //Transaction Page
 Route::get('/TransactionPage', 'adminController@transactionPage');

@@ -1269,7 +1269,7 @@ class adminController extends Controller
     }
     //Equipment functions------------------------------------------------------------------------->
 
-    public function inventoryEquipmentPage(){
+    public function equipmentPage(){
         $equipmentData = DB::table('equipment_tbl')
         ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
         // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
@@ -1282,82 +1282,9 @@ class adminController extends Controller
         ->where('equipmentTypeStatus', 1)
         ->get();
 
-        return View::make('/inventory_EquipmentPage')
+        return View::make('/equipmentPage')
         ->with('equipmentData', $equipmentData)
         ->with('addEquipmentData', $addEquipmentData);
-    }
-
-    public function inventoryPOPage(){
-        $poData = DB::table('purchaseorder_tbl')
-        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
-        ->select('*')
-        ->where('poStatus', 1)
-        ->get();
-
-        $poTypeData = DB::table('purchaseordertype_tbl')
-        ->select('*')
-        ->where('poTypeStatus', 1)
-        ->get();
-
-        return View::make('/inventory_purchaseOrderPage')
-        ->with('poData', $poData)
-        ->with('poTypeData', $poTypeData);
-    }
-
-    public function addPO(Request $request){
-        $po = new purchaseordertbl;
-        $po->poItemName = Input::get('addPOName');
-        $po->poDescription = Input::get('addPODescription');
-        $po->poTypeId = Input::get('addPOType');
-        $po->poSupplier = Input::get('addPOSupplier');
-        $po->poSupplierAddress = Input::get('addPOSupplierAddress');
-        $po->poQty = Input::get('addPOQty');
-        $po->poPrice = Input::get('addPOPrice');
-        $po->poStatus = 1;
-        $po->save();
-        return redirect()->back();
-    }
-
-    public function inventoryPOTypePage(){
-        $poTypeData = DB::table('purchaseordertype_tbl')
-        ->select('*')
-        ->where('poTypeStatus',1)
-        ->get();
-
-        return View::make('/inventory_purchaseOrderTypePage')
-        ->with('poTypeData', $poTypeData);
-    }
-
-    public function addPOType(Request $request){
-        $poType = new purchaseordertypetbl;
-        $poType->poTypeName = Input::get('addPOCategoryName');
-        $poType->poTypeStatus = 1;
-        $poType->save();
-        return redirect()->back();
-    }
-
-    public function retrievePOTypeData(){
-        $poTypeData = DB::table('purchaseordertype_tbl')
-        ->select('*')
-        ->where('poTypeId', Input::get('getId'))
-        ->get();
-        return \Response::json(['poTypeData'=>$poTypeData]);
-    }
-
-    public function editPOType(){
-        $id = Input::get('editPOTypeId');
-        $poType = purchaseordertypetbl::find($id);
-        $poType->poTypeName = Input::get('editPOTypeName');
-        $poType->save();
-        return redirect()->back();
-    }
-
-    public function deletePOType(){
-        $id = Input::get('deletePOTypeId');
-        $poType = purchaseordertypetbl::find($id);
-        $poType->poTypeStatus = 0;
-        $poType->save();
-        return redirect()->back();
     }
 
     public function addEquipment(Request $request){
@@ -1576,6 +1503,97 @@ class adminController extends Controller
         $equipmentType = equipmenttypetbl::find($id);
         $equipmentType->equipmentTypeName = Input::get('editEquipmentTypeName');
         $equipmentType->save();
+        return redirect()->back();
+    }
+
+     public function inventoryEquipmentPage(){
+        $equipmentData = DB::table('equipment_tbl')
+        ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
+        // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
+        ->select('*')
+        ->where('equipmentStatus', 1)
+        ->get();
+
+        $addEquipmentData = DB::table('equipmenttype_tbl')
+        ->select('*')
+        ->where('equipmentTypeStatus', 1)
+        ->get();
+
+        return View::make('/inventory_equipmentPage')
+        ->with('equipmentData', $equipmentData)
+        ->with('addEquipmentData', $addEquipmentData);
+    }
+
+    //Purchase Order functions...
+
+    public function inventoryPOPage(){
+        $poData = DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        ->select('*')
+        ->where('poStatus', 1)
+        ->get();
+
+        $poTypeData = DB::table('purchaseordertype_tbl')
+        ->select('*')
+        ->where('poTypeStatus', 1)
+        ->get();
+
+        return View::make('/inventory_purchaseOrderPage')
+        ->with('poData', $poData)
+        ->with('poTypeData', $poTypeData);
+    }
+
+    public function addPO(Request $request){
+        $po = new purchaseordertbl;
+        $po->poItemName = Input::get('addPOName');
+        $po->poDescription = Input::get('addPODescription');
+        $po->poTypeId = Input::get('addPOType');    
+        $po->poQty = Input::get('addPOQty');
+        $po->poPrice = Input::get('addPOPrice');
+        $po->poStatus = 1;
+        $po->save();
+        return redirect()->back();
+    }
+
+    public function inventoryPOTypePage(){
+        $poTypeData = DB::table('purchaseordertype_tbl')
+        ->select('*')
+        ->where('poTypeStatus',1)
+        ->get();
+
+        return View::make('/inventory_purchaseOrderTypePage')
+        ->with('poTypeData', $poTypeData);
+    }
+
+    public function addPOType(Request $request){
+        $poType = new purchaseordertypetbl;
+        $poType->poTypeName = Input::get('addPOCategoryName');
+        $poType->poTypeStatus = 1;
+        $poType->save();
+        return redirect()->back();
+    }
+
+    public function retrievePOTypeData(){
+        $poTypeData = DB::table('purchaseordertype_tbl')
+        ->select('*')
+        ->where('poTypeId', Input::get('getId'))
+        ->get();
+        return \Response::json(['poTypeData'=>$poTypeData]);
+    }
+
+    public function editPOType(){
+        $id = Input::get('editPOTypeId');
+        $poType = purchaseordertypetbl::find($id);
+        $poType->poTypeName = Input::get('editPOTypeName');
+        $poType->save();
+        return redirect()->back();
+    }
+
+    public function deletePOType(){
+        $id = Input::get('deletePOTypeId');
+        $poType = purchaseordertypetbl::find($id);
+        $poType->poTypeStatus = 0;
+        $poType->save();
         return redirect()->back();
     }
 
