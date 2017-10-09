@@ -45,7 +45,7 @@
 <body style = "background-image:url(img/bg1.jpg); background-size: cover; background-attachment: fixed; background-position: center; background-repeat: no-repeat">
 		<div class="container-fluid">
 
-			<nav class="navbar navbar-default navbar-fixed-top" style="background-color:black;">
+			<!-- <nav class="navbar navbar-default navbar-fixed-top" style="background-color:black;">
 				<div class="container" style = "background-color:black; width:100%; cursor: pointer;">
 					<div class="navbar-header">
 						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -76,7 +76,7 @@
 						</ul>
 					</div>
 				</div>
-			</nav>
+			</nav> -->
 	</div>
 	<!-- Body -->
 	@yield('contents')

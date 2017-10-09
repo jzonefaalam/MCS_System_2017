@@ -32,7 +32,7 @@ use App\employeeemployed_tbl;
 
 class userController extends Controller
 {
-    public function basePage(){
+    public function homePage(){
     	$dishData = DB::table('dish_tbl')->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
         ->select('*')
     	->where('dish_tbl.dishAvailability', 1)->where('dish_tbl.dishStatus', 1)
@@ -46,58 +46,76 @@ class userController extends Controller
         $dishDataID = DB::table('dish_tbl')->max('dishID');
 
         $dishNewID = $dishDataID + 1;
-        return View::make('/UserBasePage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID);
+        return View::make('/UserHomePage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID);
     }
 
-    public function uPackPage(){
-        $dishData = DB::table('dish_tbl')->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
-        ->select('*')
-        ->where('dish_tbl.dishAvailability', 1)->where('dish_tbl.dishStatus', 1)
-        ->get();
+    public function userEquipPage(){
+        $equipment = DB::table('equipment_tbl') 
+                    ->join('equipmenttype_tbl','equipment_tbl.equipmentTypeID','=','equipmenttype_tbl.equipmentTypeID')
+                    ->where('equipment_tbl.equipmentStatus', 1)
+                    ->where('equipment_tbl.equipmentAvailability', 1)
+                    ->get();
 
-        $addDishData = DB::table('dishtype_tbl')
-        ->select('*')
-        ->where('dishTypeStatus', 1)
-        ->get();
-
-        $dishDataID = DB::table('dish_tbl')->max('dishID');
-
-        $dishNewID = $dishDataID + 1;
-        return View::make('/UserPackagePage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID);
+        $equipmenttype = DB::table('equipmenttype_tbl') 
+                    ->where('equipmenttype_tbl.equipmentTypeStatus', 1)
+                    ->get();
+        return View::make('/UserEquipmentPage')->with('equipmenttype', $equipmenttype)->with('equipment', $equipment);
     }
 
-    public function uDishPage(){
-        $dishData = DB::table('dish_tbl')->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
-        ->select('*')
-        ->where('dish_tbl.dishAvailability', 1)->where('dish_tbl.dishStatus', 1)
-        ->get();
+    public function userPackPage(){
+        $package = DB::table('package_tbl')
+                    ->where('package_tbl.packageStatus', 1)
+                    ->orderBy('package_tbl.packageName')
+                    ->get();
 
-        $addDishData = DB::table('dishtype_tbl')
-        ->select('*')
-        ->where('dishTypeStatus', 1)
-        ->get();
+        $packageinclusion = DB::table('packageinclusion_tbl')
+                    ->join('dishtype_tbl','packageinclusion_tbl.dishTypeID','=','dishtype_tbl.dishTypeID')
+                    ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->select('packageinclusion_tbl.*','package_tbl.*','dishtype_tbl.*')
+                    ->get();
 
-        $dishDataID = DB::table('dish_tbl')->max('dishID');
+        $serviceinclusion = DB::table('packageinclusion_tbl')
+                    ->join('service_tbl','packageinclusion_tbl.serviceID','=','service_tbl.serviceID')
+                    ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->select('packageinclusion_tbl.*','package_tbl.*','service_tbl.*')
+                    ->get();
 
-        $dishNewID = $dishDataID + 1;
-        return View::make('/UserDishPage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID);
+        $equipmentinclusion = DB::table('packageinclusion_tbl')
+                    ->join('equipment_tbl','packageinclusion_tbl.equipmentID','=','equipment_tbl.equipmentID')
+                    ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->select('packageinclusion_tbl.*','package_tbl.*','equipment_tbl.*')
+                    ->get();
+
+        $employeeinclusion = DB::table('packageinclusion_tbl')
+                    ->join('employeetype_tbl','packageinclusion_tbl.employeeTypeID','=','employeetype_tbl.employeeTypeID')
+                    ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->select('packageinclusion_tbl.*','package_tbl.*','employeeType_tbl.*')
+                    ->get();
+
+        return View::make('/UserPackagePage')->with('package', $package)->with('packageinclusion', $packageinclusion)->with('serviceinclusion', $serviceinclusion)->with('equipmentinclusion', $equipmentinclusion)->with('employeeinclusion', $employeeinclusion);
     }
 
-    public function uServicePage(){
-        $dishData = DB::table('dish_tbl')->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
-        ->select('*')
-        ->where('dish_tbl.dishAvailability', 1)->where('dish_tbl.dishStatus', 1)
-        ->get();
+    public function userDishPage(){
+        $dishtype = DB::table('dishtype_tbl')
+                    ->where('dishtype_tbl.dishTypeStatus', 1)
+                    ->get();            
 
-        $addDishData = DB::table('dishtype_tbl')
-        ->select('*')
-        ->where('dishTypeStatus', 1)
-        ->get();
+        $dishes = DB::table('dish_tbl')
+                    ->join('dishtype_tbl','dish_tbl.dishTypeID','=','dishtype_tbl.dishTypeID')
+                    ->get();
+        return View::make('/UserDishPage')->with('dishtype', $dishtype)->with('dishes', $dishes);
+    }
 
-        $dishDataID = DB::table('dish_tbl')->max('dishID');
+    public function userServPage(){
+       $service = DB::table('service_tbl')
+                    ->join('servicetype_tbl','service_tbl.serviceTypeID','=','servicetype_tbl.serviceTypeID')
+                    ->get();
 
-        $dishNewID = $dishDataID + 1;
-        return View::make('/UserServicePage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID);
+        $servicetype = DB::table('servicetype_tbl')
+                    ->where('servicetype_tbl.serviceTypeStatus', 1)
+                    ->where('servicetype_tbl.serviceTypeAvailability', 1)
+                    ->get();
+        return View::make('/UserServicePage')->with('service', $service)->with('servicetype', $servicetype);
     }
 
     public function reservationPage(){

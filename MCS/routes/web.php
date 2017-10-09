@@ -154,11 +154,11 @@ Route::get('/GetTransactionData', 'adminController@getTransactionData');
 
 ///// USER ROUTING /////
 
-Route::get('/UserBasePage', 'userController@basePage');
-Route::get('/UserMenuPage', 'userController@menuPage');
-Route::get('/UserPackagePage', 'userController@uPackPage');
-Route::get('/UserDishPage', 'userController@uDishPage');
-Route::get('/UserServicePage', 'userController@uServicePage');
+Route::get('/UserHomePage', 'userController@homePage');
+Route::get('/UserPackagePage', 'userController@userPackPage');
+Route::get('/UserDishPage', 'userController@userDishPage');
+Route::get('/UserEquipmentPage', 'userController@userEquipPage');
+Route::get('/UserServicePage', 'userController@userServPage');
 Route::get('/UserReservationPage', 'userController@reservationPage');
 Route::post('/UserReservationPage-getPIID', 'userController@getPIID');
 Route::post('/UserReservationPage-getPay', 'userController@getPay');

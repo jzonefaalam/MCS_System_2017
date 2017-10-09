@@ -1,6 +1,52 @@
 @extends('layouts.userReserveUI')
 @section('contents')
 @section('scripts')
+	<nav class="navbar navbar-ct-transparent" role="navigation-demo" id="demo-navbar">
+	  	<div class="container">
+	    	<!-- Brand and toggle get grouped for better mobile display -->
+	    	<div class="navbar-header">
+	      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+	        		<span class="sr-only">Toggle navigation</span>
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	      		</button>
+	      
+	      		<a href="UserHomePage">
+	           		<div class="logo-container">
+	                	<div class="brand">
+	                    	<img src="../img/logo.png" alt="Creative Tim Logo" style="width: 250px; height: 70px">
+	                	</div>
+	            	</div>
+	      		</a>
+	    	</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+	    	<div class="collapse navbar-collapse" id="navigation-example-2">
+	      		<ul class="nav navbar-nav navbar-right">
+	          		<li>
+	            		<a href="UserHomePage" class="btn btn-danger btn-simple">Home</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserPackagePage" class="btn btn-danger btn-simple">Package</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserDishPage" class="btn btn-danger btn-simple">Dish</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserServicePage" class="btn btn-danger btn-simple">Service</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserEquipmentPage" class="btn btn-danger btn-simple">Equipment</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserReservationPage" class="btn btn-danger btn-simple">Make a Reservation</a>
+	          		</li>
+	       		</ul>
+	    	</div><!-- /.navbar-collapse -->
+	  	</div><!-- /.container-->
+	</nav> 
+
 	    <!--   Big container   -->
 	    <div class="container">
 	        <div class="row">
@@ -8,7 +54,7 @@
 
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
-		                <div class="card wizard-card" data-color="azure" id="wizard">
+		                <div class="card wizard-card" data-color="red" id="wizard">
 		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data" >
 		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
 
@@ -226,7 +272,7 @@
 		                                	<input type="text" id="emprice" hidden>
 		                                    @foreach($package as $pg)
 		                                	<input type="text" id="pckid" hidden>
-		                                    <input type="button" style = "width: 550px" class="btn btn-warning btn-sm"  data-toggle="modal" href="#packageModal{{$pg->packageID}}" id = "pck{{$pg->packageID}}" name='{{$pg->packageID}}' onclick="getpckid(this.name)" value="{{$pg->packageName}}">
+		                                    <input type="button" style = "width: 550px" class="btn btn-danger btn-sm"  data-toggle="modal" href="#packageModal{{$pg->packageID}}" id = "pck{{$pg->packageID}}" name='{{$pg->packageID}}' onclick="getpckid(this.name)" value="{{$pg->packageName}}">
 		                                    <br> <br>
 		                                    <input type="text" id="pgid" value='{{$pg->packageID}}' hidden>
 											<input type="text" id="pgimage" value='{{$pg->packageImage}}' hidden>
@@ -244,14 +290,14 @@
 		                                	<input type="text" id="dtid" hidden>
 		                                	<input type="text" id="ptids" hidden>
 		                                	<input type="text" id="pmids" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#additionalModal" value="Food" onclick="getFck(this)"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-danger btn-lg"  data-toggle="modal" href="#additionalModal" value="Food" onclick="getFck(this)"> &nbsp &nbsp
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg" data-toggle="modal" href="#serviceModal" value="Service" onclick="getFck(this)"> &nbsp &nbsp
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-danger btn-lg" data-toggle="modal" href="#serviceModal" value="Service" onclick="getFck(this)"> &nbsp &nbsp
 		                                    </a>
 
 		                                	<input type="text" id="dtid" hidden>
-		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-warning btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment" onclick="getFck(this)">
+		                                    <input type="button" style = "width: 180px; height: 180px" class="btn btn-danger btn-lg"  data-toggle="modal" href="#equipmentModal" value="Equipment" onclick="getFck(this)">
 		                                    </a>
 		                                </div>
 		                            </div>
@@ -296,12 +342,12 @@
 		                        </div>
 		                        <div class="wizard-footer">
 		                        	<div class="pull-right">
-		                                <input type='button' class='btn btn-next btn-fill btn-primary btn-wd' name='next' value='Next'  />
-		                                <input type="button" data-toggle="modal"  value="Finish" class="btn btn-finish btn-fill btn-primary btn-wd" href="#paymentModal" onclick="getFuck(this)">
+		                                <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next'  />
+		                                <input type="button" data-toggle="modal"  value="Finish" class="btn btn-finish btn-fill btn-danger btn-wd" href="#paymentModal" onclick="getFuck(this)">
 		                            </div>
 
 		                            <div class="pull-left">
-		                                <input type='button' class='btn btn-previous btn-primary btn-wd' name='previous' value='Previous' />
+		                                <input type='button' class='btn btn-previous btn-danger btn-wd' name='previous' value='Previous' />
 		                            </div>
 		                            <div class="clearfix"></div>
 		                        </div>
@@ -313,7 +359,7 @@
 		        <div class="col-sm-5 col-sm-offset-8" style="margin: 0px">
 		            <!--      Wizard container        -->
 		            <div class="wizard-container">
-		                <div class="card wizard-card" data-color="blue" id="wizard">
+		                <div class="card wizard-card" data-color="red" id="wizard">
 		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
 		                		<div class="wizard-header">
 		                        	<h3 class="wizard-title">Viewing</h3>
@@ -504,7 +550,7 @@
 		            <div class="pull-right">
 		            <h3 hidden>{{$i=1}}</h3>
 					@foreach($dishtype as $dd)
-                		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#additionalModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
+                		<button type="button" class="btn btn-danger btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#additionalModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
 	                	<button type="button" name="dishType{{$dd->dishTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addAdd(this.name)">Add to Cart</button>
 
 	            	<h3 hidden>{{$i++}}</h3>
@@ -514,7 +560,7 @@
 		            <div class="pull-left">
 		            <h3 hidden>{{$i=1}}</h3>
 					@foreach($dishtype as $dd)
-                		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="2" onclick="sendEvent('#additionalModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
+                		<button type="button" class="btn btn-danger step step-{{$i+1}}" data-step="2" onclick="sendEvent('#additionalModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
                 	<h3 hidden>{{$i++}}</h3>
 	            	@endforeach
 		            </div>
@@ -620,7 +666,7 @@
 		            
 					@foreach($servicetype as $st)
 						<button type="button" name="employeetype" class="btn btn-success btn-fill step step-{{$j}}" data-step="{{$j}}" data-dismiss="modal" onclick="addEmp(this.name)">Add to Cart</button>
-                		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#serviceModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
+                		<button type="button" class="btn btn-danger btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#serviceModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
 	                	<button type="button" name="serviceType{{$st->serviceTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addServ(this.name)">Add to Cart</button>
 
 	            	<h3 hidden>{{$i++}}</h3>
@@ -631,7 +677,7 @@
 		            <div class="pull-left">
 		            <h3 hidden>{{$i=1}}</h3>
 					@foreach($dishtype as $dd)
-                		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="{{$i+1}}" onclick="sendEvent('#serviceModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
+                		<button type="button" class="btn btn-danger step step-{{$i+1}}" data-step="{{$i+1}}" onclick="sendEvent('#serviceModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
                 	<h3 hidden>{{$i++}}</h3>
 	            	@endforeach
 	            	</div>
@@ -702,7 +748,7 @@
 		            <div class="pull-right">
 		            <h3 hidden>{{$i=1}}</h3>
 					@foreach($equipmenttype as $et)
-                		<button type="button" class="btn btn-primary btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#equipmentModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
+                		<button type="button" class="btn btn-danger btn-fill step step-{{$i-1}}" data-step="{{$i-1}}" onclick="sendEvent('#equipmentModal', {{$i}})"> <i class="ti-angle-double-right"></i> </button>
 	                	<button type="button" name="equipmentType{{$et->equipmentTypeID}}" class="btn btn-success btn-fill step step-{{$i}}" data-step="{{$i}}" data-dismiss="modal" onclick="addEquip(this.name)">Add to Cart</button>
 
 	            	<h3 hidden>{{$i++}}</h3>
@@ -712,7 +758,7 @@
 		            <div class="pull-left">
 		            <h3 hidden>{{$i=1}}</h3>
 					@foreach($equipmenttype as $et)
-                		<button type="button" class="btn btn-default step step-{{$i+1}}" data-step="2" onclick="sendEvent('#equipmentModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
+                		<button type="button" class="btn btn-danger step step-{{$i+1}}" data-step="2" onclick="sendEvent('#equipmentModal', {{$i}})"><i class="ti-angle-double-left"></i></button>
                 	<h3 hidden>{{$i++}}</h3>
 	            	@endforeach
 		            </div>
@@ -797,7 +843,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					</div>
 					<div class="pull-left">
 						<button type="button" class="btn btn-danger step step-1" data-step="1" data-dismiss="modal">Cancel</button>
-						<button type="button" class="btn btn-success step step-2" data-step="2" onclick="sendEvent('#paymentModal', 1)">Back</button>
+						<button type="button" class="btn btn-danger step step-2" data-step="2" onclick="sendEvent('#paymentModal', 1)">Back</button>
 						<!-- <button type="button" class="btn btn-success step step-3" data-step="3" onclick="sendEvent('#paymentModal', 2)">Back</button> -->
 					</div>
 				</div>
@@ -885,7 +931,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 		            },
 		            cellNum: {
 		            	required:true,
-						regex: "^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+						regex: regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
 		            },
 		            emailAdd: {
 		         	   	required:true,
@@ -916,7 +962,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 		            	required:"Choose an answer.",
 		            },
 		            cellNum:{
-		            	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
+		            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
 		            },
 		            eDate:{
 		            	min: "Event must be a week at least a week from now.",
@@ -2412,13 +2458,14 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 									},
 									events: events,
 									displayEventTime: false,
-									theme:true
+									theme:true,
+									eventColor: '#EB5E28'
 
 										
 													
 								});
 								$('.fc-toolbar').find('.fc-button-group').addClass('btn-xs btn-group');
-								$('.fc-toolbar').find('.ui-button').addClass('btn btn-info btn-fill');
+								$('.fc-toolbar').find('.ui-button').addClass('btn btn-danger btn-fill');
 								$('.fc-toolbar').find('.fc-prev-button').html($('<span />').attr('class', 'ti-angle-left'));
 								$('.fc-toolbar').find('.fc-next-button').html($('<span />').attr('class', 'ti-angle-right'));
 							});							
