@@ -46,7 +46,6 @@
                       <th style="display:none;">Equipment ID</th>
                       <th style="display:none;">Equipment Image</th>
                       <th>Status</th>
-                      <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -60,13 +59,10 @@
                         <td style="display:none">{{ $equipmentData->equipmentTypeID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentID }}</td>
                         <td style="display:none">{{ $equipmentData->equipmentImage }}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $equipmentData->qtyIn}}</td>
+                        <td>{{ $equipmentData->qtyOut}}</td>
                         <td>Status</td>
-                        <td>
-                          <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editEquipmentModal"><i class="fa fa-wrench fa-fw"></i> </a>
-                          <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteEquipmentModal"><i class="fa fa-trash fa-fw"></i> </a>
-                        </td>                   
+                        
                        </tr>
                       @endforeach
                       </tbody>

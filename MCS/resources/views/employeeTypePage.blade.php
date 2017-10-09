@@ -259,7 +259,7 @@
       </script>
 
       <script type="text/javascript">
-    $('.addEmployeeTypeValidator').bootstrapValidator({
+      $('.addEmployeeTypeValidator').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
           feedbackIcons: {
@@ -270,17 +270,13 @@
           fields: {
               addEmployeeType: {
                   validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 50,
-                          message:'Employee type name should be at least 2 characters and not exceed 20 characters.'
+                      stringLength: {
+                      min: 2,
+                      max: 50,
+                        message:'Employee type name should be at least 2 characters and not exceed 20 characters.'
                       },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'.\s][a-zA-Z]+)+([-'.\s]+)+([a-zA-Z]+)*$/,
-                              message: 'This field should contain letters, hyphen, period & apostrophe only.'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
+                      notEmpty: {
+                        message: 'This field is required.'
                       },
                   }
 

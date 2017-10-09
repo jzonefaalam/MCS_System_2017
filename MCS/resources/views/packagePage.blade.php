@@ -35,8 +35,8 @@
                   <th>Image</th>
                   <th>Package Name</th>
                   <th>Package Description</th>
-                  <th>Package Cost</th>
-                  <th>Inclusions</th>
+                  <th>Package Inclusions</th>
+                  <th>Package Cost (per head)</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -46,8 +46,8 @@
                   <td><img src="{{ asset('img/' . $packageData->packageImage) }}" style="width:150px;height:100px;" /></td>
                   <td>{{ $packageData->packageName }}</td>
                   <td>{{ $packageData->packageDescription }}</td>
+                  <td>List of Inclusions</td>
                   <td>{{ $packageData->packageCost }}</td>
-                  <td> <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewInclusionsModal" onclick="getPackageInclusion(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> View Inclusions</a></td>
                   <td width="180px">
       						  <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editPackageModal" onclick="getPackage(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
           					<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deletePackageModal" onclick="getPackage(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-trash fa-fw"></i> Delete</a>
@@ -263,7 +263,7 @@
                 <div class="col-sm-5">
                 <div class = "input-group">
                 <span class="input-group-addon"><i class="fa fa-rouble" aria-hidden="true"></i></span>
-                <input type="text" class="form-control" name="editPackageCost" id="editPackageCost" placeholder="Package Cost">
+                <input type="text" class="form-control" name="editPackageCost" id="editPackageCost" placeholder="Package Cost (per head)">
                 </div>
                 </div>
                 </div>
@@ -379,7 +379,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-rouble" aria-hidden="true"></i></div>
-                        <input type="text" class="form-control" name="addPackageCost" placeholder="Package Cost">
+                        <input type="text" class="form-control" name="addPackageCost" placeholder="Package Cost (per head)">
                       </div>
                       </div>
                       </div>

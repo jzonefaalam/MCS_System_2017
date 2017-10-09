@@ -80,17 +80,35 @@
                   </div>
                   <div class="modal-body">
                     {!! csrf_field() !!}
-                    <div class="form-group">
+                    <div class="form-group" >
                       <label class="col-sm-4 control-label">Item Name</label>
-                      <div class="col-sm-6">
+                      <div class="col-sm-6" id="newItem" style="display:none;">
                         <div class="input-group">
                           <div class="input-group-addon">
                             <i class="fa fa-text-o" aria-hidden="true"></i>
                           </div>
                           <input type="text" class="form-control" name="addPOName" id="addPOName" data-error="This field is required">
+
                         </div>
                       </div>
+                      <div class="col-sm-6" id="existingItem">
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fa fa-text-o" aria-hidden="true"></i>
+                          </div>
+                          <select class="form-control" name="addExistingItemName" id="addExistingItemName">
+                            <!-- <option disabled="">Select Category</option> -->
+                            
+                          </select>
+                        </div>
+                      </div>
+                       <div>
+                          <input type="checkbox" id="itemCheckbox" class="minimal" onchange="existingItemFunction(this)">
+                          <input type="text" id="checkboxChecker" name="checkboxChecker" value="0" style="display:none;">
+                          <small>New Item</small>
+                      </div>
                     </div>
+
                     <div class="form-group">
                       <label class="col-sm-4 control-label">Item Description</label>
                       <div class="col-sm-6">
@@ -109,25 +127,30 @@
                           <div class="input-group-addon">
                             <i class="fa fa-text-o" aria-hidden="true"></i>
                           </div>
-                          <select class="form-control" name="addPOType" id="addPOType" onChange="enableEquipmentType();">
+                          <select class="form-control" name="addPOType" id="addPOType" onchange="enableEquipmentType(this.id);">
                             <!-- <option disabled="">Select Category</option> -->
                             @foreach($poTypeData as $poTypeData)
                               <option value="{{ $poTypeData->poTypeId }}">{{ $poTypeData->poTypeName }} </option>
                             @endforeach
                           </select>
+                          <input type="text" id="categoryChecker" name="categoryChecker" value="0" style="display:none;">
                         </div>
                       </div>
                     </div>
-                    <div class="form-group">
+
+                    <div class="form-group" style="display:none;" id="equipmentTypeDiv">
                       <label class="col-sm-4 control-label">Equipment Type</label>
                       <div class="col-sm-6">
                         <div class="input-group">
                           <div class="input-group-addon">
                             <i class="fa fa-text-o" aria-hidden="true"></i>
                           </div>
-                          <select disabled class="form-control" name="addEquipmentType" id="addEquipmentType">
-                            <!-- <option disabled="">Select Category</option> -->
-                            <option>Select Equipment Type</option>
+                          <select class="form-control" name="addEquipmentType" id="addEquipmentType">
+                            <option selected disabled="">Select Equipment Type</option>
+                            @foreach($equipmentType as $equipmentType)
+                            <!-- <option disabled="">Select Category</option> -->                            
+                            <option value="{{ $equipmentType->equipmentTypeID }}">{{ $equipmentType->equipmentTypeName }} </option>
+                            @endforeach
                           </select>
                         </div>
                       </div>
@@ -154,9 +177,30 @@
                         </div>
                       </div>
                     </div>
+                    <div class="form-group" style="display:none;" id="ratePerHourDiv">
+                      <label class="col-sm-4 control-label">Rate Per Hour</label>
+                      <div class="col-sm-6">
+                        <div class="input-group">
+                          <div class="input-group-addon">
+                            <i class="fa fa-text-o" aria-hidden="true"></i>
+                          </div>
+                          <input type="number" class="form-control" name="addRatePerHour" id="addRatePerHour" data-error="This field is required">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group" style="display:none;" id="imageDiv">
+                        <label class="col-sm-4 control-label">Package Image</label>
+                       <div class="col-sm-6">
+                        <div class="input-group">
+                         <div class="input-group-addon">
+                          <input type="file" name="addItemImage" id="addItemImage">
+                        </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="modal-footer">
-                      <button type="submit" name="addPOBtn" class="btn btn-primary">Submit</button>
+                      <input class="btn btn-primary" id="addPObtn" type="submit" value="Submit">
                   </div>
                 </div>
               </div>
@@ -170,14 +214,112 @@
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
-<script type="text/javascript">
-function enableEquipmentType()
-{
-  ​document.getElementById('addPOType').onchange = function () {
-    document.getElementById("addEquipmentType").disabled = false;
-  }​​​​​​ ​
+<script>
+function enableEquipmentType(id){
+  var selectedOption = document.getElementById(id);
+  var loc = selectedOption.selectedIndex;
+  // Food
+  if(loc==0){
+    document.getElementById('equipmentTypeDiv').style="display:none";
+    document.getElementById('ratePerHourDiv').style="display:none";
+    document.getElementById('imageDiv').style="display:none";
+    document.getElementById('categoryChecker').value="0";
+    $('#addExistingItemName')
+      .find('option')
+      .remove()
+      .end()
+    ;
+    $.ajax({
+      type: "GET",
+      url:"/RetrievePOFood",
+      data:{
+
+      },
+      success: function (data) {
+        for (var i = 0; i < data['existingPOFood'].length; i++) {
+          var div_data="<option value=" +data['existingPOFood'][i]['poItemName']+ ">" +data['existingPOFood'][i]['poItemName']+ "</option>";
+          $(div_data).appendTo('#addExistingItemName'); 
+          // alert(data['existingPOFood'][i]['poItemName']);
+        }
+      },
+      error: function(xhr)
+      {
+        alert("mali");
+        alert($.parseJSON(xhr.responseText)['error']['message']);
+      }         
+    });     
+  }
+  // Equipment
+  if(loc==1){
+    document.getElementById('equipmentTypeDiv').style="display:";
+    document.getElementById('ratePerHourDiv').style="display:";
+    document.getElementById('imageDiv').style="display:";
+    document.getElementById('categoryChecker').value="1";
+    $('#addExistingItemName')
+      .find('option')
+      .remove()
+      .end()
+    ;
+    $.ajax({
+      type: "GET",
+      url:"/RetrievePOEquipment",
+      data: {
+
+      },
+      success: function(data){        
+        for (var i = 0; i < data['existingPOEquipment'].length; i++) {
+          var div_data="<option value=" +data['existingPOEquipment'][i]['poItemName']+ ">" +data['existingPOEquipment'][i]['poItemName']+ "</option>";
+          $(div_data).appendTo('#addExistingItemName');
+        }
+      },
+      error: function(xhr)
+      {
+        alert("mali");
+        alert($.parseJSON(xhr.responseText)['error']['message']);
+      }         
+    });  
+  }
+}
+
+function existingItemFunction(){
+ if(document.getElementById('itemCheckbox').checked){
+  document.getElementById('existingItem').style="display:none";
+  document.getElementById('newItem').style="display:";
+  document.getElementById('checkboxChecker').value="1";
+ }
+ else{
+  document.getElementById('existingItem').style="display:";
+  document.getElementById('newItem').style="display:none";
+  document.getElementById('checkboxChecker').value="0";
+ }
 }
 </script>
+
+<!-- Script for ADDING -->
+<!-- <script>
+  $(document).ready(function() {
+    $("#addPObtn").click(function(e) {
+      e.preventDefault();
+      var checker = document.getElementById('checkboxChecker').value;
+      var categoryChecker = document.getElementById('categoryChecker').value;
+      // New Item
+      if(checker==1) {
+        // Food
+        if(categoryChecker==0){
+          alert('New Item: FOOD');
+        }
+        // Equipment
+        if(categoryChecker==1){
+          alert('New Item: EQUIP');
+        }
+      }
+      // Existing Item 
+      if(checker==0){
+        alert('existing Item');
+      }
+    });
+  });
+</script> -->
 
 
 @endsection
