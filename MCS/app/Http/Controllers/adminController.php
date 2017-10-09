@@ -168,6 +168,7 @@ class adminController extends Controller
         $dishData = DB::table('dish_tbl')->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
         ->select('*')
         ->where('dish_tbl.dishStatus', 1)
+        ->where('dishtype_tbl.dishTypeStatus', 1)
         ->get();
 
         $addDishData = DB::table('dishtype_tbl')
@@ -1270,12 +1271,15 @@ class adminController extends Controller
     //Equipment functions------------------------------------------------------------------------->
 
     public function equipmentPage(){
-        $equipmentData = DB::table('equipment_tbl')
-        ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
+        // $equipmentData = DB::table('equipment_tbl')
+        // ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
         // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
-        ->select('*')
-        ->where('equipmentStatus', 1)
-        ->get();
+        // ->select('*')
+        // ->where('equipmentStatus', 1)
+        // ->get();
+
+       $stmt = "SELECT equipment_tbl.`equipmentID`, equipmenttype_tbl.`equipmentTypeID`, equipment_tbl.`equipmentName`, equipment_tbl.`equipmentDescription`, equipment_tbl.`equipmentRatePerHour`, equipmenttype_tbl.`equipmentTypeName`, equipment_tbl.`equipmentImage`, equipment_tbl.`equipmentStatus`, SUM(equipmentlog_tbl.`equipmentQuantityIn`) as qtyIn, SUM(equipmentlog_tbl.`equipmentQuantityOut`) as qtyOut FROM equipment_tbl, equipmenttype_tbl, equipmentlog_tbl WHERE equipmenttype_tbl.`equipmentTypeStatus` = 1 AND equipment_tbl.`equipmentTypeID` = equipmenttype_tbl.`equipmentTypeID` AND equipment_tbl.`equipmentID` = equipmentlog_tbl.`equipmentID` GROUP BY equipment_tbl.`equipmentID`, equipmenttype_tbl.`equipmentTypeID`, equipment_tbl.`equipmentName`, equipment_tbl.`equipmentDescription`, equipment_tbl.`equipmentRatePerHour`, equipmenttype_tbl.`equipmentTypeName`, equipment_tbl.`equipmentImage`, equipment_tbl.`equipmentStatus`";
+        $dr = DB::select($stmt);
 
         $addEquipmentData = DB::table('equipmenttype_tbl')
         ->select('*')
@@ -1283,7 +1287,7 @@ class adminController extends Controller
         ->get();
 
         return View::make('/equipmentPage')
-        ->with('equipmentData', $equipmentData)
+        ->with('equipmentData', $dr)
         ->with('addEquipmentData', $addEquipmentData);
     }
 
@@ -1385,7 +1389,7 @@ class adminController extends Controller
         $equipment = equipmenttbl::find($id);
         $equipment->equipmentName = Input::get('editEquipmentName');
         $equipment->equipmentDescription = Input::get('editEquipmentDescription');
-        $equipment->equipmentTypeID = Input::get('editEquipmentTypeID');
+        $equipment->equipmentTypeID = Input::get('editEquipmentType');
         $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
         $equipment->save();
         return redirect()->back();
@@ -1410,7 +1414,7 @@ class adminController extends Controller
             $equipment = equipmenttbl::find($id);
             $equipment->equipmentName = Input::get('editEquipmentName');
             $equipment->equipmentDescription = Input::get('editEquipmentDescription');
-            $equipment->equipmentTypeID = Input::get('editEquipmentTypeID');
+            $equipment->equipmentTypeID = Input::get('editEquipmentType');
             $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
             $equipment->equipmentImage = $equipmentImage;
             $equipment->save();
@@ -1434,7 +1438,7 @@ class adminController extends Controller
             $equipment = equipmenttbl::find($id);
             $equipment->equipmentName = Input::get('editEquipmentName');
             $equipment->equipmentDescription = Input::get('editEquipmentDescription');
-            $equipment->equipmentTypeID = Input::get('editEquipmentTypeID');
+            $equipment->equipmentTypeID = Input::get('editEquipmentType');
             $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
             $equipment->equipmentImage = $equipmentImage;
             $equipment->save();
@@ -1507,12 +1511,15 @@ class adminController extends Controller
     }
 
      public function inventoryEquipmentPage(){
-        $equipmentData = DB::table('equipment_tbl')
-        ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
-        // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
-        ->select('*')
-        ->where('equipmentStatus', 1)
-        ->get();
+        // $equipmentData = DB::table('equipment_tbl')
+        // ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
+        // // ->join('equipmentlog_tbl', 'equipmentlog_tbl.equipmentTypeID', '=', 'equipment_tbl.equipmentID')
+        // ->select('*')
+        // ->where('equipmentStatus', 1)
+        // ->get();
+
+        $stmt = "SELECT equipment_tbl.`equipmentID`, equipmenttype_tbl.`equipmentTypeID`, equipment_tbl.`equipmentName`, equipment_tbl.`equipmentDescription`, equipment_tbl.`equipmentRatePerHour`, equipmenttype_tbl.`equipmentTypeName`, equipment_tbl.`equipmentImage`, SUM(equipmentlog_tbl.`equipmentQuantityIn`) as qtyIn, SUM(equipmentlog_tbl.`equipmentQuantityOut`) as qtyOut FROM equipment_tbl, equipmenttype_tbl, equipmentlog_tbl WHERE equipment_tbl.`equipmentTypeID` = equipmenttype_tbl.`equipmentTypeID` AND equipment_tbl.`equipmentID` = equipmentlog_tbl.`equipmentID` GROUP BY equipment_tbl.`equipmentID`, equipmenttype_tbl.`equipmentTypeID`, equipment_tbl.`equipmentName`, equipment_tbl.`equipmentDescription`, equipment_tbl.`equipmentRatePerHour`, equipmenttype_tbl.`equipmentTypeName`, equipment_tbl.`equipmentImage`";
+        $dr = DB::select($stmt);
 
         $addEquipmentData = DB::table('equipmenttype_tbl')
         ->select('*')
@@ -1520,7 +1527,7 @@ class adminController extends Controller
         ->get();
 
         return View::make('/inventory_equipmentPage')
-        ->with('equipmentData', $equipmentData)
+        ->with('equipmentData', $dr)
         ->with('addEquipmentData', $addEquipmentData);
     }
 
@@ -1538,21 +1545,141 @@ class adminController extends Controller
         ->where('poTypeStatus', 1)
         ->get();
 
+        $equipmentType = DB::table('equipmenttype_tbl')
+        ->select('*')
+        ->where('equipmentTypeStatus', 1)
+        ->get();
+
+       $existingPO = DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        ->select('*')
+        ->where('purchaseorder_tbl.poTypeId', 1)
+        ->get();
+
         return View::make('/inventory_purchaseOrderPage')
         ->with('poData', $poData)
-        ->with('poTypeData', $poTypeData);
+        ->with('poTypeData', $poTypeData)
+        ->with('equipmentType', $equipmentType)
+        ->with('existingPO', $existingPO);
+    }
+
+    public function retrievePOFood(){
+        $existingPOFood = DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        ->select('*')
+        ->where('purchaseorder_tbl.poTypeId', 1)
+        ->get();
+        return \Response::json(['existingPOFood'=>$existingPOFood]);
+    }
+
+    public function retrievePOEquipment(){
+        $existingPOEquipment = DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        ->select('*')
+        ->where('purchaseorder_tbl.poTypeId', 2)
+        ->get();
+        return \Response::json(['existingPOEquipment'=>$existingPOEquipment]);
     }
 
     public function addPO(Request $request){
-        $po = new purchaseordertbl;
-        $po->poItemName = Input::get('addPOName');
-        $po->poDescription = Input::get('addPODescription');
-        $po->poTypeId = Input::get('addPOType');    
-        $po->poQty = Input::get('addPOQty');
-        $po->poPrice = Input::get('addPOPrice');
-        $po->poStatus = 1;
-        $po->save();
+        $dateTime = Date_create('now');
+        $dateToday = $dateTime->format('Y-n-j');
+        $checker = Input::get('checkboxChecker');
+        $categoryChecker = Input::get('categoryChecker');
+        // New Item
+        if($checker==1){
+            // Food
+            if($categoryChecker==0){
+                $po = new purchaseordertbl;
+                $po->poItemName = Input::get('addPOName');
+                $po->poDescription = Input::get('addPODescription');
+                $po->poDate = $dateToday;
+                $po->poQty = Input::get('addPOQty');
+                $po->poPrice = Input::get('addPOPrice');
+                $po->poTypeId = Input::get('addPOType');
+                $po->poStatus = 1;
+                $po->save();
+            }
+            // Equipment
+            if($categoryChecker==1){
+                //Save Purchase Order
+                $po = new purchaseordertbl;
+                $po->poItemName = Input::get('addPOName');
+                $po->poDescription = Input::get('addPODescription');
+                $po->poDate = $dateToday;
+                $po->poQty = Input::get('addPOQty');
+                $po->poPrice = Input::get('addPOPrice');
+                $po->poTypeId = Input::get('addPOType');
+                $po->poStatus = 1;
+                $po->save();
+
+                //Save Equipment Maintenance 
+                $equipment = new equipmenttbl;
+                $equipment->equipmentName = Input::get('addPOName');
+                $equipment->equipmentDescription = Input::get('addPODescription');
+                $equipment->equipmentRatePerHour = Input::get('addRatePerHour');
+                $equipment->equipmentAvailability = 1;
+                $equipment->equipmentStatus = 1;
+                $equipment->equipmentTypeID = Input::get('addEquipmentType');
+                $equipment->equipmentImage = "No Image";
+                $equipment->save();
+
+                // Save Equipment Inventory
+                $getEquipmentID = DB::table('equipment_tbl')
+                ->MAX('equipmentID');
+                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog->equipmentID = $getEquipmentID;
+                $equipmentlog->equipmentQuantityIn = Input::get('addPOQty');
+                $equipmentlog->equipmentQuantityOut = 0;
+                $equipmentlog->equipmentLogDate = Date_create('now');
+                $equipmentlog->save();
+            }
+        }
+        // Existing Item
+        if($checker==0){
+            //Food
+            if($categoryChecker==0){
+                $po = new purchaseordertbl;
+                $po->poItemName = Input::get('addExistingItemName');
+                $po->poDescription = Input::get('addPODescription');
+                $po->poDate = $dateToday;
+                $po->poQty = Input::get('addPOQty');
+                $po->poPrice = Input::get('addPOPrice');
+                $po->poTypeId = Input::get('addPOType');
+                $po->poStatus = 1;
+                $po->save();
+            }
+            //Equipment
+            if($categoryChecker==1){
+                //Save Purchase Orderr
+                $po = new purchaseordertbl;
+                $po->poItemName = Input::get('addExistingItemName');
+                $po->poDescription = Input::get('addPODescription');
+                $po->poDate = $dateToday;
+                $po->poQty = Input::get('addPOQty');
+                $po->poPrice = Input::get('addPOPrice');
+                $po->poTypeId = Input::get('addPOType');
+                $po->poStatus = 1;
+                $po->save();
+
+                //Save Equipment Maintenance
+                $equipment = new equipmenttbl;
+                $equipment->equipmentName = Input::get('addExistingItemName');
+                $equipment->equipmentDescription = Input::get('addPODescription');
+                $equipment->equipmentRatePerHour = Input::get('addRatePerHour');
+                $equipment->equipmentAvailability = 1;
+                $equipment->equipmentStatus = 1;
+                $equipment->equipmentTypeID = Input::get('addEquipmentType');
+                $equipment->equipmentImage = "No Image";
+                $equipment->save();
+
+
+            }
+            
+        }
         return redirect()->back();
+        
+        
     }
 
     public function inventoryPOTypePage(){

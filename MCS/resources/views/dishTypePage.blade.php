@@ -113,9 +113,9 @@
                   </div>
                 
                   <div class="form-group">
-                      <div class="col-sm-4" >
-                        <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
-                      </div>
+                    <div class="col-sm-4" >
+                      <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                    </div>
                   </div>
 
                   <div class="form-group">
@@ -187,12 +187,11 @@
                       </div>
                     </div>
                   
-                    <div class="form-group">
                       <label class="col-sm-4 control-label">Default Image</label>
                        <div class="col-sm-6">
                         <div class="input-group"> 
                          <div class="input-group-addon">
-                          <input type="file" name="addDishTypeImage" id="addDishTypeImage" disabled="true">
+                          <input type="file" name="addDishTypeImage" id="addDishTypeImage">
                         </div>
                         </div>
                       </div>
@@ -243,7 +242,7 @@
       "autoWidth": true
     });
   });
-</script>
+</script> 
 
 <script>
   $("#addDishTypeModal").on("hidden.bs.modal", function(){
@@ -381,6 +380,19 @@
 </script>
 
 <script>
+$(function () {
+  $(document).on("hidden.bs.modal", "#addDishTypeModal", function () {
+    $(this).find("#addDishTypeImage").html(""); // Just clear the contents.
+    $(this).find("#addDishTypeName").html(""); // Just clear the contents.
+  });
+  $(document).on("hidden.bs.modal", "#editDishTypeModal", function () {
+    $(this).find("#editDishTypeName").html(""); // Just clear the contents.
+    $(this).find("#editDishTypeImage").html(""); // Just clear the contents.
+  });
+});
+</script>
+
+<!-- <script>
   $(document).ready(function() {
     $("#send").click(function(e) {
       e.preventDefault();
@@ -418,6 +430,6 @@
         });
     });
   });
-</script>
+</script> -->
     <!-- /.content-wrapper -->
 @endsection

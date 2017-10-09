@@ -19,11 +19,6 @@
                 <div class="col-md-6">
                   <h2>Equipment</h2>
                 </div>
-                <div class="col-md-6">
-                      <a class="btn btn-app" data-target="#addEquipmentModal" data-toggle="modal" style="float:right">
-                        <i class="fa fa-save"></i> ADD
-                      </a>
-                    </div>
               </div>
             </div>
           <!-- /.box-header -->
@@ -40,6 +35,7 @@
                       <th width="80px">Rate Per Hour</th>
                       <th width="80px">Total Quantity</th>
                       <th width="150px">Actions</th>
+                      <th width="150px">Availability</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -50,11 +46,42 @@
                         <td>{{ $equipmentData->equipmentDescription }}</td>
                         <td>{{ $equipmentData->equipmentTypeName }}</td>
                         <td>{{ $equipmentData->equipmentRatePerHour }}</td>
-                        <td>Total Quantity</td>
+                        <td>{{ $equipmentData->qtyIn + $equipmentData->qtyOut }}</td>
                        <td>
-                        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-wrench fa-fw"></i> </a>
-                        <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}"><i class="fa fa-trash fa-fw"></i> </a>
+                        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editEquipmentModal" onclick="getEquipment(this.name);" name="{{$equipmentData->equipmentID}}">Update<i class="fa fa-wrench fa-fw"></i> 
+                        </a>
                        </td>
+                       <td>
+                        <?php if (( $equipmentData->equipmentStatus )==0): ?> 
+                          <div class="btn-group">
+                          <button type="button" class="btn btn-default">Disable</button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                          <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                          <li>
+                            <a data-toggle="modal" data-target="#enableDishModal" onclick="editdishget(this.name);" name="{{$equipmentData->equipmentID}}">Enable</a>
+                          </li>
+                          </ul>
+                          </div>
+                        <?php endif ?>
+
+                        <?php if (( $equipmentData->equipmentStatus )==1): ?> 
+                          <div class="btn-group">
+                          <button type="button" class="btn btn-default">Enable</button>
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                          <span class="caret"></span>
+                          <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <ul class="dropdown-menu" role="menu">
+                          <li>
+                            <a data-toggle="modal" data-target="#disableDishModal" onclick="editdishget(this.name);" name="{{$equipmentData->equipmentID}}">Disable</a>
+                          </li>
+                          </ul>
+                          </div>
+                        <?php endif ?>
+                </td>
                       </tr>
                       @endforeach
                       </tbody>
@@ -62,11 +89,8 @@
                 </div>
                 <!-- /Body -->
             <!-- /2nd Body -->
-
-
             <!-- /Box Body -->
             </div>
-
 
                       <!-- Delete Equipment Modal-->
                       <form role="form" method="POST" action="DeleteEquipmentPage" class="form-horizontal">
@@ -357,10 +381,10 @@
                         max: 20,
                         message:'Please supply a valid equipment name.'
                       },
-                          regexp: {
-                              regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                              message: 'This field should contain letters, hyphen & apostrophe only.'
-                      },
+                      //     regexp: {
+                      //         regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                      //         message: 'This field should contain letters, hyphen & apostrophe only.'
+                      // },
                           notEmpty: {
                           message: 'This field is required.'
                       },

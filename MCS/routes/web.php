@@ -41,6 +41,8 @@ Route::get('/RetrieveDish', 'adminController@retrieveDishData');
 Route::post("/DishPage", array("uses"=>"adminController@addDishes"));
 Route::post("/EditDishPage", array("uses"=>"adminController@editDish"));
 Route::post("/DeleteDishPage", array("uses"=>"adminController@deleteDish"));
+Route::post("/DisableDish", array("uses"=>"adminController@disableDish"));
+Route::post("/EnableDish", array("uses"=>"adminController@enableDish"));
 
 //DishTypePage
 Route::get('/DishTypePage', 'adminController@dishTypePage');
@@ -134,6 +136,8 @@ Route::post("/UpdateEquipmentUnit", array("uses"=>"adminController@addEquipmentU
 //Purchase Order Page
 Route::get('/PurchaseOrderPage', 'adminController@inventoryPOPage');
 Route::post("/InventoryPOPage", array("uses"=>"adminController@addPO"));
+Route::get('/RetrievePOFood', 'adminController@retrievePOFood');
+Route::get('/RetrievePOEquipment', 'adminController@retrievePOEquipment');
 
 //Purchase Order Type Page
 Route::get('/PurchaseOrderTypePage', 'adminController@inventoryPOTypePage');

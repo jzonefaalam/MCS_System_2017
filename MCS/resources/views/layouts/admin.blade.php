@@ -97,20 +97,13 @@
                       </span>
                     </a>
                     <ul class="treeview-menu">
-                      <li class="active"><a href="/DishPage"><i class="fa fa-square-o"></i> Dish List</a></li>
-                      <li><a href="/DishTypePage"><i class="fa fa-square-o"></i> Dish Type</a></li>
+                      <li class="active"><a href="/DishPage"><i class="fa fa-square-o"></i> List</a></li>
+                      <li><a href="/DishTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
                     </ul>
                   </li>
                   <li class="active treeview">
-                    <a href="/EmployeePage"><i class="fa fa-circle-o"></i> Employee
-                      <span class="pull-right-container">
-                      <i class="fa fa-angle-right pull-right"></i>
-                      </span>
+                    <a href="/EmployeeTypePage"><i class="fa fa-circle-o"></i> Employee
                     </a>
-                    <ul class="treeview-menu">
-                      <!-- <li><a href="/EmployeePage"><i class="fa fa-square-o"></i> Employee List</a></li> -->
-                      <li><a href="/EmployeeTypePage"><i class="fa fa-square-o"></i> Employee Type</a></li>
-                    </ul>
                   </li>
 
                   <li>
@@ -120,8 +113,8 @@
                       </span>
                     </a>
                     <ul class="treeview-menu">
-                      <li><a href="/EquipmentPage"><i class="fa fa-square-o"></i> Equipment List</a></li>
-                      <li><a href="/EquipmentTypePage"><i class="fa fa-square-o"></i> Equipment Type</a></li>
+                      <li><a href="/EquipmentPage"><i class="fa fa-square-o"></i> List</a></li>
+                      <li><a href="/EquipmentTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
                     </ul>
                   </li>
 
@@ -142,10 +135,10 @@
                     </a>
                     <ul class="treeview-menu">
                       <li>
-                        <a href="/ServicePage"><i class="fa fa-square-o"></i> Service List</a>
+                        <a href="/ServicePage"><i class="fa fa-square-o"></i> List</a>
                       </li>
                       <li>
-                        <a href="/ServiceTypePage"><i class="fa fa-square-o"></i> Service Type</a>
+                        <a href="/ServiceTypePage"><i class="fa fa-square-o"></i> Categories</a>
                       </li>
                     </ul>
                   </li>
