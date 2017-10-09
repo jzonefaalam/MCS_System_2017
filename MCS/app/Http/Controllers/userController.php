@@ -207,6 +207,10 @@ class userController extends Controller
                     ->where('location_tbl.locationAvailability', 1)
                     ->get();
 
+        $customer = DB::table('customer_tbl') 
+                    ->where('customer_tbl.customerStatus', 0)
+                    ->get();
+
         $paymentMode = DB::table('paymentmode_tbl') 
                     ->get();
 
@@ -215,7 +219,7 @@ class userController extends Controller
         
         
            
-        return View::make('/UserReservationPage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID)->with('eventNewID', $eventNewID)->with('reservationNewID', $reservationNewID)->with('contactNewID', $contactNewID)->with('dishAvailedNewID', $dishAvailedNewID)->with('eType', $eType)->with('customerNewID', $customerNewID)->with('package', $package)->with('packageinclusion', $packageinclusion)->with('serviceinclusion', $serviceinclusion)->with('equipmentinclusion', $equipmentinclusion)->with('employeeinclusion', $employeeinclusion)->with('dishtype', $dishtype)->with('dishes', $dishes)->with('service', $service)->with('servicetype', $servicetype)->with('equipment', $equipment)->with('equipmenttype', $equipmenttype)->with('employeetype', $employeetype)->with('location',$location)->with('countDish', $countDish)->with('countPckg', $countPckg)->with('paymentMode', $paymentMode)->with('paymentTerm', $paymentTerm);
+        return View::make('/UserReservationPage')->with('dishData', $dishData)->with('addDishData', $addDishData)->with('dishNewID', $dishNewID)->with('eventNewID', $eventNewID)->with('reservationNewID', $reservationNewID)->with('contactNewID', $contactNewID)->with('dishAvailedNewID', $dishAvailedNewID)->with('eType', $eType)->with('customerNewID', $customerNewID)->with('package', $package)->with('packageinclusion', $packageinclusion)->with('serviceinclusion', $serviceinclusion)->with('equipmentinclusion', $equipmentinclusion)->with('employeeinclusion', $employeeinclusion)->with('dishtype', $dishtype)->with('dishes', $dishes)->with('service', $service)->with('servicetype', $servicetype)->with('equipment', $equipment)->with('equipmenttype', $equipmenttype)->with('employeetype', $employeetype)->with('location',$location)->with('customer',$customer)->with('countDish', $countDish)->with('countPckg', $countPckg)->with('paymentMode', $paymentMode)->with('paymentTerm', $paymentTerm);
 
     }
 
@@ -306,6 +310,15 @@ class userController extends Controller
       return Response::json(['emp'=>$emp]);
     }
 
+     public function getCus(Request $request){
+        $cus = DB::table('customer_tbl')
+              ->where('customer_tbl.customerID', '=', $request->input('gc_id'))
+              ->get();
+      
+
+      return Response::json(['cus'=>$cus]);
+    }
+
     public function getReservation(Request $request){
         $rsvtn = DB::table('reservation_tbl')
               ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
@@ -354,7 +367,6 @@ class userController extends Controller
       $customer_tbl->emailAddress = Input::get('emailAdd');
       $customer_tbl->customerStatus = 1;
       $customer_tbl->customerAvailability = 1;
-      $customer_tbl->telNum = Input::get('telNum');
       $customer_tbl->cellNum = Input::get('cellNum');
       $customer_tbl->dateOfBirth = Input::get('dob');
        $contact_tbl = new contact_tbl;

@@ -88,11 +88,12 @@
 			                                <div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
 			                                        <label>Do you have a Venue?</label>
-		                                            	<select name="yesNo" id = "yesNo" class="form-control" onchange="locYes(this.id)">
-															<option disabled="" selected=""></option>
-															<option value="Yes">Yes</option>
-															<option value="No">No</option>
-			                                       		 </select>
+			                                        <div class="form-control">&nbsp&nbsp&nbsp&nbsp
+		                                            	<input type="radio" name="yesNo" id = "yes" value="Yes" onchange="locYes(this)" required>Yes
+		                                            	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+		                                            	<input type="radio" name="yesNo" id = "no" value="No" onchange="locYes(this)" required>No
+		                                            </div>
+		                                            <label for="yesNo" class="error" style="display:none;">Choose and answer.</label>
 			                                    </div>
 			                                </div>
 			                                <div class="col-sm-5">
@@ -149,23 +150,26 @@
 											<input type="text" name="tm3" id="tm3"  hidden>
 											<input type="text" name="tm1" id="tm1" value="9:00" hidden>
 											<input type="text" name="tm2" id="tm2" value="9:00"  hidden>
-
-											<div class="col-sm-5 col-sm-offset-1">
+											<div class="col-sm-12">
+			                                    <div class="form-group">
+			                                        <h5 class="info-text"><input type="checkbox" name="prevCus" id = "prevCus" onchange="prevC(this)" >Previous Customer</h5>
+			                                    </div>
+			                                </div>
+											<div class="col-sm-5 col-sm-offset-1" id="cusNo">
 			                                    <div class="form-group">
 			                                        <label>Full Name</label>
 			                                        <input type="text" name="cusName" id = "cusName" class="form-control" placeholder="e.g. Juan de la Cruz">
 			                                    </div>
 			                                </div>
-											<div class="col-sm-5">
+											<div class="col-sm-5 col-sm-offset-1" id="cusYes" style="display:none;">
 			                                    <div class="form-group">
-			                                        <label>Home Address</label>
-			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control">
-			                                    </div>
-			                                </div>
-											<div class="col-sm-5 col-sm-offset-1">
-			                                   	<div class="form-group">
-			                                        <label>Telephone Number</label>
-			                                        <input type="text" name="telNum" id = "telNum" pattern="[0-9]{3}-[0-9]{4}" class="form-control" placeholder="e.g. 000-0000">
+			                                        <label>Full Name</label>
+			                                        <select name="prevCusName" id = "prevCusName" class="form-control" onchange="prevChange(this.name)">
+			                                        <option disabled="Choose Customer" selected=""></option>
+														@foreach($customer as $cus)
+														<option value="{{$cus->customerID}}">{{$cus->fullName}}</option>
+														@endforeach
+		                                            </select>
 			                                    </div>
 			                                </div>
 											<div class="col-sm-5">
@@ -173,10 +177,16 @@
 			                                        <label>Date of Birth</label>
 			                                        <input type="date" name="dob" id = "dob" min="{{date('Y-m-d',  strtotime( '-100 year' ))}}" max="{{date('Y-m-d',  strtotime( '-12 year' ))}}" class="form-control">
 			                                    </div>
+			                                </div>											
+			                                <div class="col-sm-10 col-sm-offset-1">
+			                                   	<div class="form-group">
+			                                        <label>Home Address</label>
+			                                        <input type="text" name="homeAdd" id = "homeAdd" class="form-control">
+			                                    </div>
 			                                </div>
 											<div class="col-sm-5 col-sm-offset-1">
 			                                    <div class="form-group">
-			                                        <label>Cellphone Number</label>
+			                                        <label>Contact Number</label>
 			                                        <input type="text" name="cellNum" id = "cellNum" pattern="09[0-9]{2}-[0-9]{3}-[0-9]{4}" placeholder="e.g. 0900-000-0000" class="form-control">
 			                                    </div>
 			                                </div>
@@ -817,7 +827,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
             		validating: 'fa fa-refresh',
         		},
         		rules:{
-        			eType:{
+        			eType: {
         				required:true,
         			},	        
 		            yesNo: {
@@ -860,6 +870,9 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 		            	required:true,
 						rangelength: [3,50],
 		            },
+		            prevCusName: {
+		            	required:true,
+		            },
 		            homeAdd: {
 		            	required:true,
 						rangelength: [5,50],
@@ -869,10 +882,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 		            	date: true,
 		            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
 		            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
-		            },
-		            telNum: {
-		            	required:true,
-						regex: "^[0-9]{3}-[0-9]{4}$",
 		            },
 		            cellNum: {
 		            	required:true,
@@ -903,11 +912,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 		            eLoc2:{
         				required:"Choose a Venue.",
         			},	        
-		            yesNo: {
+		            no: {
 		            	required:"Choose an answer.",
-		            },
-		            telNum:{
-		            	regex: "Please enter a valid telephone number. Format is 000-0000."
 		            },
 		            cellNum:{
 		            	regex: "Please enter a valid cellphone number. Format is 0900-000-0000."
@@ -1816,10 +1822,15 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					var eNums = $("#eNum").val();
 					var eTypes = $("#eType :selected").text();
 					var addCustomerIDs = $("#addCustomerID").val();
-					var cusNames = $("#cusName").val();
+					var cusNames;
+					if(document.getElementById('prevCus').checked){							
+						cusNames = $("#prevCusName").find(":selected").text().trim();
+					}
+					else{							
+						cusNames = $("#cusName").val();							
+					}
 					var homeAdds = $("#homeAdd").val();
 					var emailAdds = $("#emailAdd").val();
-					var telNums = $("#telNum").val();
 					var cellNums = $("#cellNum").val();
 					var dobs = $("#dob").val();
 					var addContactIDs = $("#addContactID").val();
@@ -1844,7 +1855,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					var addReservationIDs = $("#addReservationID").val();
 					var addPackIDs = $("#addPackageID").val();
 					var venues;
-					if($('#yesNo').val()=="Yes"){
+					if(document.getElementById('yes').checked){
 						venues=eLocs;
 					}
 					else{
@@ -1865,8 +1876,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					$('#txt').append("\n\tHome Address: \t\t\t"+homeAdds);
 					$('#txt').append("\n\tEmail Address: \t\t\t"+emailAdds);
 					$('#txt').append("\n\tDate of Birth: \t\t\t"+dobs);
-					$('#txt').append("\n\tTelephone Number: \t\t"+telNums);
-					$('#txt').append("\n\tCellphone Number: \t\t"+cellNums);
+					$('#txt').append("\n\tContact Number: \t\t\t"+cellNums);
 					$('#txt').append("\n\tContact Person: \t\t\t"+conPersons);
 					$('#txt').append("\n\tContact Number: \t\t\t"+conNums);
 					$('#txt').append("\n\t_____________________________________________________________");
@@ -2148,10 +2158,15 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						var eNums = $("#eNum").val();
 						var eTypes = $("#eType").val();
 						var addCustomerIDs = $("#addCustomerID").val();
-						var cusNames = $("#cusName").val();
+						var cusNames;
+						if(document.getElementById('prevCus').checked){							
+							cusNames = $("#prevCusName").find(":selected").text().trim();
+						}
+						else{							
+							cusNames = $("#cusName").val();							
+						}
 						var homeAdds = $("#homeAdd").val();
 						var emailAdds = $("#emailAdd").val();
-						var telNums = $("#telNum").val();
 						var cellNums = $("#cellNum").val();
 						var dobs = $("#dob").val();
 						var addContactIDs = $("#addContactID").val();
@@ -2259,7 +2274,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 									    homeAdd: homeAdds,
 									    billAdd: homeAdds,
 									    emailAdd: emailAdds,
-									    telNum: telNums,
 									    cellNum: cellNums,
 									    dob: dobs,
 									    addContactID: addContactIDs,
@@ -2300,21 +2314,62 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					    		});					
 							
 					});
- 				function locYes(id){
- 					var selectedOption = document.getElementById(id);
-					var loc = selectedOption.selectedIndex;
- 					if(loc==1){
+ 				function locYes(){
+ 					if(document.getElementById('yes').checked){
  						$("#eLoc").removeAttr('disabled');
  						document.getElementById('locNo').style="display:none";
  						document.getElementById('locYes').style="display:";
  						document.getElementById('eLoc2').selectedIndex="0";
  					}
- 					else if(loc==2){
+ 					else if(document.getElementById('no').checked){
  						document.getElementById('locYes').style="display:none";
  						document.getElementById('locNo').style="display:"; 	
  						document.getElementById('eLoc').value="";				
  					}
  				}
+ 				function prevC(){
+	 				if(document.getElementById('prevCus').checked) {
+					    $("#homeAdd").attr('disabled', true);
+					    $("#dob").attr('disabled', true);
+ 						document.getElementById('cusNo').style="display:none";
+ 						document.getElementById('cusYes').style="display:";
+					} else {
+					    $("#homeAdd").removeAttr('disabled');
+					    $("#dob").removeAttr('disabled');
+ 						document.getElementById('dob').value="";			
+ 						document.getElementById('cellNum').value="";			
+ 						document.getElementById('homeAdd').value="";			
+ 						document.getElementById('emailAdd').value="";
+					    document.getElementById('cusYes').style="display:none";
+ 						document.getElementById('cusNo').style="display:";
+ 						document.getElementById('prevCusName').selectedIndex="0";
+					}
+				}
+				function prevChange(id){	        
+				var selectedOption = document.getElementsByName(id);
+				var getCusID = selectedOption[0].options[selectedOption[0].selectedIndex].value;
+					$.ajax({
+						url: '/UserReservationPage-getCus',
+						type: 'POST',
+						data: {
+						"_token": "{{ csrf_token() }}",
+						gc_id: getCusID
+							},
+							success: function(data){
+							var h=([data['cus'][0]['homeAddress']]);
+							var e=([data['cus'][0]['emailAddress']]);
+							var c=([data['cus'][0]['cellNum']]);
+							var d=([data['cus'][0]['dateOfBirth']]);
+	 						document.getElementById('dob').value=d;			
+	 						document.getElementById('cellNum').value=c;			
+	 						document.getElementById('homeAdd').value=h;			
+	 						document.getElementById('emailAdd').value=e;							
+							},
+							error: function(result){
+								alert('error');
+							}
+					}); 
+				}
  		</script>
 
 
