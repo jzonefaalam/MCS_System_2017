@@ -227,7 +227,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-bell-o" aria-hidden="true"></i></div>
-                         <input type="text" class="form-control" name="addEventName" placeholder="Event" data-error="This field is required">
+                         <input type="text" class="form-control" id="addEventName" name="addEventName" placeholder="Event" data-error="This field is required">
                         </div>
                         </div>
                       </div>
@@ -237,7 +237,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-quote-right" aria-hidden="true"></i></div>
-                         <input type="text" class="form-control" name="addEventDescription" placeholder="Event Description" data-error="This field is required">
+                         <input type="text" class="form-control" id="addEventDescription" name="addEventDescription" placeholder="Event Description" data-error="This field is required">
                         </div>
                         </div>
                       </div>
@@ -261,6 +261,21 @@
     <!-- /.content-wrapper -->
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+<script>
+  $(function () {
+    $(document).on("hidden.bs.modal", "#addEventModal", function () {
+      $("#addEventName").val("");
+      $("#addEventDescription").val("");
+    });
+  });
+  $(function () {
+    $(document).on("hidden.bs.modal", "#editEventModal", function () {
+      $("#editEventTypeName").val("");
+      $("#editEventTypeDesc").val("");
+    });
+  });
+</script>
+
  <script>
   $(function () {
     $('#eventTable').DataTable({

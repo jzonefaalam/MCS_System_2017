@@ -97,15 +97,14 @@
                       </span>
                     </a>
                     <ul class="treeview-menu">
-                      <li class="active"><a href="/DishPage"><i class="fa fa-square-o"></i> List</a></li>
-                      <li><a href="/DishTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
+                      <li class="active"><a href="/DishPage"><i class="fa fa-square-o"></i> Dish List</a></li>
+                      <li><a href="/DishTypePage"><i class="fa fa-square-o"></i> Dish Type</a></li>
                     </ul>
                   </li>
                   <li class="active treeview">
                     <a href="/EmployeeTypePage"><i class="fa fa-circle-o"></i> Employee
                     </a>
                   </li>
-
                   <li>
                     <a href="/EquipmentPage"><i class="fa fa-circle-o"></i> Equipment
                     <span class="pull-right-container">
@@ -113,11 +112,10 @@
                       </span>
                     </a>
                     <ul class="treeview-menu">
-                      <li><a href="/EquipmentPage"><i class="fa fa-square-o"></i> List</a></li>
-                      <li><a href="/EquipmentTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
+                      <li><a href="/EquipmentPage"><i class="fa fa-square-o"></i> Equipment List</a></li>
+                      <li><a href="/EquipmentTypePage"><i class="fa fa-square-o"></i> Equipment Type</a></li>
                     </ul>
                   </li>
-
                   <li>
                     <a href="/EventPage"><i class="fa fa-circle-o"></i> Event</a>
                   </li>
@@ -135,21 +133,15 @@
                     </a>
                     <ul class="treeview-menu">
                       <li>
-                        <a href="/ServicePage"><i class="fa fa-square-o"></i> List</a>
+                        <a href="/ServicePage"><i class="fa fa-square-o"></i> Service List</a>
                       </li>
                       <li>
-                        <a href="/ServiceTypePage"><i class="fa fa-square-o"></i> Categories</a>
+                        <a href="/ServiceTypePage"><i class="fa fa-square-o"></i> Service Type</a>
                       </li>
                     </ul>
                   </li>
               </ul>
             </li>
-
-            <!-- <li class="treeview">
-              <a href="/EventListPage">
-                <i class="fa fa-file-text-o"></i> <span>Events</span>
-              </a>
-            </li> -->
 
             <li class="treeview">
               <a href="/ReservationPage">
@@ -158,17 +150,17 @@
             </li>
 
             <li class="treeview">
-              <a href="/InventoryEquipmentPage">
+              <a href="/InventoryDishPage">
                 <i class="fa fa-book"></i><span>Inventory</span>
               </a>
-              <!-- <ul class="treeview-menu">
+              <ul class="treeview-menu">
                 <li><a href="/InventoryEquipmentPage"><i class="fa fa-square-o"></i> Equipment</a></li>
-              </ul> -->
+              </ul>
             </li>
 
             <li class="treeview">
               <a href="/#">
-                <i class="fa fa-book"></i><span>Purchase Order</span>
+                <i class="fa fa-shopping-cart"></i><span>Purchase Order</span>
               </a>
               <ul class="treeview-menu">
                 <li><a href="/PurchaseOrderPage"><i class="fa fa-square-o"></i> List</a></li>
@@ -178,13 +170,19 @@
 
             <li class="treeview">
               <a href="/TransactionPage">
-                <i class="fa fa-file-text"></i> <span>Transactions</span>
+                <i class="fa fa-line-chart"></i> <span>Transactions</span>
               </a>  
             </li>
 
             <li class="treeview">
-              <a href="/ReportPage">
-                <i class="fa fa-file-text"></i> <span>Reports</span>
+              <a href="/QueryPage">
+                <i class="fa fa-file-text"></i> <span>Queries</span>
+              </a>  
+            </li>
+
+            <li class="treeview">
+              <a href="ReportPage">
+                <i class="fa fa-pencil-square-o"></i> <span>Reports</span>
               </a>  
             </li>
 

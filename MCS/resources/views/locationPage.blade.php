@@ -301,7 +301,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-map-signs" aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="addLocationName" placeholder="Location Name"
+                                <input type="text" class="form-control" name="addLocationName" id="addLocationName" placeholder="Location Name"
                                 data-error="This field is required">
                               </div>
                               </div>
@@ -312,7 +312,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-quote-right" aria-hidden="true"></i></div>
-                                <textarea type="text" class="form-control" name="addLocationDescription" placeholder="Location Description"></textarea>
+                                <textarea type="text" class="form-control" name="addLocationDescription" id="addLocationDescription" placeholder="Location Description"></textarea>
                               </div>
                             </div>
                             </div>
@@ -322,7 +322,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-map-o" aria-hidden="true"></i></div>
-                                <textarea type="text" class="form-control" name="addLocationAddress" placeholder="Location Address"></textarea>
+                                <textarea type="text" class="form-control" name="addLocationAddress" id="addLocationAddress" placeholder="Location Address"></textarea>
                               </div>
                             </div>
                             </div>
@@ -332,7 +332,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-user" aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="addLocationContactPerson" placeholder="Full Name">
+                                <input type="text" class="form-control" name="addLocationContactPerson" id="addLocationContactPerson" placeholder="Full Name">
                                 </div>
                             </div>
                             </div>
@@ -342,7 +342,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-phone" aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="addLocationContactNumber" placeholder="Contact Number">
+                                <input type="text" class="form-control" name="addLocationContactNumber" id="addLocationContactNumber" placeholder="Contact Number">
                               </div>
                             </div>
                             </div>
@@ -352,7 +352,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-users" aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="addLocationCapacity" placeholder="Location Capacity">
+                                <input type="text" class="form-control" name="addLocationCapacity" id="addLocationCapacity" placeholder="Location Capacity">
                               </div>
                               </div>
                             </div>
@@ -362,7 +362,7 @@
                         <div class="input-group">
                          <div class="input-group-addon">
                          <i class="fa fa-rouble" aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="addLocationFee" placeholder="Location Fee">
+                                <input type="text" class="form-control" name="addLocationFee" id="addLocationFee" placeholder="Location Fee">
                               </div>
                             </div>
                             </div>
@@ -397,6 +397,35 @@
   
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+<script>
+  $(function () {
+    $(document).on("hidden.bs.modal", "#addLocationModal", function () {
+      $("#addLocationFee").val("");
+      $("#addLocationImage").val("");
+      $("#addLocationCapacity").val("");
+      $("#addLocationDescription").val("");
+      $("#addLocationAddress").val("");
+      $("#addLocationName").val("");
+      $("#addLocationContactNumber").val("");
+      $("#addLocationContactPerson").val("");
+      document.getElementById('addPhotoIcon').src = "img/imageIcon.png";
+    });
+  });
+  $(function () {
+    $(document).on("hidden.bs.modal", "#editLocationModal", function () {
+      $("#editLocationName").val("");
+      $("#editLocationCapacity").val("");
+      $("#editLocationDesc").val("");
+      $("#editLocationImage").val("");
+      $("#editLocationPrice").val("");
+      $("#editLocationContactPerson").val("");
+      $("#editLocationContactNumber").val("");
+      $("#editLocationAddress").val("");
+    });
+  });
+</script>
+
 <script>
   $(function () {
     $('#locationTable').DataTable({

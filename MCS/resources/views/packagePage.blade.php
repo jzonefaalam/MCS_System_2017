@@ -46,7 +46,10 @@
                   <td><img src="{{ asset('img/' . $packageData->packageImage) }}" style="width:150px;height:100px;" /></td>
                   <td>{{ $packageData->packageName }}</td>
                   <td>{{ $packageData->packageDescription }}</td>
-                  <td>List of Inclusions</td>
+                  <td>
+                    <div id="listOfInclusions">
+                    </div>
+                  </td>
                   <td>{{ $packageData->packageCost }}</td>
                   <td width="180px">
       						  <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editPackageModal" onclick="getPackage(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
@@ -283,7 +286,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Equipment</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editEquipmentInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" id="editEquipmentInclusion" name="editEquipmentInclusion[]" style="width: 100%;">
                 @foreach($equipmentData as $editEquipmentData)
                 <option value="{{ $editEquipmentData->equipmentID }}">{{ $editEquipmentData->equipmentName }} </option>
                 @endforeach
@@ -294,7 +297,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Services</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editServiceInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" id="editServiceInclusion" name="editServiceInclusion[]" style="width: 100%;">
                 @foreach($serviceData as $editServiceData)
                 <option value="{{ $editServiceData->serviceID }}">{{ $editServiceData->serviceName }} </option>
                 @endforeach
@@ -305,7 +308,7 @@
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Staff</label>
                 <div class="col-sm-6">
-                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" name="editStaffInclusion[]" style="width: 100%;">
+                <select class="input-group select2" multiple="multiple" data-placeholder="Select Inclusion" id="editStaffInclusion" name="editStaffInclusion[]" style="width: 100%;">
                 @foreach($staffData as $editStaffData)
                 <option value="{{ $editStaffData->employeeTypeID }}">{{ $editStaffData->employeeTypeName }} </option>
                 @endforeach
@@ -462,41 +465,41 @@
 </script>
 
 <script>
-$('#addPackageImage').change(function(){
+  $('#addPackageImage').change(function(){
 
-var file = this.files[0];
-var reader = new FileReader();
-reader.onload = function(){
-// alert("asdsd")
+  var file = this.files[0];
+  var reader = new FileReader();
+  reader.onload = function(){
+  // alert("asdsd")
 
-document.getElementById('addPhotoIcon').src = this.result;
-};
-reader.readAsDataURL(file);
+  document.getElementById('addPhotoIcon').src = this.result;
+  };
+  reader.readAsDataURL(file);
 
-var yourImg = document.getElementById('addPhotoIcon');
-if(yourImg && yourImg.style) {
-yourImg.style.height = '150px';
-yourImg.style.width = '150px';
-}
-});
+  var yourImg = document.getElementById('addPhotoIcon');
+  if(yourImg && yourImg.style) {
+  yourImg.style.height = '150px';
+  yourImg.style.width = '150px';
+  }
+  });
 
-$('#editPackageImage').change(function(){
+  $('#editPackageImage').change(function(){
 
-var file = this.files[0];
-var reader = new FileReader();
-reader.onload = function(){
-// alert("asdsd")
+  var file = this.files[0];
+  var reader = new FileReader();
+  reader.onload = function(){
+  // alert("asdsd")
 
-document.getElementById('editPhotoIcon').src = this.result;
-};
-reader.readAsDataURL(file);
+  document.getElementById('editPhotoIcon').src = this.result;
+  };
+  reader.readAsDataURL(file);
 
-var yourImg = document.getElementById('editPhotoIcon');
-if(yourImg && yourImg.style) {
-yourImg.style.height = '150px';
-yourImg.style.width = '150px';
-}
-});
+  var yourImg = document.getElementById('editPhotoIcon');
+  if(yourImg && yourImg.style) {
+  yourImg.style.height = '150px';
+  yourImg.style.width = '150px';
+  }
+  });
 </script>
 
 
@@ -518,13 +521,6 @@ yourImg.style.width = '150px';
       "ordering": false,
       "info": true,
       "autoWidth": true
-    });
-
-    $(document).on("hidden.bs.modal", "#viewInclusionsModal", function () {
-      $(this).find("#dishInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#equipmentInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#serviceInclusionDiv").html(""); // Just clear the contents.
-      $(this).find("#staffInclusionDiv").html(""); // Just clear the contents.
     });
 
     $(document).on("hidden.bs.modal", "#editPackageModal", function () {
@@ -621,10 +617,10 @@ yourImg.style.width = '150px';
 
             }
         });
-      </script>
+</script>
 
 
-    <script type="text/javascript">
+<script type="text/javascript">
     $('.editPackageValidator').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
@@ -683,9 +679,9 @@ yourImg.style.width = '150px';
 
             }
         });
-      </script>
+</script>
 
-    <script>
+<script>
       function getPackage(id){
 
         $.ajax({
@@ -701,30 +697,38 @@ yourImg.style.width = '150px';
                 $('#editPackageName').val(data['ss'][0]['packageName']);
                 $('#editPackageDescription').val(data['ss'][0]['packageDescription']);
                 $('#editPackageCost').val(data['ss'][0]['packageCost']);
-                  document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['packageImage']);
-                // var opty = document.getElementById('editDishTypeInclusion').options;
-                //     for(var i =0; i<opty.length; i++){
-                //       if(opty[i].value==data['ss'][0]['dishTypeID']){
-                //       $('#editDishTypeInclusion').val(data['ss'][0]['dishTypeID']);
-                //       }
-
-                //     }
-                // var selectedValues = new Array();
-                // var i = 0;
-                // data[4].forEach(function(data){
-                // selectedValues[i] = data['dishInclusion'][0]['dishTypeID'];
-                // i++;
-                // })
-                // $('#editDishTypeInclusion').val(selectedValues).trigger('change');
-                $('#editDishTypeInclusion option').each(function(){
-                  for(var i = 0; i < data['dishInclusion'].length; i++){
-                    if($(this).val() == data['dishInclusion'][i].dishTypeID){
-                      $('#editDishTypeInclusion option[value='+$(this).val()+']').attr('selected', true);
-                      $('#editDishTypeInclusion').trigger('change');
-                    }
+                document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['packageImage']);
+                var dishSelectedValues = new Array();
+                // var setDishInclusion = new Array();
+                for(var i = 0; i < data['dishInclusion'].length; i++){
+                    dishSelectedValues[i] = data['dishInclusion'][i]['dishTypeID'];
+                    // setDishInclusion[i] = data['dishInclusion'][i]['dishTypeName'];
                   }
-                });
+                $('#editDishTypeInclusion').val(dishSelectedValues).trigger('change');
 
+                var equipmentSelectedValues = new Array();
+                // var setDishInclusion = new Array();
+                for(var i = 0; i < data['equipmentInclusion'].length; i++){
+                    equipmentSelectedValues[i] = data['equipmentInclusion'][i]['equipmentID'];
+                    // setDishInclusion[i] = data['dishInclusion'][i]['dishTypeName'];
+                  }
+                $('#editEquipmentInclusion').val(equipmentSelectedValues).trigger('change'); 
+
+                var staffSelectedValues = new Array();
+                // var setDishInclusion = new Array();
+                for(var i = 0; i < data['staffInclusion'].length; i++){
+                    staffSelectedValues[i] = data['staffInclusion'][i]['employeeTypeID'];
+                    // setDishInclusion[i] = data['dishInclusion'][i]['dishTypeName'];
+                  }
+                $('#editStaffInclusion').val(staffSelectedValues).trigger('change'); 
+
+                var serviceSelectedValues = new Array();
+                // var setDishInclusion = new Array();
+                for(var i = 0; i < data['serviceInclusion'].length; i++){
+                    serviceSelectedValues[i] = data['serviceInclusion'][i]['serviceID'];
+                    // setDishInclusion[i] = data['dishInclusion'][i]['dishTypeName'];
+                  }
+                $('#editServiceInclusion').val(serviceSelectedValues).trigger('change'); 
                 },
 
                 
@@ -735,44 +739,6 @@ yourImg.style.width = '150px';
                 }                
             });
       }
+</script>
 
-    </script>
-
-  <script>
-      function getPackageInclusion(id){
-          // alert(id);
-          // var tblSDet = $('#packageInclusionTable');
-          // tblSDet.clear();
-          // tblSDet.draw(true);
-          // alert('adasxxxx');
-        $.ajax({
-                type: "GET",
-                url:  "/RetrievePackageInclusion",
-                data: 
-                {
-                    sdid: id
-                },
-                success: function(data){
-                  for (var i = 0; i < data['dishInclusion'].length; i++) {
-                    document.getElementById('dishInclusionDiv').innerHTML += '<h5>'+data['dishInclusion'][i]['dishTypeName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
-                  }
-                  for (var i = 0; i < data['dd'].length; i++) {
-                    document.getElementById('serviceInclusionDiv').innerHTML += '<h5>'+data['dd'][i]['serviceName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
-                  }
-                  for (var i = 0; i < data['ff'].length; i++) {
-                    document.getElementById('equipmentInclusionDiv').innerHTML += '<h5>'+data['ff'][i]['equipmentName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
-                  } 
-                  for (var i = 0; i < data['gg'].length; i++) {
-                    document.getElementById('staffInclusionDiv').innerHTML += '<h5>'+data['gg'][i]['employeeTypeName']+'<i class=" pull-right fa fa-edit"></i> <i class="pull-right fa fa-trash-o"></i></h5><hr>';
-                  }   
-                },
-                error: function(xhr)
-                {
-                    alert('adsasxx');
-                    alert($.parseJSON(xhr.responseText)['error']['message']);
-                }                
-            });
-      }
-
-    </script>
-    @endsection
+@endsection

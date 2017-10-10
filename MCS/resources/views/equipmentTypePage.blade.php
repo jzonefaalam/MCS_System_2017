@@ -179,6 +179,22 @@
   <!-- /.content-wrapper -->
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+<script>
+  $(function () {
+    $(document).on("hidden.bs.modal", "#addEquipmentModal", function () {
+      $("#addEquipmentTypeName").val("");
+      // document.getElementById('photoIcon').src = "img/imageIcon.png";
+    });
+  });
+  $(function () {
+    $(document).on("hidden.bs.modal", "#editEquipmentTypeModal", function () {
+      $("#editEquipmentTypeName").val("");
+      // document.getElementById('editPhotoIcon').src = "img/imageIcon.png";
+    });
+  });
+</script>
+
  <script>
   $(function () {
     $('#equipmentTypeTable').DataTable({

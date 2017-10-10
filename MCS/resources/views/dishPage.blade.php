@@ -407,19 +407,19 @@
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
 <script>
-$(function () {
-$('#dishTable').DataTable({
-"paging": true,
-"lengthChange": true,
-"searching": true,
-"ordering": false,
-"info": true,
-"autoWidth": true
-});
-});
+  $(function () {
+  $('#dishTable').DataTable({
+  "paging": true,
+  "lengthChange": true,
+  "searching": true,
+  "ordering": false,
+  "info": true,
+  "autoWidth": true
+  });
+  });
 </script>
-      <script>
 
+<script>
   $('#addDishImage').change(function(){
 
     var file = this.files[0];
@@ -435,206 +435,227 @@ $('#dishTable').DataTable({
     if(yourImg && yourImg.style) {
     yourImg.style.height = '150px';
     yourImg.style.width = '150px';
-}
-      });
+    }
+  });
 
-    $('#editDishImage').change(function(){
+  $('#editDishImage').change(function(){
 
-    var file = this.files[0];
-    var reader = new FileReader();
-    reader.onload = function(){
-      // alert("asdsd")
+  var file = this.files[0];
+  var reader = new FileReader();
+  reader.onload = function(){
+    // alert("asdsd")
 
-        document.getElementById('editPhotoIcon').src = this.result;
-        };
-    reader.readAsDataURL(file);
+      document.getElementById('editPhotoIcon').src = this.result;
+      };
+  reader.readAsDataURL(file);
 
-var yourImg = document.getElementById('editPhotoIcon');
+  var yourImg = document.getElementById('editPhotoIcon');
     if(yourImg && yourImg.style) {
     yourImg.style.height = '150px';
     yourImg.style.width = '150px';
-}
-      });
-
+  }
+  });
 </script>
-      <script type="text/javascript">
-    $('#addDishForm').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              addDishName: {
-                  validators: {
-                          stringLength: {
-                          min: 2,
-                          max: 20,
-                          message:'Dish name should be at least 2 characters and not exceed 20 characters.'
-                        },
-                            regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters, hyphen & apostrophe only.'
-                        },
-                            notEmpty: {
-                            message: 'This field is required.'
-                        }
-                    }
-              },
 
-              addDishPrice: {
-                      validators: {
-                      regexp: {
-                              regexp: /^\d+(?:\.\d{1,2})?$/,
-                              message: 'Invalid Input.'
-                      },
-                      stringLength: {
-                          max: 7,
-                          message:'Price limit reached'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      }
-                  }
-
-              },
-
-               addDishDesc: {
-                    validators: {
-                        stringLength: {
-                        max: 150,
-                        message:'Description should not exceed 150 characters.'
-                    },
-                  }
-                },
-
-                addDishType: {
-                  validators: {
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-                },
-
-                addDishImage: {
-                  validators: {
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-                }
-              }
-          });
-      </script>
-
-      <script type="text/javascript">
-    $('.editDishValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              editDishName: {
-                  validators: {
-                          stringLength: {
-                          min: 2,
-                          max: 30,
-                          message:'Dish name should be at least 2 characters and not exceed 20 characters.'
-                        },
-                            regexp: {
-                                regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                                message: 'This field should contain letters only.'
-                        },
-                            notEmpty: {
-                            message: 'This field is required.'
-                        }
-                    }
-              },
-
-              editDishPrice: {
-                      validators: {
-                      regexp: {
-                              regexp: /^\d+(?:\.\d{1,2})?$/,
-                              message: 'Invalid Input.'
-                      },
-                      stringLength: {
-                          max: 6,
-                          message:'Price limit reached'
-                      },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      }
-                  }
-
-              },
-
-               editDishDesc: {
-                    validators: {
-                        stringLength: {
-                        max: 150,
-                        message:'Description should not exceed 150 characters.'
-                    },
-                  }
-                },
-
-                editDishType: {
-                  validators: {
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-                },
-
-                editDishImage: {
-                  validators: {
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-                }
-              }
-          });
-      </script>
-
-      <script>
-        function editdishget(id){
-          $.ajax({
-                  type: "GET",
-                  url:  "/RetrieveDish",
-                  data: 
-                  {
-                      sdid: id
+<script type="text/javascript">
+  $('#addDishForm').bootstrapValidator({
+  // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+  
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        addDishName: {
+            validators: {
+                    stringLength: {
+                    min: 2,
+                    max: 20,
+                    message:'Dish name should be at least 2 characters and not exceed 20 characters.'
                   },
-                  success: function(data){
-                  $('#editDishID').val(data['ss'][0]['dishID']);
-                  $('#deleteDishID').val(data['ss'][0]['dishID']);
-                  $('#editDishName').val(data['ss'][0]['dishName']);
-                  $('#editDishDesc').val(data['ss'][0]['dishDescription']);
-                  $('#editDishPrice').val(data['ss'][0]['dishCost']);
-                  $('#disableDishID').val(data['ss'][0]['dishID']);
-                  $('#enableDishID').val(data['ss'][0]['dishID']);
-                  document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['dishImage']);
-                  var opty = document.getElementById('editDishType').options;
-                  
-                    for(var i =0; i<opty.length; i++){
-                      if(opty[i].value==data['ss'][0]['dishTypeID']){
-                      $('#editDishType').val(data['ss'][0]['dishTypeID']);
-                      break;
-                      }
-
-                    }
+                      regexp: {
+                          regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                          message: 'This field should contain letters, hyphen & apostrophe only.'
                   },
-                  error: function(xhr)
-                  {
-                      alert("mali");
-                      alert($.parseJSON(xhr.responseText)['error']['message']);
-                  }                
-              });
+                      notEmpty: {
+                      message: 'This field is required.'
+                  }
+              }
+        },
+
+        addDishPrice: {
+                validators: {
+                regexp: {
+                        regexp: /^\d+(?:\.\d{1,2})?$/,
+                        message: 'Invalid Input.'
+                },
+                stringLength: {
+                    max: 7,
+                    message:'Price limit reached'
+                },
+                    notEmpty: {
+                    message: 'This field is required.'
+                }
+            }
+
+        },
+
+         addDishDesc: {
+              validators: {
+                  stringLength: {
+                  max: 150,
+                  message:'Description should not exceed 150 characters.'
+              },
+            }
+          },
+
+          addDishType: {
+            validators: {
+                    notEmpty: {
+                    message: 'This field is required.'
+                },
+            }
+          },
+
+          addDishImage: {
+            validators: {
+                    notEmpty: {
+                    message: 'This field is required.'
+                },
+            }
+          }
         }
-      </script>
+    });
+</script>
+
+<script type="text/javascript">
+  $('.editDishValidator').bootstrapValidator({
+// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+
+  feedbackIcons: {
+      valid: 'glyphicon glyphicon-ok',
+      invalid: 'glyphicon glyphicon-remove',
+      validating: 'glyphicon glyphicon-refresh'
+  },
+  fields: {
+      editDishName: {
+          validators: {
+                  stringLength: {
+                  min: 2,
+                  max: 30,
+                  message:'Dish name should be at least 2 characters and not exceed 20 characters.'
+                },
+                    regexp: {
+                        regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                        message: 'This field should contain letters only.'
+                },
+                    notEmpty: {
+                    message: 'This field is required.'
+                }
+            }
+      },
+
+      editDishPrice: {
+              validators: {
+              regexp: {
+                      regexp: /^\d+(?:\.\d{1,2})?$/,
+                      message: 'Invalid Input.'
+              },
+              stringLength: {
+                  max: 6,
+                  message:'Price limit reached'
+              },
+                  notEmpty: {
+                  message: 'This field is required.'
+              }
+          }
+
+      },
+
+       editDishDesc: {
+            validators: {
+                stringLength: {
+                max: 150,
+                message:'Description should not exceed 150 characters.'
+            },
+          }
+        },
+
+        editDishType: {
+          validators: {
+                  notEmpty: {
+                  message: 'This field is required.'
+              },
+          }
+        },
+
+        editDishImage: {
+          validators: {
+                  notEmpty: {
+                  message: 'This field is required.'
+              },
+          }
+        }
+      }
+  });
+</script>
+
+<script>
+  function editdishget(id){
+    $.ajax({
+            type: "GET",
+            url:  "/RetrieveDish",
+            data: 
+            {
+                sdid: id
+            },
+            success: function(data){
+            $('#editDishID').val(data['ss'][0]['dishID']);
+            $('#deleteDishID').val(data['ss'][0]['dishID']);
+            $('#editDishName').val(data['ss'][0]['dishName']);
+            $('#editDishDesc').val(data['ss'][0]['dishDescription']);
+            $('#editDishPrice').val(data['ss'][0]['dishCost']);
+            $('#disableDishID').val(data['ss'][0]['dishID']);
+            $('#enableDishID').val(data['ss'][0]['dishID']);
+            document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['dishImage']);
+            var opty = document.getElementById('editDishType').options;
+            
+              for(var i =0; i<opty.length; i++){
+                if(opty[i].value==data['ss'][0]['dishTypeID']){
+                $('#editDishType').val(data['ss'][0]['dishTypeID']);
+                break;
+                }
+
+              }
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+        });
+  }
+</script>
+
+<script>
+  $(function () {
+    $(document).on("hidden.bs.modal", "#addDishModal", function () {
+      $("#addDishName").val("");
+      $("#addDishDesc").val("");
+      $("#addDishPrice").val("");
+      $("#addDishImage").val("");
+      document.getElementById('photoIcon').src = "img/imageIcon.png";
+    });
+  });
+  $(function () {
+    $(document).on("hidden.bs.modal", "#editDishModal", function () {
+      $("#editDishDesc").val("");
+      $("#editDishImage").val("");
+      $("#editDishPrice").val("");
+      $("#editDishName").val("");
+      document.getElementById('editPhotoIcon').src = "img/imageIcon.png";
+    });
+  });
+</script>
 @endsection

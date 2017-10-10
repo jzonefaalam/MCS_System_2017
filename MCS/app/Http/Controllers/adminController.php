@@ -885,6 +885,10 @@ class adminController extends Controller
     //Package functions--------------------------------------------------------------------------->
 
     public function packagePage(){
+
+        $stmt = "SELECT equipment_tbl.`equipmentID`, equipmenttype_tbl.`equipmentTypeID`, equipment_tbl.`equipmentName`, equipment_tbl.`equipmentDescription`, equipment_tbl.`equipmentRatePerHour`, equipmenttype_tbl.`equipmentTypeName`, equipment_tbl.`equipmentImage`, equipment_tbl.`equipmentStatus`, SUM(equipmentlog_tbl.`equipmentQuantityIn`) as qtyIn, SUM(equipmentlog_tbl.`equipmentQuantityOut`) as qtyOut FROM equipment_tbl, equipmenttype_tbl, equipmentlog_tbl WHERE equipmenttype_tbl.`equipmentTypeStatus` = 1 AND equipment_tbl.`equipmentTypeID` = equipmenttype_tbl.`equipmentTypeID` AND equipment_tbl.`equipmentID` = equipmentlog_tbl.`equipmentID` GROUP BY equipment_tbl.`equipmentID`, equipmenttype_tbl.`equipmentTypeID`, equipment_tbl.`equipmentName`, equipment_tbl.`equipmentDescription`, equipment_tbl.`equipmentRatePerHour`, equipmenttype_tbl.`equipmentTypeName`, equipment_tbl.`equipmentImage`, equipment_tbl.`equipmentStatus`";
+        $dr = DB::select($stmt);
+
         $packageData = DB::table('package_tbl')
         ->where('packageStatus', 1)->where('packageAvailability',1)
         ->get();
@@ -1198,7 +1202,7 @@ class adminController extends Controller
         ->get();
 
 
-        return \Response::json(['ss'=>$ss]);
+        return \Response::json(['ss'=>$ss, 'dishInclusion'=>$dishInclusion, 'equipmentInclusion'=>$ff, 'staffInclusion'=>$gg, 'serviceInclusion'=>$dd]);
     }
 
     public function retrievePackageInclusion(){
@@ -1573,10 +1577,9 @@ class adminController extends Controller
     }
 
     public function retrievePOEquipment(){
-        $existingPOEquipment = DB::table('purchaseorder_tbl')
-        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        $existingPOEquipment = DB::table('equipment_tbl')
+        ->join('equipmenttype_tbl','equipmenttype_tbl.equipmentTypeID','=','equipment_tbl.equipmentTypeID')
         ->select('*')
-        ->where('purchaseorder_tbl.poTypeId', 2)
         ->get();
         return \Response::json(['existingPOEquipment'=>$existingPOEquipment]);
     }
@@ -1651,7 +1654,7 @@ class adminController extends Controller
             }
             //Equipment
             if($categoryChecker==1){
-                //Save Purchase Orderr
+                //Save Purchase Order
                 $po = new purchaseordertbl;
                 $po->poItemName = Input::get('addExistingItemName');
                 $po->poDescription = Input::get('addPODescription');
@@ -1662,17 +1665,15 @@ class adminController extends Controller
                 $po->poStatus = 1;
                 $po->save();
 
-                //Save Equipment Maintenance
-                $equipment = new equipmenttbl;
-                $equipment->equipmentName = Input::get('addExistingItemName');
-                $equipment->equipmentDescription = Input::get('addPODescription');
-                $equipment->equipmentRatePerHour = Input::get('addRatePerHour');
-                $equipment->equipmentAvailability = 1;
-                $equipment->equipmentStatus = 1;
-                $equipment->equipmentTypeID = Input::get('addEquipmentType');
-                $equipment->equipmentImage = "No Image";
-                $equipment->save();
+                $itemID = Input::get('addExistingItemName');
 
+                //Save Inventory
+                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog->equipmentID = $itemID;
+                $equipmentlog->equipmentQuantityIn = Input::get('addPOQty');
+                $equipmentlog->equipmentQuantityOut = 0;
+                $equipmentlog->equipmentLogDate = Date_create('now');
+                $equipmentlog->save();
 
             }
             
@@ -1680,6 +1681,13 @@ class adminController extends Controller
         return redirect()->back();
         
         
+    }
+
+    public function retrieveEquipmentID(){
+        $itemName = Input::get('strUser');
+        $stmt = "SELECT `equipmentID` FROM equipment_tbl where `equipmentName` = '$itemName'";
+        $dr = DB::select($stmt);
+        return \Response::json(['newEquipmentID'=>$dr]);
     }
 
     public function inventoryPOTypePage(){
@@ -1961,13 +1969,15 @@ class adminController extends Controller
         ->where('reservation_tbl.created_at', '>=', $dateToday)
         ->get();  
 
-
-        $date = strtotime('2010-11-28');
-
-        if (strtotime('-7 days') < $date && $date < strtotime('+7 days')) {
-        // yup
-        }
         $latestEvents = DB::table('reservation_tbl')
+        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->where('reservation_tbl.reservationStatus', 2)
+        ->get();
+
+        $latestPayments = DB::table('reservation_tbl')
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
@@ -1978,7 +1988,8 @@ class adminController extends Controller
         return View::make('/dashboardPage')
         ->with('packageData',$packageData)
         ->with('dashboardData', $dashboardData)
-        ->with('latestEvents', $latestEvents);
+        ->with('latestEvents', $latestEvents)
+        ->with('latestPayments', $latestPayments);
     }//Schedule function------------------------------------------------------------------------------>
     
 

@@ -41,7 +41,7 @@
                     <tbody>
                       @foreach ($equipmentData as $equipmentData)
                       <tr>
-                        <td><img src="{{ asset('images/' . $equipmentData->equipmentImage) }}"  style="width:150px;height:100px;" /></td>
+                        <td><img src="{{ asset('img/' . $equipmentData->equipmentImage) }}"  style="width:150px;height:100px;" /></td>
                         <td>{{ $equipmentData->equipmentName }}</td>
                         <td>{{ $equipmentData->equipmentDescription }}</td>
                         <td>{{ $equipmentData->equipmentTypeName }}</td>
@@ -145,6 +145,12 @@
                     </div>
 
                     <div class="form-group">
+                      <div class="col-sm-4" >
+                        <img id="editPhotoIcon" align="middle" src="img/imageIcon.png" class="img-responsive" style="width:150px;margin-left:220px;border-radius:50%;height:150px; "/>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
                     <label class="col-sm-4 control-label">Equipment Name</label>
                     <div class="col-sm-6">
                     <div class = "input-group">
@@ -204,7 +210,7 @@
                     <div class="col-sm-6">
                     <div class="input-group">
                     <div class="input-group-addon">
-                    <input type="file" name="editEquipmentImage">
+                    <input type="file" name="editEquipmentImage" id="editEquipmentImage">
                     </div>
                     </div>
                     </div>
@@ -316,9 +322,38 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
- <script>
+
+<script>
+  $('#editEquipmentImage').change(function(){
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.onload = function(){
+        document.getElementById('editPhotoIcon').src = this.result;
+        };
+    reader.readAsDataURL(file);
+    var yourImg = document.getElementById('editPhotoIcon');
+      if(yourImg && yourImg.style) {
+      yourImg.style.height = '150px';
+      yourImg.style.width = '150px';
+    }
+  });
+</script>
+
+<script>
+  $(function () {
+    $(document).on("hidden.bs.modal", "#editEquipmentModal", function () {
+      $("#editEquipmentName").val("");
+      $("#editEquipmentImage").val("");
+      $("#editEquipmentDescription").val("");
+      $("#editEquipmentRatePerHour").val("");
+      document.getElementById('editPhotoIcon').src = "img/imageIcon.png";
+    });
+  });
+</script>
+
+<script>
   $(function () {
     $('#equipmentTable').DataTable({
       "paging": false,
@@ -330,109 +365,110 @@
     });
   });
 </script>
-  <script>
-      function getEquipment(id){
-        $.ajax({
-                type: "GET",
-                url:  "/RetrieveEquipment",
-                data: 
-                {
-                    sdid: id
-                },
-                success: function(data){
-                $('#editEquipmentID').val(data['ss'][0]['equipmentID']);
-                $('#deleteEquipmentID').val(data['ss'][0]['equipmentID']);
-                $('#editEquipmentName').val(data['ss'][0]['equipmentName']);
-                $('#editEquipmentDescription').val(data['ss'][0]['equipmentDescription']);
-                $('#editEquipmentRatePerHour').val(data['ss'][0]['equipmentRatePerHour']);
-                $('#editEquipmentUnit').val(data['ss'][0]['equipmentUnit']);
-                var opty = document.getElementById('editEquipmentType').options;
-                  for(var i =0; i<opty.length; i++){
-                    if(opty[i].value==data['ss'][0]['equipmentTypeID']){
-                    $('#editEquipmentType').val(data['ss'][0]['equipmentTypeID']) ;
-                    break;
-                    }
-                  }
-                },
-                error: function(xhr)
-                {
-                    alert("mali");
-                    alert($.parseJSON(xhr.responseText)['error']['message']);
-                }                
-            });
-      }
 
-    </script>
-
-    <script type="text/javascript">
-    $('.editEquipmentValidator').bootstrapValidator({
-        // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-        
-          feedbackIcons: {
-              valid: 'glyphicon glyphicon-ok',
-              invalid: 'glyphicon glyphicon-remove',
-              validating: 'glyphicon glyphicon-refresh'
-          },
-          fields: {
-              editEquipmentName: {
-                  validators: {
-                        stringLength: {
-                        min: 2,
-                        max: 20,
-                        message:'Please supply a valid equipment name.'
-                      },
-                      //     regexp: {
-                      //         regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
-                      //         message: 'This field should contain letters, hyphen & apostrophe only.'
-                      // },
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                  }
-
-              },
-               editEquipmentDescription: {
-                    validators: {
-                        stringLength: {
-                        max: 50,
-                        message:'Description should not to exceed 50 characters.'
-                    },
-                    }
-                },
-
-                editEquipmentRatePerHour: {
-                    validators: {
-                        stringLength: {
-                        max: 7,
-                        message:'Price limit reached.'
-                    },
-                          regexp: {
-                            regexp: /^\d+(?:\.\d{1,2})?$/,
-                            message: 'Invalid Input.'
-                    },
-                    }
-                },
-                
-                editEquipmentType: {
-                    validators: {
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                    }
-                },
-
-                editEquipmentImage: {
-                    validators: {
-                          notEmpty: {
-                          message: 'This field is required.'
-                      },
-                    }
-                },
+<script>
+  function getEquipment(id){
+    $.ajax({
+            type: "GET",
+            url:  "/RetrieveEquipment",
+            data: 
+            {
+                sdid: id
+            },
+            success: function(data){
+            $('#editEquipmentID').val(data['ss'][0]['equipmentID']);
+            $('#deleteEquipmentID').val(data['ss'][0]['equipmentID']);
+            $('#editEquipmentName').val(data['ss'][0]['equipmentName']);
+            $('#editEquipmentDescription').val(data['ss'][0]['equipmentDescription']);
+            $('#editEquipmentRatePerHour').val(data['ss'][0]['equipmentRatePerHour']);
+            $('#editEquipmentUnit').val(data['ss'][0]['equipmentUnit']);
+            document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['equipmentImage']);
+            var opty = document.getElementById('editEquipmentType').options;
+              for(var i =0; i<opty.length; i++){
+                if(opty[i].value==data['ss'][0]['equipmentTypeID']){
+                $('#editEquipmentType').val(data['ss'][0]['equipmentTypeID']) ;
+                break;
+                }
               }
-          });
-      </script>
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+        });
+  }
+</script>
 
-      <script type="text/javascript">
+<script type="text/javascript">
+  $('.editEquipmentValidator').bootstrapValidator({
+    // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+    
+      feedbackIcons: {
+          valid: 'glyphicon glyphicon-ok',
+          invalid: 'glyphicon glyphicon-remove',
+          validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+          editEquipmentName: {
+              validators: {
+                    stringLength: {
+                    min: 2,
+                    max: 20,
+                    message:'Please supply a valid equipment name.'
+                  },
+                  //     regexp: {
+                  //         regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                  //         message: 'This field should contain letters, hyphen & apostrophe only.'
+                  // },
+                      notEmpty: {
+                      message: 'This field is required.'
+                  },
+              }
+
+          },
+           editEquipmentDescription: {
+                validators: {
+                    stringLength: {
+                    max: 50,
+                    message:'Description should not to exceed 50 characters.'
+                },
+                }
+            },
+
+            editEquipmentRatePerHour: {
+                validators: {
+                    stringLength: {
+                    max: 7,
+                    message:'Price limit reached.'
+                },
+                      regexp: {
+                        regexp: /^\d+(?:\.\d{1,2})?$/,
+                        message: 'Invalid Input.'
+                },
+                }
+            },
+            
+            editEquipmentType: {
+                validators: {
+                      notEmpty: {
+                      message: 'This field is required.'
+                  },
+                }
+            },
+
+            editEquipmentImage: {
+                validators: {
+                      notEmpty: {
+                      message: 'This field is required.'
+                  },
+                }
+            },
+          }
+      });
+</script>
+
+<script type="text/javascript">
     $('.addEquipmentValidator').bootstrapValidator({
         // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
         
@@ -498,5 +534,5 @@
                 },
               }
           });
-      </script>
+</script>
   @endsection

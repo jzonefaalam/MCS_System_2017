@@ -138,6 +138,7 @@ Route::get('/PurchaseOrderPage', 'adminController@inventoryPOPage');
 Route::post("/InventoryPOPage", array("uses"=>"adminController@addPO"));
 Route::get('/RetrievePOFood', 'adminController@retrievePOFood');
 Route::get('/RetrievePOEquipment', 'adminController@retrievePOEquipment');
+Route::get('/RetrieveEquipmentID', 'adminController@retrieveEquipmentID');
 
 //Purchase Order Type Page
 Route::get('/PurchaseOrderTypePage', 'adminController@inventoryPOTypePage');

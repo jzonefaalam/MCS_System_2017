@@ -379,19 +379,6 @@
   }
 </script>
 
-<script>
-$(function () {
-  $(document).on("hidden.bs.modal", "#addDishTypeModal", function () {
-    $(this).find("#addDishTypeImage").html(""); // Just clear the contents.
-    $(this).find("#addDishTypeName").html(""); // Just clear the contents.
-  });
-  $(document).on("hidden.bs.modal", "#editDishTypeModal", function () {
-    $(this).find("#editDishTypeName").html(""); // Just clear the contents.
-    $(this).find("#editDishTypeImage").html(""); // Just clear the contents.
-  });
-});
-</script>
-
 <!-- <script>
   $(document).ready(function() {
     $("#send").click(function(e) {

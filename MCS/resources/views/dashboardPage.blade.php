@@ -78,15 +78,9 @@
                     </ul>
                   </li>
                   <li class="active treeview">
-                    <a href="/EmployeePage"><i class="fa fa-circle-o"></i> Employee
-                      <span class="pull-right-container">
-                      <i class="fa fa-angle-right pull-right"></i>
-                      </span>
+                    <a href="/EmployeeTypePage"><i class="fa fa-circle-o"></i> Employee
+                      
                     </a>
-                    <ul class="treeview-menu">
-                      <!-- <li><a href="/EmployeePage"><i class="fa fa-square-o"></i> Employee List</a></li> -->
-                      <li><a href="/EmployeeTypePage"><i class="fa fa-square-o"></i> Employee Type</a></li>
-                    </ul>
                   </li>
                   <li>
                     <a href="/EquipmentPage"><i class="fa fa-circle-o"></i> Equipment
@@ -134,7 +128,7 @@
 
             <li class="treeview">
               <a href="/InventoryDishPage">
-                <i class="fa fa-book"></i>  <span>Inventory</span>
+                <i class="fa fa-book"></i><span>Inventory</span>
               </a>
               <ul class="treeview-menu">
                 <li><a href="/InventoryEquipmentPage"><i class="fa fa-square-o"></i> Equipment</a></li>
@@ -142,14 +136,30 @@
             </li>
 
             <li class="treeview">
+              <a href="/#">
+                <i class="fa fa-shopping-cart"></i><span>Purchase Order</span>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="/PurchaseOrderPage"><i class="fa fa-square-o"></i> List</a></li>
+                <li><a href="/PurchaseOrderTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
+              </ul>
+            </li>
+
+            <li class="treeview">
               <a href="/TransactionPage">
-                <i class="fa fa-file-text"></i> <span>Transactions</span>
+                <i class="fa fa-line-chart"></i> <span>Transactions</span>
+              </a>  
+            </li>
+
+            <li class="treeview">
+              <a href="/QueryPage">
+                <i class="fa fa-file-text"></i> <span>Queries</span>
               </a>  
             </li>
 
             <li class="treeview">
               <a href="ReportPage">
-                <i class="fa fa-file-text"></i> <span>Reports</span>
+                <i class="fa fa-pencil-square-o"></i> <span>Reports</span>
               </a>  
             </li>
 
@@ -212,6 +222,28 @@
                             </small>
                           </td>
                         <?php endif ?>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                  <hr>
+                  <!-- Table for Payments -->
+                  <table class="table table-bordered table-striped dataTable" id="paymentTable">
+                    <thead>
+                      <tr>
+                        <th>Payments</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     @foreach($latestPayments as $latestPayments)
+                      <tr>
+                          <td>
+                            <a >{{ $latestPayments -> eventName}}</a>
+                            <small style="width: 100px;" class="label label-danger pull-right">
+                              <i class="fa fa-calendar-o"></i> 
+                              {{ $latestPayments->eventTime }}
+                            </small>
+                          </td>
                       </tr>
                       @endforeach
                     </tbody>
@@ -311,178 +343,125 @@
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               <h4 class="modal-title" id="myModalLabel">Update Reservation</h4>
             </div>
-            <div class="modal-body" style="width:100%;">
-              <div class="box">
-                <div class="box-body">
-                  <div class="row">
-                    <div class="col-sm-12">
-                      <div class="box">
-                        <div class="box-header">
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <h4><strong>Customer Details</strong></h4>
-                            </div>
-                            <div class="col-sm-6" id="contactNumber">
-                              
-                            </div>
-                            <div class="col-sm-6" style="display:none;">
-                              <input type="text"  name="reservationNumber" id="reservationNumber" >
-                            </div>
-                          </div>
-                        </div>
-                        <div class="box-body">
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <label>Customer Name</label>
-                              <br>
-                              <div>
-                                <input type="text"  name="editCustomerName" id="editCustomerName" column="20" required >
-                              </div>
-                              <label>Home Address</label>
-                              <br>
-                              <div>
-                                <input type="text" " name="editHomeAddress" id="editHomeAddress" required >
-                              </div>
-                              <label>Email Address</label>
-                              <br>
-                              <div>
-                                <input type="text"  name="editEmailAddress" id="editEmailAddress" required >
-                              </div>
-                            </div>
-                            <div class="col-sm-6">
-                              <label>Contact Number</label>
-                              <br>
-                              <div>
-                                <input type="text"  name="editContactNumber" id="editContactNumber" required >
-                              </div>
-                              <label>Date of Birth</label>
-                              <br>
-                              <div>
-                                <input type="text" name="editDateOfBirth" id="editDateOfBirth" required >
-                              </div>
-                            </div>
-                          </div>
-                          <!-- End Row -->
-                        </div>
+            <div class="box-body">
+              <div class="row">
+                <div class="col-sm-5 col-sm-offset-2">
+                  <h4><strong>Customer Details</strong></h4>
+                  <label>Customer Name</label>
+                  <div>
+                    <input type="text"  name="editCustomerName" id="editCustomerName" column="20" required >
+                  </div>
+                  <label>Home Address</label> <br>
+                  <div>
+                    <input type="text" " name="editHomeAddress" id="editHomeAddress" required >
+                  </div>
+                  <label>Email Address</label> <br>
+                  <div>
+                    <input type="text"  name="editEmailAddress" id="editEmailAddress" required >
+                  </div>
+                  <label>Contact Number</label> <br>
+                  <div>
+                    <input type="text"  name="editContactNumber" id="editContactNumber" required >
+                  </div>
+                  <label>Date of Birth</label> <br>
+                  <div>
+                    <input type="text" name="editDateOfBirth" id="editDateOfBirth" required >
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <h4><strong>Event Details</strong></h4>
+                  <label>Event Name</label> <br>
+                  <div>
+                    <input type="text"  name="editEventName" id="editEventName" column="20" required >
+                  </div>
+                  <label>Event Date</label> <br>
+                  <div>
+                    <input type="text" " name="editEventDate" id="editEventDate" required >
+                  </div>
+                  <label>Event Location</label> <br>
+                  <div>
+                    <input type="text"  name="editEventLocation" id="editEventLocation" required >
+                  </div>
+                  <label>Number of Guests</label> <br>
+                  <div>
+                    <input type="text"  name="editEventGuestCount" id="editEventGuestCount" required >
+                  </div>
+                  <label>Start Time</label> <br>
+                  <div>
+                    <input type="text" name="editEventStartTime" id="editEventStartTime" required >
+                  </div>
+                  <label>End Time</label> <br>
+                  <div>
+                    <input type="text"  name="editEventEndTime" id="editEventEndTime" required >
+                  </div>
+                </div>
+              </div> <br> <br>
+              <!-- End Row -->
+                    
+              <div class="box-body">
+                <div class="nav-tabs-custom">
+                  <ul class="nav nav-tabs">
+                    <li ><a href="#tab_2" data-toggle="tab">Package </a></li>
+                    <li ><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
+                    <li ><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
+                    <li ><a href="#tab_5" data-toggle="tab">Additional Service</a></li>
+                    <li ><a href="#tab_6" data-toggle="tab">Additional Staff </a></li>
+                  </ul>
+                  <div class="tab-content">
+
+                    <!-- Package Tab -->
+                    <div class="tab-pane active" id="tab_2">
+                      <div class="box-header">
+                        <h4><strong>Package Details</strong></h4>
                       </div>
-                      <div class="box">
-                        <div class="box-header">
-                          <h4><strong>Event Details</strong></h4>
-                        </div>
-                        <div class="box-body">
-                           <div class="row">
-                            <div class="col-sm-6">
-                              <label>Event Name</label>
-                              <br>
-                              <div>
-                                <input type="text"  name="editEventName" id="editEventName" column="20" required >
-                              </div>
-                              <label>Event Date</label>
-                              <br>
-                              <div>
-                                <input type="text" " name="editEventDate" id="editEventDate" required >
-                              </div>
-                              <label>Event Location</label>
-                              <br>
-                              <div>
-                                <input type="text"  name="editEventLocation" id="editEventLocation" required >
-                              </div>
-                            </div>
-                            <div class="col-sm-6">
-                              <label>Number of Guests</label>
-                              <br>
-                              <div>
-                                <input type="text"  name="editEventGuestCount" id="editEventGuestCount" required >
-                              </div>
-                              <label>Start Time</label>
-                              <br>
-                              <div>
-                                <input type="text" name="editEventStartTime" id="editEventStartTime" required >
-                              </div>
-                              <label>End Time</label>
-                              <br>
-                              <div>
-                                <input type="text"  name="editEventEndTime" id="editEventEndTime" required >
-                              </div>
+                      <div class="box-body">
+                        <div>
+                          <label>Package Name</label> <br>
+                          <div> 
+                            <select class="form-control" name="editPackage" id="editPackage">
+                              <option disabled>Select Package</option>
+                              @foreach($packageData as $packageData)
+                              <option value="{{ $packageData->packageID }}">{{ $packageData->packageName }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div> <br>
+                          
+                        <h3><strong> Package Inclusions </strong></h3>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <h4> Dish Included </h4>
+                            <div id="dishInclusion">
+
                             </div>
                           </div>
-                          <!-- End Row -->
+                          <div class="col-sm-3">
+                            <h4> Equipment Included </h4>
+                            <div id="equipmentInclusion">
+
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <h4> Services & Staff Included </h4>
+                            <div id="serviceInclusion">
+
+                            </div>
+                          </div>
+                          <div class="col-sm-3">
+                            <h4> Services & Staff Included </h4>
+                            <div id="employeeInclusion">
+
+                            </div>
+                          </div>
                         </div>
+                        <!-- End Row -->
                       </div>
                       <!-- End Box -->
                     </div>
-                    <!-- End Column -->
-                  </div>
-                  <!-- End Row -->
-                  <div class="box">
-                    <div class="box-body">
-                      <div class="nav-tabs-custom">
-                        <ul class="nav nav-tabs">
-                          <li ><a href="#tab_2" data-toggle="tab">Package </a></li>
-                          <li ><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
-                          <li ><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
-                          <li ><a href="#tab_5" data-toggle="tab">Additional Service</a></li>
-                          <li ><a href="#tab_6" data-toggle="tab">Additional Staff </a></li>
-                        </ul>
-                        <div class="tab-content">
-
-                          <!-- Package Tab -->
-                          <div class="tab-pane active" id="tab_2">
-                            <div class="box">
-                              <div class="box-header">
-                                <h4><strong>Package Details</strong></h4>
-                              </div>
-                              <div class="box-body">
-                                <div>
-                                  <label>Package Name</label>
-                                  <br>
-                                  <div> 
-                                    <select class="form-control" name="editPackage" id="editPackage">
-                                    <option disabled>Select Package</option>
-                                    @foreach($packageData as $packageData)
-                                    <option value="{{ $packageData->packageID }}">{{ $packageData->packageName }} </option>
-                                    @endforeach
-                                    </select>
-                                  </div>
-                                </div>
-                                  <br>
-                                  <h3><strong> Package Inclusions </strong></h3>
-                                 <div class="row">
-                                  <div class="col-sm-3">
-                                  <h4> Dish Included </h4>
-                                    <div id="dishInclusion">
-                                      
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-3">
-                                  <h4> Equipment Included </h4>
-                                    <div id="equipmentInclusion">
-
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-3">
-                                  <h4> Services & Staff Included </h4>
-                                    <div id="serviceInclusion">
-
-                                    </div>
-                                  </div>
-                                  <div class="col-sm-3">
-                                  <h4> Services & Staff Included </h4>
-                                    <div id="employeeInclusion">
-
-                                    </div>
-                                  </div>
-                                </div>
-                                <!-- End Row -->
-                              </div>
-                            </div>
-                            <!-- End Box -->
-                          </div>
-                          <!-- End Reservation Info Tab -->
+                    <!-- End Reservation Info Tab -->
 
                           <!-- Additional Food Tab -->
-                          <div class="tab-pane active" id="tab_3">
-                            <div class="box">
+                          <div class="tab-pane" id="tab_3">
                               <div class="box-header">
                                 <h4><strong>Additional Food Details</strong></h4>
                               </div>
@@ -492,7 +471,6 @@
 
                                 </div>
                               </div>
-                            </div>
                             <!-- End Box -->
                           </div>
                           <!-- End Reservation Tab -->
@@ -500,8 +478,7 @@
                               {!! csrf_field() !!}
                           <input type="hidden" id="token" value="{{ csrf_token() }}">
                           <!-- Additional Equipment Tab -->
-                          <div class="tab-pane active" id="tab_4">
-                            <div class="box">
+                          <div class="tab-pane" id="tab_4">
                               <div class="box-header">
                                 <h4><strong>Additional Equipment Details</strong></h4>
                               </div>
@@ -511,14 +488,12 @@
 
                                 </div>
                               </div>
-                            </div>
                             <!-- End Box -->
                           </div>
                           <!-- End Reservation Info Tab -->
 
                           <!-- Additional Service & Staff Tab -->
-                          <div class="tab-pane active" id="tab_5">
-                            <div class="box">
+                          <div class="tab-pane" id="tab_5">
                               <div class="box-header">
                                 <h4><strong>Additional Service Details</strong></h4>
                               </div>
@@ -528,14 +503,12 @@
 
                                 </div>
                               </div>
-                            </div>
                             <!-- End Box -->
                           </div>
                           <!-- End Reservation Info Tab -->
 
                           <!-- Additional Service & Staff Tab -->
-                          <div class="tab-pane active" id="tab_6">
-                            <div class="box">
+                          <div class="tab-pane" id="tab_6">
                               <div class="box-header">
                                 <h4><strong>Additional Staff Details</strong></h4>
                               </div>
@@ -544,7 +517,6 @@
                                 <div id="additionalEmployeeDiv">
 
                                 </div>
-                              </div>
                             </div>
                             <!-- End Box -->
                           </div>
@@ -555,9 +527,6 @@
                       </div>
                       <!-- /.tab-content -->
                     </div>
-                    </div>
-                  </div>
-                  </div>
                   <!-- nav-tabs-custom -->
             </div>
             <div id="confirmationDiv" class="modal-footer" >
@@ -617,33 +586,34 @@
             </form>
             <!-- End Modals-->
 
-                      <!-- Delete service Modal-->
-                      <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
-                      <div class="modal fade" id="sendDenyEmailModal">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                             <div class="modal-body">
-                                <div class="form-group" style="display:none;">
-                                  <label class="col-sm-4 control-label">Reservation ID</label>
-                                  <div class="col-sm-5 input-group" >
-                                    <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
-                                    <input type="text" class="form-control" name="denyReservationId" id="denyReservationId" readonly="">
-                                  </div>
-                                </div>
-                                {!! csrf_field() !!}
-                                <div>
-                                  <h5> Are you sure you want to deny this reservation? </h5>
-                                </div>
-                                <div style="text-align: center;">
-                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                                </div>
-                              </div>
-                          </div>
+            <!-- Delete service Modal-->
+            <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
+            <div class="modal fade" id="sendDenyEmailModal">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                   <div class="modal-body">
+                      <div class="form-group" style="display:none;">
+                        <label class="col-sm-4 control-label">Reservation ID</label>
+                        <div class="col-sm-5 input-group" >
+                          <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
+                          <input type="text" class="form-control" name="denyReservationId" id="denyReservationId" readonly="">
                         </div>
                       </div>
-                      </form>
-                      <!-- End Modals-->      
+                      {!! csrf_field() !!}
+                      <div>
+                        <h5> Are you sure you want to deny this reservation? </h5>
+                      </div>
+                      <div style="text-align: center;">
+                        <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+                        <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            </form>
+            <!-- End Modals-->   
+               
             <!-- /.box-body -->
           </div>
           <!-- /. box -->
@@ -657,6 +627,74 @@
   </div>
   <!-- /.content-wrapper -->
 
+  <!-- Payment Modal -->
+  <form id="paymentForm" role="form" method="POST" action="#" class="form-horizontal">
+    <div class="modal fade" id="paymentModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div style="display: inline-block;">
+                      Sample Name
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div style="display: inline-block;">
+                      Sample Name
+                    </div>
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Contact Number: </label>
+                    <div style="display: inline-block;">
+                      Sample #
+                    </div>
+                    <br>
+                    <label>Event Date: </label>
+                    <div style="display: inline-block;">
+                      Sample Name
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Box -->
+            </div>
+            <div class="row">
+              <table class="table table-bordered table-striped dataTable" style="width:95%;" align="center">
+                <thead>
+                  <tr>
+                    <th>Payment</th>
+                    <th>Due Date</th>
+                    <th>Date Received</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-default">Send Notification</button>
+              <button type="submit" class="btn btn-default">Cancel Event</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End -->
   
 </div>
 <!-- ./wrapper -->
@@ -716,6 +754,7 @@
 </script>  -->
 
 <script>
+  // DataTables Initialization
   $(function () {
     $('#notificationTable').DataTable({
       "paging": true,
@@ -725,10 +764,19 @@
       "info": true,
       "autoWidth": true
     });
+    $('#paymentTable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
   });
+
+  // Notification Table Function
   $(document).ready(function() {
     var table = $('#notificationTable').DataTable();
-     
     $('#notificationTable tbody').on('dblclick', 'tr', function () {
         var totalFeeTemp;
         var totalFeePerm;
@@ -869,14 +917,15 @@
                     }                
                   });
         } );
-    // $('#datepicker').datepicker({
-    //   autoclose: true
-    // });
-    // //Timepicker
-    // $(".timepicker").timepicker({
-    //   showInputs: true
-    // });
-} );
+  });
+
+  // Payment Table Function
+  $(document).ready(function() {
+    var paymentTable = $('#paymentTable').DataTable();
+    $('#paymentTable tbody').on('dblclick', 'tr', function () {
+      $("#paymentModal").modal("show");
+    });
+  });
 </script>
 
 <script>
@@ -899,8 +948,7 @@
                 }                
             });
       }
-
-    </script>
+</script>
 
 <script>
 $(function () {
@@ -1013,7 +1061,7 @@ $(function () {
                 eventClick: function(calEvent, jsEvent, view) {
                   document.getElementById('scheduleForm').reset();
                   $(this).find("#scheduleForm").html("");
-                  document.getElementById('contactNumber').innerHTML = '<h2 class="pull-right"><strong> #'+calEvent.customerCellNumberEvent+'</strong></h2>';
+                  // document.getElementById('contactNumber').innerHTML = '<h2 class="pull-right"><strong> #'+calEvent.customerCellNumberEvent+'</strong></h2>';
                   $('#editCustomerName').val(calEvent.customerNameEvent);
                   $('#editContactNumber').val(calEvent.customerCellNumberEvent);
                   $('#editEmailAddress').val(calEvent.customerEmailAddressEvent);

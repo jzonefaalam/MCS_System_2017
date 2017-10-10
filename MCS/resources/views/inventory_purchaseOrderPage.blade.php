@@ -70,7 +70,7 @@
 
      <!-- Add Purchase Order Type Modal-->
         <div class="panel-body">
-          <form role="form" method="POST" action="/InventoryPOPage" class="form-horizontal">
+          <form id="addPOForm" role="form" method="POST" action="/InventoryPOPage" class="form-horizontal">
             <div class="modal fade" id="addPurchaseOrderModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -200,7 +200,7 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                      <input class="btn btn-primary" id="addPObtn" type="submit" value="Submit">
+                      <input class="btn btn-primary" id="send" type="submit" value="Submit">
                   </div>
                 </div>
               </div>
@@ -268,7 +268,8 @@ function enableEquipmentType(id){
       },
       success: function(data){        
         for (var i = 0; i < data['existingPOEquipment'].length; i++) {
-          var div_data="<option value=" +data['existingPOEquipment'][i]['poItemName']+ ">" +data['existingPOEquipment'][i]['poItemName']+ "</option>";
+          // alert(data['existingPOEquipment'][i]['equipmentName']);
+          var div_data="<option value=" +data['existingPOEquipment'][i]['equipmentID']+ ">" +data['existingPOEquipment'][i]['equipmentName']+ "</option>";
           $(div_data).appendTo('#addExistingItemName');
         }
       },
@@ -298,7 +299,7 @@ function existingItemFunction(){
 <!-- Script for ADDING -->
 <!-- <script>
   $(document).ready(function() {
-    $("#addPObtn").click(function(e) {
+    $("#send").click(function(e) {
       e.preventDefault();
       var checker = document.getElementById('checkboxChecker').value;
       var categoryChecker = document.getElementById('categoryChecker').value;
@@ -306,16 +307,26 @@ function existingItemFunction(){
       if(checker==1) {
         // Food
         if(categoryChecker==0){
-          alert('New Item: FOOD');
+          document.getElementById("addPOForm").submit();
         }
         // Equipment
         if(categoryChecker==1){
-          alert('New Item: EQUIP');
+          document.getElementById("addPOForm").submit();
         }
       }
       // Existing Item 
       if(checker==0){
-        alert('existing Item');
+        // Food
+        if(categoryChecker==0){
+          document.getElementById("addPOForm").submit();
+        }
+        // Equipment
+        if(categoryChecker==1){
+          // Ajax for getting equipmentID
+          var equipmentNameChecker = document.getElementById("addExistingItemName");
+          var strUser = equipmentNameChecker.options[equipmentNameChecker.selectedIndex].value;
+          
+        }
       }
     });
   });
