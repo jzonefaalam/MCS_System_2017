@@ -23,11 +23,6 @@
             <div class="col-md-6">
               <h2>Transaction List</h2>
             </div>
-            <div class="col-md-6">
-              <a class="btn btn-app" href="#" style="float:right">
-                <i class="fa fa-save"></i>Button
-              </a>
-            </div>
           </div>
         </div>
         <!-- /Header -->

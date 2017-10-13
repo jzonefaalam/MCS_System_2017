@@ -28,6 +28,9 @@
   <![endif]-->
   <link href="{{ asset('LTE/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet" />
   <link href="{{ asset('LTE/fullcalendar/fullcalendar.print.min.css') }}" rel="stylesheet" media="print" />
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="{{ asset('LTE/plugins/datepicker/bootstrap-datepicker.min.css') }}">
+  
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -197,10 +200,14 @@
               <div class="row">
                 <div class="col-md-12">
                   <!-- Table for Upcoming events -->
-                  <table class="table table-bordered table-striped dataTable">
+                  <table class="table table-bordered table-striped dataTable" id="eventTable">
                     <thead>
                       <tr>
                         <th>Upcoming Events</th>
+                        <th style="display: none;">Reservation ID</th>
+                        <th style="display: none;">Event ID</th>
+                        <th style="display: none;">Package ID</th>
+                        <th style="display: none;">Customer ID</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -216,22 +223,31 @@
                         if ((($seconds_diff)<=7) && (($seconds_diff)>=1)): ?>
                           <td>
                             <a >{{ $latestEvents -> eventName}}</a>
-                            <small style="width: 100px;" class="label label-danger pull-right">
+                            <small style="width: 150px;" class="label label-danger pull-right">
                               <i class="fa fa-calendar-o"></i> 
-                              {{ $latestEvents->eventTime }}
+                               {{ $latestEvents -> eventDate }} &nbsp {{ $latestEvents->eventTime }}
                             </small>
                           </td>
                         <?php endif ?>
+                          <td style="display: none;">{{ $latestEvents->reservationID }}</td>
+                          <td style="display: none;">{{ $latestEvents->eventID }}</td>
+                          <td style="display: none;">{{ $latestEvents->packageID }}</td>
+                          <td style="display: none;">{{ $latestEvents->customerID }}</td>
                       </tr>
                       @endforeach
                     </tbody>
                   </table>
                   <hr>
+
                   <!-- Table for Payments -->
                   <table class="table table-bordered table-striped dataTable" id="paymentTable">
                     <thead>
                       <tr>
                         <th>Payments</th>
+                        <th style="display: none;">Reservation ID</th>
+                        <th style="display: none;">Event ID</th>
+                        <th style="display: none;">Package ID</th>
+                        <th style="display: none;">Customer ID</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -244,11 +260,16 @@
                               {{ $latestPayments->eventTime }}
                             </small>
                           </td>
+                          <td style="display: none;">{{ $latestPayments->reservationID }}</td>
+                          <td style="display: none;">{{ $latestPayments->eventID }}</td>
+                          <td style="display: none;">{{ $latestPayments->packageID }}</td>
+                          <td style="display: none;">{{ $latestPayments->customerID }}</td>
                       </tr>
                       @endforeach
                     </tbody>
                   </table>
                   <hr>
+
                   <!-- Table for New Reservations-->
                   <table class="table table-bordered table-striped dataTable" id="notificationTable">
                       <thead>
@@ -258,6 +279,8 @@
                         <th style="display:none">Customer Name</th>
                         <th style="display:none" width="130 px">Date</th>
                         <th style="display:none">Package</th>
+                        <th style="display:none">Status</th>
+                        <th style="display:none">Status</th>
                         <th style="display:none">Status</th>
                         <th style="display:none">Status</th>
                         <th style="display:none">Status</th>
@@ -309,10 +332,12 @@
                         <td style="display:none">{{ $dashboardData->packageID }} </td>
                         <td style="display:none">{{ $dashboardData->eventID }} </td>
                         <td style="display:none">{{ $dashboardData->reservationStatus }} </td>
+                        <td style="display:none">{{ $dashboardData->paymentTermID }} </td>
+                        <td style="display:none">{{ $dashboardData->customerID }} </td>
                         <td>
                             <a >{{ $dashboardData -> eventName}}</a>
                             <small class="label label-danger pull-right"><i class="fa fa-calendar-o"></i> {{ $dashboardData -> eventDate }} &nbsp {{ $dashboardData->eventTime }}</small>
-                          </td>
+                        </td>
                         </tr>
                         @endforeach
                         </tbody>
@@ -350,6 +375,7 @@
                   <label>Customer Name</label>
                   <div>
                     <input type="text"  name="editCustomerName" id="editCustomerName" column="20" required >
+                    <input type="text"  name="reservationNumber" id="reservationNumber" style="display: none;">
                   </div>
                   <label>Home Address</label> <br>
                   <div>
@@ -558,6 +584,8 @@
                           <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                           <input type="text" class="form-control" name="approveReservationId" id="approveReservationId" readonly="">
                           <input type="text" class="form-control" name="totalReservationFee" id="totalReservationFee" readonly="">
+                          <input type="text" class="form-control" name="mailPaymentTerm" id="mailPaymentTerm" readonly="">
+                          <input type="text" class="form-control" name="mailCustomerID" id="mailCustomerID" readonly="">
                           <input type="text" class="form-control" name="mailEventDate" id="mailEventDate" readonly="">
                           <input type="text" class="form-control" name="mailEventStartTime" id="mailEventStartTime" readonly="">
                           <input type="text" class="form-control" name="mailEventEndTime" id="mailEventEndTime" readonly="">
@@ -627,6 +655,196 @@
   </div>
   <!-- /.content-wrapper -->
 
+  <!-- ASSIGN EQUIPMENT MODAL -->
+  <form id="assignEquipmentForm">
+    <div id="assignEquipmentModal" class="modal fade" role="dialog" >
+      <div class="col-md-8 col-sm-offset-2">  
+        <div class="modal-content" style="margin-top: 50px">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"> Assign Equipment <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-xs-6">
+                  <h5>Client Name</h5>
+                  <h4>Turgo, Rozhel Margareth O.</h4>
+                </div>
+                <div class="col-xs-6">
+                  <h5>Guest Count</h5>
+                  <h4>250</h4>
+                </div>
+              </div>
+            </div>
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th style="width: 300px">Equipment</th>
+                  <th style="width: 200px">Quantity</th>
+                  <th style="width: 200px">Remaining</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td> </td>
+                  <td> <input type="text" name="numb" placeholder="Quantity"></td>
+                  <td> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="modal-footer">
+            <div class="pull-left">     
+              
+            </div>
+            <div class="pull-right">
+              <button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="assignEquip" id="assignEquip" class="btn btn-info btn-md">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <!-- LOSS / DAMAGE EQUIPMENT MODAL -->
+  <form id="afterEvents">
+    <div id="afterEvent" class="modal fade" role="dialog" >
+      <div class="col-md-8 col-sm-offset-2">  
+        <div class="modal-content" style="margin-top: 50px">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title"> Loss / Damage Equipment <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h4>
+          </div>
+
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-xs-6">
+                  <h5>Client Name</h5>
+                  <h4>Turgo, Rozhel Margareth O.</h4>
+                </div>
+                <div class="col-xs-6">
+                  <h5>Contact Number</h5>
+                  <h4>906 256 5214</h4>
+                </div>
+              </div>
+            </div>
+
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th style="width: 300px">Equipment</th>
+                  <th style="width: 200px">Quantity</th>
+                  <th style="width: 200px">Returned</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td> </td>
+                  <td> </td>
+                  <td> <input type="text" name="numb" placeholder="Quantity"> </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="modal-footer">
+            <div class="pull-left">     
+              
+            </div>
+            <div class="pull-right">
+              <button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="afterEvent" id="afterEvent" class="btn btn-info btn-md">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+ 
+  <!-- Event Modal -->
+  <form id="eventForm" role="form" method="POST" action="#" class="form-horizontal">
+    <div class="modal fade" id="eventModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div id="eventModalCustomerName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div id="eventModalEventName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Date: </label>
+                    <div id="eventModalEventDate" style="display: inline-block;">
+                      
+                    </div>
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Contact Number: </label>
+                    <div id="eventModalCustomerNumber" style="display: inline-block;">
+
+                    </div>
+                    <br>
+                    <label>Package Availed: </label>
+                    <div id="eventModalPackageAvailed" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Location: </label>
+                    <div id="eventModalEventLocation" style="display: inline-block;">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Box -->
+            </div>
+            <div class="row">
+              <table class="table table-bordered table-striped dataTable" style="width:95%;" align="center">
+                <thead>
+                  <tr>
+                    <th>Equipment</th>
+                    <th>Equipment Quantity</th>
+                    <th>Equipment Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                    <td>Sample</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button id="assignEquipmentBtn" onclick="getEquipmentDetails();" class="btn btn-default" type="button">
+                Assign Equipment
+              </button>
+              <button type="button" href="#" disabled="" class="btn btn-default">Assessment of Equipment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End -->
+
   <!-- Payment Modal -->
   <form id="paymentForm" role="form" method="POST" action="#" class="form-horizontal">
     <div class="modal fade" id="paymentModal" >
@@ -640,24 +858,24 @@
                 <div class="row">
                   <div class="col-md-6" align="left">
                     <label>Customer Name: </label>
-                    <div style="display: inline-block;">
-                      Sample Name
+                    <div id="paymentModalCustomerName" style="display: inline-block;">
+                      
                     </div>
                     <br>
                     <label>Event Name: </label>
-                    <div style="display: inline-block;">
-                      Sample Name
+                    <div id="paymentModalEventName" style="display: inline-block;">
+                      
                     </div>
                   </div>
                   <div class="col-md-6" align="left">
                     <label>Contact Number: </label>
-                    <div style="display: inline-block;">
-                      Sample #
+                    <div id="paymentModalContactNumber" style="display: inline-block;">
+                      
                     </div>
                     <br>
                     <label>Event Date: </label>
-                    <div style="display: inline-block;">
-                      Sample Name
+                    <div id="paymentModalEventDate" style="display: inline-block;">
+                      
                     </div>
                   </div>
                 </div>
@@ -666,24 +884,21 @@
             <!-- End Box -->
             </div>
             <div class="row">
-              <table class="table table-bordered table-striped dataTable" style="width:95%;" align="center">
-                <thead>
-                  <tr>
-                    <th>Payment</th>
-                    <th>Due Date</th>
-                    <th>Date Received</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                  </tr>
-                </tbody>
-              </table>
+              <table id="paymentDetailTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
+                  <thead>
+                    <tr>
+                      <th>Payment Amount</th>
+                      <th>Due Date</th>
+                      <th>Date Received</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="paymentDetailTblBody">
+
+                    <input type="hidden" id="token" value="{{ csrf_token() }}">
+                  </tbody>
+                </table>
             </div>
           </div>
           <div class="modal-footer">
@@ -720,39 +935,17 @@
 <!-- <script src="{{ asset('LTE/fullcalendar/lib/jquery.min.js')}}"></script> -->
 <script src="{{ asset('LTE/fullcalendar/fullcalendar.min.js')}}"'></script>
 <script src="{{ asset('LTE/fullcalendar/gcal.min.js')}}"></script>
+<script src="{{ asset('LTE/plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
 <!-- Page specific script -->
 
-<!-- <script>
+<script>
+  $("#assignEquipmentBtn").click(function(e){
+    $("#eventModal").modal("hide");
+    $("#assignEquipmentModal").modal("show");  
+  }); 
+</script> 
 
-    //if submit button is clicked
-    $("#approveBtn").click(function(e){
-        var randomID = 1;
-        $.ajax({
-          url:  "ReservationEmail",
-          type: "POST",
-            beforeSend: function (xhr) {
-              var token = $('meta[name="csrf_token"]').attr('content');
-              if (token) {
-                return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-              }
-          },
-          data: {
-             id: randomID,
-            '_token': $('#token').val()
-          },
-          success: function(data){
-            alert('An Email was sent to the customer.');
-            window.location.href = "ReservationPage";      
-          },
-          error: function(xhr)
-          {
-          alert('Mali');
-          alert($.parseJSON(xhr.responseText)['error']['message']);
-          }                  
-        });
-      }); 
-</script>  -->
-
+<!-- DATATABLE FUNCTIONS -->
 <script>
   // DataTables Initialization
   $(function () {
@@ -770,6 +963,22 @@
       "searching": false,
       "ordering": false,
       "info": true,
+      "autoWidth": true
+    });
+    $('#eventTable').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": true,
+      "autoWidth": true
+    });
+    $('#paymentDetailTbl').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
       "autoWidth": true
     });
   });
@@ -804,6 +1013,8 @@
         var reservationPackageID = data[17];
         var reservationEventID = data[18];
         var reservationStatus = data[19];
+        var reservationPaymentTerm = data[20];
+        var customerID = data[21];
         $('#editReservationID').val(reservationIDVar);
         $('#editCustomerName').val(reservationCustomerNameVar);
         $('#reservationNumber').val(reservationIDVar);
@@ -900,6 +1111,8 @@
                       $('#mailEventLocation').val(reservationEventLocationVar);
                       $('#mailPackageAvailed').val(reservationPackageVar);
                       $('#mailEventDate').val(reservationDateVar);
+                      $('#mailPaymentTerm').val(reservationPaymentTerm);
+                      $('#mailCustomerID').val(customerID);
                       // $('#totalReservationFee').val(totalFeePerm);
                       // $('#totalReservationFee').val(totalFeePerm);
                       // $('#totalReservationFee').val(totalFeePerm);
@@ -921,48 +1134,231 @@
 
   // Payment Table Function
   $(document).ready(function() {
-    var paymentTable = $('#paymentTable').DataTable();
+    var table = $('#paymentTable').DataTable();
     $('#paymentTable tbody').on('dblclick', 'tr', function () {
-      $("#paymentModal").modal("show");
+      var data = table.row( this ).data();
+      var paymentModalReservationID = data[1];
+      var paymentModalpaymentID = data[2];
+      var paymentModalPackageID = data[3];
+      var paymentModalCustomerID = data[4];
+      $.ajax({
+        type: "GET",
+        url:  "/RetrieveEventDetail",
+        data: 
+        {
+            sendReservationID: paymentModalReservationID
+        },
+        success: function(data){
+          document.getElementById('paymentModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('paymentModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('paymentModalEventDate').innerHTML += '<h6>'+data['eventDetail'][0]['eventDate']+'</h6>';
+          document.getElementById('paymentModalContactNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
+          // Ajax for Payment Detail
+          $.ajax({
+            type: "GET",
+            url:  "/RetrievePaymentDetail",
+            data: 
+            {
+                reservationID: paymentModalReservationID
+            },
+            success: function(data){
+              var paymentAmount, paymentDueDate, paymentReceiveDate, paymentStatus, paymentID, paymentActionBtn;
+              var paymentAmountID, paymentDueDateID, paymentReceiveDateID, paymentStatusID, paymentIDID, paymentActionBtnID;
+              var tblSDet = $('#paymentDetailTbl').DataTable();
+              tblSDet.clear();
+              tblSDet.draw(true);
+              for (var i = 0; i < data['paymentDetail'].length; i++) {
+                addPaymentReceiveDate = "addPaymentReceiveDate" + i;
+                addPaymentID = "addPaymentID" + i;
+                addPaymentBtnID = "addPaymentBtnID" + i;
+                var submitPayment = "submitPayment" + i;
+                paymentID = '<input id=" ' + addPaymentID + '" type="text" value="' + data['paymentDetail'][i]['paymentID'] +  '"> </input>' ;
+                paymentAmount = data['paymentDetail'][i]['paymentAmount'];
+                paymentDueDate = data['paymentDetail'][i]['paymentDueDate'];
+                statusChecker = data['paymentDetail'][i]['paymentStatus'];
+                if (statusChecker == 0) {
+                  paymentStatus = '<span class="label label-warning">Pending</span>';
+                  paymentReceiveDate = '<div class="input-group date" data-provide="datepicker"><input id="' + addPaymentReceiveDate + '" class="datepicker" data-date-format="yyyy/mm/dd"><div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div></div>';
+                  paymentActionBtn = '<input type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
+                }
+                if (statusChecker == 1) {
+                  paymentStatus = '<span class="label label-success">Confirmed</span>';
+                  paymentReceiveDate = data['paymentDetail'][i]['paymentReceiveDate'];
+                  paymentActionBtn = '<input disabled type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
+                }
+                
+                tblSDet.row.add([
+                  paymentAmount,
+                  paymentDueDate,
+                  paymentReceiveDate,
+                  paymentStatus,
+                  paymentActionBtn
+                  ]).draw(true);
+              }
+              $("#paymentModal").modal("show"); 
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+          });
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      });
+    });
+  });
+
+  // Event Table Function
+  $(document).ready(function() {
+    var table = $('#eventTable').DataTable();
+    $('#eventTable tbody').on('dblclick', 'tr', function () {
+      var data = table.row( this ).data();
+      var eventModalReservationID = data[1];
+      var eventModalEventID = data[2];
+      var eventModalPackageID = data[3];
+      var eventModalCustomerID = data[4];
+      $.ajax({
+        type: "GET",
+        url:  "/RetrieveEventDetail",
+        data: 
+        {
+            sendReservationID: eventModalReservationID
+        },
+        success: function(data){
+          document.getElementById('eventModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('eventModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('eventModalEventDate').innerHTML += '<h6>'+data['eventDetail'][0]['eventDate']+'</h6>';
+          document.getElementById('eventModalCustomerNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
+          document.getElementById('eventModalPackageAvailed').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
+          document.getElementById('eventModalEventLocation').innerHTML += '<h6>'+data['eventDetail'][0]['eventLocation']+'</h6>';
+          $("#eventModal").modal("show");
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      });
+      
     });
   });
 </script>
 
+
 <script>
-      function getReservation(id){
-        $.ajax({
-                type: "GET",
-                url:  "/RetrieveReservationID",
-                data: 
-                {
-                    sdid: id
-                },
-                success: function(data){
-                $('#approveReservationId').val(data['ss'][0]['reservationID']);
-                $('#denyReservationId').val(data['ss'][0]['reservationID']);
-                },
-                error: function(xhr)
-                {
-                    alert("mali");
-                    alert($.parseJSON(xhr.responseText)['error']['message']);
-                }                
-            });
-      }
+  function getReservation(id){
+    $.ajax({
+            type: "GET",
+            url:  "/RetrieveReservationID",
+            data: 
+            {
+                sdid: id
+            },
+            success: function(data){
+            $('#approveReservationId').val(data['ss'][0]['reservationID']);
+            $('#denyReservationId').val(data['ss'][0]['reservationID']);
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+        });
+  }
+</script>
+
+<!-- Script for Payment -->
+<script>
+
+  // First Payment
+  function submitPayment0(id){
+    var paymentID0 = id;
+    var receiveDate0 = document.getElementById('addPaymentReceiveDate0').value;
+    $.ajax({
+      url: "/SavePayment0",
+      type: "POST",
+      beforeSend: function (xhr) {
+        var token = $('meta[name="csrf_token"]').attr('content');
+        if (token) {
+          return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        }
+      },
+      data: {
+        sendPaymentID: paymentID0,
+        sendReceiveDate: receiveDate0,
+        '_token': $('#token').val()
+      },               
+      success: function (response) {
+         window.location.href = "DashboardPage"; 
+      },
+      error: function(xhr)
+      {
+        alert("mali")
+      }                  
+    });
+  }
+
+  //Second Payment
+  function submitPayment1(id){
+    var paymentID1 = id;
+    var receiveDate1 = document.getElementById('addPaymentReceiveDate1').value;
+    $.ajax({
+      url: "/SavePayment1",
+      type: "POST",
+      beforeSend: function (xhr) {
+        var token = $('meta[name="csrf_token"]').attr('content');
+        if (token) {
+          return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        }
+      },
+      data: {
+        sendPaymentID: paymentID1,
+        sendReceiveDate: receiveDate1,
+        '_token': $('#token').val()
+      },               
+      success: function (response) {
+         window.location.href = "DashboardPage"; 
+      },
+      error: function(xhr)
+      {
+        alert("mali")
+      }                  
+    });
+  }
 </script>
 
 <script>
-$(function () {
-  $(document).on("hidden.bs.modal", "#detailModal", function () {
-      $(this).find("#additionalDishDiv").html(""); // Just clear the contents.
-      $(this).find("#additionalServiceDiv").html(""); // Just clear the contents.
-      $(this).find("#additionalEquipmentDiv").html(""); // Just clear the contents.
-      $(this).find("#additionalEmployeeDiv").html(""); // Just clear the contents.
-      $(this).find("#dishInclusion").html(""); // Just clear the contents.
-      $(this).find("#serviceInclusion").html(""); // Just clear the contents.
-      $(this).find("#equipmentInclusion").html(""); // Just clear the contents.
-      $(this).find("#employeeInclusion").html(""); // Just clear the contents.
-    });
-});
+  $(function () {
+    $(document).on("hidden.bs.modal", "#detailModal", function () {
+        $(this).find("#additionalDishDiv").html(""); // Just clear the contents.
+        $(this).find("#additionalServiceDiv").html(""); // Just clear the contents.
+        $(this).find("#additionalEquipmentDiv").html(""); // Just clear the contents.
+        $(this).find("#additionalEmployeeDiv").html(""); // Just clear the contents.
+        $(this).find("#dishInclusion").html(""); // Just clear the contents.
+        $(this).find("#serviceInclusion").html(""); // Just clear the contents.
+        $(this).find("#equipmentInclusion").html(""); // Just clear the contents.
+        $(this).find("#employeeInclusion").html(""); // Just clear the contents.
+      });
+    $(document).on("hidden.bs.modal", "#eventModal", function () {
+        $(this).find("#eventModalEventLocation").html(""); // Just clear the contents.
+        $(this).find("#eventModalCustomerNumber").html(""); // Just clear the contents.
+        $(this).find("#eventModalEventDate").html(""); // Just clear the contents.
+        $(this).find("#eventModalPackageAvailed").html(""); // Just clear the contents.
+        $(this).find("#eventModalCustomerName").html(""); // Just clear the contents.
+        $(this).find("#eventModalEventName").html(""); // Just clear the contents.
+      });
+    $(document).on("hidden.bs.modal", "#paymentModal", function () {
+        $(this).find("#paymentModalEventDate").html(""); // Just clear the contents.
+        $(this).find("#paymentModalContactNumber").html(""); // Just clear the contents.
+        $(this).find("#paymentModalEventName").html(""); // Just clear the contents.
+        $(this).find("#paymentModalCustomerName").html(""); // Just clear the contents.
+      });
+  });
 </script>
 
 <script>

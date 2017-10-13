@@ -62,7 +62,7 @@
                     <span class="label label-success">Confirmed</span>
                   <?php endif ?>
                   <?php if (($reservationData->reservationStatus)==3): ?>
-                    <span class="label label-warning">Denied</span>
+                    <span class="label label-danger">Denied</span>
                   <?php endif ?>
                   </td>
                   <td style="display:none">{{ $reservationData->homeAddress }} </td>
@@ -510,6 +510,7 @@
         
       // });
 </script>
+
 <script>
 $(function () {
   $(document).on("hidden.bs.modal", "#detailModal", function () {
@@ -524,6 +525,7 @@ $(function () {
     });
 });
 </script>
+
 <script>
   $(function () {
     $('#reservationListTable').DataTable({
@@ -663,8 +665,7 @@ $(function () {
                 }                
             });
       }
-
-    </script>
+</script>
 
 
 @endsection

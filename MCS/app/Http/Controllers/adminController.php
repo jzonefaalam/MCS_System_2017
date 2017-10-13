@@ -27,31 +27,61 @@ use App\equipmentlogtbl;
 use App\transactiontbl;
 use App\purchaseordertypetbl;
 use App\purchaseordertbl;
+use App\paymenttbl;
 use Mail;
 class adminController extends Controller
 {
 
     public function sendApprovalEmail(Request $request){
-        // $data = array(
-        //     'email' => "jsooooon017@gmail.com",
-        //     'subject' => "Test Approval",
-        //     'bodyMessage' => 'Sample'
-        //     );
-        // Mail::send('emails.approval', $data, function($message) use ($data){
-        //     $message->from($data['email']);
-        //     $message->to('jzone_faalam@yahoo.com');
-        //     $message->subject($data['subject']);
-        // });
-
+        // Save to reservation_tbl
         $id = Input::get('approveReservationId');
         $reservationtbl = reservationtbl::find($id);
         $reservationtbl->reservationStatus = 2;
         $reservationtbl->save();
+
+        // Save to transaction_tbl
+        $totalFee = Input::get('totalReservationFee');
         $transactiontbl = new transactiontbl;
         $transactiontbl->transactionStatus = 0;
-        $transactiontbl->totalFee = Input::get('totalReservationFee');
+        $transactiontbl->totalFee = $totalFee;
         $transactiontbl->reservationID = $id;
         $transactiontbl->save();
+
+        //Save to customer_tbl
+        $idCustomer = Input::get('mailCustomerID');
+        $customertbl = customertbl::find($idCustomer);
+        $customertbl->customerStatus = 0;
+        $customertbl->save();
+
+        // Save to payment_tbl
+        $paymentTerm = Input::get('mailPaymentTerm');
+        if ($paymentTerm == 1) {
+            $paymenttbl = new paymenttbl;
+            $paymenttbl->paymentDueDate = Input::get('mailEventDate');
+            $paymenttbl->paymentStatus = 0;
+            $paymenttbl->reservationID = $id;
+            $paymenttbl->paymentAmount = $totalFee;
+            $paymenttbl->save();
+        }
+        if ($paymentTerm == 2) {
+            $halfPayment = $totalFee / 2;
+            $plusOneWeek = strtotime("+7 day");
+            $firstPaymentDate = date('Y-m-d', $plusOneWeek);
+            $paymenttbl = new paymenttbl;
+            $paymenttbl->paymentDueDate = Input::get('mailEventDate');
+            $paymenttbl->paymentStatus = 0;
+            $paymenttbl->reservationID = $id;
+            $paymenttbl->paymentAmount = $halfPayment;
+            $paymenttbl->save();
+
+            $paymenttbl2 = new paymenttbl;
+            $paymenttbl2->paymentDueDate = $firstPaymentDate;
+            $paymenttbl2->paymentStatus = 0;
+            $paymenttbl2->reservationID = $id;
+            $paymenttbl2->paymentAmount = $halfPayment;
+            $paymenttbl2->save();
+        }
+
         $mailEventLocation = Input::get('mailEventLocation');
         $mailPackageAvailed = Input::get('mailPackageAvailed');
         $currentMonth = date('m');
@@ -103,20 +133,6 @@ class adminController extends Controller
     public function authenticateLogout(){
         return View::make('/Login');
     }
-
-    //Dashboard Page functions-------------------------------------------------------------------------->
-    // public function dashboardPage(){ 
-    //     $dateTime = Date_create('now');
-    //     $dateToday = $dateTime->format('n.j.Y');
-    //     $dashboardData = DB::table('reservation_tbl')
-    //       ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-    //       ->orderBy('reservation_tbl.created_at', 'desc')
-    //       ->where('reservation_tbl.reservationStatus', '=', 1)
-    //       ->where('reservation_tbl.created_at', '<=', Carbon::now())
-    //       ->get();
-    //     return View::make('/DashboardPage')
-    //     ->with('dashboardData', $dashboardData);
-    // }
 
     //Reports Page functions-------------------------------------------------------------------------->
     public function reportPage(){
@@ -1960,6 +1976,8 @@ class adminController extends Controller
 
         $dateTime = Date_create('now');
         $dateToday = $dateTime->format('n.j.Y');
+
+        // Newest Reservations
         $dashboardData =  DB::table('reservation_tbl')
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
@@ -1967,8 +1985,10 @@ class adminController extends Controller
         ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
         ->orderBy('reservation_tbl.created_at', 'desc')
         ->where('reservation_tbl.created_at', '>=', $dateToday)
+        ->where('reservation_tbl.reservationStatus', '=', 1)
         ->get();  
 
+        // Upcoming or Ongoing Events
         $latestEvents = DB::table('reservation_tbl')
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
@@ -1977,6 +1997,7 @@ class adminController extends Controller
         ->where('reservation_tbl.reservationStatus', 2)
         ->get();
 
+        // Payments
         $latestPayments = DB::table('reservation_tbl')
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
@@ -1990,7 +2011,53 @@ class adminController extends Controller
         ->with('dashboardData', $dashboardData)
         ->with('latestEvents', $latestEvents)
         ->with('latestPayments', $latestPayments);
-    }//Schedule function------------------------------------------------------------------------------>
+    }
+
+    public function retrieveEventDetail(){
+        $eventDetail = DB::table('reservation_tbl')
+        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->where('reservation_tbl.reservationID', '=' , Input::get('sendReservationID'))
+        ->get();
+        return \Response::json(['eventDetail'=>$eventDetail]);
+    }
+
+    public function retrievePaymentDetail(){
+        $paymentDetail = DB::table('payment_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','payment_tbl.reservationID')
+        ->select('reservation_tbl.*', 'payment_tbl.*')
+        ->where('reservation_tbl.reservationID', '=' , Input::get('reservationID'))
+        ->get();
+        return \Response::json(['paymentDetail'=>$paymentDetail]);
+    }
+
+    public function savePayment0()
+    {
+        $paymentID = Input::get('sendPaymentID');
+        $paymentRDate = Input::get('sendReceiveDate');
+        $paymentDate = "2017-10-10";
+        $payment = paymenttbl::find($paymentID);
+        $payment->paymentReceiveDate = $paymentDate;
+        $payment->paymentStatus = 1;
+        $payment->save();
+        return redirect()->back();
+    }
+
+    public function savePayment1()
+    {
+        $paymentID = Input::get('sendPaymentID');
+        $paymentRDate = Input::get('sendReceiveDate');
+        $paymentDate = "2017-10-10";
+        $payment = paymenttbl::find($paymentID);
+        $payment->paymentReceiveDate = $paymentDate;
+        $payment->paymentStatus = 1;
+        $payment->save();
+        return redirect()->back();
+    }
+
+    //Schedule function------------------------------------------------------------------------------>
     
 
     public function retrieveScheduleData(Request $request){
@@ -2038,7 +2105,6 @@ class adminController extends Controller
        $ss = DB::table('reservation_tbl')
         ->where('reservationID', Input::get('sdid'))
         ->get();
-
         return \Response::json(['ss'=>$ss]);
 
     }
@@ -2161,6 +2227,7 @@ class adminController extends Controller
         ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
         ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
+        ->where('reservation_tbl.reservationStatus', '=', 2)
         ->get();  
         return View::make('/transactionPage')
         ->with('transactionData', $transactionData);

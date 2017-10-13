@@ -120,6 +120,10 @@ Route::post("/DeleteServiceTypePage", array("uses"=>"adminController@deleteServi
 //DashboardPage
 Route::get('/DashboardPage', 'adminController@dashboardPage');
 Route::get('/RetrieveSchedule', 'adminController@retrieveScheduleData');
+Route::get('/RetrieveEventDetail', 'adminController@retrieveEventDetail');
+Route::get('/RetrievePaymentDetail', 'adminController@retrievePaymentDetail');
+Route::post("/SavePayment0", array("uses"=>"adminController@savePayment0"));
+Route::post("/SavePayment1", array("uses"=>"adminController@savePayment1"));
 
 //Reservation Page
 Route::get('/ReservationPage', 'adminController@reservationPage');
