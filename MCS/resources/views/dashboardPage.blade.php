@@ -296,6 +296,8 @@
                         <th style="display:none">Status</th>
                         <th style="display:none">Status</th>
                         <th style="display:none">Status</th>
+                        <th style="display:none">Status</th>
+                        <th style="display:none">Status</th>
                         <th width="150px">Newest Reservations</th> 
                       </tr>
                       </thead>
@@ -334,6 +336,8 @@
                         <td style="display:none">{{ $dashboardData->reservationStatus }} </td>
                         <td style="display:none">{{ $dashboardData->paymentTermID }} </td>
                         <td style="display:none">{{ $dashboardData->customerID }} </td>
+                        <td style="display:none">{{ $dashboardData->eventDate }} </td>
+                        <td style="display:none">{{ $dashboardData->fullName }} </td>
                         <td>
                             <a >{{ $dashboardData -> eventName}}</a>
                             <small class="label label-danger pull-right"><i class="fa fa-calendar-o"></i> {{ $dashboardData -> eventDate }} &nbsp {{ $dashboardData->eventTime }}</small>
@@ -596,7 +600,10 @@
                           <input type="text" class="form-control" name="mailServiceAdditional" id="mailServiceAdditional" readonly="">
                           <input type="text" class="form-control" name="mailEmployeeAdditional" id="mailEmployeeAdditional" readonly="">
                           <input type="text" class="form-control" name="mailEquipmentAdditional" id="mailEquipmentAdditional" readonly="">
-                          <input type="text" class="form-control" name="mailEventLocation" id="mailEventLocation" readonly="">
+                          <input type="text" class="form-control" name="mailEventLocation" id="mailEventLocation" readonly=""> 
+                          <input type="text" class="form-control" name="mailEventName" id="mailEventName" readonly="">
+                          <input type="text" class="form-control" name="mailCustomerName" id="mailCustomerName" readonly="">
+                        </div>
                         </div>
                       </div>
                       {!! csrf_field() !!}
@@ -656,7 +663,7 @@
   <!-- /.content-wrapper -->
 
   <!-- ASSIGN EQUIPMENT MODAL -->
-  <form id="assignEquipmentForm">
+  <!-- <form id="assignEquipmentForm">
     <div id="assignEquipmentModal" class="modal fade" role="dialog" >
       <div class="col-md-8 col-sm-offset-2">  
         <div class="modal-content" style="margin-top: 50px">
@@ -708,7 +715,7 @@
         </div>
       </div>
     </div>
-  </form>
+  </form> -->
 
   <!-- LOSS / DAMAGE EQUIPMENT MODAL -->
   <form id="afterEvents">
@@ -845,6 +852,76 @@
   </form>
   <!-- End -->
 
+  <!-- Assign Modal Modal -->
+  <form id="assignForm" role="form" method="POST" action="#" class="form-horizontal">
+    <div class="modal fade" id="assignEquipmentModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div id="assignModalCustomerName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div id="assignModalEventName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <!-- <label>Event Date: </label> -->
+                    <input style="display:none;" type="hidden" id="assignModalReservationID">
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Guest Count: </label>
+                    <div id="assignModalGuestCount" style="display: inline-block;">
+
+                    </div>
+                    <br>
+                    <label>Package Availed: </label>
+                    <div id="assignModalPackageName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <!-- <label>Event Location: </label> -->
+                    <input style="display:none;" type="hidden" id="assignModalPackageID">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Box -->
+            </div>
+            <div class="row">
+              <table id="equipmentAssignTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
+                  <thead>
+                    <tr>
+                      <th>Equipment Name</th>
+                      <th>Equipment Quantity Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="equipmentAssignTblBody">
+
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button id="assignEquipmentBtn" class="btn btn-default" type="button">
+                Save
+              </button>
+              <button type="button" href="#" disabled="" class="btn btn-default">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End -->
+
   <!-- Payment Modal -->
   <form id="paymentForm" role="form" method="POST" action="#" class="form-horizontal">
     <div class="modal fade" id="paymentModal" >
@@ -883,6 +960,7 @@
             </div>
             <!-- End Box -->
             </div>
+            <!-- Payment Table -->
             <div class="row">
               <table id="paymentDetailTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
                   <thead>
@@ -941,7 +1019,39 @@
 <script>
   $("#assignEquipmentBtn").click(function(e){
     $("#eventModal").modal("hide");
-    $("#assignEquipmentModal").modal("show");  
+    var packageID = document.getElementById('assignModalPackageID').value; 
+    var reservationID = document.getElementById('assignModalReservationID').value; 
+    // alert(packageID);
+    $.ajax({
+        type: "GET",
+        url:  "/RetrievePackageInclusion",
+        data: 
+        {
+            sdid: packageID
+        },
+        success: function(data){
+          var itemName, itemQty;
+          var tblSDet = $('#equipmentAssignTbl').DataTable();
+          tblSDet.clear();
+          tblSDet.draw(true);
+          // alert(data['ff'].length);
+          for (var i = 0; i < data['ff'].length; i++) {
+            itemName = data['ff'][i]['equipmentName'];
+            // alert(itemName);
+            itemQty = '<input type="text">';
+            tblSDet.row.add([
+              itemName,
+              itemQty
+              ]).draw(true);
+          }
+          $("#assignEquipmentModal").modal("show"); 
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      }); 
   }); 
 </script> 
 
@@ -974,6 +1084,14 @@
       "autoWidth": true
     });
     $('#paymentDetailTbl').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": true
+    });
+    $('#equipmentAssignTbl').DataTable({
       "paging": false,
       "lengthChange": false,
       "searching": false,
@@ -1015,6 +1133,8 @@
         var reservationStatus = data[19];
         var reservationPaymentTerm = data[20];
         var customerID = data[21];
+        var reservationEventDate = data[22];
+        var customerName = data[23];
         $('#editReservationID').val(reservationIDVar);
         $('#editCustomerName').val(reservationCustomerNameVar);
         $('#reservationNumber').val(reservationIDVar);
@@ -1036,99 +1156,106 @@
               break;
             }
           }
-                  $.ajax({
+        $.ajax({
 
-                    type: "GET",
-                    url:  "/RetrievePackageInclusion",
-                    data: 
-                    {     
-                      sdid: reservationPackageID,
-                      sendReservationID: reservationEventID
-                    },
-                    success: function(data){
-                      for (var i = 0; i < data['ss'].length; i++) {
-                        document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishName']+'</h6>';
-                      }
-                      for (var i = 0; i < data['dd'].length; i++) {
-                        document.getElementById('serviceInclusion').innerHTML += '<h6>'+data['dd'][i]['serviceName']+'</h6>';
-                      }
-                      for (var i = 0; i < data['ff'].length; i++) {
-                        document.getElementById('equipmentInclusion').innerHTML += '<h6>'+data['ff'][i]['equipmentName']+'</h6>';
-                      }
-                      for (var i = 0; i < data['gg'].length; i++) {
-                        document.getElementById('employeeInclusion').innerHTML += '<h6>'+data['gg'][i]['employeeTypeName']+'</h6>';
-                      }
-                      if((data['additionalDish'].length)>0){
-                        for (var i = 0; i < data['additionalDish'].length; i++) {
-                          document.getElementById('additionalDishDiv').innerHTML += '<h6>'+data['additionalDish'][i]['dishName']+'</h6>';
-                          var additionalDishMultiplier = parseFloat(data['additionalDish'][i]['additionalServing']);
-                          var additionalDishCost = parseFloat(data['additionalDish'][i]['dishCost']);
-                          var newAdditionalDishCost = (additionalDishMultiplier * additionalDishCost);
-                          additionalDishFee = newAdditionalDishCost;
-                        }
-                      }
-                      else{
-                        additionalDishFee = 0;
-                      }
-                      if((data['additionalService'].length)>0){
-                        for (var i = 0; i < data['additionalService'].length; i++) {
-                          document.getElementById('additionalServiceDiv').innerHTML += '<h6>'+data['additionalService'][i]['serviceName']+'</h6>';
-                          var additionalServiceMultiplier = parseFloat(data['additionalService'][i]['serviceAdditionalQty']);
-                          var additionalServiceCost = parseFloat(data['additionalService'][i]['serviceFee']);
-                          var newAdditionalServiceCost = (additionalServiceMultiplier * additionalServiceCost);
-                          additionalServiceFee = newAdditionalServiceCost;
-                        }
-                      }
-                      else{
-                        additionalServiceFee = 0;
-                      }
-                      if((data['additionalEquipment'].length)>0){
-                        for (var i = 0; i < data['additionalEquipment'].length; i++) {
-                          document.getElementById('additionalEquipmentDiv').innerHTML += '<h6>'+data['additionalEquipment'][i]['equipmentName']+'</h6>';
-                          var additionalEquipmentMultiplier = parseFloat(data['additionalEquipment'][i]['equipmentAdditionalQty']);
-                          var additionalEquipmentCost = parseFloat(data['additionalEquipment'][i]['equipmentRatePerHour']);
-                          var newAdditionalEquipmentCost = (additionalEquipmentMultiplier * additionalEquipmentCost);
-                          additionalEquipmentFee = newAdditionalEquipmentCost;
-                        }
-                      }
-                      else{
-                        additionalEquipmentFee = 0;
-                      }
-                      if((data['additionalEquipment'].length)>0){
-                        for (var i = 0; i < data['additionalEmployee'].length; i++) {
-                          document.getElementById('additionalEmployeeDiv').innerHTML += '<h6>'+data['additionalEmployee'][i]['employeeTypeName']+'</h6>';
-                          var additionalEmployeeMultiplier = parseFloat(data['additionalEmployee'][i]['employeeAdditionalQty']);
-                          var additionalEmployeeCost = parseFloat(data['additionalEmployee'][i]['employeeRatePerHour']);
-                          var newAdditionalEmployeeCost = (additionalEmployeeMultiplier * additionalEmployeeCost);
-                          additionalEmployeeFee = newAdditionalEmployeeCost;
-                        }
-                      }
-                      else{
-                        additionalEmployeeFee = 0;
-                      }
-                      totalFeePerm = totalFeeTemp + additionalDishFee + additionalServiceFee + additionalEmployeeFee + additionalEquipmentFee; 
-                      $('#totalReservationFee').val(totalFeePerm);
-                      $('#mailEventLocation').val(reservationEventLocationVar);
-                      $('#mailPackageAvailed').val(reservationPackageVar);
-                      $('#mailEventDate').val(reservationDateVar);
-                      $('#mailPaymentTerm').val(reservationPaymentTerm);
-                      $('#mailCustomerID').val(customerID);
-                      // $('#totalReservationFee').val(totalFeePerm);
-                      // $('#totalReservationFee').val(totalFeePerm);
-                      // $('#totalReservationFee').val(totalFeePerm);
-                      // $('#totalReservationFee').val(totalFeePerm);
-                      if( reservationStatus == 2){
-                        var x = document.getElementById('confirmationDiv');
-                        x.style.display = 'none';
-                      }
-                      $("#detailModal").modal("show");     
-                    },
-                    error: function(xhr)
-                    {
-                      alert("mali");
-                      alert($.parseJSON(xhr.responseText)['error']['message']);
-                    }                
-                  });
+          type: "GET",
+          url:  "/RetrievePackageInclusion",
+          data: 
+          {     
+            sdid: reservationPackageID,
+            sendReservationID: reservationEventID
+          },
+          success: function(data){
+            for (var i = 0; i < data['ss'].length; i++) {
+              document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishName']+'</h6>';
+            }
+            for (var i = 0; i < data['dd'].length; i++) {
+              document.getElementById('serviceInclusion').innerHTML += '<h6>'+data['dd'][i]['serviceName']+'</h6>';
+            }
+            for (var i = 0; i < data['ff'].length; i++) {
+              document.getElementById('equipmentInclusion').innerHTML += '<h6>'+data['ff'][i]['equipmentName']+'</h6>';
+            }
+            for (var i = 0; i < data['gg'].length; i++) {
+              document.getElementById('employeeInclusion').innerHTML += '<h6>'+data['gg'][i]['employeeTypeName']+'</h6>';
+            }
+            if((data['additionalDish'].length)>0){
+              for (var i = 0; i < data['additionalDish'].length; i++) {
+                document.getElementById('additionalDishDiv').innerHTML += '<h6>'+data['additionalDish'][i]['dishName']+'</h6>';
+                var additionalDishMultiplier = parseFloat(data['additionalDish'][i]['additionalServing']);
+                var additionalDishCost = parseFloat(data['additionalDish'][i]['dishCost']);
+                var newAdditionalDishCost = (additionalDishMultiplier * additionalDishCost);
+                additionalDishFee = newAdditionalDishCost;
+              }
+            }
+            else{
+              additionalDishFee = 0;
+            }
+            if((data['additionalService'].length)>0){
+              for (var i = 0; i < data['additionalService'].length; i++) {
+                document.getElementById('additionalServiceDiv').innerHTML += '<h6>'+data['additionalService'][i]['serviceName']+'</h6>';
+                var additionalServiceMultiplier = parseFloat(data['additionalService'][i]['serviceAdditionalQty']);
+                var additionalServiceCost = parseFloat(data['additionalService'][i]['serviceFee']);
+                var newAdditionalServiceCost = (additionalServiceMultiplier * additionalServiceCost);
+                additionalServiceFee = newAdditionalServiceCost;
+              }
+            }
+            else{
+              additionalServiceFee = 0;
+            }
+            if((data['additionalEquipment'].length)>0){
+              for (var i = 0; i < data['additionalEquipment'].length; i++) {
+                document.getElementById('additionalEquipmentDiv').innerHTML += '<h6>'+data['additionalEquipment'][i]['equipmentName']+'</h6>';
+                var additionalEquipmentMultiplier = parseFloat(data['additionalEquipment'][i]['equipmentAdditionalQty']);
+                var additionalEquipmentCost = parseFloat(data['additionalEquipment'][i]['equipmentRatePerHour']);
+                var newAdditionalEquipmentCost = (additionalEquipmentMultiplier * additionalEquipmentCost);
+                additionalEquipmentFee = newAdditionalEquipmentCost;
+              }
+            }
+            else{
+              additionalEquipmentFee = 0;
+            }
+            if((data['additionalEquipment'].length)>0){
+              for (var i = 0; i < data['additionalEmployee'].length; i++) {
+                document.getElementById('additionalEmployeeDiv').innerHTML += '<h6>'+data['additionalEmployee'][i]['employeeTypeName']+'</h6>';
+                var additionalEmployeeMultiplier = parseFloat(data['additionalEmployee'][i]['employeeAdditionalQty']);
+                var additionalEmployeeCost = parseFloat(data['additionalEmployee'][i]['employeeRatePerHour']);
+                var newAdditionalEmployeeCost = (additionalEmployeeMultiplier * additionalEmployeeCost);
+                additionalEmployeeFee = newAdditionalEmployeeCost;
+              }
+            }
+            else{
+              additionalEmployeeFee = 0;
+            }
+            totalFeePerm = totalFeeTemp + additionalDishFee + additionalServiceFee + additionalEmployeeFee + additionalEquipmentFee; 
+            $('#totalReservationFee').val(totalFeePerm);
+            $('#mailEventLocation').val(reservationEventLocationVar);
+            $('#mailPackageAvailed').val(reservationPackageVar);
+            $('#mailEventDate').val(reservationDateVar);
+            $('#mailPaymentTerm').val(reservationPaymentTerm);
+            $('#mailCustomerID').val(customerID);
+            $('#mailEventDate').val(reservationEventDate);
+            $('#mailEventStartTime').val(reservationEventTimeVar);
+            $('#mailEventEndTime').val(reservartionEndTimeVar);
+            $('#mailNumOfGuest').val(reservationGuestCountVar);
+            $('#mailEventName').val(reservationEventNameVar);
+            $('#mailCustomerName').val(customerName);
+            // $('#mailDishInclusion').val(customerID);
+            // $('#mailDishAdditional').val(customerID);
+            // $('#mailServiceAdditional').val(customerID);
+            // $('#mailEmployeeAdditional').val(customerID);
+            // $('#mailEquipmentAdditional').val(customerID);
+            if( reservationStatus == 2){
+              var x = document.getElementById('confirmationDiv');
+              x.style.display = 'none';
+            }
+            $("#detailModal").modal("show");     
+          },
+          error: function(xhr)
+          {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+          }                
+        });
         } );
   });
 
@@ -1236,6 +1363,12 @@
           document.getElementById('eventModalCustomerNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
           document.getElementById('eventModalPackageAvailed').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
           document.getElementById('eventModalEventLocation').innerHTML += '<h6>'+data['eventDetail'][0]['eventLocation']+'</h6>';
+          document.getElementById('assignModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('assignModalPackageName').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
+          document.getElementById('assignModalGuestCount').innerHTML += '<h6>'+data['eventDetail'][0]['guestCount']+'</h6>';
+          document.getElementById('assignModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('assignModalPackageID').value = eventModalPackageID;
+          document.getElementById('assignModalReservationID').value = eventModalReservationID;
           $("#eventModal").modal("show");
         },
         error: function(xhr)

@@ -13,15 +13,15 @@ margarethcateringservices@gmail.com </p><br><br>
 
 <p align= "right" style ="padding-right:16%">{{ $currentMonth }}/{{ $currentDay }}/{{ $currentYear }}</p>
 <p align = "left">
-Dear (client name),<br><br><br>
+Dear Mr./Mrs. {{ $mailCustomerName }},<br><br><br>
 <br>We recieved your inquiry and we would like confirm the agreement made during the phone conversation.<br>
 Thank you for making a reservation.
 Here is the full details of your reservation. Kindly check if all the information is correct.<br>
-<br><br><br>Event Date:
-<br>Event Time:
-<br>Event Name:
+<br><br><br>Event Date: {{ $mailEventDate }}
+<br>Event Time: {{ $mailEventStartTime}}
+<br>Event Name: {{ $mailEventName }}
 <br>Package Availed: {{ $mailPackageAvailed }}
-<br>Number of Guest:
+<br>Number of Guest: {{ $mailNumOfGuest }}
 <br>Chosen Dish/Dishes:
 <br>Add-ons:
 <br>Service Availed:

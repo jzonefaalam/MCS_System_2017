@@ -84,6 +84,18 @@ class adminController extends Controller
 
         $mailEventLocation = Input::get('mailEventLocation');
         $mailPackageAvailed = Input::get('mailPackageAvailed');
+        $mailPaymentTerm = Input::get('mailPaymentTerm');
+        $mailEventDate = Input::get('mailEventDate');
+        $mailEventName = Input::get('mailEventName');
+        $mailEventStartTime = Input::get('mailEventStartTime');
+        $mailEventEndTime = Input::get('mailEventEndTime');
+        $mailDishInclusion = Input::get('mailDishInclusion');
+        $mailDishAdditional = Input::get('mailDishAdditional');
+        $mailServiceAdditional = Input::get('mailServiceAdditional');
+        $mailEmployeeAdditional = Input::get('mailEmployeeAdditional');
+        $mailEquipmentAdditional = Input::get('mailEquipmentAdditional');
+        $mailNumOfGuest = Input::get('mailNumOfGuest');
+        $mailCustomerName = Input::get('mailCustomerName');
         $currentMonth = date('m');
         $currentDay = date('d');
         $currentYear = date('Y');
@@ -92,7 +104,19 @@ class adminController extends Controller
          'mailPackageAvailed' => $mailPackageAvailed,
          'currentMonth' => $currentMonth,
          'currentDay' => $currentDay, 
-         'currentYear' => $currentYear
+         'currentYear' => $currentYear,
+         'mailPaymentTerm' => $mailPaymentTerm,
+         'mailEventDate' => $mailEventDate,
+         'mailEventStartTime' => $mailEventStartTime, 
+         'mailEventEndTime' => $mailEventEndTime,
+         'mailDishInclusion' => $mailDishInclusion,
+         'mailDishAdditional' => $mailDishAdditional,
+         'mailServiceAdditional' => $mailServiceAdditional,
+         'mailEmployeeAdditional' => $mailEmployeeAdditional, 
+         'mailEquipmentAdditional' => $mailEquipmentAdditional,
+         'mailNumOfGuest' => $mailNumOfGuest,
+         'mailEventName' => $mailEventName,
+         'mailCustomerName' => $mailCustomerName
         );
         Mail::send('mail', $data, function($message) use ($data){$message->to("mcssystem2017@gmail.com",'Products')->subject('Receipt');
         });
