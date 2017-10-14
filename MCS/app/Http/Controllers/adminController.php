@@ -2281,6 +2281,10 @@ class adminController extends Controller
         return \Response::json(['transactionDetails'=>$transactionDetails]);
     }
 
+    public function queryPage(){
+         return View::make('/QueryPage');
+    }
+
 
     //VALIDATIONS
     ////DISH TYPE

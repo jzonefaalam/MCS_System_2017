@@ -156,6 +156,8 @@ Route::get('/TransactionPage', 'adminController@transactionPage');
 Route::get('/RetrieveTransaction', 'adminController@retrieveTransactionData');
 Route::get('/GetTransactionData', 'adminController@getTransactionData');
 
+//Query Page
+Route::get('/QueryPage', 'adminController@queryPage');
 
 ///// USER ROUTING /////
 
