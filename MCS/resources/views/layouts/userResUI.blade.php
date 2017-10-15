@@ -18,9 +18,6 @@
 	    <link href="{{ asset('http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css') }}" rel="stylesheet">
 	    <link href="{{ asset('http://fonts.googleapis.com/css?family=Montserrat') }}" rel='stylesheet' type='text/css'>
 	    <link href="{{ asset('http://fonts.googleapis.com/css?family=Open+Sans:400,300') }}" rel='stylesheet' type='text/css'>
-
-	    <!-- SweetAlert -->
-  		<script src="{{ asset('sweetalert/dist/sweetalert2.all.min.js') }}"></script>
 	</head>
 
 	<body>

@@ -162,8 +162,6 @@ Route::get('/RetrieveTransaction', 'adminController@retrieveTransactionData');
 Route::get('/GetTransactionData', 'adminController@getTransactionData');
 Route::post("/CancelEvent", array("uses"=>"adminController@cancelEvent"));
 
-//Query Page
-Route::get('/QueryPage', 'adminController@queryPage');
 
 ///// USER ROUTING /////
 

@@ -1,6 +1,51 @@
 @extends('layouts.userReserveUI')
 @section('contents')
 @section('scripts')
+	<nav class="navbar navbar-ct-transparent" role="navigation-demo" id="demo-navbar">
+	  	<div class="container">
+	    	<!-- Brand and toggle get grouped for better mobile display -->
+	    	<div class="navbar-header">
+	      		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation-example-2">
+	        		<span class="sr-only">Toggle navigation</span>
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	        		<span class="icon-bar"></span>
+	      		</button>
+	      
+	      		<a href="UserHomePage">
+	           		<div class="logo-container">
+	                	<div class="brand">
+	                    	<img src="../img/logo.png" alt="Creative Tim Logo" style="width: 250px; height: 70px">
+	                	</div>
+	            	</div>
+	      		</a>
+	    	</div>
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+	    	<div class="collapse navbar-collapse" id="navigation-example-2">
+	      		<ul class="nav navbar-nav navbar-right">
+	          		<li>
+	            		<a href="UserHomePage" class="btn btn-danger btn-simple">Home</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserPackagePage" class="btn btn-danger btn-simple">Package</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserDishPage" class="btn btn-danger btn-simple">Dish</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserServicePage" class="btn btn-danger btn-simple">Service</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserEquipmentPage" class="btn btn-danger btn-simple">Equipment</a>
+	          		</li>
+	          		<li>
+	            		<a href="UserReservationPage" class="btn btn-danger btn-simple">Make a Reservation</a>
+	          		</li>
+	       		</ul>
+	    	</div><!-- /.navbar-collapse -->
+	  	</div><!-- /.container-->
+	</nav> 
 
 	    <!--   Big container   -->
 	    <div class="container">
@@ -12,9 +57,8 @@
 		                <div class="card wizard-card" data-color="red" id="wizard">
 		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data" >
 		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
- 						{{ csrf_field() }}
+
 		                    	<div class="wizard-header">
-		                    		<a class="btn btn-danger" href="UserHomePage" style="float: left; margin-top: 5px; margin-right: -100px"><i class="ti-home"></i></a>
 		                        	<h3 class="wizard-title">Reservation</h3>
 		                        	<p class="category">Book a reservation now!</p>
 		                    	</div>
@@ -91,9 +135,9 @@
 			                                    <div class="form-group">
 			                                        <label>Do you have a Venue?</label>
 			                                        <div class="form-control">&nbsp&nbsp&nbsp&nbsp
-		                                            	<input type="radio" name="yesNo" id = "yes" value="Yes" onchange="locYes(this)">Yes
+		                                            	<input type="radio" name="yesNo" id = "yes" value="Yes" onchange="locYes(this)" required>Yes
 		                                            	&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-		                                            	<input type="radio" name="yesNo" id = "no" value="No" onchange="locYes(this)">No
+		                                            	<input type="radio" name="yesNo" id = "no" value="No" onchange="locYes(this)" required>No
 		                                            </div>
 		                                            <label for="yesNo" class="error" style="display:none;">Choose and answer.</label>
 			                                    </div>
@@ -813,133 +857,135 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 	
 
 	<script type="text/javascript">
-			// $.validator.addMethod("regex", function(value, element, regexp) {
-		 //            var re = new RegExp(regexp);
-		 //            return this.optional(element) || re.test(value);
-		 //        },
-		 //        "Please check your input."
-			// );
-   // 			$('#addReservation').validate({
-   //      		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
-   //      		feedbackIcons: {
-   //          		valid: 'fa fa-check',
-   //          		invalid: 'fa fa-close',
-   //          		validating: 'fa fa-refresh',
-   //      		},
-   //      		rules:{
-   //      			eType: {
-   //      				required:true,
-   //      			},	        
-		 //            yesNo: {
-		 //            	required:true,
-		 //            },
-		 //            eLoc: {
-			// 			required:true,
-			// 			minlength: 2,
-		 //            },
-		 //            eLoc2: {
-		 //            	required:true,
-		 //            },
-		 //            eName: {
-		 //            	required:true,
-			// 			rangelength: [5,50],
-		 //            },
-		 //            eNum: {
-		 //            	required:true,
-		 //            	digits:true,
-		 //            	min: 100,
-		 //            	max: 400,
-		 //            },
-		 //            eDate: {
-		 //            	required:true,
-		 //            	date: true,
-		 //            	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
-		 //            	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
-		 //            },
-		 //            eTime: {
-		 //            	required:true,
-		 //            	min:"06:59:00",
-		 //            	max: function () { return $('#tm1').val(); },
-		 //            },
-		 //            enTime: {
-		 //            	required:true,
-		 //            	min: function () { return $('#tc').val(); },
-		 //            	max: function () { return $('#tm2').val(); },
-		 //            },
-		 //            cusName: {
-		 //            	required:true,
-			// 			rangelength: [3,50],
-		 //            },
-		 //            prevCusName: {
-		 //            	required:true,
-		 //            },
-		 //            homeAdd: {
-		 //            	required:true,
-			// 			rangelength: [5,50],
-		 //            },
-		 //            dob: {
-		 //            	required:true,
-		 //            	date: true,
-		 //            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
-		 //            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
-		 //            },
-		 //            cellNum: {
-		 //            	required:true,
-			// 			regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		 //            },
-		 //            emailAdd: {
-		 //         	   	required:true,
-		 //         	   	email:true,
-		 //            },
-		 //            conPerson: {
-		 //            	required:true,
-		 //            	rangelength: [3,50],
+			$.validator.addMethod(
+		        "regex",
+		        function(value, element, regexp) {
+		            var re = new RegExp(regexp);
+		            return this.optional(element) || re.test(value);
+		        },
+		        "Please check your input."
+			);
+   			$('#addReservation').validate({
+        		// To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+        		feedbackIcons: {
+            		valid: 'fa fa-check',
+            		invalid: 'fa fa-close',
+            		validating: 'fa fa-refresh',
+        		},
+        		rules:{
+        			eType: {
+        				required:true,
+        			},	        
+		            yesNo: {
+		            	required:true,
+		            },
+		            eLoc: {
+						required:true,
+						minlength: 2,
+		            },
+		            eLoc2: {
+		            	required:true,
+		            },
+		            eName: {
+		            	required:true,
+						rangelength: [5,50],
+		            },
+		            eNum: {
+		            	required:true,
+		            	digits:true,
+		            	min: 100,
+		            	max: 400,
+		            },
+		            eDate: {
+		            	required:true,
+		            	date: true,
+		            	min: "{{date('Y-m-d',  strtotime( '+7 day' ))}}",
+		            	max: "{{date('Y-m-d',  strtotime( '+2 month' ))}}",
+		            },
+		            eTime: {
+		            	required:true,
+		            	min:"06:59:00",
+		            	max: function () { return $('#tm1').val(); },
+		            },
+		            enTime: {
+		            	required:true,
+		            	min: function () { return $('#tc').val(); },
+		            	max: function () { return $('#tm2').val(); },
+		            },
+		            cusName: {
+		            	required:true,
+						rangelength: [3,50],
+		            },
+		            prevCusName: {
+		            	required:true,
+		            },
+		            homeAdd: {
+		            	required:true,
+						rangelength: [5,50],
+		            },
+		            dob: {
+		            	required:true,
+		            	date: true,
+		            	min: "{{date('Y-m-d',  strtotime( '-100 year' ))}}",
+		            	max: "{{date('Y-m-d',  strtotime( '-12 year' ))}}",
+		            },
+		            cellNum: {
+		            	required:true,
+						regex: regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+		            },
+		            emailAdd: {
+		         	   	required:true,
+		         	   	email:true,
+		            },
+		            conPerson: {
+		            	required:true,
+		            	rangelength: [3,50],
 
-		 //            },
-		 //            conNum: {
-		 //            	required:true,
-		 //            	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
-		 //            },
-   //          	},
-   //          	messages:{
-   //          		eNum: {
-		 //            	min: "Minimum guest is 100",
-		 //            	max: "Maximum guest is 400",
-		 //            },
-		 //            eType:{
-   //      				required:"Choose a type of Event.",
-   //      			},	        
-		 //            eLoc2:{
-   //      				required:"Choose a Venue.",
-   //      			},	        
-		 //            no: {
-		 //            	required:"Choose an answer.",
-		 //            },
-		 //            cellNum:{
-		 //            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000",
-		 //            },
-		 //            eDate:{
-		 //            	min: "Event must be a week at least a week from now.",
-		 //            	max: "Event must be within these 2 months.",
-		 //            },
-		 //            eTime:{
-		 //            	min: "Business hours starts at 7:00 AM.",
-		 //            	max: "Event duration must be atleast 5 hours.",
-		 //            },
-		 //            enTime:{
-		 //            	min: "Event duration must be atleast 5 hours.",
-		 //            	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
-		 //            },
-		 //            dob: {
-		 //            	required:"Date of birth is required to determine your age.",
-		 //            	min: "You are not that old.",
-		 //            	max: "You must be atleast 12 years old to book an event.",
-		 //            },
-		 //            conNum:{
-		 //            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000",
-		 //            },
-   //          	}
-   //      	});     
+		            },
+		            conNum: {
+		            	required:true,
+		            	regex: "^[0-9]{3}-[0-9]{4}$|^09[0-9]{2}-[0-9]{3}-[0-9]{4}$",
+		            },
+            	},
+            	messages:{
+            		eNum: {
+		            	min: "Minimum guest is 100",
+		            	max: "Maximum guest is 400",
+		            },
+		            eType:{
+        				required:"Choose a type of Event.",
+        			},	        
+		            eLoc2:{
+        				required:"Choose a Venue.",
+        			},	        
+		            no: {
+		            	required:"Choose an answer.",
+		            },
+		            cellNum:{
+		            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
+		            },
+		            eDate:{
+		            	min: "Event must be a week at least a week from now.",
+		            	max: "Event must be within these 2 months.",
+		            },
+		            eTime:{
+		            	min: "Business hours starts at 7:00 AM.",
+		            	max: "Event duration must be atleast 5 hours."
+		            },
+		            enTime:{
+		            	min: "Event duration must be atleast 5 hours.",
+		            	max:  function () { return "Business hours ends at " + $('#tm3').val(); },
+		            },
+		            dob: {
+		            	required:"Date of birth is required to determine your age.",
+		            	min: "You are not that old.",
+		            	max: "You must be atleast 12 years old to book an event.",
+		            },
+		            conNum:{
+		            	regex: "Please enter a valid contact number. Format is 0900-000-0000 or 000-0000"
+		            },
+            	}
+        	});     
  		</script>
 
  	<script type="text/javascript">
@@ -1284,6 +1330,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
+					    	$('#dprice').val(price);
 						}
 						else{
 							alert("Input a Quantity");
@@ -1414,6 +1461,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	$('#sprice').val(price);
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
@@ -1557,6 +1605,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	$('#eprice').val(price);
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
@@ -1693,6 +1742,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						        }
 							$subt=subt;
 				    		document.getElementById('subtot').innerHTML='<h3 class="pull-left">Subtotal:   <b>'+subt+'</b></h3> ';
+					    	$('#emprice').val(price);
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
@@ -1922,7 +1972,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 								}
 								$('#txt').append("\n\t_____________________________________________________________");
 								$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");
-								tot=tot+tp;
 							},
 							error: function(result){
 								alert('error');
@@ -1953,12 +2002,12 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 												tp=price*($("#additionalQty"+j+"").val());
 												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
 												j++;
-												tot=tot+tp;
 												},
 												error: function(result){
 													alert('error');
 												}
-										});									
+											}); 
+									
 								}
 							}
 							
@@ -1987,7 +2036,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 												tp=price*($("#additionalSQty"+k+"").val());
 												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
 												k++;
-												tot=tot+tp;
 												},
 												error: function(result){
 													alert('error');
@@ -2020,7 +2068,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 												tp=price*($("#additionalEQty"+l+"").val());
 												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
 												l++;
-												tot=tot+tp;
 												},
 												error: function(result){
 													alert('error');
@@ -2050,7 +2097,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 												tp=price*($("#additionalEmQty"+m+"").val());
 												$('#txt').append("\n\t\t\t\t\t\t\t\t\t\t\t\t\t"+tp+".00");	
 												m++;
-												tot=tot+tp;
 												},
 												error: function(result){
 													alert('error');
@@ -2061,30 +2107,30 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						}
 						$('#txt').one("scroll", function(){
 							if(addPackIDs){
-							//tot=tot+parseFloat($('#pprice').val());
+							tot=tot+parseFloat($('#pprice').val());
 							}
 							if(addCtr>0){
 								for(var i=1;i<=addCtr;i++){
-									var dprice=parseFloat($('#dprice').val());
-									// tot=tot+dprice;
+									var dprice=parseFloat($('#dprice').val())*parseInt($('#additionalQty'+i+'').val());
+									tot=tot+dprice;
 								}
 							}
 							if(servCtr>0){
 								for(var i=1;i<=servCtr;i++){
-									var sprice =parseFloat($('#sprice').val());
-									// tot=tot+sprice;
+									var dprice =parseFloat($('#sprice').val())*parseFloat($('#additionalSQty'+i+'').val());
+									tot=tot+dprice;
 								}
 							}
 							if(equipCtr>0){
 								for(var i=1;i<=equipCtr;i++){
-									var eprice =parseFloat($('#eprice').val());
-									//tot=tot+eprice;
+									var dprice =parseFloat($('#eprice').val())*parseFloat($('#additionalEQty'+i+'').val());
+									tot=tot+dprice;
 								}
 							}
 							if(empCtr>0){
 								for(var i=1;i<=empCtr;i++){
-									var emprice =parseFloat($('#emprice').val());
-									// tot=tot+emprice;
+									var dprice =parseFloat($('#emprice').val())*parseFloat($('#additionalEmQty'+i+'').val());
+									tot=tot+dprice;
 								}
 							}
 							// alert(tot);
