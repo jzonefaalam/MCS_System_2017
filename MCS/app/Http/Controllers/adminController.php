@@ -2477,12 +2477,17 @@ class adminController extends Controller
         return \Response::json(['transactionDetails'=>$transactionDetails]);
     }
 
+
     public function cancelEvent(){
         $transactionID = Input::get('cancelEventTransactionId');
         $transaction = transactiontbl::find($transactionID); 
         $transaction->transactionStatus = 3; 
         $transaction->save();
         return redirect()->back();
+
+    }
+    public function queryPage(){
+         return View::make('/QueryPage');
     }
 
 
