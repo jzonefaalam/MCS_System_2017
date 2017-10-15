@@ -238,6 +238,9 @@
 <script src="{{ asset('LTE/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ asset('LTE/plugins/fastclick/fastclick.js') }}"></script>
+
+<!-- CHart-->
+<script src="{{ asset('LTE/plugins/chartjs/Chart.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('LTE/dist/js/app.min.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

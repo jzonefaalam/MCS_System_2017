@@ -2281,11 +2281,36 @@ class adminController extends Controller
         return \Response::json(['transactionDetails'=>$transactionDetails]);
     }
 
+    //Query Page
     public function queryPage(){
-         return View::make('/QueryPage');
+        $cancellation = DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
+        ->where('transaction_tbl.transactionStatus', 3)
+        ->get();
+
+        $lost = DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
+        ->where('transaction_tbl.transactionStatus', 4)
+        ->get();
+
+        $assign = DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
+        ->where('transaction_tbl.transactionStatus', 1)
+        ->get();
+
+        return View::make('/QueryPage')->with('cancellation', $cancellation)->with('lost', $lost)->with('assign', $assign);
     }
 
-
+    
     //VALIDATIONS
     ////DISH TYPE
     public function validateDishTypeName(){
