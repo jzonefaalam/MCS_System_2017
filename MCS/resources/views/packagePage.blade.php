@@ -13,7 +13,7 @@
       </section>
       <!-- Main content -->
       <section class="content">
-        <div class="box box-primary">
+        <div class="box box-danger">
           <!-- box header -->
           <div class="box-header with-border">
             <div class="row">
@@ -47,8 +47,7 @@
                   <td>{{ $packageData->packageName }}</td>
                   <td>{{ $packageData->packageDescription }}</td>
                   <td>
-                    <div id="listOfInclusions">
-                    </div>
+                    <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewInclusionsModal" onclick="getPackageInclusion(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> View Inclusions</a>
                   </td>
                   <td>{{ $packageData->packageCost }}</td>
                   <td width="180px">
@@ -175,29 +174,55 @@
                     <div class="tab-content">
 
                      <div class="tab-pane active" id="tab_1">
-                      <div>
-                      <strong><h4>Dish Inclusions</h4></strong><br>
-                      </div>
-                      <div class="dishInclusionDiv" id="dishInclusionDiv">
-                      </div>
+                        <table id="dishInclusionTable" class="table table-bordered table-hover dataTable">
+                          <thead>
+                            <tr>
+                              <th>Included Dishes:</th>
+                            </tr>
+                          </thead>
+                          <tbody style="color:black;">
+
+                          </tbody>
+                        </table>
                       </div>
 
-                      <div class="tab-pane active" id="tab_2">
-                      <strong><h4>Equipment Inclusions</h4></strong><br>
-                      <div class="equipmentInclusionDiv" id="equipmentInclusionDiv">
-                      </div>
+                      <div class="tab-pane" id="tab_2">
+                        <table id="equipmentInclusionTable" class="table table-bordered table-hover dataTable">
+                            <thead>
+                              <tr>
+                                <th>Included Equipment:</th>
+                              </tr>
+                            </thead>
+                          <tbody style="color:black;">
+
+                          </tbody>
+                        </table>
                       </div>
 
-                      <div class="tab-pane active" id="tab_3">
-                      <strong><h4>Service Inclusions</h4></strong><br>
-                      <div class="serviceInclusionDiv" id="serviceInclusionDiv">
-                      </div>
+                      <div class="tab-pane" id="tab_3">
+                        <table id="staffInclusionTable" class="table table-bordered table-hover dataTable">
+                          <thead>
+                            <tr>
+                              <th>Included Staff:</th>
+                            </tr>
+                          </thead>
+                          <tbody style="color:black;">
+
+                          </tbody>
+                        </table>
                       </div>
 
-                      <div class="tab-pane active" id="tab_4">
-                      <strong><h4>Staff Inclusions</h4></strong><br>
-                      <div class="staffInclusionDiv" id="staffInclusionDiv">
-                      </div>
+                      <div class="tab-pane" id="tab_4">
+                        <table id="serviceInclusionTable" class="table table-bordered table-hover dataTable">
+                          <thead>
+                            <tr>
+                              <th>Included Services:</th>
+                            </tr>
+                          </thead>
+                          <tbody style="color:black;">
+
+                          </tbody>
+                        </table>
                       </div>
 
                     </div>
@@ -514,6 +539,42 @@
       "autoWidth": true
     });
 
+    $('#dishInclusionTable').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false
+    });
+
+    $('#staffInclusionTable').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false
+    });
+
+    $('#serviceInclusionTable').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false
+    });
+
+    $('#equipmentInclusionTable').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false
+    });
+
     $('#packageInclusionTable').DataTable({
       "paging": false,
       "lengthChange": true,
@@ -681,6 +742,7 @@
         });
 </script>
 
+<!-- Edit Package Button -->
 <script>
       function getPackage(id){
 
@@ -739,6 +801,62 @@
                 }                
             });
       }
+</script>
+
+<!-- View Inclusion Button -->
+<script>
+  function getPackageInclusion(id){
+      var tblSDet = $('#dishInclusionTable').DataTable();
+      var tblSDet1 = $('#equipmentInclusionTable').DataTable(); 
+      var tblSDet2 = $('#staffInclusionTable').DataTable(); 
+      var tblSDet3 = $('#serviceInclusionTable').DataTable();  
+      tblSDet.clear();
+      tblSDet.draw(true);
+    $.ajax({
+            type: "GET",
+            url:  "/RetrievePackageInclusion",
+            data: 
+            {
+                sdid: id
+            },
+            success: function(data){
+                var dishTypeName = null;
+                var serviceName = null;
+                var staffName = null;
+                var equipmentName = null;
+                var dishTypeStatus = null;
+                for(i=0; i<data['dishInclusion'].length; i++){
+                  dishTypeName=data['dishInclusion'][i]['dishTypeName'];
+                  dishTypeStatus=data['dishInclusion'][i]['dishTypeStatus'];
+                  tblSDet.row.add([
+                    dishTypeName
+                  ]).draw(true);
+                }
+                for(i=0; i<data['dd'].length; i++){
+                  serviceName=data['dd'][i]['serviceName'];
+                  tblSDet3.row.add([
+                    serviceName
+                  ]).draw(true);
+                }
+                for(i=0; i<data['ff'].length; i++){
+                  equipmentName=data['ff'][i]['equipmentName'];
+                  tblSDet1.row.add([
+                    equipmentName
+                  ]).draw(true);
+                }
+                for(i=0; i<data['gg'].length; i++){
+                  employeeTypeName=data['gg'][i]['employeeTypeName'];
+                  tblSDet2.row.add([
+                    employeeTypeName
+                  ]).draw(true);
+                }
+            },
+            error: function(xhr)
+            {
+              alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+        });
+  }
 </script>
 
 @endsection

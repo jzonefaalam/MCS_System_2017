@@ -32,7 +32,7 @@
   <link rel="stylesheet" href="{{ asset('LTE/plugins/datepicker/bootstrap-datepicker.min.css') }}">
   
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-red-light sidebar-mini">
 <div class="wrapper">
 
   
@@ -45,7 +45,7 @@
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
-        <a style="text-align:center;" class="pull-right" href="/Logout">  Logout</a>
+        <a style="display:none; text-align:center;" class="pull-right" href="/Logout">  Logout</a>
     </nav>
   </header>
       <!-- Left side column. contains the logo and sidebar -->
@@ -57,7 +57,7 @@
             
             <li class="active">
               <a href="DashboardPage">
-                <i class="fa fa-home"></i> <span>Dashboard</span>
+                <i class="fa fa-home"></i> <span>Home</span>
               </a>
             </li>
 
@@ -175,12 +175,10 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Calendar
-        <small>Control panel</small>
+        Home
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Calendar</li>
       </ol>
     </section>
 
@@ -189,7 +187,7 @@
       <div class="row">
         <!-- Notifications -->
         <div class="col-md-6">
-          <div class="box box-primary">
+          <div class="box box-danger">
             <div class="box-header">
               <i class="ion ion-clipboard"></i>
               <h3 class="box-title">NOTIFICATIONS</h3>
@@ -356,7 +354,7 @@
 
         <!-- Calendar -->
         <div class="col-md-6">
-          <div class="box box-primary">
+          <div class="box box-danger">
             <div class="box-body no-padding">
               <!-- THE CALENDAR -->
               <div id="calendar"></div>
@@ -822,20 +820,15 @@
             <!-- End Box -->
             </div>
             <div class="row">
-              <table class="table table-bordered table-striped dataTable" style="width:95%;" align="center">
+              <table class="table table-bordered table-striped dataTable" id="equipmentTbl" style="width:95%;" align="center">
                 <thead>
                   <tr>
                     <th>Equipment</th>
                     <th>Equipment Quantity</th>
-                    <th>Equipment Status</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                    <td>Sample</td>
-                  </tr>
+                <tbody id="equipmentTblBody">
+                  
                 </tbody>
               </table>
             </div>
@@ -844,7 +837,81 @@
               <button id="assignEquipmentBtn" onclick="getEquipmentDetails();" class="btn btn-default" type="button">
                 Assign Equipment
               </button>
-              <button type="button" href="#" disabled="" class="btn btn-default">Assessment of Equipment</button>
+              <button id="assessEquipmentBtn" type="button" href="#" style="display: none;" class="btn btn-default">Assessment of Equipment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End -->
+
+  <!-- Assessment Modal Modal -->
+  <form role="form" method="POST" action="/AssessEquipment" class="form-horizontal">
+    <div class="modal fade" id="assessmentModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div id="assignModalCustomerName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div id="assignModalEventName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <!-- <label>Event Date: </label> -->
+                    <input style="display:none;" type="text" id="assignModalReservationID" name="assignModalReservationID">
+                    <input style="display:none;" type="text" id="assignModalPackageID" name="assignModalPackageID">
+                    <input style="display:none;" type="text" id="assessmentItemCtr" name="assessmentItemCtr">
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Guest Count: </label>
+                    <div id="assignModalGuestCount" style="display: inline-block;">
+
+                    </div>
+                    <br>
+                    <label>Package Availed: </label>
+                    <div id="assignModalPackageName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <!-- <label>Event Location: </label> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Box -->
+            </div>
+            <div class="row">
+              <table id="equipmentAssessTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
+                  <thead>
+                    <tr>
+                      <th>Equipment Name</th>
+                      <th>Equipment Quantity</th>
+                      <th>Return Quantity</th>
+                      <th style="display: none;">Equipment ID</th>
+                      <th style="display: none;">Equipment ID</th>
+                    </tr>
+                  </thead>
+                  <tbody id="equipmentAssessTblBody">
+
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button id="saveAssessEquipment" class="btn btn-default" type="submit">
+                Save
+              </button>
+              <button type="button" href="#" class="btn btn-default">Back</button>
           </div>
         </div>
       </div>
@@ -853,7 +920,7 @@
   <!-- End -->
 
   <!-- Assign Modal Modal -->
-  <form id="assignForm" role="form" method="POST" action="#" class="form-horizontal">
+  <form id="assignForm" role="form" method="POST" action="/AssignEquipment" class="form-horizontal">
     <div class="modal fade" id="assignEquipmentModal" >
       <div class="modal-dialog" style="width:70%;">
         <div class="modal-content">
@@ -875,7 +942,10 @@
                     </div>
                     <br>
                     <!-- <label>Event Date: </label> -->
-                    <input style="display:none;" type="hidden" id="assignModalReservationID">
+                    <input style="display:none;" type="text" id="assignModalReservationID" name="assignModalReservationID">
+                    <input style="display:none;" type="text" id="assignModalPackageID" name="assignModalPackageID">
+                    <input style="display:none;" type="text" id="addItemCtr" name="addItemCtr">
+                    <input style="display:none;" type="text" id="additionalItemCtr" name="additionalItemCtr">
                   </div>
                   <div class="col-md-6" align="left">
                     <label>Guest Count: </label>
@@ -889,7 +959,6 @@
                     </div>
                     <br>
                     <!-- <label>Event Location: </label> -->
-                    <input style="display:none;" type="hidden" id="assignModalPackageID">
                   </div>
                 </div>
               </div>
@@ -901,7 +970,8 @@
                   <thead>
                     <tr>
                       <th>Equipment Name</th>
-                      <th>Equipment Quantity Date</th>
+                      <th>Equipment Quantity</th>
+                      <th style="display: none;">Equipment ID</th>
                     </tr>
                   </thead>
                   <tbody id="equipmentAssignTblBody">
@@ -911,10 +981,10 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button id="assignEquipmentBtn" class="btn btn-default" type="button">
+              <button class="btn btn-default" type="submit">
                 Save
               </button>
-              <button type="button" href="#" disabled="" class="btn btn-default">Close</button>
+              <button type="button" href="#" class="btn btn-default">Back</button>
           </div>
         </div>
       </div>
@@ -954,6 +1024,8 @@
                     <div id="paymentModalEventDate" style="display: inline-block;">
                       
                     </div>
+                    <input id="paymentModalpaymentTerm" type="text" style="display: none;">
+                    <input id="paymentModalTransactionID" type="text" style="display: none;">
                   </div>
                 </div>
               </div>
@@ -981,7 +1053,6 @@
           </div>
           <div class="modal-footer">
               <button type="submit" class="btn btn-default">Send Notification</button>
-              <button type="submit" class="btn btn-default">Cancel Event</button>
           </div>
         </div>
       </div>
@@ -1017,33 +1088,157 @@
 <!-- Page specific script -->
 
 <script>
+  $("#saveAssessEquipment").click(function(e){
+    $("#eventModal").modal("hide");
+    // var packageID = document.getElementById('assignModalPackageID').value; 
+    var reservationID = document.getElementById('assignModalReservationID').value;
+    $.ajax({
+        type: "GET",
+        url:  "/RetrieveAssignedEquipment",
+        data: 
+        {
+            sendReservationID: reservationID
+        },
+        success: function(data){
+          var assessItemName, assessAssignQty, assessReturnQty, assessItemID, assessEquipmentName;
+          var assessItemNameID, assessAssignQtyID, assessReturnQtyID, assessItemIDID, assessEquipmentNameID;
+          var assessmentItemCtr = 0;
+          var tblSDet = $('#equipmentAssessTbl').DataTable();
+          tblSDet.clear();
+          tblSDet.draw(true);
+          for (var i = 0; i < data['ss'].length; i++) {
+            assessItemNameID = "assessItemName" + i;
+            assessItemIDID = "assessItemID" + i;
+            assessReturnQtyID = "assessReturnQty" + i;
+            assessEquipmentNameID = "assessEquipmentNameID" + i;
+            assessItemName = data['ss'][i]['equipmentName'];
+            assessAssignQty = data['ss'][i]['assignEquipmentQty'];
+            assessReturnQty = '<input name="'+assessReturnQtyID+'" id="'+ assessReturnQtyID +'">';
+            assessItemID = '<input name="'+assessItemIDID+'" style="display: none;" id="'+ assessItemIDID +'" value="'+ data['ss'][i]['assignEquipmentID'] +'"/>';
+            assessEquipmentName = '<input name="'+assessEquipmentNameID+'" style="display: none;" id="'+ assessEquipmentNameID +'" value="'+ data['ss'][i]['equipmentID'] +'"/>';
+            tblSDet.row.add([
+              assessItemName,
+              assessAssignQty,
+              assessReturnQty,
+              assessItemID,
+              assessEquipmentName
+              ]).draw(true);
+            assessmentItemCtr = assessmentItemCtr + 1;
+          }
+          document.getElementById('assessmentItemCtr').value = assessmentItemCtr;
+          $("#assessmentModal").modal("show"); 
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      }); 
+  }); 
+</script>
+
+<script>
+  $("#assessEquipmentBtn").click(function(e){
+    $("#eventModal").modal("hide");
+    // var packageID = document.getElementById('assignModalPackageID').value; 
+    var reservationID = document.getElementById('assignModalReservationID').value;
+    $.ajax({
+        type: "GET",
+        url:  "/RetrieveAssignedEquipment",
+        data: 
+        {
+            sendReservationID: reservationID
+        },
+        success: function(data){
+          var assessItemName, assessAssignQty, assessReturnQty, assessItemID, assessEquipmentName;
+          var assessItemNameID, assessAssignQtyID, assessReturnQtyID, assessItemIDID, assessEquipmentNameID;
+          var assessmentItemCtr = 0;
+          var tblSDet = $('#equipmentAssessTbl').DataTable();
+          tblSDet.clear();
+          tblSDet.draw(true);
+          for (var i = 0; i < data['ss'].length; i++) {
+            assessItemNameID = "assessItemName" + i;
+            assessItemIDID = "assessItemID" + i;
+            assessReturnQtyID = "assessReturnQty" + i;
+            assessEquipmentNameID = "assessEquipmentNameID" + i;
+            assessItemName = data['ss'][i]['equipmentName'];
+            assessAssignQty = data['ss'][i]['assignEquipmentQty'];
+            assessReturnQty = '<input name="'+assessReturnQtyID+'" id="'+ assessReturnQtyID +'">';
+            assessItemID = '<input name="'+assessItemIDID+'" style="display: none;" id="'+ assessItemIDID +'" value="'+ data['ss'][i]['assignEquipmentID'] +'"/>';
+            assessEquipmentName = '<input name="'+assessEquipmentNameID+'" style="display: none;" id="'+ assessEquipmentNameID +'" value="'+ data['ss'][i]['equipmentID'] +'"/>';
+            tblSDet.row.add([
+              assessItemName,
+              assessAssignQty,
+              assessReturnQty,
+              assessItemID,
+              assessEquipmentName
+              ]).draw(true);
+            assessmentItemCtr = assessmentItemCtr + 1;
+          }
+          document.getElementById('assessmentItemCtr').value = assessmentItemCtr;
+          $("#assessmentModal").modal("show"); 
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      }); 
+  }); 
+</script>
+
+<script>
   $("#assignEquipmentBtn").click(function(e){
     $("#eventModal").modal("hide");
     var packageID = document.getElementById('assignModalPackageID').value; 
-    var reservationID = document.getElementById('assignModalReservationID').value; 
-    // alert(packageID);
+    var reservationID = document.getElementById('assignModalReservationID').value;
     $.ajax({
         type: "GET",
         url:  "/RetrievePackageInclusion",
         data: 
         {
-            sdid: packageID
+            sdid: packageID,
+            sendReservationID: reservationID
         },
         success: function(data){
-          var itemName, itemQty;
+          var itemName, itemQty, itemID;
+          var addItemName, addItemQtyID, addItemID;
+          var addItemCounter = 0;
+          var additionalItemCounter = 0;
           var tblSDet = $('#equipmentAssignTbl').DataTable();
           tblSDet.clear();
           tblSDet.draw(true);
-          // alert(data['ff'].length);
           for (var i = 0; i < data['ff'].length; i++) {
+            addItemName = "addItemName" + i;
+            addItemID = "addItemID" + i;
+            addItemQtyID = "addItemQtyID" + i;
+            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['ff'][i]['equipmentID'] + '" />';
             itemName = data['ff'][i]['equipmentName'];
-            // alert(itemName);
-            itemQty = '<input type="text">';
+            itemQty = '<input value="0" name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number">';
             tblSDet.row.add([
               itemName,
-              itemQty
+              itemQty,
+              itemID
               ]).draw(true);
+            addItemCounter = addItemCounter + 1;
           }
+
+          for (var i = 0; i < data['additionalEquipment'].length; i++) {
+            addItemName = "additionalItemName" + i;
+            addItemID = "additionalItemID" + i;
+            addItemQtyID = "additionalItemQtyID" + i;
+            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['ff'][i]['equipmentID'] + '" />';
+            itemName = "Additional: " + data['ff'][i]['equipmentName'];
+            itemQty = '<input name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number" value="' + data['additionalEquipment'][i]['equipmentAdditionalQty']+ '">';
+            tblSDet.row.add([
+              itemName,
+              itemQty,
+              itemID
+              ]).draw(true);
+            additionalItemCounter = additionalItemCounter + 1;
+          }
+          document.getElementById('addItemCtr').value = addItemCounter;
+          document.getElementById('additionalItemCtr').value = additionalItemCounter;
           $("#assignEquipmentModal").modal("show"); 
         },
         error: function(xhr)
@@ -1099,18 +1294,34 @@
       "info": false,
       "autoWidth": true
     });
+    $('#equipmentAssessTbl').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": true
+    });
+    $('#equipmentTbl').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": true
+    });
   });
 
   // Notification Table Function
   $(document).ready(function() {
     var table = $('#notificationTable').DataTable();
     $('#notificationTable tbody').on('dblclick', 'tr', function () {
-        var totalFeeTemp;
-        var totalFeePerm;
-        var additionalDishFee;
-        var additionalServiceFee;
-        var additionalEquipmentFee;
-        var additionalEmployeeFee;
+        var totalFeeTemp = 0;
+        var totalFeePerm = 0;
+        var additionalDishFee = 0;
+        var additionalServiceFee = 0;
+        var additionalEquipmentFee = 0;
+        var additionalEmployeeFee = 0;
         var data = table.row( this ).data();
         var reservationIDVar = data[0];
         var reservationEventNameVar = data[1];
@@ -1184,7 +1395,7 @@
                 var additionalDishMultiplier = parseFloat(data['additionalDish'][i]['additionalServing']);
                 var additionalDishCost = parseFloat(data['additionalDish'][i]['dishCost']);
                 var newAdditionalDishCost = (additionalDishMultiplier * additionalDishCost);
-                additionalDishFee = newAdditionalDishCost;
+                additionalDishFee = newAdditionalDishCost + additionalDishFee;
               }
             }
             else{
@@ -1196,7 +1407,7 @@
                 var additionalServiceMultiplier = parseFloat(data['additionalService'][i]['serviceAdditionalQty']);
                 var additionalServiceCost = parseFloat(data['additionalService'][i]['serviceFee']);
                 var newAdditionalServiceCost = (additionalServiceMultiplier * additionalServiceCost);
-                additionalServiceFee = newAdditionalServiceCost;
+                additionalServiceFee = additionalServiceFee + newAdditionalServiceCost;
               }
             }
             else{
@@ -1208,19 +1419,19 @@
                 var additionalEquipmentMultiplier = parseFloat(data['additionalEquipment'][i]['equipmentAdditionalQty']);
                 var additionalEquipmentCost = parseFloat(data['additionalEquipment'][i]['equipmentRatePerHour']);
                 var newAdditionalEquipmentCost = (additionalEquipmentMultiplier * additionalEquipmentCost);
-                additionalEquipmentFee = newAdditionalEquipmentCost;
+                additionalEquipmentFee = newAdditionalEquipmentCost + additionalEquipmentFee;
               }
             }
             else{
               additionalEquipmentFee = 0;
             }
-            if((data['additionalEquipment'].length)>0){
+            if((data['additionalEmployee'].length)>0){
               for (var i = 0; i < data['additionalEmployee'].length; i++) {
                 document.getElementById('additionalEmployeeDiv').innerHTML += '<h6>'+data['additionalEmployee'][i]['employeeTypeName']+'</h6>';
                 var additionalEmployeeMultiplier = parseFloat(data['additionalEmployee'][i]['employeeAdditionalQty']);
                 var additionalEmployeeCost = parseFloat(data['additionalEmployee'][i]['employeeRatePerHour']);
                 var newAdditionalEmployeeCost = (additionalEmployeeMultiplier * additionalEmployeeCost);
-                additionalEmployeeFee = newAdditionalEmployeeCost;
+                additionalEmployeeFee = newAdditionalEmployeeCost + additionalEmployeeFee;
               }
             }
             else{
@@ -1280,6 +1491,8 @@
           document.getElementById('paymentModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
           document.getElementById('paymentModalEventDate').innerHTML += '<h6>'+data['eventDetail'][0]['eventDate']+'</h6>';
           document.getElementById('paymentModalContactNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
+          document.getElementById('paymentModalpaymentTerm').value=data['eventDetail'][0]['paymentTermID'];
+          document.getElementById('paymentModalTransactionID').value=data['eventDetail'][0]['transactionID'];
           // Ajax for Payment Detail
           $.ajax({
             type: "GET",
@@ -1298,19 +1511,20 @@
                 addPaymentReceiveDate = "addPaymentReceiveDate" + i;
                 addPaymentID = "addPaymentID" + i;
                 addPaymentBtnID = "addPaymentBtnID" + i;
+                addPaymentStatusID = "addPaymentStatusID" + i;
                 var submitPayment = "submitPayment" + i;
                 paymentID = '<input id=" ' + addPaymentID + '" type="text" value="' + data['paymentDetail'][i]['paymentID'] +  '"> </input>' ;
                 paymentAmount = data['paymentDetail'][i]['paymentAmount'];
                 paymentDueDate = data['paymentDetail'][i]['paymentDueDate'];
                 statusChecker = data['paymentDetail'][i]['paymentStatus'];
                 if (statusChecker == 0) {
-                  paymentStatus = '<span class="label label-warning">Pending</span>';
-                  paymentReceiveDate = '<div class="input-group date" data-provide="datepicker"><input id="' + addPaymentReceiveDate + '" class="datepicker" data-date-format="yyyy/mm/dd"><div class="input-group-addon"><span class="glyphicon glyphicon-th"></span></div></div>';
+                  paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-warning">Pending</span>';
+                  paymentReceiveDate = '<input type="date" id="' + addPaymentReceiveDate + '" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" min="{{date('Y-m-d',  strtotime( '+7 day' ))}}">';
                   paymentActionBtn = '<input type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
                 }
                 if (statusChecker == 1) {
-                  paymentStatus = '<span class="label label-success">Confirmed</span>';
-                  paymentReceiveDate = data['paymentDetail'][i]['paymentReceiveDate'];
+                  paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-success">Confirmed</span>';
+                  paymentReceiveDate = '<input disabled value="' + data['paymentDetail'][i]['paymentReceiveDate'] + '" id="' + addPaymentReceiveDate + '" data-date-format="yyyy/mm/dd">';
                   paymentActionBtn = '<input disabled type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
                 }
                 
@@ -1349,6 +1563,7 @@
       var eventModalEventID = data[2];
       var eventModalPackageID = data[3];
       var eventModalCustomerID = data[4];
+      var transactionStatus;
       $.ajax({
         type: "GET",
         url:  "/RetrieveEventDetail",
@@ -1369,7 +1584,64 @@
           document.getElementById('assignModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
           document.getElementById('assignModalPackageID').value = eventModalPackageID;
           document.getElementById('assignModalReservationID').value = eventModalReservationID;
-          $("#eventModal").modal("show");
+          var checkEventDate = data['eventDetail'][0]['eventDate'];
+          transactionStatus = data['eventDetail'][0]['transactionStatus'];
+          if(transactionStatus == 1){
+            document.getElementById('assessEquipmentBtn').style.display='';
+            document.getElementById('assignEquipmentBtn').style.display='none';
+          }
+          // alert(transactionStatus);
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1; //January is 0!
+          var yyyy = today.getFullYear();
+          if(dd<10) {
+              dd = '0'+dd
+          } 
+          if(mm<10) {
+              mm = '0'+mm
+          } 
+          today = yyyy + '-' + mm + '-' + dd;
+          var myDate = new Date(today);
+          var eventCheckDate = new Date(checkEventDate);
+          var timeDiff = eventCheckDate.getTime() - myDate.getTime();
+          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          // alert(myDate);
+          // alert(diffDays);
+          if(diffDays<0){
+            var x = document.getElementById('assessEquipmentBtn');
+              x.style.display = '';
+            var y = document.getElementById('assignEquipmentBtn');
+              y.style.display = 'none';
+          }
+          $.ajax({
+            type: "GET",
+            url:  "/RetrieveAssignedEquipment",
+            data: 
+            {
+                sendReservationID: eventModalReservationID
+            },
+            success: function(data){
+              var equipmentName, equipmentQty;
+              var tblSDet = $('#equipmentTbl').DataTable();
+              tblSDet.clear();
+              tblSDet.draw(true);
+              for (var i = 0; i < data['ss'].length; i++) {
+                equipmentName = data['ss'][i]['equipmentName'];
+                equipmentQty = data['ss'][i]['assignEquipmentQty'];
+                tblSDet.row.add([
+                  equipmentName,
+                  equipmentQty,
+                  ]).draw(true);
+              }
+              $("#eventModal").modal("show");
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+          });
         },
         error: function(xhr)
         {
@@ -1381,7 +1653,6 @@
     });
   });
 </script>
-
 
 <script>
   function getReservation(id){
@@ -1412,6 +1683,12 @@
   function submitPayment0(id){
     var paymentID0 = id;
     var receiveDate0 = document.getElementById('addPaymentReceiveDate0').value;
+    var paymentTermID = document.getElementById('paymentModalpaymentTerm').value;
+    var transactionID = document.getElementById('paymentModalTransactionID').value;
+    alert(paymentID0);
+    alert(receiveDate0);
+    alert(paymentTermID);
+    alert(transactionID);
     $.ajax({
       url: "/SavePayment0",
       type: "POST",
@@ -1424,10 +1701,15 @@
       data: {
         sendPaymentID: paymentID0,
         sendReceiveDate: receiveDate0,
+        sendPaymentTerm: paymentTermID,
+        sendTransactionID: transactionID,
         '_token': $('#token').val()
       },               
       success: function (response) {
-         window.location.href = "DashboardPage"; 
+        $('#addPaymentStatusID0').removeClass('label label-warning').addClass('label label-success');
+        document.getElementById('addPaymentStatusID0').innerHTML = 'Confirmed';
+        $('#addPaymentBtnID0').prop("disabled",true);
+        $('#addPaymentReceiveDate0').prop("disabled",true);
       },
       error: function(xhr)
       {
@@ -1440,6 +1722,8 @@
   function submitPayment1(id){
     var paymentID1 = id;
     var receiveDate1 = document.getElementById('addPaymentReceiveDate1').value;
+    var transactionID = document.getElementById('paymentModalTransactionID').value;
+    alert(receiveDate1);
     $.ajax({
       url: "/SavePayment1",
       type: "POST",
@@ -1452,14 +1736,18 @@
       data: {
         sendPaymentID: paymentID1,
         sendReceiveDate: receiveDate1,
+        sendTransactionID: transactionID,
         '_token': $('#token').val()
       },               
       success: function (response) {
-         window.location.href = "DashboardPage"; 
+        $('#addPaymentStatusID1').removeClass('label label-warning').addClass('label label-success');
+        document.getElementById('addPaymentStatusID1').innerHTML = 'Confirmed';
+        $('#addPaymentBtnID1').prop("disabled",true);
+        $('#addPaymentReceiveDate1').prop("disabled",true);
       },
       error: function(xhr)
       {
-        alert("mali")
+        alert("mali");
       }                  
     });
   }

@@ -128,7 +128,7 @@
                             <i class="fa fa-text-o" aria-hidden="true"></i>
                           </div>
                           <select class="form-control" name="addPOType" id="addPOType" onchange="enableEquipmentType(this.id);">
-                            <!-- <option disabled="">Select Category</option> -->
+                            <option selected="" disabled="">Select Category</option>
                             @foreach($poTypeData as $poTypeData)
                               <option value="{{ $poTypeData->poTypeId }}">{{ $poTypeData->poTypeName }} </option>
                             @endforeach
@@ -219,7 +219,7 @@ function enableEquipmentType(id){
   var selectedOption = document.getElementById(id);
   var loc = selectedOption.selectedIndex;
   // Food
-  if(loc==0){
+  if(loc==1){
     document.getElementById('equipmentTypeDiv').style="display:none";
     document.getElementById('ratePerHourDiv').style="display:none";
     document.getElementById('imageDiv').style="display:none";
@@ -250,10 +250,9 @@ function enableEquipmentType(id){
     });     
   }
   // Equipment
-  if(loc==1){
+  if(loc==2){
     document.getElementById('equipmentTypeDiv').style="display:";
     document.getElementById('ratePerHourDiv').style="display:";
-    document.getElementById('imageDiv').style="display:";
     document.getElementById('categoryChecker').value="1";
     $('#addExistingItemName')
       .find('option')
@@ -268,9 +267,10 @@ function enableEquipmentType(id){
       },
       success: function(data){        
         for (var i = 0; i < data['existingPOEquipment'].length; i++) {
-          // alert(data['existingPOEquipment'][i]['equipmentName']);
           var div_data="<option value=" +data['existingPOEquipment'][i]['equipmentID']+ ">" +data['existingPOEquipment'][i]['equipmentName']+ "</option>";
+          document.getElementById('addRatePerHour').value=data['existingPOEquipment'][i]['equipmentRatePerHour'];
           $(div_data).appendTo('#addExistingItemName');
+          $('#addEquipmentType').val(data['existingPOEquipment'][i]['equipmentTypeID']);
         }
       },
       error: function(xhr)

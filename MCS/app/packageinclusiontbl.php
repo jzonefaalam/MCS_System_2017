@@ -8,7 +8,7 @@ class packageinclusiontbl extends Model
 {
     protected $table = 'packageinclusion_tbl';
 	protected $primaryKey = 'packageInclusionID';
-	protected $fillable = array('packageID', 'dishTypeID', 'equipmentID');
+	protected $fillable = array('packageID', 'dishTypeID', 'equipmentID', 'packageInlusionStatus');
 	public $timestamps = false;
 }
 
