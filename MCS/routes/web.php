@@ -124,6 +124,11 @@ Route::get('/RetrieveEventDetail', 'adminController@retrieveEventDetail');
 Route::get('/RetrievePaymentDetail', 'adminController@retrievePaymentDetail');
 Route::post("/SavePayment0", array("uses"=>"adminController@savePayment0"));
 Route::post("/SavePayment1", array("uses"=>"adminController@savePayment1"));
+Route::post("/TransactionSavePayment0", array("uses"=>"adminController@transactionSavePayment0"));
+Route::post("/TransactionSavePayment1", array("uses"=>"adminController@transactionSavePayment1"));
+Route::post("/AssignEquipment", array("uses"=>"adminController@assignEquipment"));
+Route::post("/AssessEquipment", array("uses"=>"adminController@assessEquipment"));
+Route::get('/RetrieveAssignedEquipment', 'adminController@retrieveAssignedEquipment');
 
 //Reservation Page
 Route::get('/ReservationPage', 'adminController@reservationPage');
@@ -155,6 +160,7 @@ Route::post("/DeletePOType", array("uses"=>"adminController@deletePOType"));
 Route::get('/TransactionPage', 'adminController@transactionPage');
 Route::get('/RetrieveTransaction', 'adminController@retrieveTransactionData');
 Route::get('/GetTransactionData', 'adminController@getTransactionData');
+Route::post("/CancelEvent", array("uses"=>"adminController@cancelEvent"));
 
 //Query Page
 Route::get('/QueryPage', 'adminController@queryPage');

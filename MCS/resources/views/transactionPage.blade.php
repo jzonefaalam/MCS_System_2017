@@ -30,25 +30,39 @@
           <table id="transactionTable" class="table table-bordered table-striped dataTable">
             <thead>
               <tr>
-                <th>Transaction #</th>
+                <th style="display: none;">Transaction #</th>
                 <th>Event Name</th>
                 <th>Customer</th>
                 <th>Payment</th>
+                <th>Event Date</th>
                 <th>Payment Status</th>
-                <th>Event Status</th>
-                <th style="display: none;">Event Date</th>
               </tr>
             </thead>
             <tbody>
               @foreach ($transactionData as $transactionData)
               <tr>
-                <td>{{ $transactionData->transactionID }}</td>
+                <td style="display: none;">{{ $transactionData->transactionID }}</td>
                 <td>{{ $transactionData->eventName }}</td>
                 <td>{{ $transactionData->fullName }}</td>
                 <td>{{ $transactionData->totalFee }}</td>
-                <td>{{ $transactionData->transactionStatus }}</td>
-                <td>None</td>
-                <td style="display: none;">{{ $transactionData->eventDate }}</td>
+                <td>{{ $transactionData->eventDate }}</td>
+                <td>
+                  <?php if (($transactionData->transactionStatus)==0): ?>
+                    <span class="label label-info">Pending</span>
+                  <?php endif ?>
+                  <?php if (($transactionData->transactionStatus)==1): ?>
+                    <span class="label label-success">Fully Paid</span>
+                  <?php endif ?>
+                  <?php if (($transactionData->transactionStatus)==2): ?>
+                    <span class="label label-warning">Half Paid</span>
+                  <?php endif ?>
+                  <?php if (($transactionData->transactionStatus)==3): ?>
+                    <span class="label label-danger">Cancelled</span>
+                  <?php endif ?>
+                  <?php if (($transactionData->transactionStatus)==4): ?>
+                    <span class="label label-success">Finished</span>
+                  <?php endif ?>
+                </td>
               </tr>
               @endforeach
             </tbody>
@@ -59,6 +73,7 @@
       <!-- /Box -->
     </section>
     <!-- /Content -->
+
     <!-- Transaction Modal-->
     <form role="form" method="POST" action="#" class="form-horizontal">
       <div  class="modal fade" id="transactionModal">
@@ -83,7 +98,6 @@
                     <p>Availed Package: </p>
                     <p>Additional: </p>
                     <p>Total Fee: </p>
-                    <p>Balance: </p>
                     <p>Payment Term: </p>
                     <p>Payment Status: </p>
                   </div>
@@ -96,31 +110,33 @@
                     <p id="parAvailedPackage"></p>
                     <p id="parAdditionalItem"></p>
                     <p id="parTotalFee"></p>
-                    <p id="parBalanceFee"></p>
                     <p id="parPaymentTerm"></p>
                     <p id="parPaymentStatus"></p>
                     <input type="text"  name="parTransactionId" id="parTransactionId" style="display: none;">
+
+                    <input type="text"  name="parReservationID" id="parReservationID" style="display: none;">
                   </div>
                 </div>
               </div>
             </div>
             <!-- /Modal Body -->
             <div class="modal-footer">
-              <a class="btn btn-app" data-dismiss="modal" href="#" style="float:right">
-                <i class="fa fa-close"></i>Close
+              <a data-target="#cancelEventModal" id="cancelBtn" data-toggle="modal" onclick="cancelEvent(document.getElementById('parTransactionId').value);" class="btn btn-app" type="submit" style=" float:right; display:none;">
+                  <i class="fa fa-times" ></i> Cancel Event
               </a>
-              <a class="btn btn-app" href="#" style="float:right">
-                <i class="fa fa-check"></i>Confirm Payment
+              <a class="btn btn-app" id="paymentBtn" onclick="getPayment(document.getElementById('parReservationID').value);" style="float:right; display:none;">
+                <i class="fa fa-check"></i> Payment
               </a>
-              <a class="btn btn-app" id="returnBtn" href="#" style="float:right;">
-                <i class="fa fa-print"></i>Return Equipment
+              <a class="btn btn-app" id="assessmentBtn" onclick="assessmentEvent(document.getElementById('parTransactionId').value);" style="float:right; display:none;">
+                <i class="fa fa-print"></i>Assessment
               </a>
-              <a onclick="assignEquipment(document.getElementById('parTransactionId').value);" style="float:right;" class="btn btn-app" id="assignBtn">
+              <a sstyle="float:right;" class="btn btn-app" id="assignBtn" onclick="assignEvent(document.getElementById('parReservationID').value);" style="float:right; display:none;">
                   <i class="fa fa-check" ></i> Assign Equipment
               </a>
-              <a class="btn btn-app" href="#" style="float:right" onclick="getReservation(document.getElementById('parTransactionId').value);">
+              <a class="btn btn-app" id="printBtn" href="#" style="float:right; display:none;" onclick="getReservation(document.getElementById('parTransactionId').value);">
                 <i class="fa fa-print"></i>Print
               </a>
+
             </div>
             <!-- /Modal Footer -->
           </div>
@@ -129,53 +145,594 @@
     </form>
     <!-- End Modals-->
 
-    <!-- Transaction Modal-->
-    <form role="form" method="POST" action="#" class="form-horizontal">
-      <div  class="modal fade" id="assignEquipmentModal">
-        <!-- <div class="modal-dialog"> -->
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              Assignment of Equipment
-            </div>
-            <!-- /Modal Header -->
-            <div class="modal-body">
-              {!! csrf_field() !!}
-              <div>
-                <table id="equipmentTbl" class="table table-striped table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Equipment Name</th>
-                      <th>Quantity</th>
-                      <th style="display: none;">Id</th>
-                    </tr>
-                  </thead>
-                  <tbody id="equipmentTblBody">
-
-                  </tbody>
-                </table>
-                <a class="btn btn-app" style="float:right">
-                  <i class="fa fa-save"></i>Submit
-                </a>
+  <!-- PAYMENT EVENT Modal -->
+  <form id="paymentForm" role="form" method="POST" action="#" class="form-horizontal">
+    <div class="modal fade" id="paymentModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div id="paymentModalCustomerName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div id="paymentModalEventName" style="display: inline-block;">
+                      
+                    </div>
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Contact Number: </label>
+                    <div id="paymentModalContactNumber" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Date: </label>
+                    <div id="paymentModalEventDate" style="display: inline-block;">
+                      
+                    </div>
+                    <input id="paymentModalpaymentTerm" type="text" style="display: none;">
+                    <input id="paymentModalTransactionID" type="text" style="display: none;">
+                  </div>
+                </div>
               </div>
             </div>
-            <!-- /Modal Body -->
-            <div class="modal-footer">
-              
+            <!-- End Box -->
             </div>
-            <!-- /Modal Footer -->
+            <!-- Payment Table -->
+            <div class="row">
+              <table id="paymentDetailTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
+                  <thead>
+                    <tr>
+                      <th>Payment Amount</th>
+                      <th>Due Date</th>
+                      <th>Date Received</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="paymentDetailTblBody">
+                    <input type="hidden" id="token" value="{{ csrf_token() }}">
+                  </tbody>
+                </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-default">Send Notification</button>
           </div>
         </div>
       </div>
-    </form>
-    <!-- End Modals--> 
+    </div>
+  </form>
+  <!-- End -->
+
+  <!-- CANCEL EVENT MODAL -->
+  <form role="form" method="POST" action="CancelEvent" class="form-horizontal">
+    <div class="modal fade" id="cancelEventModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-body">
+              <div class="form-group" style="display:none;">
+                <label class="col-sm-4 control-label">Transaction ID</label>
+                <div class="col-sm-5 input-group" >
+                  <input type="text"  name="cancelEventTransactionId" id="cancelEventTransactionId" style="display: none;">
+                </div>
+              </div>
+            </div>
+              {!! csrf_field() !!}
+            <div>
+              <h5> Are you sure you want to cancel this event? </h5>
+            </div>
+            <div style="text-align: center;">
+              <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+              <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End Modals-->
+
+  <!-- Event Modal -->
+  <form id="eventForm" role="form" action="#" class="form-horizontal">
+    <div class="modal fade" id="eventModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div id="eventModalCustomerName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div id="eventModalEventName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Date: </label>
+                    <div id="eventModalEventDate" style="display: inline-block;">
+                      
+                    </div>
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Contact Number: </label>
+                    <div id="eventModalCustomerNumber" style="display: inline-block;">
+
+                    </div>
+                    <br>
+                    <label>Package Availed: </label>
+                    <div id="eventModalPackageAvailed" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Location: </label>
+                    <div id="eventModalEventLocation" style="display: inline-block;">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Box -->
+            </div>
+            <div class="row">
+              <table class="table table-bordered table-striped dataTable" id="equipmentTbl" style="width:95%;" align="center">
+                <thead>
+                  <tr>
+                    <th>Equipment</th>
+                    <th>Equipment Quantity</th>
+                  </tr>
+                </thead>
+                <tbody id="equipmentTblBody">
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button id="assignEquipmentBtn" onclick="getEquipmentDetails();" class="btn btn-default" type="button">
+                Assign Equipment
+              </button>
+              <button id="assessEquipmentBtn" type="button" href="#" style="display: none;" class="btn btn-default">Assessment of Equipment</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End -->
+
+  <!-- Assign Modal Modal -->
+  <form id="assignForm" role="form" method="POST" action="/AssignEquipment" class="form-horizontal">
+    <div class="modal fade" id="assignEquipmentModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div id="assignModalCustomerName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div id="assignModalEventName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <!-- <label>Event Date: </label> -->
+                    <input style="display:none;" type="text" id="assignModalReservationID" name="assignModalReservationID">
+                    <input style="display:none;" type="text" id="assignModalPackageID" name="assignModalPackageID">
+                    <input style="display:none;" type="text" id="addItemCtr" name="addItemCtr">
+                    <input style="display:none;" type="text" id="additionalItemCtr" name="additionalItemCtr">
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Guest Count: </label>
+                    <div id="assignModalGuestCount" style="display: inline-block;">
+
+                    </div>
+                    <br>
+                    <label>Package Availed: </label>
+                    <div id="assignModalPackageName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <!-- <label>Event Location: </label> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Box -->
+            </div>
+            <div class="row">
+              <table id="equipmentAssignTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
+                  <thead>
+                    <tr>
+                      <th>Equipment Name</th>
+                      <th>Equipment Quantity</th>
+                      <th style="display: none;">Equipment ID</th>
+                    </tr>
+                  </thead>
+                  <tbody id="equipmentAssignTblBody">
+
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button id="assignEquipmentBtn" class="btn btn-default" type="submit">
+                Save
+              </button>
+              <button type="button" href="#" class="btn btn-default">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End -->
+
   </div>
   <!-- /Content-wrapper -->
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
 <script>
+  $("#assignEquipmentBtn").click(function(e){
+    $("#eventModal").modal("hide");
+    var packageID = document.getElementById('assignModalPackageID').value; 
+    var reservationID = document.getElementById('assignModalReservationID').value; 
+    // alert(packageID);
+    $.ajax({
+        type: "GET",
+        url:  "/RetrievePackageInclusion",
+        data: 
+        {
+            sdid: packageID,
+            sendReservationID: reservationID
+        },
+        success: function(data){
+          var itemName, itemQty, itemID;
+          var addItemName, addItemQtyID, addItemID;
+          var addItemCounter = 0;
+          var additionalItemCounter = 0;
+          var tblSDet = $('#equipmentAssignTbl').DataTable();
+          tblSDet.clear();
+          tblSDet.draw(true);
+          for (var i = 0; i < data['ff'].length; i++) {
+            addItemName = "addItemName" + i;
+            addItemID = "addItemID" + i;
+            addItemQtyID = "addItemQtyID" + i;
+            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['ff'][i]['equipmentID'] + '" />';
+            itemName = data['ff'][i]['equipmentName'];
+            itemQty = '<input value="0" name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number">';
+            tblSDet.row.add([
+              itemName,
+              itemQty,
+              itemID
+              ]).draw(true);
+            addItemCounter = addItemCounter + 1;
+          }
+
+          for (var i = 0; i < data['additionalEquipment'].length; i++) {
+            addItemName = "additionalItemName" + i;
+            addItemID = "additionalItemID" + i;
+            addItemQtyID = "additionalItemQtyID" + i;
+            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['ff'][i]['equipmentID'] + '" />';
+            itemName = "Additional: " + data['ff'][i]['equipmentName'];
+            itemQty = '<input name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number" value="' + data['additionalEquipment'][i]['equipmentAdditionalQty']+ '">';
+            tblSDet.row.add([
+              itemName,
+              itemQty,
+              itemID
+              ]).draw(true);
+            additionalItemCounter = additionalItemCounter + 1;
+          }
+          document.getElementById('addItemCtr').value = addItemCounter;
+          document.getElementById('additionalItemCtr').value = additionalItemCounter;
+          $("#assignEquipmentModal").modal("show"); 
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      }); 
+  }); 
+</script> 
+
+<script>
+ function assignEvent(id){
+    // var transactionID = id;
+    var reservationID = id;
+    var packageID;
+    // alert(reservationID);
+    $.ajax({
+        type: "GET",
+        url:  "/RetrieveEventDetail",
+        data: 
+        {
+            sendReservationID: reservationID
+        },
+        success: function(data){
+          document.getElementById('eventModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('eventModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('eventModalEventDate').innerHTML += '<h6>'+data['eventDetail'][0]['eventDate']+'</h6>';
+          document.getElementById('eventModalCustomerNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
+          document.getElementById('eventModalPackageAvailed').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
+          document.getElementById('eventModalEventLocation').innerHTML += '<h6>'+data['eventDetail'][0]['eventLocation']+'</h6>';
+          document.getElementById('assignModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('assignModalPackageName').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
+          document.getElementById('assignModalGuestCount').innerHTML += '<h6>'+data['eventDetail'][0]['guestCount']+'</h6>';
+          document.getElementById('assignModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('assignModalPackageID').value = data['eventDetail'][0]['packageID'];
+          document.getElementById('assignModalReservationID').value = reservationID;
+          var checkEventDate = data['eventDetail'][0]['eventDate'];
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1; //January is 0!
+          var yyyy = today.getFullYear();
+          if(dd<10) {
+              dd = '0'+dd
+          } 
+          if(mm<10) {
+              mm = '0'+mm
+          } 
+          today = yyyy + '-' + mm + '-' + dd;
+          var myDate = new Date(today);
+          var eventCheckDate = new Date(checkEventDate);
+          var timeDiff = eventCheckDate.getTime() - myDate.getTime();
+          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          if(diffDays<0){
+            var x = document.getElementById('assessEquipmentBtn');
+              x.style.display = '';
+            var y = document.getElementById('assignEquipmentBtn');
+              y.style.display = 'none';
+          }
+          $.ajax({
+            type: "GET",
+            url:  "/RetrieveAssignedEquipment",
+            data: 
+            {
+                sendReservationID: reservationID
+            },
+            success: function(data){
+              var equipmentName, equipmentQty;
+              var tblSDet = $('#equipmentTbl').DataTable();
+              tblSDet.clear();
+              tblSDet.draw(true);
+              for (var i = 0; i < data['ss'].length; i++) {
+                equipmentName = data['ss'][i]['equipmentName'];
+                equipmentQty = data['ss'][i]['assignEquipmentQty'];
+                tblSDet.row.add([
+                  equipmentName,
+                  equipmentQty,
+                  ]).draw(true);
+              }
+              $("#transactionModal").modal("hide");
+              $("#eventModal").modal("show");
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+          });
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      });
+  }
+</script>
+
+<script>
+  function getPayment(id){
+    var reservationID = id;
+    $("#transactionModal").modal("hide");
+     $.ajax({
+        type: "GET",
+        url:  "/RetrieveEventDetail",
+        data: 
+        {
+            sendReservationID: reservationID
+        },
+        success: function(data){
+          document.getElementById('paymentModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('paymentModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('paymentModalEventDate').innerHTML += '<h6>'+data['eventDetail'][0]['eventDate']+'</h6>';
+          document.getElementById('paymentModalContactNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
+          document.getElementById('paymentModalpaymentTerm').value=data['eventDetail'][0]['paymentTermID'];
+          document.getElementById('paymentModalTransactionID').value=data['eventDetail'][0]['transactionID'];
+          // Ajax for Payment Detail
+          // alert(data['eventDetail'][0]['paymentTermID']);
+          $.ajax({
+            type: "GET",
+            url:  "/RetrievePaymentDetail",
+            data: 
+            {
+                reservationID: reservationID
+            },
+            success: function(data){
+              var paymentAmount, paymentDueDate, paymentReceiveDate, paymentStatus, paymentID, paymentActionBtn;
+              var paymentAmountID, paymentDueDateID, paymentReceiveDateID, paymentStatusID, paymentIDID, paymentActionBtnID;
+              var tblSDet = $('#paymentDetailTbl').DataTable();
+              tblSDet.clear();
+              tblSDet.draw(true);
+              for (var i = 0; i < data['paymentDetail'].length; i++) {
+                addPaymentReceiveDate = "addPaymentReceiveDate" + i;
+                addPaymentID = "addPaymentID" + i;
+                addPaymentBtnID = "addPaymentBtnID" + i;
+                addPaymentStatusID = "addPaymentStatusID" + i;
+                var submitPayment = "submitPayment" + i;
+                paymentID = '<input id=" ' + addPaymentID + '" type="text" value="' + data['paymentDetail'][i]['paymentID'] +  '"> </input>' ;
+                paymentAmount = data['paymentDetail'][i]['paymentAmount'];
+                paymentDueDate = data['paymentDetail'][i]['paymentDueDate'];
+                statusChecker = data['paymentDetail'][i]['paymentStatus'];
+                if (statusChecker == 0) {
+                  paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-warning">Pending</span>';
+                  paymentReceiveDate = '<input type="date" id="' + addPaymentReceiveDate + '" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" min="{{date('Y-m-d',  strtotime( '+7 day' ))}}">';
+                  paymentActionBtn = '<input type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
+                }
+                if (statusChecker == 1) {
+                  paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-success">Confirmed</span>';
+                  paymentReceiveDate = '<input disabled value="' + data['paymentDetail'][i]['paymentReceiveDate'] + '" id="' + addPaymentReceiveDate + '" data-date-format="yyyy/mm/dd">';
+                  paymentActionBtn = '<input disabled type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
+                }
+                
+                tblSDet.row.add([
+                  paymentAmount,
+                  paymentDueDate,
+                  paymentReceiveDate,
+                  paymentStatus,
+                  paymentActionBtn
+                  ]).draw(true);
+              }
+              $("#paymentModal").modal("show"); 
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+          });
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      });
+  }
+</script>
+
+<!-- Script for Payment -->
+<script>
+  // First Payment
+  function submitPayment0(id){
+    var paymentID0 = id;
+    var receiveDate0 = document.getElementById('addPaymentReceiveDate0').value;
+    var paymentTermID = document.getElementById('paymentModalpaymentTerm').value;
+    var transactionID = document.getElementById('paymentModalTransactionID').value;
+    alert(paymentID0);
+    alert(receiveDate0);
+    alert(paymentTermID);
+    alert(transactionID);
+    $.ajax({
+      url: "/SavePayment0",
+      type: "POST",
+      beforeSend: function (xhr) {
+        var token = $('meta[name="csrf_token"]').attr('content');
+        if (token) {
+          return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        }
+      },
+      data: {
+        sendPaymentID: paymentID0,
+        sendReceiveDate: receiveDate0,
+        sendPaymentTerm: paymentTermID,
+        sendTransactionID: transactionID,
+        '_token': $('#token').val()
+      },               
+      success: function (response) {
+        alert('zczc');
+        // $('#addPaymentStatusID0').removeClass('labe\\l label-warning').addClass('label label-success');
+        // document.getElementById('addPaymentStatusID0').innerHTML = 'Confirmed';
+        // $('#addPaymentBtnID0').prop("disabled",true);
+        // $('#addPaymentReceiveDate0').prop("disabled",true);
+      },
+      error: function(xhr)
+      {
+        alert("mali")
+      }                  
+    });
+  }
+
+  //Second Payment
+  function submitPayment1(id){
+    var paymentID1 = id;
+    var receiveDate1 = document.getElementById('addPaymentReceiveDate1').value;
+    var transactionID = document.getElementById('paymentModalTransactionID').value;
+    alert(receiveDate1);
+    $.ajax({
+      url: "/SavePayment1",
+      type: "POST",
+      beforeSend: function (xhr) {
+        var token = $('meta[name="csrf_token"]').attr('content');
+        if (token) {
+          return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        }
+      },
+      data: {
+        sendPaymentID: paymentID1,
+        sendReceiveDate: receiveDate1,
+        sendTransactionID: transactionID,
+        '_token': $('#token').val()
+      },               
+      success: function (response) {
+        alert('zxc');
+        // $('#addPaymentStatusID1').removeClass('label label-warning').addClass('label label-success');
+        // document.getElementById('addPaymentStatusID1').innerHTML = 'Confirmed';
+        // $('#addPaymentBtnID1').prop("disabled",true);
+        // $('#addPaymentReceiveDate1').prop("disabled",true);
+      },
+      error: function(xhr)
+      {
+        alert("mali");
+      }                  
+    });
+  }
+</script>
+
+<script>
+  function cancelEvent(id){
+    var transactionID = id;
+    $.ajax({
+      type: "GET",
+      url:  "/RetrieveTransaction",
+      data: 
+      {
+        getId: transactionID
+      },
+      success: function(data){
+        document.getElementById("cancelEventTransactionId").value = data['tdata'][0]['transactionID'];
+      }, 
+      error: function(xhr)
+      {
+        alert($.parseJSON(xhr.responseText)['error']['message']);
+      }                
+    });
+  }
+</script>
+
+<script>
   $(function () {
+
+    $('#paymentDetailTbl').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": true
+    });
     $('#transactionTable').DataTable({
       "paging": true,
       "lengthChange": false,
@@ -193,73 +750,15 @@
       "info": false,
       "autoWidth": true
     });
-  });
-</script>
-
-<script>
-  function assignEquipment(id){
-    $('#transactionModal').modal('hide');
-    $.ajax({
-      type: "GET",
-      url:  "/GetTransactionData",
-      data: 
-      {
-        transacId: id
-      },
-      success: function(data){
-        //Another Ajax for Equipment List
-        var sendPackageId = data['transactionDetails'][0]['packageID'];
-        var sendEventId = data['transactionDetails'][0]['eventID'];
-        $.ajax({
-          type: "GET",
-          url:  "/RetrievePackageInclusion",
-          data: 
-          {
-            sdid: sendPackageId,
-            sendReservationID: sendEventId
-          },
-          success: function(data){
-            
-            var itemName;
-            var itemQty;
-            var qtyCounter;
-            var nameCounter;
-            var tblSDet = $('#equipmentTbl').DataTable();
-            tblSDet.clear();
-            tblSDet.draw(true);
-            for (var i = 0; i < data['ff'].length; i++) {
-              qtyCounter = "itemQty" + i;
-              nameCounter = "itemName" + i;
-              itemName = data['ff'][i]['equipmentName'];
-              itemId = '<input  style="display: none;" type="text" id="' + nameCounter + '" value="' + data['ff'][i]['equipmentID'] +'"></input>';
-              itemQty = '<input type="number" id="' + qtyCounter + '"></input>';
-              // itemQty = document.createElement('input');
-              // itemQty.type = 'number';
-              // itemQty.name = 'myInput_' + i;
-              // itemQty.id = 'myInput_' + i;
-              tblSDet.row.add([
-                itemName,
-                itemQty,
-                itemId
-              ]).draw(true);
-            }
-            $('#assignEquipmentModal').modal('show');
-          }, 
-          error: function(xhr)
-          {
-            alert('ajax 2');
-            alert($.parseJSON(xhr.responseText)['error']['message']);
-          }                
-        });
-        //End of Ajax
-      }, 
-      error: function(xhr)
-      {
-        alert('ajax 1');
-        alert($.parseJSON(xhr.responseText)['error']['message']);
-      }                
+    $('#equipmentAssignTbl').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": true
     });
-  }
+  });
 </script>
 
 <script>
@@ -310,8 +809,6 @@
 
 <script>
   $(document).ready(function() {
-    
-
     var table = $('#transactionTable').DataTable();
     $('#transactionTable tbody').on('dblclick', 'tr', function () {
       var today = new Date();
@@ -331,14 +828,6 @@
       var eventDate = data[6];
       var packageID;
       var eventID;
-      if(newDate > eventDate){
-        document.getElementById('returnBtn').style.display='block';
-        document.getElementById('assignBtn').style.display='none';
-      }
-      if(newDate < eventDate){
-        document.getElementById('returnBtn').style.display='none';
-        document.getElementById('assignBtn').style.display='block';
-      }
       $.ajax({
         type: "GET",
         url:  "/RetrieveTransaction",
@@ -348,22 +837,49 @@
         },
         success: function(data){
         $('#parTransactionId').val(transactionId);
+        $('#parReservationID').val(data['tdata'][0]['reservationID']);
         document.getElementById("parCustomerName").innerHTML = data['tdata'][0]['fullName'];
         document.getElementById("parContactNumber").innerHTML = data['tdata'][0]['cellNum'];
         document.getElementById("parEventName").innerHTML = data['tdata'][0]['eventName'];
         document.getElementById("parEventLocation").innerHTML = data['tdata'][0]['eventLocation'];
         document.getElementById("parAvailedPackage").innerHTML = data['tdata'][0]['packageName'];
         document.getElementById("parTotalFee").innerHTML = data['tdata'][0]['totalFee'];
-        document.getElementById("parBalanceFee").innerHTML = "not yet available";
         document.getElementById("parPaymentTerm").innerHTML = data['tdata'][0]['paymentTermName'];
         if(data['tdata'][0]['transactionStatus'] == 0){
-          document.getElementById("parPaymentStatus").innerHTML = "Not Paid";
+          document.getElementById("parPaymentStatus").innerHTML = "Pending";
+          document.getElementById('assignBtn').style.display='none';
+          document.getElementById('paymentBtn').style.display='block';
+          document.getElementById('assessmentBtn').style.display='none';
+          document.getElementById('cancelBtn').style.display='block';
         }
         if(data['tdata'][0]['transactionStatus'] == 1){
-          document.getElementById("parPaymentStatus").innerHTML = "Half Paid";
+          document.getElementById("parPaymentStatus").innerHTML = "Fully Paid";
+          document.getElementById('assignBtn').style.display='none';
+          document.getElementById('paymentBtn').style.display='block';
+          document.getElementById('assessmentBtn').style.display='block';
+          document.getElementById('cancelBtn').style.display='block';
         }
         if(data['tdata'][0]['transactionStatus'] == 2){
-          document.getElementById("parPaymentStatus").innerHTML = "Fully Paid";
+          document.getElementById("parPaymentStatus").innerHTML = "Half Paid";
+          document.getElementById('assignBtn').style.display='block';
+          document.getElementById('assessmentBtn').style.display='none';
+          document.getElementById('cancelBtn').style.display='block';
+          document.getElementById('printBtn').style.display='block';
+          document.getElementById('paymentBtn').style.display='block';
+        }
+        if(data['tdata'][0]['transactionStatus'] == 3){
+          document.getElementById("parPaymentStatus").innerHTML = "Cancelled";
+          document.getElementById('assignBtn').style.display='none';
+          document.getElementById('assessmentBtn').style.display='none';
+          document.getElementById('cancelBtn').style.display='none';
+          document.getElementById('printBtn').style.display='none';
+          document.getElementById('paymentBtn').style.display='none';
+        }
+        if(data['tdata'][0]['transactionStatus'] == 4){
+          document.getElementById("parPaymentStatus").innerHTML = "Finished";
+          document.getElementById('assessmentBtn').style.display='none';
+          document.getElementById('assignBtn').style.display='none';
+          document.getElementById('printBtn').style.display='block';
         }
         document.getElementById("parNumberOfGuest").innerHTML = data['tdata'][0]['guestCount'];
         packageID = data['tdata'][0]['packageID'];
@@ -377,10 +893,10 @@
             sendReservationID: eventID
           },
           success: function(data){
-          var additionalDishList;
-          var additionalServiceList;
-          var additionalEmployeeList;
-          var additionalEquipmentList;
+          var additionalDishList = new Array;
+          var additionalServiceList = new Array;
+          var additionalEmployeeList = new Array;
+          var additionalEquipmentList = new Array;
           // document.getElementById("parAdditionalItem").innerHTML = "none";
           if(data['additionalDish'].length > 0){
             for (var i = 0; i < data['additionalDish'].length; i++) {
