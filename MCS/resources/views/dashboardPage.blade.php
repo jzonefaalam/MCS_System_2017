@@ -55,7 +55,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu" style="font-size: 20px">
             
-            <li class="active">
+            <li class="treeview">
               <a href="DashboardPage">
                 <i class="fa fa-home"></i> <span>Home</span>
               </a>

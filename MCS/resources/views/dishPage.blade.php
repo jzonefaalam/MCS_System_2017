@@ -22,7 +22,7 @@
                 <form role="form" method="POST" action="/DeleteDishPage" class="form-horizontal">
                 <div class="modal fade" id="deleteDishModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                         <div class="modal-body">
                           <div class="form-group" style="display: none;">
                             <div class="col-sm-5 input-group">
@@ -31,13 +31,13 @@
                             </div>
                           </div>
                           {!! csrf_field() !!}
-                          <div>
-                            <h5> Are you sure you want to delete item? </h5>
+                          <div align="center">
+                            <h4> Are you sure you want to delete item? </h4>
                           </div>
 
                           <div style="text-align: center;">
-                            <button type="submit" name="deleteDishBtn" class="btn btn-default">Yes</button>
-                            <button data-dismiss="modal" class="btn btn-default">No</button>
+                            <button type="submit" name="deleteDishBtn" class="btn btn-danger btn-sm" onclick="dishDelete()" style="butt">Delete</button>
+                            <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                           </div>
                         </div>
                     </div>
@@ -144,7 +144,7 @@
       
 
                   <div class="modal-footer">
-                    <button type="submit" name="editDishBtn" class="btn btn-primary">Save</button>
+                    <button type="submit" name="editDishBtn" class="btn btn-primary" onclick="dishUpdate()">Save</button>
                   </div>
                   </div>
       
@@ -275,8 +275,8 @@
                   <th style="width:250px;">Description</th>
                   <th style="width:100px;">Cost</th>
                   <th style="width:110px;">Type</th>
-                  <th style="width:190px;">Actions</th>
-                  <th style="width:150px;">Status</th>
+                  <th style="width:220px;">Actions</th>
+                  <th style="width:100px;">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -316,7 +316,7 @@
                       </button>
                       <ul class="dropdown-menu" role="menu">
                       <li>
-                        <a data-toggle="modal" data-target="#disableDishModal" onclick="editdishget(this.name);" name="{{$dishData->dishID}}">Disable</a>
+                        <a  style="width: 100px; margin-right: 0px" data-toggle="modal" data-target="#disableDishModal" onclick="editdishget(this.name);" name="{{$dishData->dishID}}">Disable</a>
                       </li>
                       </ul>
                       </div>
@@ -389,10 +389,6 @@
                   </div>
                 </div>
                 <!-- End Modals-->
-        
-        
-        
-
                
               </tbody>
             </table>
@@ -400,8 +396,6 @@
           <!-- /.box-body -->
         </div>
           <!-- /.box -->
-
-
 
       </section>
       <!-- /.content -->
@@ -413,16 +407,47 @@
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
-<script type="text/javascript">
+    @if (Session::has('message'))
+      <script>
+        swal({   
+          title: "{{ Session::get('title') }}",   
+          text: "{{ Session::get('message') }}",   
+          type: "{{ Session::get('type') }}",
+          timer: 3000,
+          showConfirmButton: false
+        });
+      </script>
+    @endif
+
+<!-- <script type="text/javascript">
   function btnsave() {
+    // alert("PUTA")
       swal({   
         title: "Saved!",  
         type: "success",
-        timer: 2000,
+        timer: 4000,
         showConfirmButton: false
       });
     }
-</script>
+
+  function dishDelete() {
+      swal({   
+        title: "Deleted!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+
+  function dishUpdate() {
+      swal({   
+        title: "Updated!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+</script> -->
 
 <script>
   $(function () {

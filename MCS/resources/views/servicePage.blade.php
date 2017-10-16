@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+
+<!-- SweetAlert -->
+<link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -36,9 +39,9 @@
                       <th width="150px">Image</th>
                       <th width="180px">Name</th>
                       <th width="200px">Description</th>
-                      <th width="200px">Fee</th>
-                      <th width="80px">Type</th>
-                      <th width="150px">Actions</th>
+                      <th width="80px">Fee</th>
+                      <th width="150px">Type</th>
+                      <th width="200px">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -70,7 +73,7 @@
                       <form role="form" method="POST" action="DeleteServicePage" class="form-horizontal">
                       <div class="modal fade" id="deleteServiceModal">
                         <div class="modal-dialog">
-                          <div class="modal-content">
+                          <div class="modal-content" style="margin-top: 250px">
                              <div class="modal-body">
                                 <div class="form-group" style="display: none;">
                                   <label class="col-sm-4 control-label">Service ID</label>
@@ -80,12 +83,12 @@
                                   </div>
                                 </div>
                                 {!! csrf_field() !!}
-                                <div>
-                                  <h5> Are you sure you want to delete this item? </h5>
+                                <div align="center">
+                                  <h4> Are you sure you want to delete this item? </h4>
                                 </div>
                                 <div style="text-align: center;">
-                                  <button type="submit" name="deleteserviceBtn" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                  <button type="submit" name="deleteserviceBtn" class="btn btn-danger btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                                 </div>
                               </div>
                           </div>
@@ -298,8 +301,24 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+<script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
+
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+    @if (Session::has('message'))
+      <script>
+        swal({   
+          title: "{{ Session::get('title') }}",   
+          text: "{{ Session::get('message') }}",   
+          type: "{{ Session::get('type') }}",
+          timer: 3000,
+          showConfirmButton: false
+        });
+      </script>
+    @endif
+
  <script>
   $(function () {
     $('#serviceTable').DataTable({

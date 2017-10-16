@@ -384,7 +384,7 @@ class userController extends Controller
       $customer_tbl->billingAddress = Input::get('billAdd');
       $customer_tbl->emailAddress = Input::get('emailAdd');
       $customer_tbl->customerStatus = 1;
-      $customer_tbl->customerAvailability = 1;
+      $customer_tbl->customerAvailability = Input::get('cStat');
       $customer_tbl->cellNum = Input::get('cellNum');
       $customer_tbl->dateOfBirth = Input::get('dob');
        $contact_tbl = new contact_tbl;

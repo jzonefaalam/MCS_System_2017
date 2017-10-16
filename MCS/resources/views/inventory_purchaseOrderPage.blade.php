@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+
+<!-- SweetAlert -->
+<link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
   <style>
@@ -13,7 +16,6 @@
       <br>
         <ol class="breadcrumb">
           <li><a><i class="fa fa-wrench"></i> Inventory</a></li>
-          <li><a href = "/InventoryEquipmentPage"><i class="fa fa-cube"></i>Equipment</a></li>
           <li class="active"><a href = "/InventoryPOPage"><i class="fa fa-cube"></i>Purchase Order</a></li>
         </ol>
       </section>
@@ -84,18 +86,14 @@
                       <label class="col-sm-4 control-label">Item Name</label>
                       <div class="col-sm-6" id="newItem" style="display:none;">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-cube" aria-hidden="true"></i></span>
                           <input type="text" class="form-control" name="addPOName" id="addPOName" data-error="This field is required">
 
                         </div>
                       </div>
                       <div class="col-sm-6" id="existingItem">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-cube" aria-hidden="true"></i></span>
                           <select class="form-control" name="addExistingItemName" id="addExistingItemName">
                             <!-- <option disabled="">Select Category</option> -->
                             
@@ -113,9 +111,7 @@
                       <label class="col-sm-4 control-label">Item Description</label>
                       <div class="col-sm-6">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
                           <textarea type="text" required class="form-control" name="addPODescription" id="addPODescription"></textarea>
                         </div>
                       </div>
@@ -124,9 +120,7 @@
                       <label class="col-sm-4 control-label">Item Category</label>
                       <div class="col-sm-6">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-bars" aria-hidden="true"></i></span>
                           <select class="form-control" name="addPOType" id="addPOType" onchange="enableEquipmentType(this.id);">
                             <option selected="" disabled="">Select Category</option>
                             @foreach($poTypeData as $poTypeData)
@@ -142,9 +136,7 @@
                       <label class="col-sm-4 control-label">Equipment Type</label>
                       <div class="col-sm-6">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span>
                           <select class="form-control" name="addEquipmentType" id="addEquipmentType">
                             <option selected disabled="">Select Equipment Type</option>
                             @foreach($equipmentType as $equipmentType)
@@ -156,12 +148,10 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label class="col-sm-4 control-label">Item Qty</label>
+                      <label class="col-sm-4 control-label">Item Quantity</label>
                       <div class="col-sm-6">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-clone" aria-hidden="true"></i></span>
                           <input type="number" class="form-control" name="addPOQty" id="addPOQty" data-error="This field is required">
                         </div>
                       </div>
@@ -170,9 +160,7 @@
                       <label class="col-sm-4 control-label">Item Price</label>
                       <div class="col-sm-6">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
                           <input type="number" class="form-control" name="addPOPrice" id="addPOPrice" data-error="This field is required">
                         </div>
                       </div>
@@ -181,9 +169,7 @@
                       <label class="col-sm-4 control-label">Rate Per Hour</label>
                       <div class="col-sm-6">
                         <div class="input-group">
-                          <div class="input-group-addon">
-                            <i class="fa fa-text-o" aria-hidden="true"></i>
-                          </div>
+                          <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
                           <input type="number" class="form-control" name="addRatePerHour" id="addRatePerHour" data-error="This field is required">
                         </div>
                       </div>
@@ -210,9 +196,24 @@
       <!-- End Modals-->
   </div>
   <!-- /.content-wrapper -->
+
+<script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
+
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+    @if (Session::has('message'))
+      <script>
+        swal({   
+          title: "{{ Session::get('title') }}",   
+          text: "{{ Session::get('message') }}",   
+          type: "{{ Session::get('type') }}",
+          timer: 3000,
+          showConfirmButton: false
+        });
+      </script>
+    @endif
 
 <script>
 function enableEquipmentType(id){
