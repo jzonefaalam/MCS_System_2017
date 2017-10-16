@@ -2249,7 +2249,13 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						var addEmpQty = [];
 						var addEmpNotes = [];
 						var ptIDs = $("#ptids").val();
+						if(!(ptIDs)){
+
+						}
 						var pmIDs = $("#pmids").val();
+						if(!(pmIDs)){
+
+						}
 						var addReservationIDs = $("#addReservationID").val();
 						var addPackIDs = $("#addPackageID").val();
 						if(addPackIDs){

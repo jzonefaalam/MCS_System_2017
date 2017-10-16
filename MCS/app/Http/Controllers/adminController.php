@@ -1764,12 +1764,10 @@ class adminController extends Controller
     }
 
     public function addEquipmentType(Request $request){
-<<<<<<< HEAD
 
-        $equipmentType = new equipmenttypetbl;
-=======
+
         $equipmentType = new equipmenttype_tbl;
->>>>>>> 9eb6d9b19d2e86c0125ae7a40f7d0036d645d2ee
+
         $equipmentType->equipmentTypeName = Input::get('addEquipmentTypeName');
         $equipmentType->equipmentTypeStatus = 1;
         $equipmentType->equipmentTypeImage = "No Image";
