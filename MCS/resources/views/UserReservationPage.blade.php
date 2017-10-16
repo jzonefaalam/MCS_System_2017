@@ -2,19 +2,22 @@
 @section('contents')
 @section('scripts')
 
+	    <!-- SweetAlert -->
+	    <link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
+
 	    <!--   Big container   -->
 	    <div class="container">
 	        <div class="row">
 		        <div class="col-sm-7">
 
 		            <!--      Wizard container        -->
-		            <div class="wizard-container">
+		            <div class="wizard-container" style="padding-top: 50px">
 		                <div class="card wizard-card" data-color="red" id="wizard">
 		                    <form class = "infoForm" name = "addReservation" id = "addReservation" role = "form" method="POST" action="/UserReservationPage" enctype="multipart/form-data" >
 		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
  						{{ csrf_field() }}
 		                    	<div class="wizard-header">
-		                    		<a class="btn btn-danger" href="UserHomePage" style="float: left; margin-top: 5px; margin-right: -100px"><i class="ti-home"></i></a>
+		                    		<a class="btn btn-danger" style="float: left; margin-top: 5px; margin-right: -100px" onclick="goHome()"><i class="ti-home"></i></a>
 		                        	<h3 class="wizard-title">Reservation</h3>
 		                        	<p class="category">Book a reservation now!</p>
 		                    	</div>
@@ -314,7 +317,7 @@
 
 		        <div class="col-sm-5 col-sm-offset-8" style="margin: 0px">
 		            <!--      Wizard container        -->
-		            <div class="wizard-container">
+		            <div class="wizard-container" style="padding-top: 50px">
 		                <div class="card wizard-card" data-color="red" id="wizard">
 		                <!--        You can switch " data-color="azure" "  with one of the next bright colors: "blue", "green", "orange", "red"           -->
 		                		<div class="wizard-header">
@@ -794,7 +797,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				<div class="modal-footer">
 					<div class="pull-right">
 						<button type="button" class="btn btn-success btn-fill step step-1" data-step="1" onclick="sendEvent('#paymentModal', 2)">Continue</button>
-						<button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-success btn-fill step step-2" data-step="2" disabled="" >Confirm</button>
+						<button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-success btn-fill step step-2" data-step="2" disabled="">Confirm</button>
 						<!-- <button type="button" id="btnFinish" name="finish" value="Finish" class="btn btn-danger btn-fill step step-3" data-step="3" data-dismiss="modal">Confirm</button> -->
 					</div>
 					<div class="pull-left">
@@ -810,7 +813,25 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 	<!-- <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> -->
 	<script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
 
-	
+	<script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
+
+	<script type="text/javascript">
+		function goHome() {
+			swal({
+			  title: "Are you sure you want to exit?",
+			  text: "All the information will be lost.",
+			  type: "warning",
+			  showCancelButton: true,
+			  confirmButtonColor: "#DD6B55",
+			  confirmButtonText: "Exit",
+			  closeOnConfirm: false
+			},
+			
+			function(){
+			    window.location.href="UserHomePage"
+			});
+		}
+	</script>
 
 	<script type="text/javascript">
 			$.validator.addMethod("regex", function(value, element, regexp) {
@@ -1090,7 +1111,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					    		$('#pprice').val(tp);
 					    	}
 					    	else{
-					    		alert("Complete choosing your options.");
+					    		swal("Note!", "Please complete choosing your package.")
 					    	}
 						},
 						error: function(result){
@@ -1149,6 +1170,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 							pg_id: pgId
 						},
 						success: function(data){
+
 							for(var i = 0; i < data['pckid'].length; i++){
 								document.getElementById("pck"+[data['pckid'][i]['packageID']]).disabled=false;
 							}
@@ -1176,7 +1198,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 								$('#ppt'+[data['paymentTerm'][i]['paymentTermID']]).find('[data-toggle="wizard-checkbox"]').removeClass('active');							
 							}
 							document.getElementById("pt"+id).checked=true;
-
 						},
 						error: function(result){
 							alert('error');
@@ -1214,6 +1235,11 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				var dish = selectedOption.options[selectedOption.selectedIndex].value;
 				var price=0;
 				var qty=0;
+
+				if(dish==0) {
+					swal("Note!", "Please choose a dish.")
+				}
+
  				$.ajax({
 					url: '/UserReservationPage-getAdd',
 					type: 'POST',
@@ -1286,7 +1312,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							alert("Input a Quantity");
+							swal("Note!", "Please input dish quantity.")
 						}						
 						},
 						error: function(result){
@@ -1312,6 +1338,18 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				        for (var r = 0, n = table.rows.length; r < n; r++) {
 				            subt =subt+parseFloat(table.rows[r].cells[3].innerText);
 				        }
+
+				        swal({
+							title: "Remove additional food in the cart?",
+							confirmButtonColor: "#DD6B55",
+							confirmButtonText: "Yes",
+							showCancelButton: true,
+							closeOnConfirm: false
+						},
+							
+							function(){
+							    window.location.href="UserHomePage"
+							});
 				    // alert(subt);
 				    $subt=subt;
 				    document.getElementById('subtot').innerHTML='<h4 class="pull-left">Subtotal:   <b>'+subt+'</b></h4> ';
@@ -1337,6 +1375,11 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				var price=0;
 				var qty=0;
  				// alert(serv);
+				
+				if(serv==0) {
+					swal("Note!", "Please choose a service.")
+				}
+
  				$.ajax({
 					url: '/UserReservationPage-getServ',
 					type: 'POST',
@@ -1417,7 +1460,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							alert("Input a Quantity");
+							swal("Note!", "Please input service quantity.")
 						}
 						},
 						error: function(result){
@@ -1480,6 +1523,11 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				var price=0;
 				var qty=0;
  				// alert(equip);
+
+ 				if(equip==0) {
+ 					swal("Note!", "Please choose an equipment.")
+ 				} 
+
  				$.ajax({
 					url: '/UserReservationPage-getEquip',
 					type: 'POST',
@@ -1560,7 +1608,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							alert("Input a Quantity");
+							swal("Note!", "Please input equipment quantity.")
 						}
 						},
 						error: function(result){
@@ -1623,6 +1671,11 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				var price=0;
 				var qty=0;
  				// alert(emp);
+
+ 				if(emp==0) {
+					swal("Note!", "Please choose a staff service.")
+ 				}
+
  				$.ajax({
 					url: '/UserReservationPage-getEmp',
 					type: 'POST',
@@ -1696,7 +1749,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 				    		// selectedOption.removeChild([selectedOption.selectedIndex]);
 						}
 						else{
-							alert("Input count");
+							swal("Note!", "Please input staff count.")
 						}
 						},
 						error: function(result){
@@ -2115,7 +2168,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
  					var d = new Date($('#eDate').val());
  					var n = d.getDay();
  					// alert(n);
- 					if(n==0 || n==6){
+ 					if(n==5 || n==6){
  						var a = "13:00";
  						var b = "18:00";
  						document.getElementById('eTime').setAttribute("max","13:00:00.00");
@@ -2123,6 +2176,13 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
  						$('#tm1').val(a);
  						$('#tm2').val(b);
  						$('#tm3').val("6:00 PM");
+
+ 						swal({
+						  title: "Note!",
+						  text: "Working hours ends at 6pm every weekends.",
+						  timer: 5000,
+						  showConfirmButton: false
+						});
  					}
  					else{
  						var a = "16:00";
@@ -2304,9 +2364,18 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						            	
 					         		},
 					                success: function(data){
-						            	alert("Please accept a call within a day.");
-										       
-										window.location.href = "UserReservationPage";
+						            	swal({
+										  title: "Saved!",
+										  text: "Please expect a call within a day. Thank you!",
+										  type: "success",
+										  showCancelButton: false,
+										  confirmButtonText: "Okay",
+										  closeOnConfirm: false
+										},
+										
+										function(){
+										    window.location.href="UserReservationPage"
+										});
 					                },
 					                error: function(xhr){
 						            	alert("Error");

@@ -218,7 +218,7 @@
                           $eventDate = $latestEvents->eventDate;
                           $newDate = strtotime($eventDate);
                           $seconds_diff = floor(($newDate - $date1)/3600/24);
-                        if ((($seconds_diff)<=7) && (($seconds_diff)>=1)): ?>
+                        if ((($seconds_diff)<=7) && (($seconds_diff)>=0)): ?>
                           <td>
                             <a >{{ $latestEvents -> eventName}}</a>
                             <small style="width: 150px;" class="label label-danger pull-right">
@@ -659,117 +659,6 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-
-  <!-- ASSIGN EQUIPMENT MODAL -->
-  <!-- <form id="assignEquipmentForm">
-    <div id="assignEquipmentModal" class="modal fade" role="dialog" >
-      <div class="col-md-8 col-sm-offset-2">  
-        <div class="modal-content" style="margin-top: 50px">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title"> Assign Equipment <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h4>
-          </div>
-
-          <div class="modal-body">
-            <div class="form-group">
-              <div class="row">
-                <div class="col-xs-6">
-                  <h5>Client Name</h5>
-                  <h4>Turgo, Rozhel Margareth O.</h4>
-                </div>
-                <div class="col-xs-6">
-                  <h5>Guest Count</h5>
-                  <h4>250</h4>
-                </div>
-              </div>
-            </div>
-
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th style="width: 300px">Equipment</th>
-                  <th style="width: 200px">Quantity</th>
-                  <th style="width: 200px">Remaining</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td> </td>
-                  <td> <input type="text" name="numb" placeholder="Quantity"></td>
-                  <td> </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="modal-footer">
-            <div class="pull-left">     
-              
-            </div>
-            <div class="pull-right">
-              <button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="assignEquip" id="assignEquip" class="btn btn-info btn-md">Save</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form> -->
-
-  <!-- LOSS / DAMAGE EQUIPMENT MODAL -->
-  <form id="afterEvents">
-    <div id="afterEvent" class="modal fade" role="dialog" >
-      <div class="col-md-8 col-sm-offset-2">  
-        <div class="modal-content" style="margin-top: 50px">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title"> Loss / Damage Equipment <i class="fa fa-pencil-square-o" aria-hidden="true"></i></h4>
-          </div>
-
-          <div class="modal-body">
-            <div class="form-group">
-              <div class="row">
-                <div class="col-xs-6">
-                  <h5>Client Name</h5>
-                  <h4>Turgo, Rozhel Margareth O.</h4>
-                </div>
-                <div class="col-xs-6">
-                  <h5>Contact Number</h5>
-                  <h4>906 256 5214</h4>
-                </div>
-              </div>
-            </div>
-
-            <table class="table table-bordered">
-              <thead>
-                <tr>
-                  <th style="width: 300px">Equipment</th>
-                  <th style="width: 200px">Quantity</th>
-                  <th style="width: 200px">Returned</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td> </td>
-                  <td> </td>
-                  <td> <input type="text" name="numb" placeholder="Quantity"> </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="modal-footer">
-            <div class="pull-left">     
-              
-            </div>
-            <div class="pull-right">
-              <button type="button" style="margin-top: 10px" class="btn btn-success btn-fill pull-right" data-dismiss="modal" name="afterEvent" id="afterEvent" class="btn btn-info btn-md">Save</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-
  
   <!-- Event Modal -->
   <form id="eventForm" role="form" method="POST" action="#" class="form-horizontal">
@@ -846,7 +735,7 @@
   <!-- End -->
 
   <!-- Assessment Modal Modal -->
-  <form role="form" method="POST" action="/AssessEquipment" class="form-horizontal">
+  <form role="form" method="POST" class="form-horizontal" action="/AssessEquipment">
     <div class="modal fade" id="assessmentModal" >
       <div class="modal-dialog" style="width:70%;">
         <div class="modal-content">
@@ -870,7 +759,9 @@
                     <!-- <label>Event Date: </label> -->
                     <input style="display:none;" type="text" id="assignModalReservationID" name="assignModalReservationID">
                     <input style="display:none;" type="text" id="assignModalPackageID" name="assignModalPackageID">
+                    <input style="display:none;" type="text" id="assessTransactionID" name="assessTransactionID">
                     <input style="display:none;" type="text" id="assessmentItemCtr" name="assessmentItemCtr">
+                    <input style="display:none;" type="text" id="assessmentAdditionalPayment" name="assessmentAdditionalPayment">
                   </div>
                   <div class="col-md-6" align="left">
                     <label>Guest Count: </label>
@@ -897,6 +788,7 @@
                       <th>Equipment Name</th>
                       <th>Equipment Quantity</th>
                       <th>Return Quantity</th>
+                      <th style="display: none;">Equipment ID</th>
                       <th style="display: none;">Equipment ID</th>
                       <th style="display: none;">Equipment ID</th>
                     </tr>
@@ -1026,6 +918,8 @@
                     </div>
                     <input id="paymentModalpaymentTerm" type="text" style="display: none;">
                     <input id="paymentModalTransactionID" type="text" style="display: none;">
+                    <input id="paymentModalPaymentFee" type="text" style="display: none;">
+                    <input id="paymentModalTransactionFee" type="text" style="display: none;">
                   </div>
                 </div>
               </div>
@@ -1089,51 +983,22 @@
 
 <script>
   $("#saveAssessEquipment").click(function(e){
-    $("#eventModal").modal("hide");
-    // var packageID = document.getElementById('assignModalPackageID').value; 
+    var itemCtr = document.getElementById('assessmentItemCtr').value;
     var reservationID = document.getElementById('assignModalReservationID').value;
-    $.ajax({
-        type: "GET",
-        url:  "/RetrieveAssignedEquipment",
-        data: 
-        {
-            sendReservationID: reservationID
-        },
-        success: function(data){
-          var assessItemName, assessAssignQty, assessReturnQty, assessItemID, assessEquipmentName;
-          var assessItemNameID, assessAssignQtyID, assessReturnQtyID, assessItemIDID, assessEquipmentNameID;
-          var assessmentItemCtr = 0;
-          var tblSDet = $('#equipmentAssessTbl').DataTable();
-          tblSDet.clear();
-          tblSDet.draw(true);
-          for (var i = 0; i < data['ss'].length; i++) {
-            assessItemNameID = "assessItemName" + i;
-            assessItemIDID = "assessItemID" + i;
-            assessReturnQtyID = "assessReturnQty" + i;
-            assessEquipmentNameID = "assessEquipmentNameID" + i;
-            assessItemName = data['ss'][i]['equipmentName'];
-            assessAssignQty = data['ss'][i]['assignEquipmentQty'];
-            assessReturnQty = '<input name="'+assessReturnQtyID+'" id="'+ assessReturnQtyID +'">';
-            assessItemID = '<input name="'+assessItemIDID+'" style="display: none;" id="'+ assessItemIDID +'" value="'+ data['ss'][i]['assignEquipmentID'] +'"/>';
-            assessEquipmentName = '<input name="'+assessEquipmentNameID+'" style="display: none;" id="'+ assessEquipmentNameID +'" value="'+ data['ss'][i]['equipmentID'] +'"/>';
-            tblSDet.row.add([
-              assessItemName,
-              assessAssignQty,
-              assessReturnQty,
-              assessItemID,
-              assessEquipmentName
-              ]).draw(true);
-            assessmentItemCtr = assessmentItemCtr + 1;
-          }
-          document.getElementById('assessmentItemCtr').value = assessmentItemCtr;
-          $("#assessmentModal").modal("show"); 
-        },
-        error: function(xhr)
-        {
-            alert("mali");
-            alert($.parseJSON(xhr.responseText)['error']['message']);
-        }                
-      }); 
+    var totalAmount = 0;
+    for (var i = 0; i < itemCtr; i++) {
+      var abc = "assessReturnQty" + i;
+      var x = document.getElementById(abc).value;
+      var bcd = "assessAssignQty" + i; 
+      var xx = document.getElementById(bcd).value;
+      var diff = xx-x;
+      var cde = "assessEquipmentRatePerHour" + i;
+      var xxx = document.getElementById(cde).value;
+      if(diff>0){
+        totalAmount = totalAmount + (xxx * diff);
+      }
+    }
+    document.getElementById('assessmentAdditionalPayment').value = totalAmount;
   }); 
 </script>
 
@@ -1150,8 +1015,8 @@
             sendReservationID: reservationID
         },
         success: function(data){
-          var assessItemName, assessAssignQty, assessReturnQty, assessItemID, assessEquipmentName;
-          var assessItemNameID, assessAssignQtyID, assessReturnQtyID, assessItemIDID, assessEquipmentNameID;
+          var assessItemName, assessAssignQty, assessReturnQty, assessItemID, assessEquipmentName, assessEquipmentRatePerHour;
+          var assessItemNameID, assessAssignQtyID, assessReturnQtyID, assessItemIDID, assessEquipmentNameID, assessEquipmentRatePerHourID;
           var assessmentItemCtr = 0;
           var tblSDet = $('#equipmentAssessTbl').DataTable();
           tblSDet.clear();
@@ -1161,17 +1026,21 @@
             assessItemIDID = "assessItemID" + i;
             assessReturnQtyID = "assessReturnQty" + i;
             assessEquipmentNameID = "assessEquipmentNameID" + i;
+            assessAssignQtyID = "assessAssignQty" + i;
+            assessEquipmentRatePerHourID = "assessEquipmentRatePerHour" + i;
             assessItemName = data['ss'][i]['equipmentName'];
-            assessAssignQty = data['ss'][i]['assignEquipmentQty'];
+            assessAssignQty = '<input disabled value="' + data['ss'][i]['assignEquipmentQty'] + '" id="'+ assessAssignQtyID +'" name="'+assessAssignQtyID+'">' ;
             assessReturnQty = '<input name="'+assessReturnQtyID+'" id="'+ assessReturnQtyID +'">';
             assessItemID = '<input name="'+assessItemIDID+'" style="display: none;" id="'+ assessItemIDID +'" value="'+ data['ss'][i]['assignEquipmentID'] +'"/>';
             assessEquipmentName = '<input name="'+assessEquipmentNameID+'" style="display: none;" id="'+ assessEquipmentNameID +'" value="'+ data['ss'][i]['equipmentID'] +'"/>';
+            assessEquipmentRatePerHour = '<input name="'+assessEquipmentRatePerHourID+'" style="display: none;" id="'+ assessEquipmentRatePerHourID +'" value="'+ data['ss'][i]['equipmentRatePerHour'] +'"/>';
             tblSDet.row.add([
               assessItemName,
               assessAssignQty,
               assessReturnQty,
               assessItemID,
-              assessEquipmentName
+              assessEquipmentName,
+              assessEquipmentRatePerHour
               ]).draw(true);
             assessmentItemCtr = assessmentItemCtr + 1;
           }
@@ -1239,6 +1108,7 @@
           }
           document.getElementById('addItemCtr').value = addItemCounter;
           document.getElementById('additionalItemCtr').value = additionalItemCounter;
+          // alert('zxc');
           $("#assignEquipmentModal").modal("show"); 
         },
         error: function(xhr)
@@ -1493,6 +1363,7 @@
           document.getElementById('paymentModalContactNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
           document.getElementById('paymentModalpaymentTerm').value=data['eventDetail'][0]['paymentTermID'];
           document.getElementById('paymentModalTransactionID').value=data['eventDetail'][0]['transactionID'];
+          document.getElementById('paymentModalTransactionFee').value=data['eventDetail'][0]['totalFee'];
           // Ajax for Payment Detail
           $.ajax({
             type: "GET",
@@ -1535,6 +1406,7 @@
                   paymentStatus,
                   paymentActionBtn
                   ]).draw(true);
+                document.getElementById('paymentModalPaymentFee').value = paymentAmount;
               }
               $("#paymentModal").modal("show"); 
             },
@@ -1584,13 +1456,17 @@
           document.getElementById('assignModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
           document.getElementById('assignModalPackageID').value = eventModalPackageID;
           document.getElementById('assignModalReservationID').value = eventModalReservationID;
+          document.getElementById('assessTransactionID').value = data['eventDetail'][0]['transactionID'];
           var checkEventDate = data['eventDetail'][0]['eventDate'];
           transactionStatus = data['eventDetail'][0]['transactionStatus'];
           if(transactionStatus == 1){
             document.getElementById('assessEquipmentBtn').style.display='';
             document.getElementById('assignEquipmentBtn').style.display='none';
           }
-          // alert(transactionStatus);
+          if(transactionStatus == 6){
+            document.getElementById('assignEquipmentBtn').style.display='';
+            document.getElementById('assessEquipmentBtn').style.display='none';
+          }
           var today = new Date();
           var dd = today.getDate();
           var mm = today.getMonth()+1; //January is 0!
@@ -1723,7 +1599,7 @@
     var paymentID1 = id;
     var receiveDate1 = document.getElementById('addPaymentReceiveDate1').value;
     var transactionID = document.getElementById('paymentModalTransactionID').value;
-    alert(receiveDate1);
+    // alert(receiveDate1);
     $.ajax({
       url: "/SavePayment1",
       type: "POST",
@@ -1751,7 +1627,50 @@
       }                  
     });
   }
+
+  //Third Payment
+  function submitPayment2(id){
+    var paymentID2 = id;
+    var receiveDate2 = document.getElementById('addPaymentReceiveDate2').value;
+    var transactionID = document.getElementById('paymentModalTransactionID').value;
+    var transactionFee = document.getElementById('paymentModalTransactionFee').value;
+    var paymentFee = document.getElementById('paymentModalPaymentFee').value;
+    var totalFee = transactionFee + paymentFee;
+    alert(transactionFee);
+    alert(paymentFee);
+    $.ajax({
+      url: "/SavePayment2",
+      type: "POST",
+      beforeSend: function (xhr) {
+        var token = $('meta[name="csrf_token"]').attr('content');
+        if (token) {
+          return xhr.setRequestHeader('X-CSRF-TOKEN', token);
+        }
+      },
+      data: {
+        sendPaymentID: paymentID2,
+        sendReceiveDate: receiveDate2,
+        sendTransactionID: transactionID,
+        sendTransactionFee: transactionFee,
+        sendPaymentFee: paymentFee,
+        '_token': $('#token').val()
+      },               
+      success: function (response) {
+        $('#addPaymentStatusID2').removeClass('label label-warning').addClass('label label-success');
+        document.getElementById('addPaymentStatusID2').innerHTML = 'Confirmed';
+        $('#addPaymentBtnID2').prop("disabled",true);
+        $('#addPaymentReceiveDate2').prop("disabled",true);
+      },
+      error: function(xhr)
+      {
+        alert("mali");
+      }                  
+    });
+  }
 </script>
+</script>
+
+
 
 <script>
   $(function () {
@@ -1799,6 +1718,7 @@
       var customerBirthDate=[];
       var eventPackageName=[];
       var eventPackageId=[];
+      var reservationStatus=[];
       $.ajax({
             url: '/RetrieveSchedule',
             type: 'GET',
@@ -1821,6 +1741,7 @@
                   customerBirthDate.push([data['rsvtn'][i]['dateOfBirth']]);
                   eventPackageName.push([data['rsvtn'][i]['packageName']]);
                   eventPackageId.push([data['rsvtn'][i]['packageID']]);
+                  reservationStatus.push([data['rsvtn'][i]['reservationStatus']]);
                 } 
                 // alert(dateReservationId);
                 for(var i=0;i<data['rsvtn'].length;i++){
@@ -1841,7 +1762,8 @@
                     startTimeEvent: eventStart[i],
                     endTimeEvent: eventEnd[i],
                     packageNameEvent: eventPackageName[i],
-                    packageIdEvent: eventPackageId[i]
+                    packageIdEvent: eventPackageId[i],
+                    reservationStatus: reservationStatus[i]
                   })
                 }
 
@@ -1867,7 +1789,8 @@
                       event.startTimeEvent,
                       event.endTimeEvent,
                       event.packageNameEvent,
-                      event.packageIdEvent
+                      event.packageIdEvent,
+                      event.reservationStatus
                 },
                 navLinks: true, // can click day/week names to navigate views
                 editable: false,
@@ -1878,6 +1801,14 @@
                 eventClick: function(calEvent, jsEvent, view) {
                   document.getElementById('scheduleForm').reset();
                   $(this).find("#scheduleForm").html("");
+                  if(calEvent.reservationStatus == 2){
+                    var x = document.getElementById('confirmationDiv');
+                    x.style.display = 'none';
+                  }
+                  if(calEvent.reservationStatus == 3){
+                    var x = document.getElementById('confirmationDiv');
+                    x.style.display = 'none';
+                  }
                   // document.getElementById('contactNumber').innerHTML = '<h2 class="pull-right"><strong> #'+calEvent.customerCellNumberEvent+'</strong></h2>';
                   $('#editCustomerName').val(calEvent.customerNameEvent);
                   $('#editContactNumber').val(calEvent.customerCellNumberEvent);

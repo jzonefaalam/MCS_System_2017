@@ -244,16 +244,6 @@
                       </div>
                       </div>
 
-                      <div class="form-group ">
-                      <label class="col-sm-4 control-label"> Fee</label>
-                      <div class="col-sm-5">
-                      <div class = "input-group">
-                      <span class="input-group-addon"><i class="fa fa-rouble" aria-hidden="true"></i></span>
-                      <input type="text" class="form-control" name="editLocationPrice" id="editLocationPrice" placeholder="location Price">
-                      </div>
-                      </div>
-                      </div>
-
                       <div class="form-group has-feedback">
                       <label class="col-sm-4 control-label">Location Image</label>
                       <div class="col-sm-6">

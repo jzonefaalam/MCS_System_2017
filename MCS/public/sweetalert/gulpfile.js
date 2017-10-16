@@ -1,89 +1,108 @@
-const gulp = require('gulp')
-const cleanCSS = require('gulp-clean-css')
-const sass = require('gulp-sass')
-const rename = require('gulp-rename')
-const autoprefix = require('gulp-autoprefixer')
-const standard = require('gulp-standard')
-const sassLint = require('gulp-sass-lint')
+var gulp = require('gulp');
 
-const pack = require('./package.json')
-const utils = require('./config/utils.js')
+var glob       = require('glob');
+var path       = require('path');
+var jshint     = require('gulp-jshint');
+var sass       = require('gulp-sass');
+var concat     = require('gulp-concat');
+var uglify     = require('gulp-uglify');
+var rename     = require('gulp-rename');
+var minifyCSS  = require('gulp-minify-css');
+var babelify   = require('babelify');
+var browserify = require('browserify');
+var source     = require('vinyl-source-stream');
+var buffer     = require('vinyl-buffer');
+var wrap       = require('gulp-wrap');
+var qunit      = require('gulp-qunit');
+var babel      = require('gulp-babel');
 
-gulp.task('compress', ['js-lint', 'commonjs', 'dev', 'production', 'all'])
+// Lint Task
+gulp.task('lint', function() {
+  gulp.src('dev/sweetalert.es6.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
 
-gulp.task('commonjs', () => {
-  return utils.packageRollup({
-    dest: 'dist/' + pack.name + '.common.js',
-    format: 'cjs'
-  })
-})
+  return gulp.src('dev/*/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
 
-gulp.task('dev', () => {
-  return utils.packageRollup({
-    dest: 'dist/' + pack.name + '.js',
-    format: 'umd'
-  })
-})
+// Compile Our Sass
+gulp.task('sass', function() {
 
-gulp.task('production', () => {
-  return utils.packageRollup({
-    dest: 'dist/' + pack.name + '.min.js',
-    format: 'umd',
-    minify: true
-  })
-})
-
-gulp.task('all', () => {
-  return utils.packageRollup({
-    entry: 'src/sweetalert2.all.js',
-    dest: 'dist/' + pack.name + '.all.min.js',
-    format: 'umd',
-    minify: true
-  })
-})
-
-gulp.task('sass', ['sass-lint'], () => {
-  gulp.src('src/sweetalert2.scss')
+  gulp.src('example/example.scss')
     .pipe(sass())
-    .pipe(autoprefix())
-    .pipe(gulp.dest('dist'))
-    .pipe(cleanCSS())
-    .pipe(rename({extname: '.min.css'}))
-    .pipe(gulp.dest('dist'))
+    .pipe(rename('example.css'))
+    .pipe(gulp.dest('example'));
 
-  gulp.src('assets/example.scss')
+  // (We don't use minifyCSS since it breaks the ie9 file for some reason)
+  gulp.src(['dev/sweetalert.scss', 'dev/ie9.css', 'dev/loader-animation.css'])
     .pipe(sass())
-    .pipe(autoprefix())
-    .pipe(gulp.dest('assets'))
-})
+    .pipe(concat('sweetalert.css'))
+    .pipe(gulp.dest('dist'));
+});
 
-gulp.task('lint', ['js-lint', 'sass-lint'])
 
-gulp.task('js-lint', () => {
-  return gulp.src(['src/**/*.js', 'test/*.js'])
-    .pipe(standard())
-    .pipe(standard.reporter('default', {
-      breakOnError: true
+// Compile theme CSS
+var themes = glob.sync('themes/*').map(function(themeDir) {
+  return path.basename(themeDir);
+});
+
+themes.forEach(function(name) {
+  gulp.task(name + '-theme', function() {
+    return gulp.src('themes/' + name + '/' + name + '.scss')
+      .pipe(sass()) // etc
+      .pipe(rename(name + '.css'))
+      .pipe(gulp.dest('themes/' + name))
+  });
+});
+
+gulp.task('themes', themes.map(function(name){ return name + '-theme'; }));
+
+// Compile ES5 CommonJS entry point
+gulp.task('commonjs', function() {
+  gulp.src('./dev/sweetalert.es6.js')
+    .pipe(babel())
+    .pipe(rename('sweetalert.js'))
+    .pipe(gulp.dest('lib'));
+  gulp.src('./dev/modules/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest('lib/modules'));
+});
+
+// Concatenate & Minify JS
+gulp.task('scripts', function() {
+  return browserify({
+      entries: './dev/sweetalert.es6.js',
+      debug: true
+    })
+    .transform(babelify)
+    .bundle()
+    .pipe(source('sweetalert-dev.js'))
+    .pipe(wrap({
+      src: './dev/gulpfile-wrap-template.js'
     }))
-})
+    .pipe(gulp.dest('dist')) // Developer version
 
-gulp.task('sass-lint', () => {
-  return gulp.src(['src/**/*.scss', 'assets/**/*.scss'])
-    .pipe(sassLint())
-    .pipe(sassLint.format())
-    .pipe(sassLint.failOnError())
-})
+    .pipe(rename('sweetalert.min.js'))
+    .pipe(buffer())
+    .pipe(uglify())
+    .pipe(gulp.dest('dist')); // User version
+});
 
-gulp.task('default', ['compress', 'sass'])
+gulp.task('test', function() {
+  return gulp.src('./test/index.html')
+    .pipe(qunit({
+      timeout: 20
+    }));
+});
 
-gulp.task('watch', () => {
-  gulp.watch([
-    'src/**/*.js',
-    'test/*.js'
-  ], ['compress'])
+// Watch Files For Changes
+gulp.task('watch', function() {
+  gulp.watch(['dev/*.js', 'dev/*/*.js'], ['lint', 'scripts']);
+  gulp.watch(['dev/*.scss', 'dev/*.css'], ['sass']);
+  gulp.watch('themes/*/*.scss', ['themes']);
+});
 
-  gulp.watch([
-    'src/*.scss',
-    'assets/example.scss'
-  ], ['sass', 'compress'])
-})
+// Default Task
+gulp.task('default', ['lint', 'sass', 'scripts', 'commonjs', 'watch', 'test']);
