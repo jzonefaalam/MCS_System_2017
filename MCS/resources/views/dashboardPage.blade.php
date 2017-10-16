@@ -190,7 +190,7 @@
           <div class="box box-danger">
             <div class="box-header">
               <i class="ion ion-clipboard"></i>
-              <h3 class="box-title">NOTIFICATIONSza</h3>
+              <h3 class="box-title">NOTIFICATIONS</h3>
               <div class="box-tools pull-right">
               </div>
             </div>
@@ -209,30 +209,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      @foreach($latestEvents as $latestEvents)
-                      <tr>
-                        <?php 
-                          date_default_timezone_set('Asia/Manila');
-                          $date1 = date('Y-m-d H:i:s');
-                          $date1 = strtotime($date1);
-                          $eventDate = $latestEvents->eventDate;
-                          $newDate = strtotime($eventDate);
-                          $seconds_diff = floor(($newDate - $date1)/3600/24);
-                        if ((($seconds_diff)<=7) && (($seconds_diff)>=0)): ?>
-                          <td>
-                            <a >{{ $latestEvents -> eventName}}</a>
-                            <small style="width: 150px;" class="label label-danger pull-right">
-                              <i class="fa fa-calendar-o"></i> 
-                               {{ $latestEvents -> eventDate }} &nbsp {{ $latestEvents->eventTime }}
-                            </small>
-                          </td>
-                        <?php endif ?>
-                          <td style="display: none;">{{ $latestEvents->reservationID }}</td>
-                          <td style="display: none;">{{ $latestEvents->eventID }}</td>
-                          <td style="display: none;">{{ $latestEvents->packageID }}</td>
-                          <td style="display: none;">{{ $latestEvents->customerID }}</td>
-                      </tr>
-                      @endforeach
+
                     </tbody>
                   </table>
                   <hr>
@@ -344,6 +321,7 @@
                         @endforeach
                         </tbody>
                   </table>
+
                 </div>
               </div>
               
@@ -981,6 +959,47 @@
 <script src="{{ asset('LTE/plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
 <!-- Page specific script -->
 
+<!-- Render of Event Table -->
+<script>
+  $(document).ready(function(){
+    alert('zxc');
+    $.ajax({
+      type: "GET",
+      url:  "/RetrieveUpcomingEvents",
+      data: 
+      {
+          sdid: id
+      },
+      success: function(data){
+          var tblSDet = $('#eventTable').DataTable();
+          var latestEventName, latestReservationID, latestPackageID, latestCustomerID, latestEventDate, latestEventTime; 
+          tblSDet.clear();
+          tblSDet.draw(true);
+          for (var i = 0; i < data['latestEvents'].length; i++) {
+            latestEventName = data['latestEvents'][i]['eventName'];
+            latestReservationID = data['latestEvents'][i]['reservationID'];
+            latestPackageID = data['latestEvents'][i]['packageID'];
+            latestCustomerID = data['latestEvents'][i]['customerID'];
+            latestEventDate = data['latestEvents'][i]['eventDate'];
+            latestEventTime = data['latestEvents'][i]['eventTime'];
+            tblSDet.row.add([
+                latestEventName,
+                latestReservationID,
+                latestPackageID,
+                latestCustomerID
+              ]).draw(true);
+          }
+      },
+      error: function(xhr)
+      {
+          alert("Error!");
+          alert($.parseJSON(xhr.responseText)['error']['message']);
+      }                
+    )};
+  });
+</script>
+
+<!-- Save Assessment of Equipment -->
 <script>
   $("#saveAssessEquipment").click(function(e){
     var itemCtr = document.getElementById('assessmentItemCtr').value;
@@ -1002,6 +1021,7 @@
   }); 
 </script>
 
+<!-- Assessment of Equipment -->
 <script>
   $("#assessEquipmentBtn").click(function(e){
     $("#eventModal").modal("hide");
@@ -1056,6 +1076,7 @@
   }); 
 </script>
 
+<!-- Assignment of Equipment -->
 <script>
   $("#assignEquipmentBtn").click(function(e){
     $("#eventModal").modal("hide");
@@ -1238,7 +1259,6 @@
             }
           }
         $.ajax({
-
           type: "GET",
           url:  "/RetrievePackageInclusion",
           data: 
@@ -1440,6 +1460,7 @@
       });
     });
   });
+
   // Package Update Change
   function dishInclusionChange(id){
     var selectedOption = document.getElementById(id);
@@ -1485,110 +1506,9 @@
         }  
     });
   }
-  // Event Table Function
-  $(document).ready(function() {
-    var table = $('#eventTable').DataTable();
-    $('#eventTable tbody').on('dblclick', 'tr', function () {
-      var data = table.row( this ).data();
-      var eventModalReservationID = data[1];
-      var eventModalEventID = data[2];
-      var eventModalPackageID = data[3];
-      var eventModalCustomerID = data[4];
-      var transactionStatus;
-      $.ajax({
-        type: "GET",
-        url:  "/RetrieveEventDetail",
-        data: 
-        {
-            sendReservationID: eventModalReservationID
-        },
-        success: function(data){
-          document.getElementById('eventModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
-          document.getElementById('eventModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
-          document.getElementById('eventModalEventDate').innerHTML += '<h6>'+data['eventDetail'][0]['eventDate']+'</h6>';
-          document.getElementById('eventModalCustomerNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
-          document.getElementById('eventModalPackageAvailed').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
-          document.getElementById('eventModalEventLocation').innerHTML += '<h6>'+data['eventDetail'][0]['eventLocation']+'</h6>';
-          document.getElementById('assignModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
-          document.getElementById('assignModalPackageName').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
-          document.getElementById('assignModalGuestCount').innerHTML += '<h6>'+data['eventDetail'][0]['guestCount']+'</h6>';
-          document.getElementById('assignModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
-          document.getElementById('assignModalPackageID').value = eventModalPackageID;
-          document.getElementById('assignModalReservationID').value = eventModalReservationID;
-          document.getElementById('assessTransactionID').value = data['eventDetail'][0]['transactionID'];
-          var checkEventDate = data['eventDetail'][0]['eventDate'];
-          transactionStatus = data['eventDetail'][0]['transactionStatus'];
-          if(transactionStatus == 1){
-            document.getElementById('assessEquipmentBtn').style.display='';
-            document.getElementById('assignEquipmentBtn').style.display='none';
-          }
-          if(transactionStatus == 6){
-            document.getElementById('assignEquipmentBtn').style.display='';
-            document.getElementById('assessEquipmentBtn').style.display='none';
-          }
-          var today = new Date();
-          var dd = today.getDate();
-          var mm = today.getMonth()+1; //January is 0!
-          var yyyy = today.getFullYear();
-          if(dd<10) {
-              dd = '0'+dd
-          } 
-          if(mm<10) {
-              mm = '0'+mm
-          } 
-          today = yyyy + '-' + mm + '-' + dd;
-          var myDate = new Date(today);
-          var eventCheckDate = new Date(checkEventDate);
-          var timeDiff = eventCheckDate.getTime() - myDate.getTime();
-          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
-          // alert(myDate);
-          // alert(diffDays);
-          if(diffDays<0){
-            var x = document.getElementById('assessEquipmentBtn');
-              x.style.display = '';
-            var y = document.getElementById('assignEquipmentBtn');
-              y.style.display = 'none';
-          }
-          $.ajax({
-            type: "GET",
-            url:  "/RetrieveAssignedEquipment",
-            data: 
-            {
-                sendReservationID: eventModalReservationID
-            },
-            success: function(data){
-              var equipmentName, equipmentQty;
-              var tblSDet = $('#equipmentTbl').DataTable();
-              tblSDet.clear();
-              tblSDet.draw(true);
-              for (var i = 0; i < data['ss'].length; i++) {
-                equipmentName = data['ss'][i]['equipmentName'];
-                equipmentQty = data['ss'][i]['assignEquipmentQty'];
-                tblSDet.row.add([
-                  equipmentName,
-                  equipmentQty,
-                  ]).draw(true);
-              }
-              $("#eventModal").modal("show");
-            },
-            error: function(xhr)
-            {
-                alert("mali");
-                alert($.parseJSON(xhr.responseText)['error']['message']);
-            }                
-          });
-        },
-        error: function(xhr)
-        {
-            alert("mali");
-            alert($.parseJSON(xhr.responseText)['error']['message']);
-        }                
-      });
-      
-    });
-  });
 </script>
 
+<!-- Approve Reservation -->
 <script>
   function getReservation(id){
     $.ajax({
@@ -1727,10 +1647,8 @@
     });
   }
 </script>
-</script>
 
-
-
+<!-- Refresh Modal -->
 <script>
   $(function () {
     $(document).on("hidden.bs.modal", "#detailModal", function () {
@@ -1760,6 +1678,7 @@
   });
 </script>
 
+<!-- Calendar -->
 <script>
       var eventDate=[];
       var eventStart=[];
@@ -1948,15 +1867,7 @@
                 alert('Error! ');
               }
       });
-      // $(document).ready(function() {
-      //   // alert(datee);
-      //   // alert(start);
-      //   // alert(end);
-      //   //alert(ctr);
-      //   // alert(events);
-        
-        
-      // });
       </script>
+
 </body>
 </html>

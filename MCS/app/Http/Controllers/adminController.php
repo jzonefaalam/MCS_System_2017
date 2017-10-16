@@ -1117,9 +1117,13 @@ class adminController extends Controller
     }
 
     public function editPackage(){
+        $id = Input::get('editPackageID');
+        $deletePackageInclusion = DB::table('packageinclusion_tbl')
+        ->where('packageID', $id)
+        ->update(['packageInclusionStatus' => 0]);
+
         $packageImage = ($_FILES["editPackageImage"]["name"]);
         if($packageImage==null){
-            $id = Input::get('editPackageID');
             $package = package_tbl::find($id); 
             $package->packageName = Input::get('editPackageName');
             $package->packageDescription = Input::get('editPackageDescription');
@@ -1132,25 +1136,25 @@ class adminController extends Controller
             $svi = $_POST['editServiceInclusion'];
             foreach ($dti as $dtinclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
@@ -1185,25 +1189,25 @@ class adminController extends Controller
             $svi = $_POST['editServiceInclusion'];
             foreach ($dti as $dtinclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
@@ -1236,25 +1240,25 @@ class adminController extends Controller
             $svi = $_POST['editServiceInclusion'];
             foreach ($dti as $dtinclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
                 $packageInclusion = new packageinclusion_tbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
@@ -1302,21 +1306,25 @@ class adminController extends Controller
         $dd = DB::table('packageinclusion_tbl')
         ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $ff = DB::table('packageinclusion_tbl')
         ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $gg = DB::table('packageinclusion_tbl')
         ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishInclusion = DB::table('packageinclusion_tbl')
         ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
 
@@ -1339,21 +1347,25 @@ class adminController extends Controller
         $dd = DB::table('packageinclusion_tbl')
         ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $ff = DB::table('packageinclusion_tbl')
         ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $gg = DB::table('packageinclusion_tbl')
         ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishInclusion = DB::table('packageinclusion_tbl')
         ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishData = DB::table('dish_tbl')
@@ -2077,6 +2089,24 @@ class adminController extends Controller
         return redirect()->back();
     }
 
+    public function retrieveUpcomingEvents(){
+        $latestEvents = DB::table('reservation_tbl')
+        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
+        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
+        ->distinct()
+        ->where('reservation_tbl.reservationStatus', 2)
+        ->where('payment_tbl.paymentStatus', 1)
+        ->where('transaction_tbl.transactionStatus', '!=', 3)
+        ->where('transaction_tbl.transactionStatus', '!=', 5)
+        ->where('transaction_tbl.transactionStatus', '!=', 4)
+        ->get();
+        return \Response::json(['latestEvents'=>$latestEvents]);
+    }
+
     public function dashboardPage(){
         $packageData = DB::table('package_tbl')
         ->where('packageStatus', 1)->where('packageAvailability',1)
@@ -2098,20 +2128,20 @@ class adminController extends Controller
 
         // Upcoming or Ongoing Events
 
-        $latestEvents = DB::table('reservation_tbl')
-        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
-        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
-        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
-        ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
-        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
-        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
-        ->distinct()
-        ->where('reservation_tbl.reservationStatus', 2)
-        ->where('payment_tbl.paymentStatus', 1)
-        ->where('transaction_tbl.transactionStatus', '!=', 3)
-        ->where('transaction_tbl.transactionStatus', '!=', 5)
-        ->where('transaction_tbl.transactionStatus', '!=', 4)
-        ->get();
+        // $latestEvents = DB::table('reservation_tbl')
+        // ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        // ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        // ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        // ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
+        // ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        // ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
+        // ->distinct()
+        // ->where('reservation_tbl.reservationStatus', 2)
+        // ->where('payment_tbl.paymentStatus', 1)
+        // ->where('transaction_tbl.transactionStatus', '!=', 3)
+        // ->where('transaction_tbl.transactionStatus', '!=', 5)
+        // ->where('transaction_tbl.transactionStatus', '!=', 4)
+        // ->get();
 
         // Payments
         $latestPayments = DB::table('reservation_tbl')
@@ -2129,7 +2159,7 @@ class adminController extends Controller
         return View::make('/dashboardPage')
         ->with('packageData',$packageData)
         ->with('dashboardData', $dashboardData)
-        ->with('latestEvents', $latestEvents)
+        // ->with('latestEvents', $latestEvents)
         ->with('latestPayments', $latestPayments);
     }
 
@@ -2384,8 +2414,7 @@ class adminController extends Controller
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
         ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
         ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
-        ->where('transaction_tbl.transactionStatus', '!=', 3)
-        ->where('reservation_tbl.reservationStatus', '=', 2)
+        // ->where('transaction_tbl.transactionStatus', '!=', 3)
         ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
     }
