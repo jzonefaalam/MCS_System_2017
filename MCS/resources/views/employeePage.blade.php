@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 @section('content')
 
+<!-- SweetAlert -->
+<link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
+
   <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -241,8 +244,12 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+    <script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
+
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
      <script>
   $(function () {
     $('#employeeTable').DataTable({

@@ -87,8 +87,8 @@
                                   <h5> Are you sure you want to delete this item? </h5>
                                 </div>
                                 <div style="text-align: center;">
-                                  <button type="submit" name="deleteEquipmentBtn" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                  <button type="submit" name="deleteEquipmentBtn" class="btn btn-danger btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                                 </div>
                               </div>
                           </div>

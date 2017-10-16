@@ -1,9 +1,14 @@
 @extends('layouts.admin')
 
 @section('content')
+
+<!-- SweetAlert -->
+<link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
+
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
+
     <section class="content-header">
       <br>
         <ol class="breadcrumb">
@@ -63,7 +68,7 @@
                       <form role="form" method="POST" action="DeleteEquipmentTypePage" class="form-horizontal">
                       <div class="modal fade" id="deleteEquipmentTypeModal">
                         <div class="modal-dialog">
-                          <div class="modal-content">
+                          <div class="modal-content" style="margin-top: 250px">
                              <div class="modal-body">
                                 <div class="form-group" style="display: none;">
                                   <label class="col-sm-4 control-label">Equipment ID</label>
@@ -73,12 +78,12 @@
                                   </div>
                                 </div>
                                 {!! csrf_field() !!}
-                                <div>
-                                  <h5> Are you sure you want to delete this item? </h5>
+                                <div align="center">
+                                  <h4> Are you sure you want to delete this item? </h4>
                                 </div>
                                 <div style="text-align: center;">
-                                  <button type="submit" name="deleteEquipmentBtn" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                  <button type="submit" name="deleteEquipmentBtn" class="btn btn-danger btn-sm" onclick="equipTypeDelete()">Delete</button>
+                                  <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                                 </div>
                               </div>
                           </div>
@@ -127,7 +132,7 @@
                       </div>
 
                       <div class="modal-footer">
-                      <button type="submit" name="editEquipmentBtn" class="btn btn-primary">Save</button>
+                      <button type="submit" name="editEquipmentBtn" class="btn btn-primary" onclick="equipTypeUpdate()">Save</button>
                       </div>
                       </form>
                       </div>
@@ -163,7 +168,7 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                  <button type="submit" name="addEquipmentBtn" class="btn btn-primary">Save</button>
+                                  <button type="submit" name="addEquipmentBtn" class="btn btn-primary" >Save</button>
                                 </div>
                                 </div>                            
                                 </div>
@@ -177,8 +182,52 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+<script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
+
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+    @if (Session::has('message'))
+      <script>
+        swal({   
+          title: "{{ Session::get('title') }}",   
+          text: "{{ Session::get('message') }}",   
+          type: "{{ Session::get('type') }}",
+          timer: 3000,
+          showConfirmButton: false
+        });
+      </script>
+    @endif
+
+<!-- <script type="text/javascript">
+  function equipTypeAdd() {
+      swal({   
+        title: "Saved!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+
+  function equipTypeDelete() {
+      swal({   
+        title: "Deleted!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+
+  function equipTypeUpdate() {
+      swal({   
+        title: "Updated!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+</script> -->
 
 <script>
   $(function () {

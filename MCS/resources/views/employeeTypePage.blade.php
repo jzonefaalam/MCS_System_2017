@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+
+<!-- SweetAlert -->
+<link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -8,7 +11,7 @@
         <br>
         <ol class="breadcrumb">
           <li><a href="menu.php"><i class="fa fa-wrench"></i> Maintenance</a></li>
-          <li class="active"><a href = "#"><i class="fa fa-user"></i>Employee Type</a></li>
+          <li class="active"><a href = "#"><i class="fa fa-user"></i>Employee</a></li>
         </ol>
       </section>
       <!-- Main content -->
@@ -18,7 +21,7 @@
           <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>Employee Type</h2>
+                <h2>Employee</h2>
               </div>
               <div class="col-md-6">
                 <a class="btn btn-app" data-target="#addEmployeeTypeModal" data-toggle="modal" style="float:right">
@@ -32,7 +35,7 @@
             <table class="table table-stripped table-bordered dataTable" id="employeeTypeTable">
               <thead>
                 <tr>
-                  <th width='450'>Employee Type</th>
+                  <th width='450'>Employee</th>
                   <th width='250'>Rate per Hour</th>
                   <th width='150'>Actions</th>
                 </tr>
@@ -59,25 +62,25 @@
                 <form role="form" method="POST" action="DeleteEmployeeTypePage" class="form-horizontal">
                   <div class="modal fade" id="deleteEmployeeTypeModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                         
                         <div class="modal-body">
 
                           <div class="form-group" style="display: none;">
-                            <label class="col-sm-4 control-label">Employee Type ID</label>
+                            <label class="col-sm-4 control-label">Employee ID</label>
                             <div class="col-sm-5 input-group">
                               <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                               <input type="text" class="form-control" name="deleteEmployeeTypeID" id="deleteEmployeeTypeID" readonly="">
                             </div>
                           </div>
                           {!! csrf_field() !!}
-                          <div>
-                            <h5>Are you sure you want to delete this item?</h5>
+                          <div align="center">
+                            <h4>Are you sure you want to delete this item?</h4>
                           </div>
 
                           <div style="text-align: center;">
-                            <button type="submit" name="deleteEmployeeTypeBtn" class="btn btn-default text-left" >Yes</button>
-                            <button data-dismiss="modal" class="btn btn-default text-left" >No</button>
+                            <button type="submit" name="deleteEmployeeTypeBtn" class="btn btn-danger  btn-sm">Delete</button>
+                            <button data-dismiss="modal" class="btn btn-default  btn-sm" >Cancel</button>
                             <!-- <script>
                               $('#enableModal').modal('hide');
                             </script> -->
@@ -98,14 +101,14 @@
               <div class="modal-content">
                 <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">UPDATE EMPLOYEE TYPE</h4>
+                <h4 class="modal-title" id="myModalLabel">UPDATE EMPLOYEE</h4>
                 </div>
 
                 {!! csrf_field() !!}
                 <div class="modal-body">
                 
                   <div class="form-group" style="display: none;">
-                  <label class="col-sm-4 control-label">Employee Type ID</label>
+                  <label class="col-sm-4 control-label">Employee ID</label>
                   <div class="col-sm-6">
                   <div class = "input-group">
                   <div class="input-group-addon">
@@ -116,7 +119,7 @@
                   </div>
                   
                   <div class="form-group">
-                  <label class="col-sm-4 control-label">Employee Type Name</label>
+                  <label class="col-sm-4 control-label">Employee Name</label>
                   <div class="col-sm-6">
                   <div class = "input-group">
                   <div class="input-group-addon">
@@ -156,14 +159,14 @@
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">ADD EMPLOYEE TYPE</h4>
+                    <h4 class="modal-title" id="myModalLabel">ADD EMPLOYEE</h4>
                   </div>
                   <div class="modal-body">
                     
                     {!! csrf_field() !!}
                   
                     <div class="form-group">
-                      <label class="col-sm-4 control-label"> Employee Type Name </label>
+                      <label class="col-sm-4 control-label"> Employee Name </label>
                       <div class="col-sm-6">
                         <div class="input-group">
                          <div class="input-group-addon">
@@ -186,7 +189,7 @@
 
                 </div>
                   <div class="modal-footer">
-                    <button type="submit" name="addEmployeeTypeBtn"  class="btn btn-primary">Submit</button>
+                    <button type="submit" name="addEmployeeTypeBtn" class="btn btn-primary">Submit</button>
                   </div>
               </div>
             </div>
@@ -200,8 +203,51 @@
     </div>
     <!-- /.content-wrapper -->
 
+    <script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
+
     <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+    @if (Session::has('message'))
+      <script>
+        swal({   
+          title: "{{ Session::get('title') }}",   
+          text: "{{ Session::get('message') }}",   
+          type: "{{ Session::get('type') }}",
+          timer: 3000,
+          showConfirmButton: false
+        });
+      </script>
+    @endif
+
+<!-- <script type="text/javascript">
+  function employeeAdd() {
+      swal({   
+        title: "Saved!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+
+  function employeeDelete() {
+      swal({   
+        title: "Deleted!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+
+  function employeeUpdate() {
+      swal({   
+        title: "Updated!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+</script> -->
 
 <script>
   $(function () {
