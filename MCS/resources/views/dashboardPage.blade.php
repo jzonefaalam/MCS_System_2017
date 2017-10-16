@@ -201,8 +201,8 @@
                   <table class="table table-bordered table-striped dataTable" id="eventTable">
                     <thead>
                       <tr>
-                        <th>Upcoming Events</th>
-                        <th style="display: none;">Reservation ID</th>
+                        <th >Upcoming Events</th>
+                        <th style="display: none;" >Reservation ID</th>
                         <th style="display: none;">Event ID</th>
                         <th style="display: none;">Package ID</th>
                         <th style="display: none;">Customer ID</th>
@@ -725,30 +725,30 @@
                 <div class="row">
                   <div class="col-md-6" align="left">
                     <label>Customer Name: </label>
-                    <div id="assignModalCustomerName" style="display: inline-block;">
+                    <div id="assessmentModalCustomerName" style="display: inline-block;">
                       
                     </div>
                     <br>
                     <label>Event Name: </label>
-                    <div id="assignModalEventName" style="display: inline-block;">
+                    <div id="assessmentModalEventName" style="display: inline-block;">
                       
                     </div>
                     <br>
                     <!-- <label>Event Date: </label> -->
-                    <input style="display:none;" type="text" id="assignModalReservationID" name="assignModalReservationID">
-                    <input style="display:none;" type="text" id="assignModalPackageID" name="assignModalPackageID">
-                    <input style="display:none;" type="text" id="assessTransactionID" name="assessTransactionID">
+                    <input style="display:none;" type="text" id="assessmentModalReservationID" name="assessmentModalReservationID">
+                    <input style="display:none;" type="text" id="assessmentModalPackageID" name="assessmentModalPackageID">
+                    <input style="display:none;" type="text" id="assessmentTransactionID" name="assessmentTransactionID">
                     <input style="display:none;" type="text" id="assessmentItemCtr" name="assessmentItemCtr">
                     <input style="display:none;" type="text" id="assessmentAdditionalPayment" name="assessmentAdditionalPayment">
                   </div>
                   <div class="col-md-6" align="left">
                     <label>Guest Count: </label>
-                    <div id="assignModalGuestCount" style="display: inline-block;">
+                    <div id="assessmentModalGuestCount" style="display: inline-block;">
 
                     </div>
                     <br>
                     <label>Package Availed: </label>
-                    <div id="assignModalPackageName" style="display: inline-block;">
+                    <div id="assessmentModalPackageName" style="display: inline-block;">
                       
                     </div>
                     <br>
@@ -802,29 +802,30 @@
                 <div class="row">
                   <div class="col-md-6" align="left">
                     <label>Customer Name: </label>
-                    <div id="assignModalCustomerName" style="display: inline-block;">
+                    <div id="assignEquipmentCustomerName" style="display: inline-block;">
                       
                     </div>
                     <br>
                     <label>Event Name: </label>
-                    <div id="assignModalEventName" style="display: inline-block;">
+                    <div id="assignEquipmentEventName" style="display: inline-block;">
                       
                     </div>
                     <br>
                     <!-- <label>Event Date: </label> -->
-                    <input style="display:none;" type="text" id="assignModalReservationID" name="assignModalReservationID">
-                    <input style="display:none;" type="text" id="assignModalPackageID" name="assignModalPackageID">
+                    <input style="display:none;" type="text" id="assignEquipmentReservationID" name="assignEquipmentReservationID">
+                    <input style="display:none;" type="text" id="assignEquipmentPackageID" name="assignEquipmentPackageID">
+                    <input style="display:none;" type="text" id="assignEquipmentEventID" name="assignEquipmentEventID">
                     <input style="display:none;" type="text" id="addItemCtr" name="addItemCtr">
                     <input style="display:none;" type="text" id="additionalItemCtr" name="additionalItemCtr">
                   </div>
                   <div class="col-md-6" align="left">
                     <label>Guest Count: </label>
-                    <div id="assignModalGuestCount" style="display: inline-block;">
+                    <div id="assignEquipmentGuestCount" style="display: inline-block;">
 
                     </div>
                     <br>
                     <label>Package Availed: </label>
-                    <div id="assignModalPackageName" style="display: inline-block;">
+                    <div id="assignEquipmentPackageName" style="display: inline-block;">
                       
                     </div>
                     <br>
@@ -854,7 +855,7 @@
               <button class="btn btn-default" type="submit">
                 Save
               </button>
-              <button type="button" href="#" class="btn btn-default">Back</button>
+              <!-- <button type="button" href="#" class="btn btn-default">Back</button> -->
           </div>
         </div>
       </div>
@@ -961,8 +962,8 @@
 
 <!-- Render of Event Table -->
 <script>
-  $(document).ready(function(){
-    alert('zxc');
+  window.onload = function() {
+    var id = "";
     $.ajax({
       type: "GET",
       url:  "/RetrieveUpcomingEvents",
@@ -972,22 +973,34 @@
       },
       success: function(data){
           var tblSDet = $('#eventTable').DataTable();
-          var latestEventName, latestReservationID, latestPackageID, latestCustomerID, latestEventDate, latestEventTime; 
+          var latestEventStatus;
+          var latestEventName, latestReservationID, latestPackageID, latestCustomerID, latestEventDate, latestEventTime, latestNull, latestEventID; 
           tblSDet.clear();
           tblSDet.draw(true);
           for (var i = 0; i < data['latestEvents'].length; i++) {
-            latestEventName = data['latestEvents'][i]['eventName'];
-            latestReservationID = data['latestEvents'][i]['reservationID'];
-            latestPackageID = data['latestEvents'][i]['packageID'];
-            latestCustomerID = data['latestEvents'][i]['customerID'];
             latestEventDate = data['latestEvents'][i]['eventDate'];
-            latestEventTime = data['latestEvents'][i]['eventTime'];
-            tblSDet.row.add([
-                latestEventName,
-                latestReservationID,
-                latestPackageID,
-                latestCustomerID
-              ]).draw(true);
+            latestEventStatus = data['latestEvents'][i]['eventStatus'];
+            var checkDate = new Date(latestEventDate);
+            var today = new Date();
+            var timeDiff = Math.abs(checkDate.getTime() - today.getTime());
+            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+            // alert(diffDays);
+              if(diffDays < 7 && diffDays >  0){
+                latestEventName = data['latestEvents'][i]['eventName'];
+                latestReservationID = data['latestEvents'][i]['reservationID'];
+                latestPackageID = data['latestEvents'][i]['packageID'];
+                latestCustomerID = data['latestEvents'][i]['customerID'];
+                latestEventID = data['latestEvents'][i]['eventID'];
+                latestEventTime = data['latestEvents'][i]['eventTime'];
+                latestNull = '<a>' +latestEventName+ '</a><small style="width: 150px;" class="label label-danger pull-right"><i class="fa fa-calendar-o"></i>'+latestEventDate+' &nbsp '+latestEventTime+'</small>';
+                tblSDet.row.add([
+                    latestNull,
+                    latestReservationID,
+                    latestEventID,
+                    latestPackageID,
+                    latestCustomerID
+                  ]).draw(true);
+              }
           }
       },
       error: function(xhr)
@@ -995,16 +1008,17 @@
           alert("Error!");
           alert($.parseJSON(xhr.responseText)['error']['message']);
       }                
-    )};
-  });
+    });
+  }
 </script>
 
 <!-- Save Assessment of Equipment -->
 <script>
   $("#saveAssessEquipment").click(function(e){
     var itemCtr = document.getElementById('assessmentItemCtr').value;
-    var reservationID = document.getElementById('assignModalReservationID').value;
+    // var reservationID = document.getElementById('assignModalReservationID').value;
     var totalAmount = 0;
+    // alert()
     for (var i = 0; i < itemCtr; i++) {
       var abc = "assessReturnQty" + i;
       var x = document.getElementById(abc).value;
@@ -1026,7 +1040,7 @@
   $("#assessEquipmentBtn").click(function(e){
     $("#eventModal").modal("hide");
     // var packageID = document.getElementById('assignModalPackageID').value; 
-    var reservationID = document.getElementById('assignModalReservationID').value;
+    var reservationID = document.getElementById('assessmentModalReservationID').value;
     $.ajax({
         type: "GET",
         url:  "/RetrieveAssignedEquipment",
@@ -1080,8 +1094,8 @@
 <script>
   $("#assignEquipmentBtn").click(function(e){
     $("#eventModal").modal("hide");
-    var packageID = document.getElementById('assignModalPackageID').value; 
-    var reservationID = document.getElementById('assignModalReservationID').value;
+    var packageID = document.getElementById('assignEquipmentPackageID').value; 
+    var reservationID = document.getElementById('assignEquipmentReservationID').value;
     $.ajax({
         type: "GET",
         url:  "/RetrievePackageInclusion",
@@ -1167,7 +1181,9 @@
       "searching": false,
       "ordering": false,
       "info": true,
-      "autoWidth": true
+      "autoWidth": true,
+      "aoColumnDefs": 
+        [{ "bVisible": false, "aTargets": [ 1,2,3,4 ], }],
     });
     $('#paymentDetailTbl').DataTable({
       "paging": false,
@@ -1425,7 +1441,7 @@
                 statusChecker = data['paymentDetail'][i]['paymentStatus'];
                 if (statusChecker == 0) {
                   paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-warning">Pending</span>';
-                  paymentReceiveDate = '<input type="date" id="' + addPaymentReceiveDate + '" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" min="{{date('Y-m-d',  strtotime( '+7 day' ))}}">';
+                  paymentReceiveDate = '<input type="date" id="' + addPaymentReceiveDate + '" max="{{date('Y-m-d',  strtotime( '+1 month' ))}}" min="{{date('Y-m-d',  strtotime( '+1 day' ))}}">';
                   paymentActionBtn = '<input type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
                 }
                 if (statusChecker == 1) {
@@ -1460,6 +1476,130 @@
       });
     });
   });
+
+  // Event Table Function
+  $(document).ready(function() {
+    var table = $('#eventTable').DataTable();
+    $('#eventTable tbody').on('dblclick', 'tr', function () {
+      var data = table.row( this ).data();
+      var eventModalReservationID = data[1];
+      var eventModalEventID = data[2];
+      var eventModalPackageID = data[3];
+      var eventModalCustomerID = data[4];
+      var transactionStatus;
+      // alert(eventModalReservationID);
+      $.ajax({
+        type: "GET",
+        url:  "/RetrieveEventDetail",
+        data: 
+        {
+            sendReservationID: eventModalReservationID
+        },
+        success: function(data){
+          document.getElementById('eventModalCustomerName').innerHTML += '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('eventModalEventName').innerHTML += '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('eventModalEventDate').innerHTML += '<h6>'+data['eventDetail'][0]['eventDate']+'</h6>';
+          document.getElementById('eventModalCustomerNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
+          document.getElementById('eventModalPackageAvailed').innerHTML += '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
+          document.getElementById('eventModalEventLocation').innerHTML += '<h6>'+data['eventDetail'][0]['eventLocation']+'</h6>';
+          // ASSIGN
+          document.getElementById('assignEquipmentCustomerName').innerHTML = '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('assignEquipmentPackageName').innerHTML = '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
+          document.getElementById('assignEquipmentGuestCount').innerHTML = '<h6>'+data['eventDetail'][0]['guestCount']+'</h6>';
+          document.getElementById('assignEquipmentEventName').innerHTML = '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('assignEquipmentPackageID').value = eventModalPackageID;
+          document.getElementById('assignEquipmentReservationID').value = eventModalReservationID;
+          document.getElementById('assignEquipmentEventID').value = data['eventDetail'][0]['eventID'];
+          // ASSESSMENT
+          document.getElementById('assessmentModalCustomerName').innerHTML = '<h6>'+data['eventDetail'][0]['fullName']+'</h6>';
+          document.getElementById('assessmentModalPackageName').innerHTML = '<h6>'+data['eventDetail'][0]['packageName']+'</h6>';
+          document.getElementById('assessmentModalGuestCount').innerHTML = '<h6>'+data['eventDetail'][0]['guestCount']+'</h6>';
+          document.getElementById('assessmentModalEventName').innerHTML = '<h6>'+data['eventDetail'][0]['eventName']+'</h6>';
+          document.getElementById('assessmentModalPackageID').value = eventModalPackageID;
+          document.getElementById('assessmentModalReservationID').value = eventModalReservationID;
+          document.getElementById('assessmentTransactionID').value = data['eventDetail'][0]['transactionID'];
+
+          // VALIDATION
+          var checkEventDate = data['eventDetail'][0]['eventDate'];
+          transactionStatus = data['eventDetail'][0]['transactionStatus'];
+          var checkEventStatus = data['eventDetail'][0]['eventStatus'];
+          if(transactionStatus == 1){
+            document.getElementById('assessEquipmentBtn').style.display='';
+            document.getElementById('assignEquipmentBtn').style.display='none';
+          }
+          if(transactionStatus == 6){
+            document.getElementById('assignEquipmentBtn').style.display='';
+            document.getElementById('assessEquipmentBtn').style.display='none';
+          }
+          var today = new Date();
+          var dd = today.getDate();
+          var mm = today.getMonth()+1; //January is 0!
+          var yyyy = today.getFullYear();
+          if(dd<10) {
+              dd = '0'+dd
+          } 
+          if(mm<10) {
+              mm = '0'+mm
+          } 
+          today = yyyy + '-' + mm + '-' + dd;
+          var myDate = new Date(today);
+          var eventCheckDate = new Date(checkEventDate);
+          var timeDiff = eventCheckDate.getTime() - myDate.getTime();
+          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+          //  Wala pang nassign na equipment
+          if(checkEventStatus == 1){
+              var x = document.getElementById('assessEquipmentBtn');
+                x.style.display = 'none';
+              var y = document.getElementById('assignEquipmentBtn');
+                y.style.display = '';
+          }
+          // May na assign na
+          if(checkEventStatus == 2){
+              var x = document.getElementById('assessEquipmentBtn');
+                x.style.display = '';
+              var y = document.getElementById('assignEquipmentBtn');
+                y.style.display = 'none';
+          }
+          $.ajax({
+            type: "GET",
+            url:  "/RetrieveAssignedEquipment",
+            data: 
+            {
+                sendReservationID: eventModalReservationID
+            },
+            success: function(data){
+              var equipmentName, equipmentQty;
+              var tblSDet = $('#equipmentTbl').DataTable();
+              tblSDet.clear();
+              tblSDet.draw(true);
+              for (var i = 0; i < data['ss'].length; i++) {
+                equipmentName = data['ss'][i]['equipmentName'];
+                equipmentQty = data['ss'][i]['assignEquipmentQty'];
+                tblSDet.row.add([
+                  equipmentName,
+                  equipmentQty,
+                  ]).draw(true);
+              }
+              $("#eventModal").modal("show");
+            },
+            error: function(xhr)
+            {
+                alert("mali");
+                alert($.parseJSON(xhr.responseText)['error']['message']);
+            }                
+          });
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }                
+      });
+      
+    });
+  });
+
 
   // Package Update Change
   function dishInclusionChange(id){
@@ -1578,7 +1718,9 @@
     var paymentID1 = id;
     var receiveDate1 = document.getElementById('addPaymentReceiveDate1').value;
     var transactionID = document.getElementById('paymentModalTransactionID').value;
-    // alert(receiveDate1);
+    var paymentTermID = document.getElementById('paymentModalpaymentTerm').value;
+    var transactionFee = document.getElementById('paymentModalTransactionFee').value;
+    var paymentFee = document.getElementById('paymentModalPaymentFee').value;
     $.ajax({
       url: "/SavePayment1",
       type: "POST",
@@ -1592,6 +1734,9 @@
         sendPaymentID: paymentID1,
         sendReceiveDate: receiveDate1,
         sendTransactionID: transactionID,
+        sendPaymentTerm: paymentTermID,
+        sendTransactionFee: transactionFee,
+        sendPaymentFee: paymentFee,
         '_token': $('#token').val()
       },               
       success: function (response) {
@@ -1615,8 +1760,8 @@
     var transactionFee = document.getElementById('paymentModalTransactionFee').value;
     var paymentFee = document.getElementById('paymentModalPaymentFee').value;
     var totalFee = transactionFee + paymentFee;
-    alert(transactionFee);
-    alert(paymentFee);
+    // alert(transactionFee);
+    // alert(paymentFee);
     $.ajax({
       url: "/SavePayment2",
       type: "POST",
