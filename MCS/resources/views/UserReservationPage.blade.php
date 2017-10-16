@@ -152,6 +152,7 @@
 											<input type="text" name="addContactID" id="addContactID" value = "{{ $contactNewID }}" hidden>
 											<input type="text" name="addDishAvailedID" id="addDishAvailedID" value = "{{ $dishAvailedNewID }}" hidden>
 											<input type="text" name="tc" id="tc"  hidden>
+											<input type="text" name="cStat" id="cStat" value="1" hidden>
 											<input type="text" name="tm3" id="tm3"  hidden>
 											<input type="text" name="tm1" id="tm1" value="9:00" hidden>
 											<input type="text" name="tm2" id="tm2" value="9:00"  hidden>
@@ -1231,8 +1232,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 			}
 		  
  			function addAdd(id){
-				var selectedOption = document.getElementById(id);
-				var dish = selectedOption.options[selectedOption.selectedIndex].value;
+					var selectedOption = document.getElementById(id);
+					var dish = selectedOption.options[selectedOption.selectedIndex].value;
 				var price=0;
 				var qty=0;
 
@@ -2227,6 +2228,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						}
 						var homeAdds = $("#homeAdd").val();
 						var emailAdds = $("#emailAdd").val();
+						var cStats = $('#cStat').val();
 						var cellNums = $("#cellNum").val();
 						var dobs = $("#dob").val();
 						var addContactIDs = $("#addContactID").val();
@@ -2334,6 +2336,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 									    homeAdd: homeAdds,
 									    billAdd: homeAdds,
 									    emailAdd: emailAdds,
+									    cStat: cStats,
 									    cellNum: cellNums,
 									    dob: dobs,
 									    addContactID: addContactIDs,
@@ -2393,7 +2396,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
  					else if(document.getElementById('no').checked){
  						document.getElementById('locYes').style="display:none";
  						document.getElementById('locNo').style="display:"; 	
- 						document.getElementById('eLoc').value="";				
+ 						document.getElementById('eLoc').value="";	
  					}
  				}
  				function prevC(){
@@ -2402,6 +2405,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					    $("#dob").attr('disabled', true);
  						document.getElementById('cusNo').style="display:none";
  						document.getElementById('cusYes').style="display:";
+ 						$('#cStat').val('0');
 					} else {
 					    $("#homeAdd").removeAttr('disabled');
 					    $("#dob").removeAttr('disabled');
@@ -2412,6 +2416,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					    document.getElementById('cusYes').style="display:none";
  						document.getElementById('cusNo').style="display:";
  						document.getElementById('prevCusName').selectedIndex="0";
+ 						$('#cStat').val('1');			
 					}
 				}
 				function prevChange(id){	        

@@ -2632,7 +2632,7 @@ class adminController extends Controller
         ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
         ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
-        ->where('customer_tbl.customerStatus', 0)
+        ->where('customer_tbl.customerAvailability', 0)
         ->get();
 
         $lost = DB::table('transaction_tbl')
