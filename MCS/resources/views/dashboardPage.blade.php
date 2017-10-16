@@ -190,7 +190,7 @@
           <div class="box box-danger">
             <div class="box-header">
               <i class="ion ion-clipboard"></i>
-              <h3 class="box-title">NOTIFICATIONS</h3>
+              <h3 class="box-title">NOTIFICATIONSza</h3>
               <div class="box-tools pull-right">
               </div>
             </div>
