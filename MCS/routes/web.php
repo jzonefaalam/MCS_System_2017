@@ -124,6 +124,7 @@ Route::get('/RetrieveEventDetail', 'adminController@retrieveEventDetail');
 Route::get('/RetrievePaymentDetail', 'adminController@retrievePaymentDetail');
 Route::post("/SavePayment0", array("uses"=>"adminController@savePayment0"));
 Route::post("/SavePayment1", array("uses"=>"adminController@savePayment1"));
+Route::post("/SavePayment2", array("uses"=>"adminController@savePayment2"));
 Route::post("/TransactionSavePayment0", array("uses"=>"adminController@transactionSavePayment0"));
 Route::post("/TransactionSavePayment1", array("uses"=>"adminController@transactionSavePayment1"));
 Route::post("/AssignEquipment", array("uses"=>"adminController@assignEquipment"));

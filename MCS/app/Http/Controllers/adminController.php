@@ -2070,10 +2070,14 @@ class adminController extends Controller
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
         ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
-        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
         ->distinct()
         ->where('reservation_tbl.reservationStatus', 2)
         ->where('payment_tbl.paymentStatus', 1)
+        ->where('transaction_tbl.transactionStatus', '!=', 3)
+        ->where('transaction_tbl.transactionStatus', '!=', 5)
+        ->where('transaction_tbl.transactionStatus', '!=', 4)
         ->get();
 
         // Payments
@@ -2135,7 +2139,7 @@ class adminController extends Controller
 
         if($paymentTermID == 1){
             $transaction = transactiontbl::find($transactionID);
-            $transaction->transactionStatus = 1;
+            $transaction->transactionStatus = 6;
             $transaction->save();
         }
         if($paymentTermID == 2){
@@ -2185,6 +2189,26 @@ class adminController extends Controller
 
         $transaction = transactiontbl::find($transactionID);
         $transaction->transactionStatus = 1;
+        $transaction->save();
+        return redirect()->back();
+    }
+
+    public function savePayment2()
+    {
+        $paymentID = Input::get('sendPaymentID');
+        $paymentRDate = Input::get('sendReceiveDate');
+        $transactionID = Input::get('sendTransactionID');
+        $paymentFee = Input::get('sendPaymentFee');
+        $transactionFee = Input::get('sendTransactionFee');
+        $payment = paymenttbl::find($paymentID);
+        $payment->paymentReceiveDate = $paymentRDate;
+        $payment->paymentStatus = 1;
+        $payment->save();
+        $totalFee = $paymentFee + $transactionFee;
+
+        $transaction = transactiontbl::find($transactionID);
+        $transaction->transactionStatus = 4;
+        $transaction->totalFee = $totalFee;
         $transaction->save();
         return redirect()->back();
     }
@@ -2242,26 +2266,68 @@ class adminController extends Controller
     {
         //Find Package
         $checkReservationID = Input::get('assignModalReservationID');
+        $checkTransactionID = Input::get('assessTransactionID');
         $checkPackageID = Input::get('assignModalPackageID');
         $itemCtr = Input::get('assessmentItemCtr');
-        for ($i=0; $i < $itemCtr ; $i++) {
-            $returnQty = "assessReturnQty" . $i;
-            $returnQtyValue = Input::get($returnQty);
-            $returnID = "assessItemID" . $i;
-            $returnIDValue = Input::get($returnID);
-            $assessment = assignequipmenttbl::find($returnIDValue);
-            $assessment->assignReturnQty = $returnQtyValue;
-            $assessment->save();
-            // Equipmentlog_tbl
-            $returnEquipment = "assessEquipmentNameID" . $i;
-            $returnEquipmentValue = Input::get($returnEquipment);
-            $equipmentlog = new equipmentlogtbl;
-            $equipmentlog->equipmentID = $returnEquipmentValue;
-            $equipmentlog->equipmentQuantityIn = $returnQtyValue;
-            $equipmentlog->equipmentQuantityOut = 0;
-            $equipmentlog->equipmentLogDate = Date_create('now');
-            $equipmentlog->save();
+        $additionalPayment = Input::get('assessmentAdditionalPayment');
+        if($additionalPayment == 0){
+            for ($i=0; $i < $itemCtr ; $i++) {
+                $returnQty = "assessReturnQty" . $i;
+                $returnQtyValue = Input::get($returnQty);
+                $returnID = "assessItemID" . $i;
+                $returnIDValue = Input::get($returnID);
+                $assessment = assignequipmenttbl::find($returnIDValue);
+                $assessment->assignReturnQty = $returnQtyValue;
+                $assessment->save();
+                // Equipmentlog_tbl
+                $returnEquipment = "assessEquipmentNameID" . $i;
+                $returnEquipmentValue = Input::get($returnEquipment);
+                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog->equipmentID = $returnEquipmentValue;
+                $equipmentlog->equipmentQuantityIn = $returnQtyValue;
+                $equipmentlog->equipmentQuantityOut = 0;
+                $equipmentlog->equipmentLogDate = Date_create('now');
+                $equipmentlog->save();
+            }
+            // Transaction_tbl
+            $transaction = transactiontbl::find($checkTransactionID);
+            $transaction->transactionStatus = 4;
+            $transactionStatus->save();
         }
+        if($additionalPayment>0){
+            for ($i=0; $i < $itemCtr ; $i++) {
+                $returnQty = "assessReturnQty" . $i;
+                $returnQtyValue = Input::get($returnQty);
+                $returnID = "assessItemID" . $i;
+                $returnIDValue = Input::get($returnID);
+                $assessment = assignequipmenttbl::find($returnIDValue);
+                $assessment->assignReturnQty = $returnQtyValue;
+                $assessment->save();
+                // Equipmentlog_tbl
+                $returnEquipment = "assessEquipmentNameID" . $i;
+                $returnEquipmentValue = Input::get($returnEquipment);
+                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog->equipmentID = $returnEquipmentValue;
+                $equipmentlog->equipmentQuantityIn = $returnQtyValue;
+                $equipmentlog->equipmentQuantityOut = 0;
+                $equipmentlog->equipmentLogDate = Date_create('now');
+                $equipmentlog->save();
+            }
+            // Transaction_tbl
+            $transaction = transactiontbl::find($checkTransactionID);
+            $transaction->transactionStatus = 5;
+            $transaction->save();
+            // Payment_tbl
+            $plusOneWeek = strtotime("+7 day");
+            $firstPaymentDate = date('Y-m-d', $plusOneWeek);
+            $paymenttbl = new paymenttbl;
+            $paymenttbl->paymentDueDate = $firstPaymentDate;
+            $paymenttbl->paymentStatus = 0;
+            $paymenttbl->reservationID = $checkReservationID;
+            $paymenttbl->paymentAmount = $additionalPayment;
+            $paymenttbl->save();
+        }
+        
         return redirect()->back();
     }
 
@@ -2283,7 +2349,10 @@ class adminController extends Controller
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
-        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
+        ->where('transaction_tbl.transactionStatus', '!=', 3)
+        ->where('reservation_tbl.reservationStatus', '=', 2)
         ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
     }
