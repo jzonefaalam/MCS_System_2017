@@ -39,9 +39,9 @@
                       <th width="150px">Image</th>
                       <th width="180px">Name</th>
                       <th width="200px">Description</th>
-                      <th width="200px">Fee</th>
-                      <th width="80px">Type</th>
-                      <th width="150px">Actions</th>
+                      <th width="80px">Fee</th>
+                      <th width="150px">Type</th>
+                      <th width="200px">Actions</th>
                     </tr>
                     </thead>
                     <tbody>

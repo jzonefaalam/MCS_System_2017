@@ -50,7 +50,7 @@
                   <td>{{ $packageData->packageName }}</td>
                   <td>{{ $packageData->packageDescription }}</td>
                   <td>
-                    <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#viewInclusionsModal" onclick="getPackageInclusion(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> View Inclusions</a>
+                    <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewInclusionsModal" onclick="getPackageInclusion(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> View Inclusions</a>
                   </td>
                   <td>{{ $packageData->packageCost }}</td>
                   <td width="180px">
@@ -259,7 +259,7 @@
 
                 <div class="form-group" style="display: none;">
                 <label class="col-sm-4 control-label">Package ID</label>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                 <div class = "input-group">
                 <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                 <input type="text" class="form-control" name="editPackageID" id="editPackageID" " readonly="">
@@ -269,7 +269,7 @@
 
                 <div class="form-group">
                 <label class="col-sm-4 control-label">Package Name</label>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                 <div class = "input-group">
                 <span class="input-group-addon"><i class="fa fa-briefcase" aria-hidden="true"></i></span>
                 <input type="text" class="form-control" name="editPackageName" id="editPackageName" placeholder="Package Name" data-error="This field is required">
@@ -281,7 +281,7 @@
 
                 <div class="form-group has-feedback">
                 <label class="col-sm-4 control-label"> Description</label>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                 <div class = "input-group">
                 <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
                 <textarea type="text" class="form-control" name="editPackageDescription" id="editPackageDescription" placeholder="Package Description"></textarea>
@@ -291,7 +291,7 @@
 
                 <div class="form-group ">
                 <label class="col-sm-4 control-label"> Cost</label>
-                <div class="col-sm-5">
+                <div class="col-sm-6">
                 <div class = "input-group">
                 <span class="input-group-addon"><i class="fa fa-rouble" aria-hidden="true"></i></span>
                 <input type="text" class="form-control" name="editPackageCost" id="editPackageCost" placeholder="Package Cost (per head)">

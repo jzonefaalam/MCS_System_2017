@@ -178,7 +178,7 @@
 
                       <div class="form-group" style="display:none;">
                       <label class="col-sm-4 control-label">Location ID</label>
-                      <div class="col-sm-5">
+                      <div class="col-sm-6">
                       <div class = "input-group">
                       <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
                       <input type="text" class="form-control" name="editLocationID" id="editLocationID" readonly="">
@@ -188,7 +188,7 @@
 
                       <div class="form-group">
                       <label class="col-sm-4 control-label">Location Name</label>
-                      <div class="col-sm-5">
+                      <div class="col-sm-6">
                       <div class = "input-group">
                       <span class="input-group-addon"><i class="fa fa-map-signs" aria-hidden="true"></i></span>
                       <input type="text" class="form-control" name="editLocationName" id="editLocationName" placeholder="Location Name" data-error="This field is required">
@@ -199,7 +199,7 @@
 
                       <div class="form-group has-feedback">
                       <label class="col-sm-4 control-label"> Address</label>
-                      <div class="col-sm-5">
+                      <div class="col-sm-6">
                       <div class = "input-group">
                       <span class="input-group-addon"><i class="fa fa-map-o" aria-hidden="true"></i></span>
                       <textarea type="text" class="form-control" name="editLocationAddress" id="editLocationAddress" placeholder="Location Address"></textarea>
@@ -209,7 +209,7 @@
 
                       <div class="form-group has-feedback">
                       <label class="col-sm-4 control-label"> Description</label>
-                      <div class="col-sm-5">
+                      <div class="col-sm-6">
                       <div class = "input-group">
                       <span class="input-group-addon"><i class="fa fa-quote-right" aria-hidden="true"></i></span>
                       <textarea type="text" class="form-control" name="editLocationDesc" id="editLocationDesc" placeholder="location Description"></textarea>
@@ -219,7 +219,7 @@
 
                       <div class="form-group ">
                       <label class="col-sm-4 control-label">Contact Person</label>
-                      <div class="col-sm-5">
+                      <div class="col-sm-6">
                       <div class = "input-group">
                       <span class="input-group-addon"><i class="fa fa-user" aria-hidden="true"></i></span>
                       <input type="text" class="form-control" name="editLocationContactPerson" id="editLocationContactPerson" placeholder="Location Price" >
@@ -229,7 +229,7 @@
 
                       <div class="form-group ">
                       <label class="col-sm-4 control-label">Contact Number</label>
-                      <div class="col-sm-5">
+                      <div class="col-sm-6">
                       <div class = "input-group">
                       <span class="input-group-addon"><i class="fa fa-phone" aria-hidden="true"></i></span>
                       <input type="text" class="form-control" name="editLocationContactNumber" id="editLocationContactNumber" placeholder="Location Price">
@@ -239,7 +239,7 @@
 
                       <div class="form-group ">
                       <label class="col-sm-4 control-label"> Capacity</label>
-                      <div class="col-sm-5">
+                      <div class="col-sm-6">
                       <div class = "input-group">
                       <span class="input-group-addon"><i class="fa fa-users" aria-hidden="true"></i></span>
                       <input type="text" class="form-control" name="editLocationCapacity" id="editLocationCapacity" placeholder="Location Capacity">

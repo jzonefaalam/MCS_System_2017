@@ -62,7 +62,7 @@
                 <form role="form" method="POST" action="DeleteServiceTypePage" class="form-horizontal">
                 <div class="modal fade" id="deleteServiceTypeModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                         <div class="modal-body">
                           <div class="form-group" style="display:none;">
                             <label class="col-sm-4 control-label">Delete Service Type</label>
@@ -72,8 +72,8 @@
                             </div>
                           </div>
                           {!! csrf_field() !!}
-                          <div>
-                            <h5> Are you sure you want to delete this item? </h5>
+                          <div align="center">
+                            <h4> Are you sure you want to delete this item? </h4>
                           </div>
 
                           <div style="text-align: center;">

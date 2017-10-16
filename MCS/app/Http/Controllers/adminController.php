@@ -1704,6 +1704,11 @@ class adminController extends Controller
             $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
             $equipment->equipmentImage = $equipmentImage;
             $equipment->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Equipment updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -1728,10 +1733,18 @@ class adminController extends Controller
             $equipment->equipmentRatePerHour = Input::get('editEquipmentRatePerHour');
             $equipment->equipmentImage = $equipmentImage;
             $equipment->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Equipment updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
 
         } else {
-            alert('File Not Uploaded!');
+            Session::flash('title', 'Error!');
+            Session::flash('message', 'File not updated.');
+            Session::flash('type', 'error');
+
             return \Redirect::back();
         }
         }
@@ -1765,16 +1778,14 @@ class adminController extends Controller
 
     public function addEquipmentType(Request $request){
 
-
         $equipmentType = new equipmenttype_tbl;
-
         $equipmentType->equipmentTypeName = Input::get('addEquipmentTypeName');
         $equipmentType->equipmentTypeStatus = 1;
         $equipmentType->equipmentTypeImage = "No Image";
         $equipmentType->save();
 
         Session::flash('title', 'Saved!');
-        Session::flash('message', 'Equipment added succesfully.');
+        Session::flash('message', 'Equipment type added succesfully.');
         Session::flash('type', 'success');
 
         return redirect()->back();
@@ -1795,7 +1806,7 @@ class adminController extends Controller
         $equipmentType->save();
 
         Session::flash('title', 'Deleted!');
-        Session::flash('message', 'Equipment removed succesfully.');
+        Session::flash('message', 'Equipment type removed succesfully.');
         Session::flash('type', 'success');
 
         return redirect()->back();
@@ -1808,7 +1819,7 @@ class adminController extends Controller
         $equipmentType->save();
 
         Session::flash('title', 'Updated!');
-        Session::flash('message', 'Equipment updated succesfully.');
+        Session::flash('message', 'Equipment type updated succesfully.');
         Session::flash('type', 'success');
 
         return redirect()->back();
