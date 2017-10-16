@@ -15,7 +15,7 @@
     <section class="content">
     <div>
       	<div class="col-md-4">
-	        <div class="box box-primary">
+	        <div class="box box-danger">
 	          	<!-- box header -->
 	          	<div class="box-header with-border">
 	            	<div class="row">
@@ -79,7 +79,7 @@
 		<div class="cancel"  style="display: none">
 		<div class="tablee"  style="display: none">
 			<div class="col-md-8">
-				<div class="box box-primary">
+				<div class="box box-danger">
 				    <div class="box-header with-border">
 			            <i class="fa fa-bar-chart-o"></i>
 
@@ -118,7 +118,7 @@
 		<div class="cancel"  style="display: none">
 		<div class="lists"  style="display: none">
 			<div class="col-md-8">
-				<div class="box box-primary">
+				<div class="box box-danger">
 				    <div class="box-header with-border">
 			            <i class="fa fa-bar-chart-o"></i>
 
@@ -151,7 +151,7 @@
 		<div class="lost"  style="display: none">
 		<div class="tablee"  style="display: none">
 			<div class="col-md-8">
-				<div class="box box-primary">
+				<div class="box box-danger">
 				    <div class="box-header with-border">
 			            <i class="fa fa-bar-chart-o"></i>
 
@@ -194,7 +194,7 @@
 		<div class="assign"  style="display: none">
 		<div class="tablee"  style="display: none">
 			<div class="col-md-8">
-				<div class="box box-primary">
+				<div class="box box-danger">
 				    <div class="box-header with-border">
 			            <i class="fa fa-bar-chart-o"></i>
 
