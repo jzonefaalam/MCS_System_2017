@@ -14,7 +14,7 @@
       </section>
       <!-- Main content -->
       <section class="content">
-        <div class="box box-primary">
+        <div class="box box-danger">
           <!-- box header -->
           <div class="box-header with-border">
             <div class="row">

@@ -53,7 +53,7 @@
   <![endif]-->
 
 </head>
-<body class="hold-transition skin-black sidebar-mini">
+<body class="hold-transition skin-red-light sidebar-mini">
 <div class="wrapper">
 
   
@@ -66,7 +66,7 @@
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
-        <a style="text-align:center;" class="pull-right" href="/Logout">  Logout</a>
+        <a style="display:none; text-align:center;" class="pull-right" href="/Logout">Logout</a>
     </nav>
   </header>
       <!-- Left side column. contains the logo and sidebar -->
@@ -78,7 +78,7 @@
             
             <li class="active">
               <a href="DashboardPage">
-                <i class="fa fa-home"></i> <span>Dashboard</span>
+                <i class="fa fa-home"></i> <span>Home</span>
               </a>
             </li>
 
@@ -159,13 +159,13 @@
             </li>
 
             <li class="treeview">
-              <a href="/#">
+              <a href="/PurchaseOrderPage">
                 <i class="fa fa-shopping-cart"></i><span>Purchase Order</span>
               </a>
-              <ul class="treeview-menu">
+              <!-- <ul class="treeview-menu">
                 <li><a href="/PurchaseOrderPage"><i class="fa fa-square-o"></i> List</a></li>
                 <li><a href="/PurchaseOrderTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
-              </ul>
+              </ul> -->
             </li>
 
             <li class="treeview">
@@ -238,6 +238,9 @@
 <script src="{{ asset('LTE/plugins/slimScroll/jquery.slimscroll.min.js') }}"></script>
 <!-- FastClick -->
 <script src="{{ asset('LTE/plugins/fastclick/fastclick.js') }}"></script>
+
+<!-- CHart-->
+<script src="{{ asset('LTE/plugins/chartjs/Chart.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('LTE/dist/js/app.min.js') }}"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->

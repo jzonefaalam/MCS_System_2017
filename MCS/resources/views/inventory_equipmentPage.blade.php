@@ -45,7 +45,6 @@
                       <th style="display:none;">Equipment Type ID</th>
                       <th style="display:none;">Equipment ID</th>
                       <th style="display:none;">Equipment Image</th>
-                      <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -61,8 +60,6 @@
                         <td style="display:none">{{ $equipmentData->equipmentImage }}</td>
                         <td>{{ $equipmentData->qtyIn}}</td>
                         <td>{{ $equipmentData->qtyOut}}</td>
-                        <td>Status</td>
-                        
                        </tr>
                       @endforeach
                       </tbody>

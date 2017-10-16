@@ -13,7 +13,7 @@
       </section>
       <!-- Main content -->
       <section class="content">
-        <div class="box box-primary">
+        <div class="box box-danger">
           <!-- box header -->
           <div class="box-header with-border">
             <div class="row">
@@ -39,7 +39,6 @@
                   <th>Contact Person</th>
                   <th>Contact Number</th>
                   <th>Location Capacity</th>
-                  <th>Location Fee</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -53,7 +52,6 @@
                   <td width="120px"> {{ $locationData->locationContactPerson }} </td>
                   <td width="100px"> {{ $locationData->locationContactNumber }} </td>
                   <td width="80px"> {{ $locationData->locationCapacity }} </td>
-                  <td width="80px"> {{ $locationData->locationFee }} </td>
                   <td width="250px">
         						<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#editLocationModal" onclick="getLocation(this.name);" name="{{$locationData->locationID}}"><i class="fa fa-wrench fa-fw"></i> Update</a>
 					          <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#deleteLocationModal" onclick="getLocation(this.name);" name="{{$locationData->locationID}}"><i class="fa fa-trash fa-fw"></i> Delete</a>
@@ -356,16 +354,6 @@
                               </div>
                               </div>
                             </div>
-                            <div class="form-group ">
-                              <label class="col-sm-4 control-label"> Fee</label>
-                              <div class="col-sm-6">
-                        <div class="input-group">
-                         <div class="input-group-addon">
-                         <i class="fa fa-rouble" aria-hidden="true"></i></div>
-                                <input type="text" class="form-control" name="addLocationFee" id="addLocationFee" placeholder="Location Fee">
-                              </div>
-                            </div>
-                            </div>
 
                             <div class="form-group has-feedback">
                               <label class="col-sm-4 control-label">Location Image</label>
@@ -401,7 +389,6 @@
 <script>
   $(function () {
     $(document).on("hidden.bs.modal", "#addLocationModal", function () {
-      $("#addLocationFee").val("");
       $("#addLocationImage").val("");
       $("#addLocationCapacity").val("");
       $("#addLocationDescription").val("");
@@ -491,7 +478,6 @@ yourImg.style.width = '150px';
                 $('#deleteLocationID').val(data['ss'][0]['locationID']);
                 $('#editLocationName').val(data['ss'][0]['locationName']);
                 $('#editLocationDesc').val(data['ss'][0]['locationDescription']);
-                $('#editLocationPrice').val(data['ss'][0]['locationFee']);
                 $('#editLocationAddress').val(data['ss'][0]['locationAddress']);
                 $('#editLocationCapacity').val(data['ss'][0]['locationCapacity']);
                 $('#editLocationContactPerson').val(data['ss'][0]['locationContactPerson']);
@@ -697,19 +683,6 @@ yourImg.style.width = '150px';
                           regexp: {
                                 regexp: /^[1-9(0)]+$/,
                                 message: 'Invalid input.'
-                        },
-                    }
-                },
-
-                addLocationFee: {
-                    validators: {
-                        stringLength: {
-                        max: 9,
-                        message:'Price limit reached.'
-                    },
-                          regexp: {
-                              regexp: /^\d+(?:\.\d{1,2})?$/,
-                              message: 'Invalid Input.'
                         },
                     }
                 },
