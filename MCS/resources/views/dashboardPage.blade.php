@@ -446,7 +446,7 @@
                         <div>
                           <label>Package Name</label> <br>
                           <div> 
-                            <select class="form-control" name="editPackage" id="editPackage">
+                            <select class="form-control" name="editPackage" id="editPackage" onchange="dishInclusionChange(this.id)">
                               <option disabled>Select Package</option>
                               @foreach($packageData as $packageData)
                               <option value="{{ $packageData->packageID }}">{{ $packageData->packageName }} </option>
@@ -1247,8 +1247,23 @@
             sendReservationID: reservationEventID
           },
           success: function(data){
+            // for (var i = 0; i < data['ss'].length; i++) {
+            //   document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishTypeName']+'</h6>';
+            // }
             for (var i = 0; i < data['ss'].length; i++) {
-              document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishName']+'</h6>';
+              document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishTypeName']+': </h6> <select id="dishInclusion'+i+'" class="form-control"><option disabled selected value="">Choose Dish</option>';
+              for (var j = 0; j < data['ww'].length; j++) {
+                if(data['ss'][i]['dishTypeID'] == data['ww'][j]['dishTypeID']){
+                  $('#dishInclusion'+i+'').append($('<option>', {
+                      value: data['ww'][j]["dishID"],
+                      text: data['ww'][j]['dishName'],
+                  }));
+                }
+              }
+            }
+            for (var i = 0; i < data['ss'].length; i++) {
+              $('#dishInclusion'+i+' option[value='+data['ss'][i]['dishID']+']').prop('selected', true);
+              //document.getElementById('dishInclusion').innerHTML += '<h6>'+data['ss'][i]['dishName']+'</h6>';
             }
             for (var i = 0; i < data['dd'].length; i++) {
               document.getElementById('serviceInclusion').innerHTML += '<h6>'+data['dd'][i]['serviceName']+'</h6>';
@@ -1425,7 +1440,51 @@
       });
     });
   });
-
+  // Package Update Change
+  function dishInclusionChange(id){
+    var selectedOption = document.getElementById(id);
+    var dish = selectedOption.options[selectedOption.selectedIndex].value;
+    alert(dish);
+    $.ajax({
+        type: "GET",
+        url:  "/InclusionChange",
+        data: 
+        {
+            packageID: dish
+        },
+        success: function(data){
+          $('#dishInclusion').empty();
+          $('#serviceInclusion').empty();
+          $('#equipmentInclusion').empty();
+          $('#employeeInclusion').empty();
+            for (var i = 0; i < data['qq'].length; i++) {
+              document.getElementById('dishInclusion').innerHTML += '<h6>'+data['qq'][i]['dishTypeName']+': </h6> <select id="dishInclusion'+i+'" class="form-control"><option disabled selected value="">Choose Dish</option>';
+              for (var j = 0; j < data['ww'].length; j++) {
+                if(data['qq'][i]['dishTypeID'] == data['ww'][j]['dishTypeID']){
+                  $('#dishInclusion'+i+'').append($('<option>', {
+                      value: data['ww'][j]["dishID"],
+                      text: data['ww'][j]['dishName'],
+                  }));
+                }
+              }
+            }
+            for (var i = 0; i < data['dd'].length; i++) {
+              document.getElementById('serviceInclusion').innerHTML += '<h6>'+data['dd'][i]['serviceName']+'</h6>';
+            }
+            for (var i = 0; i < data['ff'].length; i++) {
+              document.getElementById('equipmentInclusion').innerHTML += '<h6>'+data['ff'][i]['equipmentName']+'</h6>';
+            }
+            for (var i = 0; i < data['gg'].length; i++) {
+              document.getElementById('employeeInclusion').innerHTML += '<h6>'+data['gg'][i]['employeeTypeName']+'</h6>';
+            }
+        },
+        error: function(xhr)
+        {
+            alert("mali");
+            alert($.parseJSON(xhr.responseText)['error']['message']);
+        }  
+    });
+  }
   // Event Table Function
   $(document).ready(function() {
     var table = $('#eventTable').DataTable();

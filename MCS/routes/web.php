@@ -130,6 +130,7 @@ Route::post("/TransactionSavePayment1", array("uses"=>"adminController@transacti
 Route::post("/AssignEquipment", array("uses"=>"adminController@assignEquipment"));
 Route::post("/AssessEquipment", array("uses"=>"adminController@assessEquipment"));
 Route::get('/RetrieveAssignedEquipment', 'adminController@retrieveAssignedEquipment');
+Route::get('/InclusionChange', 'adminController@inclusionChange');
 
 //Reservation Page
 Route::get('/ReservationPage', 'adminController@reservationPage');

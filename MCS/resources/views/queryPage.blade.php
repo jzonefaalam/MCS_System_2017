@@ -34,6 +34,7 @@
 		          			<option value="1">Cancelled Event</option>
 		          			<option value="2">Lost Items</option>
 		          			<option value="3">Assigned Equipment</option>
+		          			<option value="4">Return Customer</option>
 		          		</select>
 		          	</div>
 
@@ -93,6 +94,7 @@
 						      <tr>
 						        <th>Client Name</th>
 						        <th>Contact Number</th>
+						        <th>Email Address</th>
 						        <th>Event Name</th>
 						        <th>Date of Event</th>
 						      </tr>
@@ -102,6 +104,7 @@
 				            <tr>
 				               	<td>{{ $cd->fullName }}</td>
 				                <td>{{ $cd->cellNum }}</td>
+				                <td>{{ $cd->emailAddress }}</td>
 				                <td>{{ $cd->eventName }}</td>
 				                <td>{{ $cd->eventDate}}</td>             
 				          	</tr>
@@ -165,6 +168,7 @@
 						      <tr>
 						        <th>Client Name</th>
 						        <th>Contact Number</th>
+						        <th>Email Address</th>
 						        <th>Item Name</th>
 						        <th>Item Price</th>
 						        <th>Item Quantity</th>
@@ -176,9 +180,10 @@
 				            <tr>
 				               	<td>{{ $ld->fullName }}</td>
 				                <td>{{ $ld->cellNum }}</td>
-				                <td>none</td>
-				                <td>none</td>
-				                <td>none</td>
+				                <td>{{ $ld->emailAddress }}</td>
+				                <td>{{ $ld->equipmentName }}</td>
+				                <td>{{ $ld->equipmentRatePerHour }}</td>
+				                <td>{{ $ld->assignEquipmentQty }}-{{ $ld->assignReturnQty }}</td>
 				                <td>{{ $ld->eventDate}}</td>             
 				          	</tr>
 				            @endforeach							      
@@ -190,6 +195,43 @@
 			</div>
 		</div>
 		</div>
+		<!-- LOST LIST -->
+		<div class="cancel"  style="display: none">
+		<div class="lists"  style="display: none">
+			<div class="col-md-8">
+				<div class="box box-danger">
+				    <div class="box-header with-border">
+			            <i class="fa fa-bar-chart-o"></i>
+
+			            <h3 class="box-title">Lost Items</h3>
+					</div>
+					<div class="box-body">
+		  				<div class="col-md-12">          
+						  <table id="cancellationTable" class="table table-bordered dataTable">
+						    <thead>
+						      <tr>
+						      </tr>
+						    </thead>
+						    <tbody>
+						    @foreach ($lost as $ld)
+				            <tr>
+				               	<td>{{ $ld->fullName }}</td>
+				                <td>{{ $ld->cellNum }}</td>
+				                <td>{{ $ld->emailAddress }}</td>
+				                <td>{{ $ld->equipmentName }}</td>
+				                <td>{{ $ld->equipmentRatePerHour }}</td>
+				                <td>{{ $ld->assignEquipmentQty }}-{{ $ld->assignReturnQty }}</td>
+				                <td>{{ $ld->eventDate}}</td>             
+				          	</tr>
+				            @endforeach						      
+						    </tbody>
+						  </table>
+						</div>
+					</div>					
+				</div>
+			</div>
+        </div>
+        </div>
 		<!-- ASSIGNED TABLE -->
 		<div class="assign"  style="display: none">
 		<div class="tablee"  style="display: none">
@@ -218,8 +260,8 @@
 				            <tr>
 				               	<td>{{ $ad->fullName }}</td>
 				                <td>{{ $ad->cellNum }}</td>
-				                <td>none</td>
-				                <td>none</td>
+				                <td>{{ $ad->equipmentName }}</td>
+				                <td>{{ $ad->assignEquipmentQty }}</td>
 				                <td>{{ $ad->eventDate}}</td>             
 				          	</tr>
 				            @endforeach							      
@@ -232,6 +274,49 @@
 		</div>
     </div>
     </div>
+    <!-- RETURN TABLE -->
+		<div class="return"  style="display: none">
+		<div class="tablee"  style="display: none">
+			<div class="col-md-8">
+				<div class="box box-danger">
+				    <div class="box-header with-border">
+			            <i class="fa fa-bar-chart-o"></i>
+
+			            <h3 class="box-title">Return Customer</h3>
+					</div>
+
+					<div class="box-body">
+	    				<div class="col-md-12">          
+						  <table id="returnTable" class="table table-bordered dataTable">
+						    <thead>
+						      <tr>
+						        <th>Client Name</th>
+						        <th>Contact Number</th>
+						        <th>Email Address</th>
+						        <th>Event Cost</th>
+						        <th>Event Name</th>
+						        <th>Date of Event</th>
+						      </tr>
+						    </thead>
+						    <tbody>
+						    @foreach ($return as $rd)
+				            <tr>
+				               	<td>{{ $rd->fullName }}</td>
+				                <td>{{ $rd->cellNum }}</td>
+				                <td>{{ $rd->emailAddress }}</td>
+				                <td>{{ $rd->totalFee }}</td>
+				                <td>{{ $rd->eventName }}</td>
+				                <td>{{ $rd->eventDate}}</td>             
+				          	</tr>
+				            @endforeach							      
+						    </tbody>
+						  </table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</div>
 
     </section>
     <!-- /.content -->
@@ -322,14 +407,23 @@
 			$('.cancel').css('display', 'initial');
 			$('.lost').css('display', 'none');
 			$('.assign').css('display', 'none');
+			$('.return').css('display', 'none');
 		}
 		else if(ln==2){
 			$('.lost').css('display', 'initial');
 			$('.cancel').css('display', 'none');
 			$('.assign').css('display', 'none');
+			$('.return').css('display', 'none');
 		}
 		else if(ln==3){
 			$('.assign').css('display', 'inline');
+			$('.lost').css('display', 'none');
+			$('.cancel').css('display', 'none');
+			$('.return').css('display', 'none');
+		}
+		else if(ln==4){
+			$('.return').css('display', 'initial');
+			$('.assign').css('display', 'none');
 			$('.lost').css('display', 'none');
 			$('.cancel').css('display', 'none');
 		}
