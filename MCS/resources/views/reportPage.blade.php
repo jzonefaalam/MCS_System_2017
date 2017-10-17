@@ -850,12 +850,16 @@
           frameDoc.document.write('<td>'+data['paymentData'][i]['eventName']+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['paid']+'</td>');
           var balanceAmt = 0;
-          balanceAmt = data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'];
+          var totalFee = 0;
+          var totalPaid = 0;
+          totalFee = data['paymentData'][i]['totalFee'];
+          totalPaid = data['paymentData'][i]['paid'];
+          balanceAmt = totalFee - totalPaid;
           frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
-          totalAmount = totalAmount + data['paymentData'][i]['totalFee'];
-          totalPaid = totalPaid + data['paymentData'][i]['paid'];
+          totalAmount = totalAmount + totalFee;
+          totalPaid = totalPaid + totalPaid;
           totalBalance = totalBalance + balanceAmt;
         }
         frameDoc.document.write('<tr style ="text-align:center">');
@@ -971,12 +975,16 @@
           frameDoc.document.write('<td>'+data['paymentData'][i]['eventName']+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['paid']+'</td>');
           var balanceAmt = 0;
-          balanceAmt = data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'];
+          var totalFee = 0;
+          var totalPaid = 0;
+          totalFee = data['paymentData'][i]['totalFee'];
+          totalPaid = data['paymentData'][i]['paid'];
+          balanceAmt = totalFee - totalPaid;
           frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
-          totalAmount = totalAmount + data['paymentData'][i]['totalFee'];
-          totalPaid = totalPaid + data['paymentData'][i]['paid'];
+          totalAmount = totalAmount + totalFee;
+          totalPaid = totalPaid + totalPaid;
           totalBalance = totalBalance + balanceAmt;
         }
         frameDoc.document.write('<tr style ="text-align:center">');
@@ -1092,12 +1100,16 @@
           frameDoc.document.write('<td>'+data['paymentData'][i]['eventName']+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['paid']+'</td>');
           var balanceAmt = 0;
-          balanceAmt = data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'];
+          var totalFee = 0;
+          var totalPaid = 0;
+          totalFee = data['paymentData'][i]['totalFee'];
+          totalPaid = data['paymentData'][i]['paid'];
+          balanceAmt = totalFee - totalPaid;
           frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
-          totalAmount = totalAmount + data['paymentData'][i]['totalFee'];
-          totalPaid = totalPaid + data['paymentData'][i]['paid'];
+          totalAmount = totalAmount + totalFee;
+          totalPaid = totalPaid + totalPaid;
           totalBalance = totalBalance + balanceAmt;
         }
         frameDoc.document.write('<tr style ="text-align:center">');
