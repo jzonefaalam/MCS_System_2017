@@ -17,21 +17,43 @@
           <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>Reports List</h2>
+                <h2>Reports Lsasist</h2>
               </div>
             </div>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printMonthlyTransactions();">
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <h4> Transactions </h4>
+                <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printMonthlyTransactions();">
                   <i class="fa fa-print" ></i>  Monthly Transactions
-            </a>
-            <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printYearlyTransactions();">
-                  <i class="fa fa-print" ></i> Yearly Transactions
-            </a>
-            <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printAllTransactions();">
-                  <i class="fa fa-print" ></i>  All Transactions
-            </a>
+                </a>
+                <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printYearlyTransactions();">
+                      <i class="fa fa-print" ></i> Yearly Transactions
+                </a>
+                <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printAllTransactions();">
+                      <i class="fa fa-print" ></i>  All Transactions
+                </a>
+              </div>
+              <div class="col-md-6">
+                <h4> Purchase Order Report </h4>
+                <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printMonthlyTransactions();">
+                  <i class="fa fa-print" ></i>  Monthly Transactions
+                </a>
+                <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printYearlyTransactions();">
+                      <i class="fa fa-print" ></i> Yearly Transactions
+                </a>
+                <a class="btn btn-app" style="width: 120px; height: 80px;" onclick="printAllTransactions();">
+                      <i class="fa fa-print" ></i>  All Transactions
+                </a>
+              </div>
+
+            </div>
+
+            
 
           </div>
           <!-- /.box-body -->
@@ -97,6 +119,7 @@
       type: "GET",
       url:  "/RetrieveMonthlyTransaction",
       success: function(data){
+        var totalAmount = 0;
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -124,13 +147,23 @@
           frameDoc.document.write('<tr style ="text-align:center">');
           frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
           frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</br>Additional 2 courses</td>');
-          frameDoc.document.write('<td>' +packagePrice+ '</br>Additional Price</br>' +data['transactionData'][i]['totalFee']+ '</td>');
+          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
+          frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
           frameDoc.document.write('</tr>');
+          var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
+          totalAmount = totalAmount + transactionFee;
         }
+        // alert(totalAmount);
+        frameDoc.document.write('<tr style ="text-align:center">');
+        frameDoc.document.write('<td>  </td>');
+        frameDoc.document.write('<td>  </td>');
+        frameDoc.document.write('<td>TOTAL</td>');
+        frameDoc.document.write('<td>' +totalAmount +'</td>');
+        frameDoc.document.write('</tr>');
         frameDoc.document.write('</table></br>')
         frameDoc.document.write('</html>')
         frameDoc.document.close();
+
         setTimeout(function () {
           window.frames["frame1"].focus();
           window.frames["frame1"].print();
@@ -200,6 +233,7 @@
       type: "GET",
       url:  "/RetrieveYearlyTransaction",
       success: function(data){
+        var totalAmount = 0;
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -207,7 +241,7 @@
         var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
         frameDoc.document.open();
         frameDoc.document.write('<html><body> <div >');
-        frameDoc.document.write('<image src = "logo.png" align = "pullcenter" width = "130" height = "100" style ="padding-left:10px"­> ');
+        frameDoc.document.write('<image align = "pullcenter" width = "130" height = "100" style ="padding-left:10px"­> ');
         frameDoc.document.write('<p align = "Center">Margareth Catering Services </br>');
         frameDoc.document.write('B4 L5 Ph7 JP Rizal St., New San Mateo Subd., Gitnangbayan I, San Mateo, Rizal </br>');
         frameDoc.document.write('696-4528 | (+63) 928-297-2321 | (+63) 907-208-3331 </br>');
@@ -227,13 +261,23 @@
           frameDoc.document.write('<tr style ="text-align:center">');
           frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
           frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</br>Additional 2 courses</td>');
-          frameDoc.document.write('<td>' +packagePrice+ '</br>Additional Price</br>' +data['transactionData'][i]['totalFee']+ '</td>');
+          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
+          frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
           frameDoc.document.write('</tr>');
+          var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
+          totalAmount = totalAmount + transactionFee;
         }
+        // alert(totalAmount);
+        frameDoc.document.write('<tr style ="text-align:center">');
+        frameDoc.document.write('<td>  </td>');
+        frameDoc.document.write('<td>  </td>');
+        frameDoc.document.write('<td>TOTAL</td>');
+        frameDoc.document.write('<td>' +totalAmount +'</td>');
+        frameDoc.document.write('</tr>');
         frameDoc.document.write('</table></br>')
         frameDoc.document.write('</html>')
         frameDoc.document.close();
+
         setTimeout(function () {
           window.frames["frame1"].focus();
           window.frames["frame1"].print();
@@ -299,6 +343,7 @@
     }
     
     var today = dd+'/'+mm+'/'+yyyy;
+    var totalAmount = 0;
     $.ajax({
       type: "GET",
       url:  "/RetrieveAllTransaction",
@@ -330,10 +375,19 @@
           frameDoc.document.write('<tr style ="text-align:center">');
           frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
           frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</br>Additional 2 courses</td>');
-          frameDoc.document.write('<td>' +packagePrice+ '</br>Additional Price</br>' +data['transactionData'][i]['totalFee']+ '</td>');
+          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
+          frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
           frameDoc.document.write('</tr>');
+          var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
+          totalAmount = totalAmount + transactionFee;
         }
+        // alert(totalAmount);
+        frameDoc.document.write('<tr style ="text-align:center">');
+        frameDoc.document.write('<td>  </td>');
+        frameDoc.document.write('<td>  </td>');
+        frameDoc.document.write('<td>TOTAL</td>');
+        frameDoc.document.write('<td>' +totalAmount +'</td>');
+        frameDoc.document.write('</tr>');
         frameDoc.document.write('</table></br>')
         frameDoc.document.write('</html>')
         frameDoc.document.close();

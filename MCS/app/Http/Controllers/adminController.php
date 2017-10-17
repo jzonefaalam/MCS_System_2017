@@ -200,8 +200,8 @@ class adminController extends Controller
         ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
         ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*')
-        ->whereMonth('transaction_tbl.created_at', $currentMonth)
-        ->whereYear('transaction_tbl.created_at', $currentYear)
+        ->whereMonth('event_tbl.eventDate', $currentMonth)
+        ->whereYear('event_tbl.eventDate',$currentYear)
         ->get();  
         return \Response::json(['transactionData'=>$transactionData]);
     }
@@ -214,8 +214,9 @@ class adminController extends Controller
         ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
         ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*')
-        ->whereYear('transaction_tbl.created_at', $currentYear)
-        ->get();  
+        // ->where('transaction_tbl.transactionStatus', 4)
+        ->whereYear('event_tbl.eventDate',$currentYear)
+        ->get();   
         return \Response::json(['transactionData'=>$transactionData]);
     }
 
@@ -226,6 +227,7 @@ class adminController extends Controller
         ->join('customer_tbl','customer_tbl.customerID','=','event_tbl.customerID')
         ->join('package_tbl','package_tbl.packageID','=','reservation_tbl.packageID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*', 'package_tbl.*')
+        // ->where('transaction_tbl.transactionStatus', 4)
         ->get();  
         return \Response::json(['transactionData'=>$transactionData]);
     }
