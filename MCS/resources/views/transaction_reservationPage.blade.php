@@ -8,20 +8,22 @@
         <br>
         <ol class="breadcrumb">
           <li><a href="/DishPage"><i class="fa fa-wrench"></i> Maintenance</a></li>
-          <li class="active"><a href = "#"><i class="fa fa-cutlery"></i>Dish</a></li>
+          <li class="active"><a href = "#"><i class="fa fa-file-text-o"></i>Reservation</a></li>
         </ol>
       </section>
       <!-- Main content -->
       <section class="content">
 
-        <div class="box box-primary">
+        <div class="box box-danger">
           <!-- box header -->
           <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
                 <h2>Reservation List</h2>
-              </div>
+              </div> <br>
+
               <div class="col-md-12">
+                <h5><i><b>Note:</b> Double click the row to view transaction details.</i></h5>
                 <table id="reservationListTable" class="table table-bordered table-striped dataTable">
                 <thead>
                       <tr>
@@ -105,70 +107,109 @@
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               <h4 class="modal-title" id="myModalLabel">Update Reservation</h4>
             </div>
-            <div class="box-body">
-              <div class="row">
-                <div class="col-sm-5 col-sm-offset-2">
-                  <h4><strong>Customer Details</strong></h4>
-                  <label>Customer Name</label>
-                  <div>
-                    <input type="text"  name="editCustomerName" id="editCustomerName" column="20" required >
-                    <input type="text"  name="reservationNumber" id="reservationNumber" style="display: none;">
-                  </div>
-                  <label>Home Address</label> <br>
-                  <div>
-                    <input type="text" " name="editHomeAddress" id="editHomeAddress" required >
-                  </div>
-                  <label>Email Address</label> <br>
-                  <div>
-                    <input type="text"  name="editEmailAddress" id="editEmailAddress" required >
-                  </div>
-                  <label>Contact Number</label> <br>
-                  <div>
-                    <input type="text"  name="editContactNumber" id="editContactNumber" required >
-                  </div>
-                  <label>Date of Birth</label> <br>
-                  <div>
-                    <input type="text" name="editDateOfBirth" id="editDateOfBirth" required >
+            <div class="row" style="width: 97%; padding-left: 6%">
+              <div class="box box-danger">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="form-horizontal">
+
+                      <div class="col-sm-6" style="padding-left: 70px; padding-right: 0px">
+                        <h4 align="center"><strong><i>Customer Details</i></strong></h4>
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Customer Name</label>
+                          <div>
+                            <input type="text" class="form-control" id="editCustomerName" name="editCustomerName" column="20" style="width: 200px" required>
+                            <input type="text"  name="reservationNumber" id="reservationNumber" style="display: none;">
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Home Address</label>
+                          <div>
+                            <input type="text" class="form-control" id="editHomeAddress" name="editHomeAddress" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Email Address</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEmailAddress" name="editEmailAddress" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Contact Number</label>
+                          <div>
+                            <input type="text" class="form-control" id="editContactNumber" name="editContactNumber" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Date of Birth</label>
+                          <div>
+                            <input type="text" class="form-control" id="editDateOfBirth" name="editDateOfBirth" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6" style="margin-right: 0px">
+                        <h4 align="center"><strong><i>Event Details</i></strong></h4>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Event Name</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventName" name="editEventName" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Event Date</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventDate" name="editEventDate" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Event Location</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventLocation" name="editEventLocation" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Number of Guests</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventGuestCount" name="editEventGuestCount" column="20" style="width: 200px" required>
+                          </div>
+                        </div> 
+
+                        <div class="form-inline" align="center">
+                          <div class="form-group">
+                            <label class="control-label col-sm-4">Start</label>
+                            <input type="text" class="form-control" id="editEventStartTime" name="editEventStartTime" column="20" style="width: 80px" required>
+                          </div> &nbsp &nbsp &nbsp
+
+                          <div class="form-group">
+                            <label class="control-label col-sm-4">End</label>
+                            <input type="text" class="form-control" id="editEventEndTime" name="editEventEndTime" column="20" style="width: 80px" required>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-4">
-                  <h4><strong>Event Details</strong></h4>
-                  <label>Event Name</label> <br>
-                  <div>
-                    <input type="text"  name="editEventName" id="editEventName" column="20" required >
-                  </div>
-                  <label>Event Date</label> <br>
-                  <div>
-                    <input type="text" " name="editEventDate" id="editEventDate" required >
-                  </div>
-                  <label>Event Location</label> <br>
-                  <div>
-                    <input type="text"  name="editEventLocation" id="editEventLocation" required >
-                  </div>
-                  <label>Number of Guests</label> <br>
-                  <div>
-                    <input type="text"  name="editEventGuestCount" id="editEventGuestCount" required >
-                  </div>
-                  <label>Start Time</label> <br>
-                  <div>
-                    <input type="text" name="editEventStartTime" id="editEventStartTime" required >
-                  </div>
-                  <label>End Time</label> <br>
-                  <div>
-                    <input type="text"  name="editEventEndTime" id="editEventEndTime" required >
-                  </div>
-                </div>
-              </div> <br> <br>
+              </div>
               <!-- End Row -->
                     
               <div class="box-body">
                 <div class="nav-tabs-custom">
                   <ul class="nav nav-tabs">
-                    <li ><a href="#tab_2" data-toggle="tab">Package </a></li>
-                    <li ><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
-                    <li ><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
-                    <li ><a href="#tab_5" data-toggle="tab">Additional Service</a></li>
-                    <li ><a href="#tab_6" data-toggle="tab">Additional Staff </a></li>
+                    <li style="width: 18%; text-align: center; font-size: 16px"><a href="#tab_2" data-toggle="tab">Package </a></li>
+                    <li style="width: 19%; text-align: center; font-size: 16px"><a href="#tab_3" data-toggle="tab">Additional Food </a></li>
+                    <li style="width: 23%; text-align: center; font-size: 16px"><a href="#tab_4" data-toggle="tab">Additional Equipment </a></li>
+                    <li style="width: 19%; text-align: center; font-size: 16px"><a href="#tab_5" data-toggle="tab">Additional Service</a></li>
+                    <li style="width: 18%; text-align: center; font-size: 16px"><a href="#tab_6" data-toggle="tab">Additional Staff </a></li>
                   </ul>
                   <div class="tab-content">
 
@@ -292,7 +333,7 @@
                     </div>
                   <!-- nav-tabs-custom -->
             </div>
-            <div id="confirmationDiv" class="modal-footer">
+            <div id="confirmationDiv" class="modal-footer" >
               <a  style="display:none;" data-target="#sendApproveEmailModal" data-toggle="modal" onclick="getReservation(document.getElementById('reservationNumber').value);" class="btn btn-app" type="submit">
                   <i class="fa fa-check" ></i> APPROVE
               </a>
@@ -313,7 +354,7 @@
             <form role="form" method="POST" action="ApproveReservationEmail" class="form-horizontal">
             <div class="modal fade" id="sendApproveEmailModal">
               <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="width: 250px">
                    <div class="modal-body">
                       <div class="form-group" style="display:none;">
                         <label class="col-sm-4 control-label">Reservation ID</label>
@@ -340,12 +381,12 @@
                         </div>
                       </div>
                       {!! csrf_field() !!}
-                      <div>
-                        <h5> Are you sure you want to approve this reservation? </h5>
+                      <div align="center">
+                        <h4> Are you sure you want to approve this reservation? </h4>
                       </div>
                       <div style="text-align: center;">
-                        <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                        <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                        <button type="submit" class="btn btn-success btn-sm">Confirm</button>
+                        <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                       </div>
                     </div>
                 </div>
@@ -358,7 +399,7 @@
                       <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
                       <div class="modal fade" id="sendDenyEmailModal">
                         <div class="modal-dialog">
-                          <div class="modal-content">
+                          <div class="modal-content" style="width: 250px">
                              <div class="modal-body">
                                 <div class="form-group" style="display:none;">
                                   <label class="col-sm-4 control-label">Reservation ID</label>
@@ -368,12 +409,12 @@
                                   </div>
                                 </div>
                                 {!! csrf_field() !!}
-                                <div>
-                                  <h5> Are you sure you want to deny this reservation? </h5>
+                                <div align="center">
+                                  <h4> Are you sure you want to deny this reservation? </h4>
                                 </div>
                                 <div style="text-align: center;">
-                                  <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                                  <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                                  <button type="submit" class="btn btn-danger btn-sm">Confirm</button>
+                                  <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                                 </div>
                               </div>
                           </div>

@@ -13,13 +13,12 @@
       <br>
         <ol class="breadcrumb">
           <li><a><i class="fa fa-wrench"></i> Maintenance</a></li>
-          <li><a href = "/InventoryEquipmentPage"><i class="fa fa-cube"></i>Equipment</a></li>
           <li class="active"><a href = "/EquipmentTypePage"><i class="fa fa-cube"></i>Equipment Type</a></li>
         </ol>
       </section>
 
     <section class="content">
-          <div class="box">
+          <div class="box box-danger">
             <div class="box-header with-border">
               <div class="row">
                 <div class="col-md-6">

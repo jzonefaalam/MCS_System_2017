@@ -61,7 +61,7 @@
                     <span class="label label-danger">Cancelled</span>
                   <?php endif ?>
                   <?php if (($transactionData->transactionStatus)==4): ?>
-                    <span class="label label-success">Finished</span>
+                    <span class="label label-primary">Finished</span>
                   <?php endif ?>
                   <?php if (($transactionData->transactionStatus)==5): ?>
                     <span class="label label-danger">Payment Pending</span>

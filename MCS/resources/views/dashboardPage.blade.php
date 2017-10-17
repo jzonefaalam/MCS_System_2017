@@ -42,7 +42,7 @@
     <a href="../index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>MCS</b>  </span>
+      <span class="logo-lg"><b><i>Margareth's Catering</i></b>  </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -141,19 +141,19 @@
 
             <li class="treeview">
               <a href="/PurchaseOrderPage">
-                <i class="fa fa-file-text-o"></i> <span>Purchase Order</span>
+                <i class="fa fa-shopping-cart"></i><span>Purchase Order</span>
               </a>
             </li>
 
             <li class="treeview">
               <a href="/TransactionPage">
-                <i class="fa fa-line-chart"></i> <span>Transactions</span>
+                <i class="fa fa-file-text"></i> <span>Transactions</span>
               </a>  
             </li>
 
             <li class="treeview">
               <a href="/QueryPage">
-                <i class="fa fa-file-text"></i> <span>Queries</span>
+                <i class="fa fa-line-chart"></i> <span>Queries</span>
               </a>  
             </li>
 
