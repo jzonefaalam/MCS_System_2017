@@ -1266,6 +1266,33 @@ class adminController extends Controller
         }
     }
 
+    public function inclusionChange(){
+        $qq = DB::table('packageinclusion_tbl')
+        ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
+        ->where('packageinclusion_tbl.packageID', Input::get('packageID'))
+        ->get();
+
+         $dd = DB::table('packageinclusion_tbl')
+        ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
+        ->where('packageinclusion_tbl.packageID', Input::get('packageID'))
+        ->get();
+
+        $ff = DB::table('packageinclusion_tbl')
+        ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
+        ->where('packageinclusion_tbl.packageID', Input::get('packageID'))
+        ->get();
+
+        $gg = DB::table('packageinclusion_tbl')
+        ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
+        ->where('packageinclusion_tbl.packageID', Input::get('packageID'))
+        ->get();
+
+        $ww = DB::table('dish_tbl')
+        ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
+        ->get();
+         return \Response::json(['qq'=>$qq,'dd'=>$dd,'ff'=>$ff,'gg'=>$gg,'ww'=>$ww,]);
+    }
+
     public function retrievePackageData(){
         $ss = DB::table('package_tbl')
         ->select('*')
@@ -1293,15 +1320,21 @@ class adminController extends Controller
         ->get();
 
 
-        return \Response::json(['ss'=>$ss, 'dishInclusion'=>$dishInclusion, 'equipmentInclusion'=>$ff, 'staffInclusion'=>$gg, 'serviceInclusion'=>$dd]);
+        return \Response::json(['ss'=>$ss, 'dishInclusion'=>$dishInclusion, 'equipmentInclusion'=>$ff, 'staffInclusion'=>$gg, 'serviceInclusion'=>$dd,]);
     }
 
     public function retrievePackageInclusion(){
         $ss = DB::table('dishavailed_tbl')
         ->join('reservation_tbl', 'reservation_tbl.reservationID','=','dishavailed_tbl.reservationID')
         ->join('dish_tbl','dish_tbl.dishID', '=', 'dishavailed_tbl.dishID')
+        ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'dish_tbl.dishTypeID')
         ->where('dishavailed_tbl.reservationID', Input::get('sendReservationID'))
         ->get();
+
+        $ww = DB::table('dish_tbl')
+        ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
+        ->get();
+        
 
         $dd = DB::table('packageinclusion_tbl')
         ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
@@ -1353,7 +1386,7 @@ class adminController extends Controller
         ->where('employeeadditional_tbl.reservationID', Input::get('sendReservationID'))
         ->get();
 
-        return \Response::json(['ss'=>$ss, 'gg'=>$gg, 'ff'=>$ff, 'dd'=>$dd, 'additionalDish'=>$additionalDish, 'additionalEquipment'=>$additionalEquipment, 'additionalService'=>$additionalService, 'additionalEmployee'=>$additionalEmployee, 'dishTypeData'=>$dishTypeData, 'dishData'=>$dishData, 'dishInclusion'=>$dishInclusion]);
+        return \Response::json(['ss'=>$ss, 'ww'=>$ww, 'gg'=>$gg, 'ff'=>$ff, 'dd'=>$dd, 'additionalDish'=>$additionalDish, 'additionalEquipment'=>$additionalEquipment, 'additionalService'=>$additionalService, 'additionalEmployee'=>$additionalEmployee, 'dishTypeData'=>$dishTypeData, 'dishData'=>$dishData, 'dishInclusion'=>$dishInclusion]);
     }
 
     public function deletePackage(){
@@ -2070,10 +2103,14 @@ class adminController extends Controller
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
         ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
-        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
         ->distinct()
         ->where('reservation_tbl.reservationStatus', 2)
         ->where('payment_tbl.paymentStatus', 1)
+        ->where('transaction_tbl.transactionStatus', '!=', 3)
+        ->where('transaction_tbl.transactionStatus', '!=', 5)
+        ->where('transaction_tbl.transactionStatus', '!=', 4)
         ->get();
 
         // Payments
@@ -2135,7 +2172,7 @@ class adminController extends Controller
 
         if($paymentTermID == 1){
             $transaction = transactiontbl::find($transactionID);
-            $transaction->transactionStatus = 1;
+            $transaction->transactionStatus = 6;
             $transaction->save();
         }
         if($paymentTermID == 2){
@@ -2185,6 +2222,26 @@ class adminController extends Controller
 
         $transaction = transactiontbl::find($transactionID);
         $transaction->transactionStatus = 1;
+        $transaction->save();
+        return redirect()->back();
+    }
+
+    public function savePayment2()
+    {
+        $paymentID = Input::get('sendPaymentID');
+        $paymentRDate = Input::get('sendReceiveDate');
+        $transactionID = Input::get('sendTransactionID');
+        $paymentFee = Input::get('sendPaymentFee');
+        $transactionFee = Input::get('sendTransactionFee');
+        $payment = paymenttbl::find($paymentID);
+        $payment->paymentReceiveDate = $paymentRDate;
+        $payment->paymentStatus = 1;
+        $payment->save();
+        $totalFee = $paymentFee + $transactionFee;
+
+        $transaction = transactiontbl::find($transactionID);
+        $transaction->transactionStatus = 4;
+        $transaction->totalFee = $totalFee;
         $transaction->save();
         return redirect()->back();
     }
@@ -2242,26 +2299,68 @@ class adminController extends Controller
     {
         //Find Package
         $checkReservationID = Input::get('assignModalReservationID');
+        $checkTransactionID = Input::get('assessTransactionID');
         $checkPackageID = Input::get('assignModalPackageID');
         $itemCtr = Input::get('assessmentItemCtr');
-        for ($i=0; $i < $itemCtr ; $i++) {
-            $returnQty = "assessReturnQty" . $i;
-            $returnQtyValue = Input::get($returnQty);
-            $returnID = "assessItemID" . $i;
-            $returnIDValue = Input::get($returnID);
-            $assessment = assignequipmenttbl::find($returnIDValue);
-            $assessment->assignReturnQty = $returnQtyValue;
-            $assessment->save();
-            // Equipmentlog_tbl
-            $returnEquipment = "assessEquipmentNameID" . $i;
-            $returnEquipmentValue = Input::get($returnEquipment);
-            $equipmentlog = new equipmentlogtbl;
-            $equipmentlog->equipmentID = $returnEquipmentValue;
-            $equipmentlog->equipmentQuantityIn = $returnQtyValue;
-            $equipmentlog->equipmentQuantityOut = 0;
-            $equipmentlog->equipmentLogDate = Date_create('now');
-            $equipmentlog->save();
+        $additionalPayment = Input::get('assessmentAdditionalPayment');
+        if($additionalPayment == 0){
+            for ($i=0; $i < $itemCtr ; $i++) {
+                $returnQty = "assessReturnQty" . $i;
+                $returnQtyValue = Input::get($returnQty);
+                $returnID = "assessItemID" . $i;
+                $returnIDValue = Input::get($returnID);
+                $assessment = assignequipmenttbl::find($returnIDValue);
+                $assessment->assignReturnQty = $returnQtyValue;
+                $assessment->save();
+                // Equipmentlog_tbl
+                $returnEquipment = "assessEquipmentNameID" . $i;
+                $returnEquipmentValue = Input::get($returnEquipment);
+                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog->equipmentID = $returnEquipmentValue;
+                $equipmentlog->equipmentQuantityIn = $returnQtyValue;
+                $equipmentlog->equipmentQuantityOut = 0;
+                $equipmentlog->equipmentLogDate = Date_create('now');
+                $equipmentlog->save();
+            }
+            // Transaction_tbl
+            $transaction = transactiontbl::find($checkTransactionID);
+            $transaction->transactionStatus = 4;
+            $transactionStatus->save();
         }
+        if($additionalPayment>0){
+            for ($i=0; $i < $itemCtr ; $i++) {
+                $returnQty = "assessReturnQty" . $i;
+                $returnQtyValue = Input::get($returnQty);
+                $returnID = "assessItemID" . $i;
+                $returnIDValue = Input::get($returnID);
+                $assessment = assignequipmenttbl::find($returnIDValue);
+                $assessment->assignReturnQty = $returnQtyValue;
+                $assessment->save();
+                // Equipmentlog_tbl
+                $returnEquipment = "assessEquipmentNameID" . $i;
+                $returnEquipmentValue = Input::get($returnEquipment);
+                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog->equipmentID = $returnEquipmentValue;
+                $equipmentlog->equipmentQuantityIn = $returnQtyValue;
+                $equipmentlog->equipmentQuantityOut = 0;
+                $equipmentlog->equipmentLogDate = Date_create('now');
+                $equipmentlog->save();
+            }
+            // Transaction_tbl
+            $transaction = transactiontbl::find($checkTransactionID);
+            $transaction->transactionStatus = 5;
+            $transaction->save();
+            // Payment_tbl
+            $plusOneWeek = strtotime("+7 day");
+            $firstPaymentDate = date('Y-m-d', $plusOneWeek);
+            $paymenttbl = new paymenttbl;
+            $paymenttbl->paymentDueDate = $firstPaymentDate;
+            $paymenttbl->paymentStatus = 0;
+            $paymenttbl->reservationID = $checkReservationID;
+            $paymenttbl->paymentAmount = $additionalPayment;
+            $paymenttbl->save();
+        }
+        
         return redirect()->back();
     }
 
@@ -2283,7 +2382,10 @@ class adminController extends Controller
         ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
         ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
-        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*')
+        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
+        ->where('transaction_tbl.transactionStatus', '!=', 3)
+        ->where('reservation_tbl.reservationStatus', '=', 2)
         ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
     }
@@ -2496,11 +2598,21 @@ class adminController extends Controller
         ->where('transaction_tbl.transactionStatus', 3)
         ->get();
 
-        $lost = DB::table('transaction_tbl')
+        $return = DB::table('transaction_tbl')
         ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
         ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
         ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
+        ->where('customer_tbl.customerStatus', 0)
+        ->get();
+
+        $lost = DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('assignequipment_tbl', 'assignequipment_tbl.reservationID', '=','reservation_tbl.reservationID')
+        ->join('equipment_tbl', 'assignequipment_tbl.equipmentID', '=','equipment_tbl.equipmentID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*','equipment_tbl.*','assignequipment_tbl.*')
         ->where('transaction_tbl.transactionStatus', 4)
         ->get();
 
@@ -2508,11 +2620,13 @@ class adminController extends Controller
         ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
         ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
         ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
-        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*')
+        ->join('assignequipment_tbl', 'assignequipment_tbl.reservationID', '=','reservation_tbl.reservationID')
+        ->join('equipment_tbl', 'assignequipment_tbl.equipmentID', '=','equipment_tbl.equipmentID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*','equipment_tbl.*','assignequipment_tbl.*')
         ->where('transaction_tbl.transactionStatus', 1)
         ->get();
 
-        return View::make('/QueryPage')->with('cancellation', $cancellation)->with('lost', $lost)->with('assign', $assign);
+        return View::make('/QueryPage')->with('cancellation', $cancellation)->with('lost', $lost)->with('assign', $assign)->with('return', $return);
     }
 
     

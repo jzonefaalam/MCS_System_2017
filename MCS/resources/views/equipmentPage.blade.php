@@ -32,10 +32,10 @@
                       <th width="180px">Name</th>
                       <th width="200px">Description</th>
                       <th width="80px">Type</th>
-                      <th width="80px">Rate Per Hour</th>
+                      <th width="80px">Rate</th>
                       <th width="80px">Total Quantity</th>
                       <th width="150px">Actions</th>
-                      <th width="150px">Availability</th>
+                      <th width="150px">Status</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -53,35 +53,12 @@
                        </td>
                        <td>
                         <?php if (( $equipmentData->equipmentStatus )==0): ?> 
-                          <div class="btn-group">
-                          <button type="button" class="btn btn-default">Disable</button>
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                          <li>
-                            <a data-toggle="modal" data-target="#enableDishModal" onclick="editdishget(this.name);" name="{{$equipmentData->equipmentID}}">Enable</a>
-                          </li>
-                          </ul>
-                          </div>
+                          <span class="label label-danger">Not Available</span>
                         <?php endif ?>
-
                         <?php if (( $equipmentData->equipmentStatus )==1): ?> 
-                          <div class="btn-group">
-                          <button type="button" class="btn btn-default">Enable</button>
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                          <span class="caret"></span>
-                          <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                          <li>
-                            <a data-toggle="modal" data-target="#disableDishModal" onclick="editdishget(this.name);" name="{{$equipmentData->equipmentID}}">Disable</a>
-                          </li>
-                          </ul>
-                          </div>
+                          <span class="label label-success">Available</span>
                         <?php endif ?>
-                </td>
+                        </td>
                       </tr>
                       @endforeach
                       </tbody>
@@ -178,7 +155,7 @@
 
 
                     <div class="form-group">
-                    <label class="col-sm-4 control-label">Rate per Hour</label>
+                    <label class="col-sm-4 control-label">Rate</label>
                     <div class="col-sm-6">
                     <div class = "input-group">
                     <div class="input-group-addon">
@@ -196,7 +173,7 @@
                     <div class="input-group-addon">
                     <i class="fa fa-navicon" aria-hidden="true"></i>
                     </div>
-                    <select class="form-control" name="editEquipmentType" id="editEquipmentType">
+                    <select disabled class="form-control" name="editEquipmentType" id="editEquipmentType">
                     @foreach($addEquipmentData as $equipmentTypeData)
                     <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
                     @endforeach
@@ -265,7 +242,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                  <label class="col-sm-4 control-label">Rate per Hour</label>
+                                  <label class="col-sm-4 control-label">Rate</label>
                                   <div class="col-sm-6">
                                     <div class="input-group">
                                       <div class="input-group-addon">

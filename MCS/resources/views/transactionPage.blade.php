@@ -62,6 +62,9 @@
                   <?php if (($transactionData->transactionStatus)==4): ?>
                     <span class="label label-success">Finished</span>
                   <?php endif ?>
+                  <?php if (($transactionData->transactionStatus)==5): ?>
+                    <span class="label label-danger">Payment Pending</span>
+                  <?php endif ?>
                 </td>
               </tr>
               @endforeach
@@ -880,6 +883,14 @@
           document.getElementById('assessmentBtn').style.display='none';
           document.getElementById('assignBtn').style.display='none';
           document.getElementById('printBtn').style.display='block';
+        }
+
+        if(data['tdata'][0]['transactionStatus'] == 5){
+          document.getElementById("parPaymentStatus").innerHTML = "Additional Payment Pending";
+          document.getElementById('assessmentBtn').style.display='none';
+          document.getElementById('assignBtn').style.display='none';
+          document.getElementById('printBtn').style.display='block';
+          document.getElementById('paymentBtn').style.display='block';
         }
         document.getElementById("parNumberOfGuest").innerHTML = data['tdata'][0]['guestCount'];
         packageID = data['tdata'][0]['packageID'];
