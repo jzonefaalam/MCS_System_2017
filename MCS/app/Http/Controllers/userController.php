@@ -71,24 +71,28 @@ class userController extends Controller
         $packageinclusion = DB::table('packageinclusion_tbl')
                     ->join('dishtype_tbl','packageinclusion_tbl.dishTypeID','=','dishtype_tbl.dishTypeID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1) 
                     ->select('packageinclusion_tbl.*','package_tbl.*','dishtype_tbl.*')
                     ->get();
 
         $serviceinclusion = DB::table('packageinclusion_tbl')
                     ->join('service_tbl','packageinclusion_tbl.serviceID','=','service_tbl.serviceID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1) 
                     ->select('packageinclusion_tbl.*','package_tbl.*','service_tbl.*')
                     ->get();
 
         $equipmentinclusion = DB::table('packageinclusion_tbl')
                     ->join('equipment_tbl','packageinclusion_tbl.equipmentID','=','equipment_tbl.equipmentID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1) 
                     ->select('packageinclusion_tbl.*','package_tbl.*','equipment_tbl.*')
                     ->get();
 
         $employeeinclusion = DB::table('packageinclusion_tbl')
                     ->join('employeetype_tbl','packageinclusion_tbl.employeeTypeID','=','employeetype_tbl.employeeTypeID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1) 
                     ->select('packageinclusion_tbl.*','package_tbl.*','employeeType_tbl.*')
                     ->get();
 
@@ -169,24 +173,28 @@ class userController extends Controller
         $packageinclusion = DB::table('packageinclusion_tbl')
                     ->join('dishtype_tbl','packageinclusion_tbl.dishTypeID','=','dishtype_tbl.dishTypeID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1) 
                     ->select('packageinclusion_tbl.*','package_tbl.*','dishtype_tbl.*')
                     ->get();
 
         $serviceinclusion = DB::table('packageinclusion_tbl')
                     ->join('service_tbl','packageinclusion_tbl.serviceID','=','service_tbl.serviceID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1) 
                     ->select('packageinclusion_tbl.*','package_tbl.*','service_tbl.*')
                     ->get();
 
         $equipmentinclusion = DB::table('packageinclusion_tbl')
                     ->join('equipment_tbl','packageinclusion_tbl.equipmentID','=','equipment_tbl.equipmentID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1) 
                     ->select('packageinclusion_tbl.*','package_tbl.*','equipment_tbl.*')
                     ->get();
 
         $employeeinclusion = DB::table('packageinclusion_tbl')
                     ->join('employeetype_tbl','packageinclusion_tbl.employeeTypeID','=','employeetype_tbl.employeeTypeID')
                     ->join('package_tbl','packageinclusion_tbl.packageID','=','package_tbl.packageID')
+                    ->where('packageinclusion_tbl.packageInclusionStatus', '=', 1)
                     ->select('packageinclusion_tbl.*','package_tbl.*','employeeType_tbl.*')
                     ->get();
 

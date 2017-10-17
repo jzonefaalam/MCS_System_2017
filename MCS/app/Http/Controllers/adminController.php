@@ -264,7 +264,7 @@ class adminController extends Controller
         $dishImage = ($_FILES["addDishImage"]["name"]);
 
         if($dishImage==null){
-            $coursetbl = new course_tbl;
+            $coursetbl = new dish_tbl;
             $coursetbl->dishName = Input::get('addDishName');
             $coursetbl->dishDescription = Input::get('addDishDesc');
             $coursetbl->dishCost = Input::get('addDishPrice');
@@ -2766,7 +2766,7 @@ class adminController extends Controller
 
     public function disableDish(){
         $id = Input::get('disableDishID');
-        $inventoryDish = course_tbl::find($id); 
+        $inventoryDish = dish_tbl::find($id); 
         $inventoryDish->dishAvailability = 0; 
         $inventoryDish->save();
         return redirect()->back();
@@ -2774,7 +2774,7 @@ class adminController extends Controller
 
     public function enableDish(){
         $id = Input::get('enableDishID');
-        $inventoryDish = course_tbl::find($id); 
+        $inventoryDish = dish_tbl::find($id); 
         $inventoryDish->dishAvailability = 1; 
         $inventoryDish->save();
         return redirect()->back();
