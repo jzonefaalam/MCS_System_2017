@@ -1913,6 +1913,10 @@ class adminController extends Controller
                 $po->poTypeId = Input::get('addPOType');
                 $po->poStatus = 1;
                 $po->save();
+
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Purchase order added succesfully.');
+                Session::flash('type', 'success');
             }
             // Equipment
             if($categoryChecker==1){
@@ -1927,6 +1931,10 @@ class adminController extends Controller
                 $po->poStatus = 1;
                 $po->save();
 
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Purchase order added succesfully.');
+                Session::flash('type', 'success');
+
                 //Save Equipment Maintenance 
                 $equipment = new equipment_tbl;
                 $equipment->equipmentName = Input::get('addPOName');
@@ -1938,6 +1946,10 @@ class adminController extends Controller
                 $equipment->equipmentImage = "No Image";
                 $equipment->save();
 
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Purchase order added succesfully.');
+                Session::flash('type', 'success');
+
                 // Save Equipment Inventory
                 $getEquipmentID = DB::table('equipment_tbl')
                 ->MAX('equipmentID');
@@ -1947,6 +1959,10 @@ class adminController extends Controller
                 $equipmentlog->equipmentQuantityOut = 0;
                 $equipmentlog->equipmentLogDate = Date_create('now');
                 $equipmentlog->save();
+
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Purchase order added succesfully.');
+                Session::flash('type', 'success');
             }
         }
         // Existing Item
@@ -1962,6 +1978,10 @@ class adminController extends Controller
                 $po->poTypeId = Input::get('addPOType');
                 $po->poStatus = 1;
                 $po->save();
+
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Purchase order added succesfully.');
+                Session::flash('type', 'success');
             }
             //Equipment
             if($categoryChecker==1){
@@ -1975,6 +1995,10 @@ class adminController extends Controller
                 $po->poTypeId = Input::get('addPOType');
                 $po->poStatus = 1;
                 $po->save();
+
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Purchase order added succesfully.');
+                Session::flash('type', 'success');
 
                 $itemID = Input::get('addExistingItemName');
 

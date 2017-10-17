@@ -303,7 +303,7 @@
 		                        <div class="wizard-footer">
 		                        	<div class="pull-right">
 		                                <input type='button' class='btn btn-next btn-fill btn-danger btn-wd' name='next' value='Next'  />
-		                                <input type="button" data-toggle="modal"  value="Finish" class="btn btn-finish btn-fill btn-danger btn-wd" href="#paymentModal" onclick="getFuck(this)">
+		                                <input type="button" data-toggle="modal"  value="Finish" class="btn btn-finish btn-fill btn-danger btn-wd" onclick="getFuck(this)">
 		                            </div>
 
 		                            <div class="pull-left">
@@ -1901,7 +1901,20 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					var addEmpQty = [];
 					var addEmpNotes = [];
 					var ptIDs = $("#ptids").val();
+					var abc = 0;
+
+						if(ptIDs==""||ptIDs==null){
+							abc = 1;
+							swal("Note!", "Please choose a payment term.", "warning")
+						}
+
 					var pmIDs = $("#pmids").val();
+
+						if(pmIDs==""||pmIDs==null){
+							abc = 1;
+							swal("Note!", "Please choose a payment mode.", "warning")
+						}
+
 					var addReservationIDs = $("#addReservationID").val();
 					var addPackIDs = $("#addPackageID").val();
 					var venues;
@@ -1911,6 +1924,9 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					else{
 						venues=eLoc2s;
 					}
+
+					if(abc==0) {
+					$("#paymentModal").modal("show");
 					document.getElementById('review').innerHTML='<p align="left">Hi '+cusNames+'! Here are the details of your reservation. Kindly review and verify:</p><textarea id="txt" class="form-control" style="width: 550px; height:300px; overflow-y: auto;" value="" disabled></textarea>';
 					$('#txt').append("\t\t\t\t\t\tEVENT DETAILS:");
 					$('#txt').append("\n\tEvent Name: \t\t\t\t"+eNames);
@@ -2146,6 +2162,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 							$('#txt').append("\n\tTOTAL:\t\t\t\t\t\t\t\t\t\t\t"+tot+".00");
 
 		 				});	
+		 			}
 						
  				}
  				
@@ -2182,7 +2199,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						  title: "Note!",
 						  text: "Working hours ends at 6pm every weekends.",
 						  timer: 5000,
-						  showConfirmButton: false
+						  showConfirmButton: true
 						});
  					}
  					else{
@@ -2249,12 +2266,9 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						var addEmpQty = [];
 						var addEmpNotes = [];
 						var ptIDs = $("#ptids").val();
-						if(!(ptIDs)){
-
-						}
 						var pmIDs = $("#pmids").val();
 						if(!(pmIDs)){
-
+							
 						}
 						var addReservationIDs = $("#addReservationID").val();
 						var addPackIDs = $("#addPackageID").val();
@@ -2374,8 +2388,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					         		},
 					                success: function(data){
 						            	swal({
-										  title: "Saved!",
-										  text: "Please expect a call within a day. Thank you!",
+										  title: "Thank you!",
+										  text: "Please expect a call within a day.",
 										  type: "success",
 										  showCancelButton: false,
 										  confirmButtonText: "Okay",
