@@ -17,7 +17,7 @@
           <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>Reports Lsasist</h2>
+                <h2>Reports List</h2>
               </div>
             </div>
           </div>

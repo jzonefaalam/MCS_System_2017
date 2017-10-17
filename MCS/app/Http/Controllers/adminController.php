@@ -2928,7 +2928,8 @@ class adminController extends Controller
         ->join('assignequipment_tbl', 'assignequipment_tbl.reservationID', '=','reservation_tbl.reservationID')
         ->join('equipment_tbl', 'assignequipment_tbl.equipmentID', '=','equipment_tbl.equipmentID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*','equipment_tbl.*','assignequipment_tbl.*')
-        ->where('transaction_tbl.transactionStatus', 1)
+        ->where('event_tbl.eventStatus', 2)
+        ->where('transaction_tbl.transactionStatus', '!=', 4)
         ->get();
 
         return View::make('/QueryPage')->with('cancellation', $cancellation)->with('lost', $lost)->with('assign', $assign)->with('return', $return);
