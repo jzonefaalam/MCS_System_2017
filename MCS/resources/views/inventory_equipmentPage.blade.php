@@ -13,7 +13,7 @@
       <br>
         <ol class="breadcrumb">
           <li><a><i class="fa fa-wrench"></i> Inventory</a></li>
-          <li class="active"><a href = "/InventoryEquipmentPage"><i class="fa fa-cube"></i>Equipment</a></li>
+          <li class="active"><a href = "/InventoryEquipmentPage"><i class="fa fa-"></i>Equipment</a></li>
         </ol>
       </section>
 
@@ -32,6 +32,7 @@
           
                 <!-- /Header -->
                 <div class="box-body">
+                  <h5><i><b>Note:</b> Double click the row to update the equipment inventory.</i></h5>
                   <table id="inventoryEquipmentTable" class="table table-bordered table-striped dataTable">
                     <thead>
                     <tr>

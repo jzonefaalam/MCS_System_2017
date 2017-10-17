@@ -170,13 +170,13 @@
 
             <li class="treeview">
               <a href="/TransactionPage">
-                <i class="fa fa-line-chart"></i> <span>Transactions</span>
+                <i class="fa fa-file-text"></i> <span>Transactions</span>
               </a>  
             </li>
 
             <li class="treeview">
               <a href="/QueryPage">
-                <i class="fa fa-file-text"></i> <span>Queries</span>
+                <i class="fa fa-line-chart"></i> <span>Queries</span>
               </a>  
             </li>
 
