@@ -169,6 +169,11 @@ class adminController extends Controller
         return redirect()->back();
     }
 
+    public function saveReservation(Request $request){
+       
+        return redirect()->back();
+    }
+
     public function authenticateLogin(){
         $usernameLogin = Input::get('usernameLogin');
         $passwordLogin = Input::get('passwordLogin');
@@ -194,7 +199,7 @@ class adminController extends Controller
     public function retrieveMonthlyCollection(){
         $currentMonth = date('m');
         $currentYear = date('Y');
-        $stmt = "SELECT customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`, SUM(payment_tbl.`paymentAmount`) as paid FROM payment_tbl, customer_tbl, event_tbl, transaction_tbl, reservation_tbl WHERE payment_tbl.`reservationID` = reservation_tbl.`reservationID` AND reservation_tbl.`eventID` = event_tbl.`eventID` AND event_tbl.`customerID` = customer_tbl.`customerID` AND transaction_tbl.`reservationID` = reservation_tbl.`reservationID` AND YEAR(event_tbl.`eventDate`) = '$currentYear' and month(event_tbl.`eventDate`) = '$currentMonth' GROUP BY customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`";
+        $stmt = "SELECT package_tbl.`packageName`, customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`, SUM(payment_tbl.`paymentAmount`) as paid FROM payment_tbl, customer_tbl, event_tbl, transaction_tbl, reservation_tbl, package_tbl WHERE payment_tbl.`reservationID` = reservation_tbl.`reservationID` AND reservation_tbl.`eventID` = event_tbl.`eventID` AND event_tbl.`customerID` = customer_tbl.`customerID` AND transaction_tbl.`reservationID` = reservation_tbl.`reservationID` AND YEAR(event_tbl.`eventDate`) = '$currentYear' and month(event_tbl.`eventDate`) = '$currentMonth' AND package_tbl.`packageID` = reservation_tbl.`packageID` GROUP BY package_tbl.`packageName`, customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`";
         $paymentData = DB::select($stmt);
         return \Response::json(['paymentData'=>$paymentData]);
     }
@@ -202,7 +207,7 @@ class adminController extends Controller
     public function retrieveYearlyCollection(){
         $currentMonth = date('m');
         $currentYear = date('Y');
-        $stmt = "SELECT customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`, SUM(payment_tbl.`paymentAmount`) as paid FROM payment_tbl, customer_tbl, event_tbl, transaction_tbl, reservation_tbl WHERE payment_tbl.`reservationID` = reservation_tbl.`reservationID` AND reservation_tbl.`eventID` = event_tbl.`eventID` AND event_tbl.`customerID` = customer_tbl.`customerID` AND transaction_tbl.`reservationID` = reservation_tbl.`reservationID` AND YEAR(event_tbl.`eventDate`) = '$currentYear' GROUP BY customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`";
+        $stmt = "SELECT package_tbl.`packageName`, customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`, SUM(payment_tbl.`paymentAmount`) as paid FROM payment_tbl, customer_tbl, event_tbl, transaction_tbl, reservation_tbl, package_tbl WHERE payment_tbl.`reservationID` = reservation_tbl.`reservationID` AND reservation_tbl.`eventID` = event_tbl.`eventID` AND event_tbl.`customerID` = customer_tbl.`customerID` AND transaction_tbl.`reservationID` = reservation_tbl.`reservationID` AND YEAR(event_tbl.`eventDate`) = '$currentYear' AND package_tbl.`packageID` = reservation_tbl.`packageID` GROUP BY package_tbl.`packageName`, customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`";
         $paymentData = DB::select($stmt);
         return \Response::json(['paymentData'=>$paymentData]);
     }
@@ -210,7 +215,7 @@ class adminController extends Controller
     public function retrieveAllCollection(){
         $currentMonth = date('m');
         $currentYear = date('Y');
-        $stmt = "SELECT customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`, SUM(payment_tbl.`paymentAmount`) as paid FROM payment_tbl, customer_tbl, event_tbl, transaction_tbl, reservation_tbl WHERE payment_tbl.`reservationID` = reservation_tbl.`reservationID` AND reservation_tbl.`eventID` = event_tbl.`eventID` AND event_tbl.`customerID` = customer_tbl.`customerID` AND transaction_tbl.`reservationID` = reservation_tbl.`reservationID` GROUP BY customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`";
+        $stmt = "SELECT package_tbl.`packageName`, customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`, SUM(payment_tbl.`paymentAmount`) as paid FROM payment_tbl, customer_tbl, event_tbl, transaction_tbl, reservation_tbl, package_tbl WHERE payment_tbl.`reservationID` = reservation_tbl.`reservationID` AND reservation_tbl.`eventID` = event_tbl.`eventID` AND event_tbl.`customerID` = customer_tbl.`customerID` AND transaction_tbl.`reservationID` = reservation_tbl.`reservationID` AND package_tbl.`packageID` = reservation_tbl.`packageID`  GROUP BY package_tbl.`packageName`, customer_tbl.`fullName`, event_tbl.`guestCount`, event_tbl.`eventDate`, event_tbl.`eventName`, transaction_tbl.`totalFee`";
         $paymentData = DB::select($stmt);
         return \Response::json(['paymentData'=>$paymentData]);
     }
@@ -1525,11 +1530,12 @@ class adminController extends Controller
     }
 
     public function retrievePackageInclusion(){
+        $reservationID = Input::get('sendReservationID');
         $ss = DB::table('dishavailed_tbl')
-        ->join('reservation_tbl', 'reservation_tbl.reservationID','=','dishavailed_tbl.reservationID')
-        ->join('dish_tbl','dish_tbl.dishID', '=', 'dishavailed_tbl.dishID')
-        ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'dish_tbl.dishTypeID')
-        ->where('dishavailed_tbl.reservationID', Input::get('sendReservationID'))
+        ->join('dish_tbl','dish_tbl.dishID','=','dishavailed_tbl.dishID')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','dishavailed_tbl.reservationID')
+        ->join('dishtype_tbl','dishtype_tbl.dishTypeID','=','dish_tbl.dishTypeID')
+        ->where('dishavailed_tbl.reservationID', $reservationID)
         ->get();
 
         $ww = DB::table('dish_tbl')

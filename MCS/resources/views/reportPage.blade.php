@@ -852,14 +852,14 @@
           var balanceAmt = 0;
           var totalFee = 0;
           var totalPaid = 0;
-          totalFee = data['paymentData'][i]['totalFee'];
-          totalPaid = data['paymentData'][i]['paid'];
+          totalFee = parseFloat(data['paymentData'][i]['totalFee']);
+          paid = parseFloat(data['paymentData'][i]['paid']);
           balanceAmt = totalFee - totalPaid;
           frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
           totalAmount = totalAmount + totalFee;
-          totalPaid = totalPaid + totalPaid;
+          totalPaid = totalPaid + paid;
           totalBalance = totalBalance + balanceAmt;
         }
         frameDoc.document.write('<tr style ="text-align:center">');
@@ -977,14 +977,14 @@
           var balanceAmt = 0;
           var totalFee = 0;
           var totalPaid = 0;
-          totalFee = data['paymentData'][i]['totalFee'];
-          totalPaid = data['paymentData'][i]['paid'];
+          totalFee = parseFloat(data['paymentData'][i]['totalFee']);
+          paid = parseFloat(data['paymentData'][i]['paid']);
           balanceAmt = totalFee - totalPaid;
           frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
           totalAmount = totalAmount + totalFee;
-          totalPaid = totalPaid + totalPaid;
+          totalPaid = totalPaid + paid;
           totalBalance = totalBalance + balanceAmt;
         }
         frameDoc.document.write('<tr style ="text-align:center">');
@@ -1102,14 +1102,14 @@
           var balanceAmt = 0;
           var totalFee = 0;
           var totalPaid = 0;
-          totalFee = data['paymentData'][i]['totalFee'];
-          totalPaid = data['paymentData'][i]['paid'];
+          totalFee = parseFloat(data['paymentData'][i]['totalFee']);
+          paid = parseFloat(data['paymentData'][i]['paid']);
           balanceAmt = totalFee - totalPaid;
           frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
           totalAmount = totalAmount + totalFee;
-          totalPaid = totalPaid + totalPaid;
+          totalPaid = totalPaid + paid;
           totalBalance = totalBalance + balanceAmt;
         }
         frameDoc.document.write('<tr style ="text-align:center">');

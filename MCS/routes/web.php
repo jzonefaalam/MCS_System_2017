@@ -136,6 +136,7 @@ Route::post("/AssessEquipment", array("uses"=>"adminController@assessEquipment")
 Route::get('/RetrieveAssignedEquipment', 'adminController@retrieveAssignedEquipment');
 Route::get('/InclusionChange', 'adminController@inclusionChange');
 Route::get('/RetrieveUpcomingEvents', 'adminController@retrieveUpcomingEvents');
+Route::post("/SaveReservation", array("uses"=>"adminController@saveReservation"));
 
 //Reservation Page
 Route::get('/ReservationPage', 'adminController@reservationPage');

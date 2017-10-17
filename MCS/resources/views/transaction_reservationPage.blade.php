@@ -508,7 +508,7 @@ $(function () {
           data: 
           {     
             sdid: reservationPackageID,
-            sendReservationID: reservationEventID
+            sendReservationID: reservationIDVar
           },
           success: function(data){
             for (var i = 0; i < data['ss'].length; i++) {
