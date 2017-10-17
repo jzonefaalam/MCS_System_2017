@@ -150,7 +150,7 @@
             </li>
 
             <li class="treeview">
-              <a href="/InventoryDishPage">
+              <a href="/InventoryEquipmentPage">
                 <i class="fa fa-book"></i><span>Inventory</span>
               </a>
               <ul class="treeview-menu">
