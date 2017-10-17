@@ -92,7 +92,7 @@
                 <!-- Disable Package Modal-->
                 <div class="modal fade" id="disableModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                       <form role="form" method="POST" action="disable_package.php" class="form-horizontal">
                         <div class="modal-body">
                           <div class="form-group" style="display: none;">
@@ -103,8 +103,8 @@
                             </div>
                           </div>
 
-                          <div>
-                            <h5> Are you sure you want to deactivate this package? </h5>
+                          <div align="center">
+                            <h4> Are you sure you want to deactivate this package? </h4>
                           </div>
 
                           <div style="text-align: center;">

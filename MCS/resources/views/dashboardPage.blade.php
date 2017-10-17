@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MCS</title>
+    <link rel="icon" type="image/png" href="../img/logo_2.png"/>
+  <title>Admin | Margareth's Catering</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -45,7 +46,7 @@
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
-        <a style="display:none; text-align:center;" class="pull-right" href="/Logout">  Logout</a>
+        <a style="display:none; text-align:center;" class="pull-right" href="/Logout">Logout</a>
     </nav>
   </header>
       <!-- Left side column. contains the logo and sidebar -->
@@ -139,13 +140,9 @@
             </li>
 
             <li class="treeview">
-              <a href="/#">
-                <i class="fa fa-shopping-cart"></i><span>Purchase Order</span>
+              <a href="/PurchaseOrderPage">
+                <i class="fa fa-file-text-o"></i> <span>Purchase Order</span>
               </a>
-              <ul class="treeview-menu">
-                <li><a href="/PurchaseOrderPage"><i class="fa fa-square-o"></i> List</a></li>
-                <li><a href="/PurchaseOrderTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
-              </ul>
             </li>
 
             <li class="treeview">
@@ -338,70 +335,109 @@
               <div id="calendar"></div>
             </div>
 
-
             <!-- Update Modal -->
             <form id="scheduleForm" method="POST">
             <div class="modal fade" id="detailModal" style="width:100%;">
-            <div class="modal-dialog" style="width:70%; margin-top:5%; margin-left:17%;">
+            <div class="modal-dialog" style="width:70%; margin-top:3%; margin-left:15%;">
             <div class="modal-content">
             <div class="modal-header" style="width:100%;" >
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               <h4 class="modal-title" id="myModalLabel">Update Reservation</h4>
             </div>
-            <div class="box-body">
-              <div class="row">
-                <div class="col-sm-5 col-sm-offset-2">
-                  <h4><strong>Customer Details</strong></h4>
-                  <label>Customer Name</label>
-                  <div>
-                    <input type="text"  name="editCustomerName" id="editCustomerName" column="20" required >
-                    <input type="text"  name="reservationNumber" id="reservationNumber" style="display: none;">
-                  </div>
-                  <label>Home Address</label> <br>
-                  <div>
-                    <input type="text" " name="editHomeAddress" id="editHomeAddress" required >
-                  </div>
-                  <label>Email Address</label> <br>
-                  <div>
-                    <input type="text"  name="editEmailAddress" id="editEmailAddress" required >
-                  </div>
-                  <label>Contact Number</label> <br>
-                  <div>
-                    <input type="text"  name="editContactNumber" id="editContactNumber" required >
-                  </div>
-                  <label>Date of Birth</label> <br>
-                  <div>
-                    <input type="text" name="editDateOfBirth" id="editDateOfBirth" required >
+
+            <div class="row" style="width: 97%; padding-left: 6%">
+              <div class="box box-danger">
+                <div class="box-body">
+                  <div class="row">
+                    <div class="form-horizontal">
+
+                      <div class="col-sm-6" style="padding-left: 70px; padding-right: 0px">
+                        <h4 align="center"><strong><i>Customer Details</i></strong></h4>
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Customer Name</label>
+                          <div>
+                            <input type="text" class="form-control" id="editCustomerName" name="editCustomerName" column="20" style="width: 200px" required>
+                            <input type="text"  name="reservationNumber" id="reservationNumber" style="display: none;">
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Home Address</label>
+                          <div>
+                            <input type="text" class="form-control" id="editHomeAddress" name="editHomeAddress" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Email Address</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEmailAddress" name="editEmailAddress" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Contact Number</label>
+                          <div>
+                            <input type="text" class="form-control" id="editContactNumber" name="editContactNumber" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Date of Birth</label>
+                          <div>
+                            <input type="text" class="form-control" id="editDateOfBirth" name="editDateOfBirth" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-6" style="margin-right: 0px">
+                        <h4 align="center"><strong><i>Event Details</i></strong></h4>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Event Name</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventName" name="editEventName" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Event Date</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventDate" name="editEventDate" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Event Location</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventLocation" name="editEventLocation" column="20" style="width: 200px" required>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                          <label class="control-label col-sm-4">Number of Guests</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventGuestCount" name="editEventGuestCount" column="20" style="width: 200px" required>
+                          </div>
+                        </div> 
+
+                        <div class="form-inline" align="center">
+                          <div class="form-group">
+                            <label class="control-label col-sm-4">Start</label>
+                            <input type="text" class="form-control" id="editEventStartTime" name="editEventStartTime" column="20" style="width: 80px" required>
+                          </div> &nbsp &nbsp &nbsp
+
+                          <div class="form-group">
+                            <label class="control-label col-sm-4">End</label>
+                            <input type="text" class="form-control" id="editEventEndTime" name="editEventEndTime" column="20" style="width: 80px" required>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
                   </div>
                 </div>
-                <div class="col-sm-4">
-                  <h4><strong>Event Details</strong></h4>
-                  <label>Event Name</label> <br>
-                  <div>
-                    <input type="text"  name="editEventName" id="editEventName" column="20" required >
-                  </div>
-                  <label>Event Date</label> <br>
-                  <div>
-                    <input type="text" " name="editEventDate" id="editEventDate" required >
-                  </div>
-                  <label>Event Location</label> <br>
-                  <div>
-                    <input type="text"  name="editEventLocation" id="editEventLocation" required >
-                  </div>
-                  <label>Number of Guests</label> <br>
-                  <div>
-                    <input type="text"  name="editEventGuestCount" id="editEventGuestCount" required >
-                  </div>
-                  <label>Start Time</label> <br>
-                  <div>
-                    <input type="text" name="editEventStartTime" id="editEventStartTime" required >
-                  </div>
-                  <label>End Time</label> <br>
-                  <div>
-                    <input type="text"  name="editEventEndTime" id="editEventEndTime" required >
-                  </div>
-                </div>
-              </div> <br> <br>
+              </div>
               <!-- End Row -->
                     
               <div class="box-body">
@@ -556,7 +592,7 @@
             <form role="form" method="POST" action="ApproveReservationEmail" class="form-horizontal">
             <div class="modal fade" id="sendApproveEmailModal">
               <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="margin-top: 250px">
                    <div class="modal-body">
                       <div class="form-group" style="display:none;">
                         <label class="col-sm-4 control-label">Reservation ID</label>
@@ -583,13 +619,13 @@
                         </div>
                       </div>
                       {!! csrf_field() !!}
-                      <div>
-                        <h5> Are you sure you want to approve this reservation? </h5>
+                      <div align="center">
+                        <h4> Are you sure you want to approve this reservation? </h4>
                       </div>
                       <div style="text-align: center;">
-                        <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                        <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
-                      </div>
+                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                        <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
+                      </div> <br>
                     </div>
                 </div>
               </div>
@@ -601,7 +637,7 @@
             <form role="form" method="POST" action="DenyReservationEmail" class="form-horizontal">
             <div class="modal fade" id="sendDenyEmailModal">
               <div class="modal-dialog">
-                <div class="modal-content">
+                <div class="modal-content" style="margin-top: 250px">
                    <div class="modal-body">
                       <div class="form-group" style="display:none;">
                         <label class="col-sm-4 control-label">Reservation ID</label>
@@ -611,12 +647,12 @@
                         </div>
                       </div>
                       {!! csrf_field() !!}
-                      <div>
-                        <h5> Are you sure you want to deny this reservation? </h5>
+                      <div align="center">
+                        <h4> Are you sure you want to deny this reservation? </h4>
                       </div>
                       <div style="text-align: center;">
-                        <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
-                        <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                        <button type="submit" class="btn btn-danger btn-sm">Deny</button>
+                        <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                       </div>
                     </div>
                 </div>
@@ -868,15 +904,18 @@
     <div class="modal fade" id="paymentModal" >
       <div class="modal-dialog" style="width:70%;">
         <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
           <div class="modal-body">
             {!! csrf_field() !!}
             <div class="row" align="center">
-              <div class="box" style="width:95%;">
+              <div class="box box-danger" style="width:95%;">
               <div class="box-body">
-                <div class="row">
+                <div class="row" style="padding-left: 60px">
                   <div class="col-md-6" align="left">
                     <label>Customer Name: </label>
-                    <div id="paymentModalCustomerName" style="display: inline-block;">
+                    <div id="paymentModalCustomerName" style="display: inline-block; font-size: 20px">
                       
                     </div>
                     <br>
@@ -925,7 +964,7 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button type="submit" class="btn btn-default">Send Notification</button>
+              <button type="submit" class="btn btn-primary">Send Notification</button>
           </div>
         </div>
       </div>

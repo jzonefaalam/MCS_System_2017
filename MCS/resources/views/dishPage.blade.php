@@ -329,7 +329,7 @@
                 <div class="modal fade" id="enableDishModal">
                 <form role="form" method="POST" action="/EnableDish" class="form-horizontal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                         <div class="modal-body">
 
                           {!! csrf_field() !!}
@@ -341,13 +341,13 @@
                             </div>
                           </div>
 
-                          <div>
-                            <h5>Are you sure you want to activate this menu?</h5>
+                          <div align="center">
+                            <h4>Are you sure you want to activate this menu?</h4>
                           </div>
 
                           <div style="text-align: center;">
-                            <button type="submit" name="enableDishBtn" class="btn btn-default text-left" >Yes</button>
-                            <button data-dismiss="modal" class="btn btn-default text-left" >No</button>
+                            <button type="submit" name="enableDishBtn" class="btn btn-success btn-sm" >Confirm</button>
+                            <button data-dismiss="modal" class="btn btn-default btn-sm" >Cancel</button>
                             <!-- <script>
                               $('#enableModal').modal('hide');
                             </script> -->
@@ -364,7 +364,7 @@
                 <!-- Disable Package Modal-->
                 <div class="modal fade" id="disableDishModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                       <form role="form" method="POST" action="/DisableDish" class="form-horizontal">
                         <div class="modal-body">
                           {!! csrf_field() !!}
@@ -375,13 +375,13 @@
                               <input type="text" class="form-control" name="disableDishID" id="disableDishID" readonly="">
                             </div>
                           </div>
-                          <div>
-                            <h5> Are you sure you want to deactive this dish? </h5>
+                          <div align="center">
+                            <h4> Are you sure you want to deactive this dish? </h4>
                           </div>
 
                           <div style="text-align: center;">
-                            <button type="submit" name="disableDishBtn" class="btn btn-primary">Yes</button>
-                            <button data-dismiss="modal" class="btn btn-primary">No</button>
+                            <button type="submit" name="disableDishBtn" class="btn btn-danger btn-sm">Confirm</button>
+                            <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                           </div>
                         </div>
                       </form>
