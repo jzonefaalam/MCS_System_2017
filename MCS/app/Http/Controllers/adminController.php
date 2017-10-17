@@ -8,27 +8,27 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Illuminate\Database\Query\Builder;
 use Carbon\Carbon;
-use App\coursetbl;
-use App\coursetypetbl;
-use App\employeetypetbl;
-use App\employeetbl;
-use App\equipmenttbl;
-use App\equipmenttypetbl;
-use App\eventtypetbl;
-use App\locationtbl;
-use App\packagetbl;
-use App\servicetbl;
-use App\servicetypetbl;
-use App\reservationtbl;
-use App\eventtbl;
-use App\customertbl;
-use App\packageinclusiontbl;
-use App\equipmentlogtbl;
-use App\transactiontbl;
-use App\purchaseordertypetbl;
-use App\purchaseordertbl;
-use App\paymenttbl;
-use App\assignequipmenttbl;
+use App\dish_tbl;
+use App\dishtype_tbl;
+use App\employeetype_tbl;
+use App\employee_tbl;
+use App\equipment_tbl;
+use App\equipmenttype_tbl;
+use App\eventtype_tbl;
+use App\location_tbl;
+use App\package_tbl;
+use App\service_tbl;
+use App\servicetype_tbl;
+use App\reservation_tbl;
+use App\event_tbl;
+use App\customer_tbl;
+use App\packageinclusion_tbl;
+use App\equipmentlog_tbl;
+use App\transaction_tbl;
+use App\purchaseordertype_tbl;
+use App\purchaseorder_tbl;
+use App\payment_tbl;
+use App\assignequipment_tbl;
 use Mail;
 use Session;
 class adminController extends Controller
@@ -37,13 +37,13 @@ class adminController extends Controller
     public function sendApprovalEmail(Request $request){
         // Save to reservation_tbl
         $id = Input::get('approveReservationId');
-        $reservationtbl = reservationtbl::find($id);
+        $reservationtbl = reservation_tbl::find($id);
         $reservationtbl->reservationStatus = 2;
         $reservationtbl->save();
 
         // Save to transaction_tbl
         $totalFee = Input::get('totalReservationFee');
-        $transactiontbl = new transactiontbl;
+        $transactiontbl = new transaction_tbl;
         $transactiontbl->transactionStatus = 0;
         $transactiontbl->totalFee = $totalFee;
         $transactiontbl->reservationID = $id;
@@ -51,14 +51,14 @@ class adminController extends Controller
 
         //Save to customer_tbl
         $idCustomer = Input::get('mailCustomerID');
-        $customertbl = customertbl::find($idCustomer);
+        $customertbl = customer_tbl::find($idCustomer);
         $customertbl->customerStatus = 0;
         $customertbl->save();
 
         // Save to payment_tbl
         $paymentTerm = Input::get('mailPaymentTerm');
         if ($paymentTerm == 1) {
-            $paymenttbl = new paymenttbl;
+            $paymenttbl = new payment_tbl;
             $paymenttbl->paymentDueDate = Input::get('mailEventDate');
             $paymenttbl->paymentStatus = 0;
             $paymenttbl->reservationID = $id;
@@ -69,14 +69,14 @@ class adminController extends Controller
             $halfPayment = $totalFee / 2;
             $plusOneWeek = strtotime("+7 day");
             $firstPaymentDate = date('Y-m-d', $plusOneWeek);
-            $paymenttbl = new paymenttbl;
+            $paymenttbl = new payment_tbl;
             $paymenttbl->paymentDueDate = Input::get('mailEventDate');
             $paymenttbl->paymentStatus = 0;
             $paymenttbl->reservationID = $id;
             $paymenttbl->paymentAmount = $halfPayment;
             $paymenttbl->save();
 
-            $paymenttbl2 = new paymenttbl;
+            $paymenttbl2 = new payment_tbl;
             $paymenttbl2->paymentDueDate = $firstPaymentDate;
             $paymenttbl2->paymentStatus = 0;
             $paymenttbl2->reservationID = $id;
@@ -137,7 +137,7 @@ class adminController extends Controller
         //     $message->subject($data['subject']);
         // });
         $id = Input::get('denyReservationId');
-        $reservationtbl = reservationtbl::find($id);
+        $reservationtbl = reservation_tbl::find($id);
         $reservationtbl->reservationStatus = 3;
         $reservationtbl->save();
         return redirect()->back();
@@ -238,7 +238,7 @@ class adminController extends Controller
         $dishImage = ($_FILES["addDishImage"]["name"]);
 
         if($dishImage==null){
-            $coursetbl = new coursetbl;
+            $coursetbl = new course_tbl;
             $coursetbl->dishName = Input::get('addDishName');
             $coursetbl->dishDescription = Input::get('addDishDesc');
             $coursetbl->dishCost = Input::get('addDishPrice');
@@ -270,7 +270,7 @@ class adminController extends Controller
         }
         // Check if file already exists
         if (file_exists($target_file)) {
-            $coursetbl = new coursetbl;
+            $coursetbl = new dish_tbl;
             $coursetbl->dishName = Input::get('addDishName');
             $coursetbl->dishDescription = Input::get('addDishDesc');
             $coursetbl->dishCost = Input::get('addDishPrice');
@@ -300,7 +300,7 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["addDishImage"]["tmp_name"], $target_file)) {
-        $coursetbl = new coursetbl;
+        $coursetbl = new dish_tbl;
         $coursetbl->dishName = Input::get('addDishName');
         $coursetbl->dishDescription = Input::get('addDishDesc');
         $coursetbl->dishCost = Input::get('addDishPrice');
@@ -328,7 +328,7 @@ class adminController extends Controller
 
         if($dishImage==null){
         $id = Input::get('editDishID');
-        $coursetbl = coursetbl::find($id);
+        $coursetbl = dish_tbl::find($id);
         $coursetbl->dishName= Input::get('editDishName');
         $coursetbl->dishDescription= Input::get('editDishDesc');
         $coursetbl->dishCost= Input::get('editDishPrice');
@@ -359,7 +359,7 @@ class adminController extends Controller
         // Check if file already exists
         if (file_exists($target_file)) {
             $id = Input::get('editDishID');
-            $coursetbl = coursetbl::find($id);
+            $coursetbl = dish_tbl::find($id);
             $coursetbl->dishName= Input::get('editDishName');
             $coursetbl->dishDescription= Input::get('editDishDesc');
             $coursetbl->dishCost= Input::get('editDishPrice');
@@ -388,7 +388,7 @@ class adminController extends Controller
         } else {
         if (move_uploaded_file($_FILES["editDishImage"]["tmp_name"], $target_file)) {
             $id = Input::get('editDishID');
-            $coursetbl = coursetbl::find($id);
+            $coursetbl = dish_tbl::find($id);
             $coursetbl->dishName= Input::get('editDishName');
             $coursetbl->dishDescription= Input::get('editDishDesc');
             $coursetbl->dishCost= Input::get('editDishPrice');
@@ -413,7 +413,7 @@ class adminController extends Controller
 
     public function deleteDish(){
         $id = Input::get('deleteDishID');
-        $coursetbl=coursetbl::find($id);
+        $coursetbl=dish_tbl::find($id);
         $coursetbl->dishStatus = 0;
         $coursetbl->save();
 
@@ -439,7 +439,7 @@ class adminController extends Controller
     public function addDishType(Request $request){
         $dishTypeImage = ($_FILES["addDishTypeImage"]["name"]);
         if($dishTypeImage==null){
-        $courseType = new coursetypetbl;
+        $courseType = new dishtype_tbl;
         $courseType->dishTypeName = Input::get('addDishTypeName');
         $courseType->dishTypeStatus = 1;
         $courseType->dishTypeImage = "No Image";
@@ -462,7 +462,7 @@ class adminController extends Controller
         }
         // Check if file already exists
         if (file_exists($target_file)) {
-            $courseType = new coursetypetbl;
+            $courseType = new dishtype_tbl;
             $courseType->dishTypeName = Input::get('addDishTypeName');
             $courseType->dishTypeStatus = 1;
             $courseType->dishTypeImage = ($_FILES['addDishTypeImage']['name']);
@@ -489,7 +489,7 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["addDishTypeImage"]["tmp_name"], $target_file)) {
-            $courseType = new coursetypetbl;
+            $courseType = new dishtype_tbl;
             $courseType->dishTypeName = Input::get('addDishTypeName');
             $courseType->dishTypeStatus = 1;
             $courseType->dishTypeImage = ($_FILES['addDishTypeImage']['name']);
@@ -521,7 +521,7 @@ class adminController extends Controller
 
         if($dishTypeImage==null){
         $id = Input::get('editDishTypeID');
-        $coursetypetbl = coursetypetbl::find($id);
+        $coursetypetbl = dishtype_tbl::find($id);
         $coursetypetbl->dishTypeName= Input::get('editDishTypeName');
         $coursetypetbl->dishTypeImage = "No Image";
         $coursetypetbl->save();
@@ -544,7 +544,7 @@ class adminController extends Controller
         // Check if file already exists
         if (file_exists($target_file)) {
             $id = Input::get('editDishTypeID');
-            $coursetypetbl = coursetypetbl::find($id);
+            $coursetypetbl = dishtype_tbl::find($id);
             $coursetypetbl->dishTypeName= Input::get('editDishTypeName');
             $coursetypetbl->dishTypeImage = ($_FILES['editDishTypeImage']['name']);
             $coursetypetbl->save();
@@ -570,7 +570,7 @@ class adminController extends Controller
         } else {
         if (move_uploaded_file($_FILES["editDishTypeImage"]["tmp_name"], $target_file)) {
         $id = Input::get('editDishTypeID');
-        $coursetypetbl = coursetypetbl::find($id);
+        $coursetypetbl = dishtype_tbl::find($id);
         $coursetypetbl->dishTypeName= Input::get('editDishTypeName');
         $coursetypetbl->dishTypeImage = ($_FILES['editDishTypeImage']['name']);
         $coursetypetbl->save();
@@ -593,7 +593,7 @@ class adminController extends Controller
 
     public function deleteDishType(){
         $id = Input::get('deleteDishTypeID');
-        $coursetypetbl = coursetypetbl::find($id);
+        $coursetypetbl = dishtype_tbl::find($id);
         $coursetypetbl->dishTypeStatus= 0;
         $coursetypetbl->save();
 
@@ -669,7 +669,7 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["addEmployeeImage"]["tmp_name"], $target_file)) {
-        $employee = new employeetbl;
+        $employee = new employee_tbl;
         $employee->employeeName = Input::get('addEmployeeName');
         $employee->employeeTypeID = Input::get('addEmployeeType');
         $employee->employeeAvailability = 1;
@@ -688,7 +688,7 @@ class adminController extends Controller
 
     public function editEmployee(){
         $id = Input::get('editEmployeeID');
-        $employeetbl = employeetbl::find($id);
+        $employeetbl = employee_tbl::find($id);
         $employeetbl->employeeName= Input::get('editEmployeeName');
         $employeetbl->employeeTypeID= Input::get('editEmployeeType');
         $employeetbl->save();
@@ -706,7 +706,7 @@ class adminController extends Controller
 
     public function deleteEmployee(){
         $id = Input::get('deleteEmployeeID');
-        $employeetbl = employeetbl::find($id);
+        $employeetbl = employee_tbl::find($id);
         $employeetbl->employeeStatus= 0;
         $employeetbl->save();
         return redirect()->back();
@@ -723,7 +723,7 @@ class adminController extends Controller
     }
 
     public function addEmployeeType(Request $request){
-        $employeeType = new employeetypetbl;
+        $employeeType = new employeetype_tbl;
         $employeeType->employeeTypeName = Input::get('addEmployeeType');
         $employeeType->employeeTypeDescription = "None";
         $employeeType->employeeRatePerHour = Input::get('addEmployeeRatePerHour');
@@ -740,7 +740,7 @@ class adminController extends Controller
 
     public function editEmployeeType(){
         $id = Input::get('editEmployeeTypeID');
-        $employeetypetbl = employeetypetbl::find($id);
+        $employeetypetbl = employeetype_tbl::find($id);
         $employeetypetbl->employeeTypeName= Input::get('editEmployeeTypeName');
         $employeetypetbl->employeeRatePerHour = Input::get('editEmployeeRatePerHour');
         $employeetypetbl->save();
@@ -762,7 +762,7 @@ class adminController extends Controller
 
     public function deleteEmployeeType(){
         $id = Input::get('deleteEmployeeTypeID');
-        $employeetypetbl = employeetypetbl::find($id);
+        $employeetypetbl = employeetype_tbl::find($id);
         $employeetypetbl->employeeTypeStatus= 0;
         $employeetypetbl->save();
 
@@ -784,7 +784,7 @@ class adminController extends Controller
     }
 
     public function addEvent(Request $request){
-        $event = new eventtypetbl;
+        $event = new eventtype_tbl;
         $event->eventTypeName = Input::get('addEventName');
         $event->eventTypeDescription = Input::get('addEventDescription');
         $event->eventTypeStatus = 1;
@@ -800,7 +800,7 @@ class adminController extends Controller
 
     public function editEvent(){
         $id = Input::get('editEventTypeID');
-        $event = eventtypetbl::find($id);
+        $event = eventtype_tbl::find($id);
         $event->eventTypeName = Input::get('editEventTypeName');
         $event->eventTypeDescription = Input::get('editEventTypeDesc');
         $event->save();
@@ -822,7 +822,7 @@ class adminController extends Controller
 
     public function deleteEvent(){
         $id = Input::get('deleteEventTypeID');
-        $event = eventtypetbl::find($id);
+        $event = eventtype_tbl::find($id);
         $event->eventTypeStatus = 0;
         $event->save();
 
@@ -1026,7 +1026,7 @@ class adminController extends Controller
 
     public function deleteLocation(){
         $id = Input::get('deleteLocationID');
-        $location = locationtbl::find($id); 
+        $location = location_tbl::find($id); 
         $location->locationStatus = 0;
         $location->save();
 
@@ -1079,7 +1079,7 @@ class adminController extends Controller
     public function addPackage(Request $request){
         $packageImage = ($_FILES["addPackageImage"]["name"]);
         if($packageImage==null){
-            $package = new packagetbl;
+            $package = new package_tbl;
             $package->packageName = Input::get('addPackageName');
             $package->packageDescription = Input::get('addPackageDescription');
             $package->packageCost = Input::get('addPackageCost');
@@ -1094,25 +1094,25 @@ class adminController extends Controller
             $ei = $_POST['addEquipmentInclusion'];
             $svi = $_POST['addServiceInclusion'];
             foreach ($dti as $dtinclusion) {
-                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion = new packageinclusion_tbl;
                 $packageInclusion->packageID = $lastPackageID;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
-                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion = new packageinclusion_tbl;
                 $packageInclusion->packageID = $lastPackageID;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
-                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion = new packageinclusion_tbl;
                 $packageInclusion->packageID = $lastPackageID;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
-                $packageInclusion = new packageinclusiontbl;
+                $packageInclusion = new packageinclusion_tbl;
                 $packageInclusion->packageID = $lastPackageID;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
@@ -1135,7 +1135,7 @@ class adminController extends Controller
             }
             // Check if file already exists
             if (file_exists($target_file)) {
-                $package = new packagetbl;
+                $package = new package_tbl;
                 $package->packageName = Input::get('addPackageName');
                 $package->packageDescription = Input::get('addPackageDescription');
                 $package->packageCost = Input::get('addPackageCost');
@@ -1150,25 +1150,25 @@ class adminController extends Controller
                 $ei = $_POST['addEquipmentInclusion'];
                 $svi = $_POST['addServiceInclusion'];
                 foreach ($dti as $dtinclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->dishTypeID = $dtinclusion;
                     $packageInclusion->save();
                 }
                 foreach ($si as $staffInclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->employeeTypeID = $staffInclusion;
                     $packageInclusion->save();
                 }
                 foreach ($ei as $equipmentInclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->equipmentID = $equipmentInclusion;
                     $packageInclusion->save();
                 }
                 foreach ($svi as $serviceInclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->serviceID = $serviceInclusion;
                     $packageInclusion->save();
@@ -1194,7 +1194,7 @@ class adminController extends Controller
                 // if everything is ok, try to upload file
             } else {
             if (move_uploaded_file($_FILES["addPackageImage"]["tmp_name"], $target_file)) {
-                $package = new packagetbl;
+                $package = new package_tbl;
                 $package->packageName = Input::get('addPackageName');
                 $package->packageDescription = Input::get('addPackageDescription');
                 $package->packageCost = Input::get('addPackageCost');
@@ -1209,25 +1209,25 @@ class adminController extends Controller
                 $ei = $_POST['addEquipmentInclusion'];
                 $svi = $_POST['addServiceInclusion'];
                 foreach ($dti as $dtinclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->dishTypeID = $dtinclusion;
                     $packageInclusion->save();
                 }
                 foreach ($si as $staffInclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->employeeTypeID = $staffInclusion;
                     $packageInclusion->save();
                 }
                 foreach ($ei as $equipmentInclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->equipmentID = $equipmentInclusion;
                     $packageInclusion->save();
                 }
                 foreach ($svi as $serviceInclusion) {
-                    $packageInclusion = new packageinclusiontbl;
+                    $packageInclusion = new packageinclusion_tbl;
                     $packageInclusion->packageID = $lastPackageID;
                     $packageInclusion->serviceID = $serviceInclusion;
                     $packageInclusion->save();
@@ -1247,10 +1247,14 @@ class adminController extends Controller
     }
 
     public function editPackage(){
+        $id = Input::get('editPackageID');
+        $deletePackageInclusion = DB::table('packageinclusion_tbl')
+        ->where('packageID', $id)
+        ->update(['packageInclusionStatus' => 0]);
+
         $packageImage = ($_FILES["editPackageImage"]["name"]);
         if($packageImage==null){
-            $id = Input::get('editPackageID');
-            $package = packagetbl::find($id); 
+            $package = package_tbl::find($id); 
             $package->packageName = Input::get('editPackageName');
             $package->packageDescription = Input::get('editPackageDescription');
             $package->packageCost = Input::get('editPackageCost');
@@ -1261,26 +1265,26 @@ class adminController extends Controller
             $ei = $_POST['editEquipmentInclusion'];
             $svi = $_POST['editServiceInclusion'];
             foreach ($dti as $dtinclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
@@ -1304,7 +1308,7 @@ class adminController extends Controller
         // Check if file already exists
         if (file_exists($target_file)) {
            $id = Input::get('editPackageID');
-            $package = packagetbl::find($id); 
+            $package = package_tbl::find($id); 
             $package->packageName = Input::get('editPackageName');
             $package->packageDescription = Input::get('editPackageDescription');
             $package->packageCost = Input::get('editPackageCost');
@@ -1315,26 +1319,26 @@ class adminController extends Controller
             $ei = $_POST['editEquipmentInclusion'];
             $svi = $_POST['editServiceInclusion'];
             foreach ($dti as $dtinclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
@@ -1360,7 +1364,7 @@ class adminController extends Controller
         } else {
         if (move_uploaded_file($_FILES["editPackageImage"]["tmp_name"], $target_file)) {
            $id = Input::get('editPackageID');
-            $package = packagetbl::find($id); 
+            $package = package_tbl::find($id); 
             $package->packageName = Input::get('editPackageName');
             $package->packageDescription = Input::get('editPackageDescription');
             $package->packageCost = Input::get('editPackageCost');
@@ -1371,26 +1375,26 @@ class adminController extends Controller
             $ei = $_POST['editEquipmentInclusion'];
             $svi = $_POST['editServiceInclusion'];
             foreach ($dti as $dtinclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->dishTypeID = $dtinclusion;
                 $packageInclusion->save();
             }
             foreach ($si as $staffInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->employeeTypeID = $staffInclusion;
                 $packageInclusion->save();
             }
             foreach ($ei as $equipmentInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->equipmentID = $equipmentInclusion;
                 $packageInclusion->save();
             }
             foreach ($svi as $serviceInclusion) {
-                $packageInclusion = new packageinclusiontbl;
-                $packageInclusion->packageID = $lastPackageID;
+                $packageInclusion = new packageinclusion_tbl;
+                $packageInclusion->packageID = $id;
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
@@ -1443,21 +1447,25 @@ class adminController extends Controller
         $dd = DB::table('packageinclusion_tbl')
         ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $ff = DB::table('packageinclusion_tbl')
         ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $gg = DB::table('packageinclusion_tbl')
         ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishInclusion = DB::table('packageinclusion_tbl')
         ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
 
@@ -1480,21 +1488,25 @@ class adminController extends Controller
         $dd = DB::table('packageinclusion_tbl')
         ->join('service_tbl', 'service_tbl.serviceID', '=', 'packageinclusion_tbl.serviceID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $ff = DB::table('packageinclusion_tbl')
         ->join('equipment_tbl', 'equipment_tbl.equipmentID', '=', 'packageinclusion_tbl.equipmentID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $gg = DB::table('packageinclusion_tbl')
         ->join('employeetype_tbl', 'employeetype_tbl.employeeTypeID', '=', 'packageinclusion_tbl.employeeTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishInclusion = DB::table('packageinclusion_tbl')
         ->join('dishtype_tbl', 'dishtype_tbl.dishTypeID', '=', 'packageinclusion_tbl.dishTypeID')
         ->where('packageinclusion_tbl.packageID', Input::get('sdid'))
+        ->where('packageinclusion_tbl.packageInclusionStatus', 1)
         ->get();
 
         $dishData = DB::table('dish_tbl')
@@ -1532,7 +1544,7 @@ class adminController extends Controller
 
     public function deletePackage(){
         $id = Input::get('deletePackageID');
-        $package = packagetbl::find($id); 
+        $package = package_tbl::find($id); 
         $package->packageStatus = 0;
         $package->save();
 
@@ -1569,7 +1581,7 @@ class adminController extends Controller
         
         $equipmentImage = ($_FILES["addEquipmentImage"]["name"]);
         if($equipmentImage==null){
-        $equipment = new equipmenttbl;
+        $equipment = new equipment_tbl;
         $equipment->equipmentName = Input::get('addEquipmentName');
         $equipment->equipmentDescription = Input::get('addEquipmentDescription');
         $equipment->equipmentRatePerHour = Input::get('addEquipmentRatePerHour');
@@ -1580,7 +1592,7 @@ class adminController extends Controller
         $equipment->save();
         $getEquipmentID = DB::table('equipment_tbl')
         ->MAX('equipmentID');
-        $equipmentlog = new equipmentlogtbl;
+        $equipmentlog = new equipmentlog_tbl;
         $equipmentlog->equipmentID = $getEquipmentID;
         $equipmentlog->equipmentQuantityIn = 0;
         $equipmentlog->equipmentQuantityOut = 0;
@@ -1604,7 +1616,7 @@ class adminController extends Controller
         }
         // Check if file already exists
         if (file_exists($target_file)) {
-            $equipment = new equipmenttbl;
+            $equipment = new equipment_tbl;
             $equipment->equipmentName = Input::get('addEquipmentName');
             $equipment->equipmentDescription = Input::get('addEquipmentDescription');
             $equipment->equipmentRatePerHour = Input::get('addEquipmentRatePerHour');
@@ -1615,7 +1627,7 @@ class adminController extends Controller
             $equipment->save();
             $getEquipmentID = DB::table('equipment_tbl')
             ->MAX('equipmentID');
-            $equipmentlog = new equipmentlogtbl;
+            $equipmentlog = new equipmentlog_tbl;
             $equipmentlog->equipmentID = $getEquipmentID;
             $equipmentlog->equipmentQuantityIn = 0;
             $equipmentlog->equipmentQuantityOut = 0;
@@ -1637,7 +1649,7 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["addEquipmentImage"]["tmp_name"], $target_file)) {
-        $equipment = new equipmenttbl;
+        $equipment = new equipment_tbl;
         $equipment->equipmentName = Input::get('addEquipmentName');
         $equipment->equipmentDescription = Input::get('addEquipmentDescription');
         $equipment->equipmentRatePerHour = Input::get('addEquipmentRatePerHour');
@@ -1660,7 +1672,7 @@ class adminController extends Controller
         $equipmentImage = ($_FILES["editEquipmentImage"]["name"]);
         if($equipmentImage==null){
         $id = Input::get('editEquipmentID');
-        $equipment = equipmenttbl::find($id);
+        $equipment = equipment_tbl::find($id);
         $equipment->equipmentName = Input::get('editEquipmentName');
         $equipment->equipmentDescription = Input::get('editEquipmentDescription');
         $equipment->equipmentTypeID = Input::get('editEquipmentType');
@@ -1685,7 +1697,7 @@ class adminController extends Controller
         // Check if file already exists
         if (file_exists($target_file)) {
             $id = Input::get('editEquipmentID');
-            $equipment = equipmenttbl::find($id);
+            $equipment = equipment_tbl::find($id);
             $equipment->equipmentName = Input::get('editEquipmentName');
             $equipment->equipmentDescription = Input::get('editEquipmentDescription');
             $equipment->equipmentTypeID = Input::get('editEquipmentType');
@@ -1709,7 +1721,7 @@ class adminController extends Controller
         } else {
         if (move_uploaded_file($_FILES["editEquipmentImage"]["tmp_name"], $target_file)) {
             $id = Input::get('editEquipmentID');
-            $equipment = equipmenttbl::find($id);
+            $equipment = equipment_tbl::find($id);
             $equipment->equipmentName = Input::get('editEquipmentName');
             $equipment->equipmentDescription = Input::get('editEquipmentDescription');
             $equipment->equipmentTypeID = Input::get('editEquipmentType');
@@ -1736,7 +1748,7 @@ class adminController extends Controller
 
     public function deleteEquipment(){
         $id = Input::get('deleteEquipmentID');
-        $equipment = equipmenttbl::find($id);
+        $equipment = equipment_tbl::find($id);
         $equipment->equipmentStatus = 0;
         $equipment->save();
         return redirect()->back();
@@ -1752,8 +1764,12 @@ class adminController extends Controller
     }
 
     public function addEquipmentType(Request $request){
+<<<<<<< HEAD
 
         $equipmentType = new equipmenttypetbl;
+=======
+        $equipmentType = new equipmenttype_tbl;
+>>>>>>> 9eb6d9b19d2e86c0125ae7a40f7d0036d645d2ee
         $equipmentType->equipmentTypeName = Input::get('addEquipmentTypeName');
         $equipmentType->equipmentTypeStatus = 1;
         $equipmentType->equipmentTypeImage = "No Image";
@@ -1776,7 +1792,7 @@ class adminController extends Controller
 
     public function deleteEquipmentType(){
         $id = Input::get('deleteEquipmentTypeID');
-        $equipmentType = equipmenttypetbl::find($id);
+        $equipmentType = equipmenttype_tbl::find($id);
         $equipmentType->equipmentTypeStatus = 0;
         $equipmentType->save();
 
@@ -1789,7 +1805,7 @@ class adminController extends Controller
 
     public function editEquipmentType(){
         $id = Input::get('editEquipmentTypeID');
-        $equipmentType = equipmenttypetbl::find($id);
+        $equipmentType = equipmenttype_tbl::find($id);
         $equipmentType->equipmentTypeName = Input::get('editEquipmentTypeName');
         $equipmentType->save();
 
@@ -1879,7 +1895,7 @@ class adminController extends Controller
         if($checker==1){
             // Food
             if($categoryChecker==0){
-                $po = new purchaseordertbl;
+                $po = new purchaseorder_tbl;
                 $po->poItemName = Input::get('addPOName');
                 $po->poDescription = Input::get('addPODescription');
                 $po->poDate = $dateToday;
@@ -1892,7 +1908,7 @@ class adminController extends Controller
             // Equipment
             if($categoryChecker==1){
                 //Save Purchase Order
-                $po = new purchaseordertbl;
+                $po = new purchaseorder_tbl;
                 $po->poItemName = Input::get('addPOName');
                 $po->poDescription = Input::get('addPODescription');
                 $po->poDate = $dateToday;
@@ -1903,7 +1919,7 @@ class adminController extends Controller
                 $po->save();
 
                 //Save Equipment Maintenance 
-                $equipment = new equipmenttbl;
+                $equipment = new equipment_tbl;
                 $equipment->equipmentName = Input::get('addPOName');
                 $equipment->equipmentDescription = Input::get('addPODescription');
                 $equipment->equipmentRatePerHour = Input::get('addRatePerHour');
@@ -1916,7 +1932,7 @@ class adminController extends Controller
                 // Save Equipment Inventory
                 $getEquipmentID = DB::table('equipment_tbl')
                 ->MAX('equipmentID');
-                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog = new equipmentlog_tbl;
                 $equipmentlog->equipmentID = $getEquipmentID;
                 $equipmentlog->equipmentQuantityIn = Input::get('addPOQty');
                 $equipmentlog->equipmentQuantityOut = 0;
@@ -1928,7 +1944,7 @@ class adminController extends Controller
         if($checker==0){
             //Food
             if($categoryChecker==0){
-                $po = new purchaseordertbl;
+                $po = new purchaseorder_tbl;
                 $po->poItemName = Input::get('addExistingItemName');
                 $po->poDescription = Input::get('addPODescription');
                 $po->poDate = $dateToday;
@@ -1941,7 +1957,7 @@ class adminController extends Controller
             //Equipment
             if($categoryChecker==1){
                 //Save Purchase Order
-                $po = new purchaseordertbl;
+                $po = new purchaseorder_tbl;
                 $po->poItemName = Input::get('addExistingItemName');
                 $po->poDescription = Input::get('addPODescription');
                 $po->poDate = $dateToday;
@@ -1954,7 +1970,7 @@ class adminController extends Controller
                 $itemID = Input::get('addExistingItemName');
 
                 //Save Inventory
-                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog = new equipmentlog_tbl;
                 $equipmentlog->equipmentID = $itemID;
                 $equipmentlog->equipmentQuantityIn = Input::get('addPOQty');
                 $equipmentlog->equipmentQuantityOut = 0;
@@ -1987,7 +2003,7 @@ class adminController extends Controller
     }
 
     public function addPOType(Request $request){
-        $poType = new purchaseordertypetbl;
+        $poType = new purchaseordertype_tbl;
         $poType->poTypeName = Input::get('addPOCategoryName');
         $poType->poTypeStatus = 1;
         $poType->save();
@@ -2004,7 +2020,7 @@ class adminController extends Controller
 
     public function editPOType(){
         $id = Input::get('editPOTypeId');
-        $poType = purchaseordertypetbl::find($id);
+        $poType = purchaseordertype_tbl::find($id);
         $poType->poTypeName = Input::get('editPOTypeName');
         $poType->save();
         return redirect()->back();
@@ -2012,7 +2028,7 @@ class adminController extends Controller
 
     public function deletePOType(){
         $id = Input::get('deletePOTypeId');
-        $poType = purchaseordertypetbl::find($id);
+        $poType = purchaseordertype_tbl::find($id);
         $poType->poTypeStatus = 0;
         $poType->save();
         return redirect()->back();
@@ -2041,7 +2057,7 @@ class adminController extends Controller
     public function addService(){
        $serviceImage = ($_FILES["addServiceImage"]["name"]);
         if($serviceImage==null){
-            $service = new servicetbl;
+            $service = new service_tbl;
             $service->serviceName = Input::get('addServiceName');
             $service->serviceDescription = Input::get('addServiceDescription');
             $service->serviceFee = Input::get('addServiceFee');
@@ -2068,7 +2084,7 @@ class adminController extends Controller
         }
         // Check if file already exists
         if (file_exists($target_file)) {
-            $service = new servicetbl;
+            $service = new service_tbl;
             $service->serviceName = Input::get('addServiceName');
             $service->serviceDescription = Input::get('addServiceDescription');
             $service->serviceFee = Input::get('addServiceFee');
@@ -2098,7 +2114,7 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["addServiceImage"]["tmp_name"], $target_file)) {
-            $service = new servicetbl;
+            $service = new service_tbl;
             $service->serviceName = Input::get('addServiceName');
             $service->serviceDescription = Input::get('addServiceDescription');
             $service->serviceFee = Input::get('addServiceFee');
@@ -2124,7 +2140,7 @@ class adminController extends Controller
         $serviceImage = ($_FILES["editServiceImage"]["name"]);
         if($serviceImage==null){
             $id = Input::get('editServiceID');
-            $service = servicetbl::find($id); 
+            $service = service_tbl::find($id); 
             $service->serviceName = Input::get('editServiceName');
             $service->serviceDescription = Input::get('editServiceDescription');
             $service->serviceFee = Input::get('editServiceFee');
@@ -2149,7 +2165,7 @@ class adminController extends Controller
         // Check if file already exists
         if (file_exists($target_file)) {
             $id = Input::get('editServiceID');
-            $service = servicetbl::find($id); 
+            $service = service_tbl::find($id); 
             $service->serviceName = Input::get('editServiceName');
             $service->serviceDescription = Input::get('editServiceDescription');
             $service->serviceFee = Input::get('editServiceFee');
@@ -2178,7 +2194,7 @@ class adminController extends Controller
         } else {
         if (move_uploaded_file($_FILES["editServiceImage"]["tmp_name"], $target_file)) {
             $id = Input::get('editServiceID');
-            $service = servicetbl::find($id); 
+            $service = service_tbl::find($id); 
             $service->serviceName = Input::get('editServiceName');
             $service->serviceDescription = Input::get('editServiceDescription');
             $service->serviceFee = Input::get('editServiceFee');
@@ -2208,7 +2224,7 @@ class adminController extends Controller
 
     public function deleteservice(){
         $id = Input::get('deleteServiceID');
-        $service = servicetbl::find($id); 
+        $service = service_tbl::find($id); 
         $service->serviceStatus = 0;
         $service->save();
 
@@ -2230,7 +2246,7 @@ class adminController extends Controller
     }
 
     public function addServiceType(){
-        $serviceType = new servicetypetbl;
+        $serviceType = new servicetype_tbl;
         $serviceType->serviceTypeName = Input::get('addServiceTypeName');
         // $serviceType->serviceTypeDescription = Input::get('addServiceTypeDescription');
         $serviceType->serviceTypeStatus = 1;
@@ -2246,7 +2262,7 @@ class adminController extends Controller
 
     public function editServiceType(){
         $id = Input::get('editServiceTypeID');
-        $serviceType = servicetypetbl::find($id); 
+        $serviceType = servicetype_tbl::find($id); 
         $serviceType->serviceTypeName = Input::get('editServiceTypeName');
         // $serviceType->serviceTypeDescription = Input::get('editServiceTypeDesc');
         $serviceType->save();
@@ -2268,7 +2284,7 @@ class adminController extends Controller
 
     public function deleteServiceType(){
         $id = Input::get('deleteServiceTypeID');
-        $serviceType = servicetypetbl::find($id); 
+        $serviceType = servicetype_tbl::find($id); 
         $serviceType->serviceTypeStatus = 0;
         $serviceType->save();
 
@@ -2277,6 +2293,24 @@ class adminController extends Controller
         Session::flash('type', 'success');
 
         return redirect()->back();
+    }
+
+    public function retrieveUpcomingEvents(){
+        $latestEvents = DB::table('reservation_tbl')
+        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
+        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
+        ->distinct()
+        ->where('reservation_tbl.reservationStatus', 2)
+        ->where('payment_tbl.paymentStatus', 1)
+        ->where('transaction_tbl.transactionStatus', '!=', 3)
+        ->where('transaction_tbl.transactionStatus', '!=', 5)
+        ->where('transaction_tbl.transactionStatus', '!=', 4)
+        ->get();
+        return \Response::json(['latestEvents'=>$latestEvents]);
     }
 
     public function dashboardPage(){
@@ -2300,20 +2334,20 @@ class adminController extends Controller
 
         // Upcoming or Ongoing Events
 
-        $latestEvents = DB::table('reservation_tbl')
-        ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
-        ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
-        ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
-        ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
-        ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
-        ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
-        ->distinct()
-        ->where('reservation_tbl.reservationStatus', 2)
-        ->where('payment_tbl.paymentStatus', 1)
-        ->where('transaction_tbl.transactionStatus', '!=', 3)
-        ->where('transaction_tbl.transactionStatus', '!=', 5)
-        ->where('transaction_tbl.transactionStatus', '!=', 4)
-        ->get();
+        // $latestEvents = DB::table('reservation_tbl')
+        // ->join('event_tbl','reservation_tbl.eventID','=','event_tbl.eventID')
+        // ->join('package_tbl','reservation_tbl.packageID','=','package_tbl.packageID')
+        // ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
+        // ->join('payment_tbl', 'payment_tbl.reservationID','=','reservation_tbl.reservationID')
+        // ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
+        // ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
+        // ->distinct()
+        // ->where('reservation_tbl.reservationStatus', 2)
+        // ->where('payment_tbl.paymentStatus', 1)
+        // ->where('transaction_tbl.transactionStatus', '!=', 3)
+        // ->where('transaction_tbl.transactionStatus', '!=', 5)
+        // ->where('transaction_tbl.transactionStatus', '!=', 4)
+        // ->get();
 
         // Payments
         $latestPayments = DB::table('reservation_tbl')
@@ -2331,7 +2365,7 @@ class adminController extends Controller
         return View::make('/dashboardPage')
         ->with('packageData',$packageData)
         ->with('dashboardData', $dashboardData)
-        ->with('latestEvents', $latestEvents)
+        // ->with('latestEvents', $latestEvents)
         ->with('latestPayments', $latestPayments);
     }
 
@@ -2367,18 +2401,18 @@ class adminController extends Controller
         $paymentTermID = Input::get('sendPaymentTerm');
         $paymentID = Input::get('sendPaymentID');
         $paymentRDate = Input::get('sendReceiveDate');
-        $payment = paymenttbl::find($paymentID);
+        $payment = payment_tbl::find($paymentID);
         $payment->paymentReceiveDate = $paymentRDate;
         $payment->paymentStatus = 1;
         $payment->save();
 
         if($paymentTermID == 1){
-            $transaction = transactiontbl::find($transactionID);
+            $transaction = transaction_tbl::find($transactionID);
             $transaction->transactionStatus = 6;
             $transaction->save();
         }
         if($paymentTermID == 2){
-            $transaction = transactiontbl::find($transactionID);
+            $transaction = transaction_tbl::find($transactionID);
             $transaction->transactionStatus = 2;
             $transaction->save();
         }
@@ -2393,18 +2427,18 @@ class adminController extends Controller
         $paymentTermID = Input::get('sendPaymentTerm');
         $paymentID = Input::get('sendPaymentID');
         $paymentRDate = Input::get('sendReceiveDate');
-        $payment = paymenttbl::find($paymentID);
+        $payment = payment_tbl::find($paymentID);
         $payment->paymentReceiveDate = $paymentRDate;
         $payment->paymentStatus = 1;
         $payment->save();
 
         if($paymentTermID == 1){
-            $transaction = transactiontbl::find($transactionID);
+            $transaction = transaction_tbl::find($transactionID);
             $transaction->transactionStatus = 1;
             $transaction->save();
         }
         if($paymentTermID == 2){
-            $transaction = transactiontbl::find($transactionID);
+            $transaction = transaction_tbl::find($transactionID);
             $transaction->transactionStatus = 2;
             $transaction->save();
         }
@@ -2417,12 +2451,12 @@ class adminController extends Controller
         $paymentID = Input::get('sendPaymentID');
         $paymentRDate = Input::get('sendReceiveDate');
         $transactionID = Input::get('sendTransactionID');
-        $payment = paymenttbl::find($paymentID);
+        $payment = payment_tbl::find($paymentID);
         $payment->paymentReceiveDate = $paymentRDate;
         $payment->paymentStatus = 1;
         $payment->save();
 
-        $transaction = transactiontbl::find($transactionID);
+        $transaction = transaction_tbl::find($transactionID);
         $transaction->transactionStatus = 1;
         $transaction->save();
         return redirect()->back();
@@ -2435,13 +2469,13 @@ class adminController extends Controller
         $transactionID = Input::get('sendTransactionID');
         $paymentFee = Input::get('sendPaymentFee');
         $transactionFee = Input::get('sendTransactionFee');
-        $payment = paymenttbl::find($paymentID);
+        $payment = payment_tbl::find($paymentID);
         $payment->paymentReceiveDate = $paymentRDate;
         $payment->paymentStatus = 1;
         $payment->save();
         $totalFee = $paymentFee + $transactionFee;
 
-        $transaction = transactiontbl::find($transactionID);
+        $transaction = transaction_tbl::find($transactionID);
         $transaction->transactionStatus = 4;
         $transaction->totalFee = $totalFee;
         $transaction->save();
@@ -2460,7 +2494,7 @@ class adminController extends Controller
             $equipmentQtyName = "addItemQtyID" . $i;
             $equipmentIDName = "addItemID" . $i;
             $equipmentAlert = Input::get($equipmentQtyName);
-            $assignEquipment = new assignequipmenttbl;
+            $assignEquipment = new assignequipment_tbl;
             $assignEquipment->assignEquipmentQty = Input::get($equipmentQtyName);
             $assignEquipment->assignReturnQty = 0;
             $assignEquipment->assignEquipmentDate = Date_create('now');
@@ -2468,7 +2502,7 @@ class adminController extends Controller
             $assignEquipment->equipmentID = Input::get($equipmentIDName);
             $assignEquipment->reservationID = $checkReservationID;
             $assignEquipment->save();
-            $equipmentlog = new equipmentlogtbl;
+            $equipmentlog = new equipmentlog_tbl;
             $equipmentlog->equipmentID = Input::get($equipmentIDName);
             $equipmentlog->equipmentQuantityIn = 0;
             $equipmentlog->equipmentQuantityOut = Input::get($equipmentQtyName);
@@ -2479,7 +2513,7 @@ class adminController extends Controller
         for ($i=0; $i < $additionalItemCtr ; $i++) {
             $equipmentQtyName = "additionalItemQtyID" . $i;
             $equipmentIDName = "additionalItemID" . $i;
-            $assignEquipment = new assignequipmenttbl;
+            $assignEquipment = new assignequipment_tbl;
             $assignEquipment->assignEquipmentQty = Input::get($equipmentQtyName);
             $assignEquipment->assignReturnQty = 0;
             $assignEquipment->assignEquipmentDate = Date_create('now');
@@ -2487,7 +2521,7 @@ class adminController extends Controller
             $assignEquipment->equipmentID = Input::get($equipmentIDName);
             $assignEquipment->reservationID = $checkReservationID;
             $assignEquipment->save();
-            $equipmentlog = new equipmentlogtbl;
+            $equipmentlog = new equipmentlog_tbl;
             $equipmentlog->equipmentID = Input::get($equipmentIDName);
             $equipmentlog->equipmentQuantityIn = 0;
             $equipmentlog->equipmentQuantityOut = Input::get($equipmentQtyName);
@@ -2511,13 +2545,13 @@ class adminController extends Controller
                 $returnQtyValue = Input::get($returnQty);
                 $returnID = "assessItemID" . $i;
                 $returnIDValue = Input::get($returnID);
-                $assessment = assignequipmenttbl::find($returnIDValue);
+                $assessment = assignequipment_tbl::find($returnIDValue);
                 $assessment->assignReturnQty = $returnQtyValue;
                 $assessment->save();
                 // Equipmentlog_tbl
                 $returnEquipment = "assessEquipmentNameID" . $i;
                 $returnEquipmentValue = Input::get($returnEquipment);
-                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog = new equipmentlog_tbl;
                 $equipmentlog->equipmentID = $returnEquipmentValue;
                 $equipmentlog->equipmentQuantityIn = $returnQtyValue;
                 $equipmentlog->equipmentQuantityOut = 0;
@@ -2525,7 +2559,7 @@ class adminController extends Controller
                 $equipmentlog->save();
             }
             // Transaction_tbl
-            $transaction = transactiontbl::find($checkTransactionID);
+            $transaction = transaction_tbl::find($checkTransactionID);
             $transaction->transactionStatus = 4;
             $transactionStatus->save();
         }
@@ -2535,27 +2569,27 @@ class adminController extends Controller
                 $returnQtyValue = Input::get($returnQty);
                 $returnID = "assessItemID" . $i;
                 $returnIDValue = Input::get($returnID);
-                $assessment = assignequipmenttbl::find($returnIDValue);
+                $assessment = assignequipment_tbl::find($returnIDValue);
                 $assessment->assignReturnQty = $returnQtyValue;
                 $assessment->save();
                 // Equipmentlog_tbl
                 $returnEquipment = "assessEquipmentNameID" . $i;
                 $returnEquipmentValue = Input::get($returnEquipment);
-                $equipmentlog = new equipmentlogtbl;
+                $equipmentlog = new equipmentlog_tbl;
                 $equipmentlog->equipmentID = $returnEquipmentValue;
                 $equipmentlog->equipmentQuantityIn = $returnQtyValue;
                 $equipmentlog->equipmentQuantityOut = 0;
                 $equipmentlog->equipmentLogDate = Date_create('now');
                 $equipmentlog->save();
             }
-            // Transaction_tbl
-            $transaction = transactiontbl::find($checkTransactionID);
+            // Transaction__tbl
+            $transaction = transaction_tbl::find($checkTransactionID);
             $transaction->transactionStatus = 5;
             $transaction->save();
             // Payment_tbl
             $plusOneWeek = strtotime("+7 day");
             $firstPaymentDate = date('Y-m-d', $plusOneWeek);
-            $paymenttbl = new paymenttbl;
+            $paymenttbl = new payment_tbl;
             $paymenttbl->paymentDueDate = $firstPaymentDate;
             $paymenttbl->paymentStatus = 0;
             $paymenttbl->reservationID = $checkReservationID;
@@ -2586,8 +2620,7 @@ class adminController extends Controller
         ->join('customer_tbl','event_tbl.customerID','=','customer_tbl.customerID')
         ->join('transaction_tbl', 'transaction_tbl.reservationID', '=', 'reservation_tbl.reservationID')
         ->select('reservation_tbl.*','event_tbl.*','customer_tbl.*','package_tbl.*','transaction_tbl.*')
-        ->where('transaction_tbl.transactionStatus', '!=', 3)
-        ->where('reservation_tbl.reservationStatus', '=', 2)
+        // ->where('transaction_tbl.transactionStatus', '!=', 3)
         ->get();
         return \Response::json(['rsvtn'=>$rsvtn]);
     }
@@ -2636,13 +2669,13 @@ class adminController extends Controller
         $eventID = DB::table('reservation_tbl')
         ->where('reservationID',Input::get('editReservationID'))
         ->pluck('eventID');
-        $event = eventtbl::find($eventID[0]);
+        $event = event_tbl::find($eventID[0]);
         $event->eventDate = Input::get('editReservationDate');
         $event->save();
 
 
         $id = Input::get('editReservationID');
-        $reservation = reservationtbl::find($id);
+        $reservation = reservation_tbl::find($id);
         $reservation->packageID = Input::get('editReservationPackage');
         $reservation->save();
         return redirect()->back();
@@ -2665,7 +2698,7 @@ class adminController extends Controller
 
     public function disableDish(){
         $id = Input::get('disableDishID');
-        $inventoryDish = coursetbl::find($id); 
+        $inventoryDish = course_tbl::find($id); 
         $inventoryDish->dishAvailability = 0; 
         $inventoryDish->save();
         return redirect()->back();
@@ -2673,7 +2706,7 @@ class adminController extends Controller
 
     public function enableDish(){
         $id = Input::get('enableDishID');
-        $inventoryDish = coursetbl::find($id); 
+        $inventoryDish = course_tbl::find($id); 
         $inventoryDish->dishAvailability = 1; 
         $inventoryDish->save();
         return redirect()->back();
@@ -2691,7 +2724,7 @@ class adminController extends Controller
 
     public function enableEquipment(){
         $id = Input::get('enableEquipmentID');
-        $inventoryEquipment = equipmenttbl::find($id); 
+        $inventoryEquipment = equipment_tbl::find($id); 
         $inventoryEquipment->equipmentAvailability   = 1; 
         $inventoryEquipment->save();
         return redirect()->back();
@@ -2699,7 +2732,7 @@ class adminController extends Controller
 
     public function disableEquipment(){
         $id = Input::get('disableEquipmentID');
-        $inventoryEquipment = equipmenttbl::find($id); 
+        $inventoryEquipment = equipment_tbl::find($id); 
         $inventoryEquipment->equipmentAvailability = 0; 
         $inventoryEquipment->save();
         return redirect()->back();
@@ -2709,7 +2742,7 @@ class adminController extends Controller
         $id = Input::get('id');
         $addQuantityInput = Input::get('addQuantity');
         $minusQuantityInput = Input::get('minusQuantity');
-        $equipmentlog = new equipmentlogtbl;
+        $equipmentlog = new equipmentlog_tbl;
         $equipmentlog->equipmentID = $id;
         $equipmentlog->equipmentQuantityIn = $addQuantityInput;
         $equipmentlog->equipmentQuantityOut = $minusQuantityInput;
@@ -2729,7 +2762,7 @@ class adminController extends Controller
 
     public function enableLocation(){
         $id = Input::get('enableLocationID');
-        $inventoryLocation = locationtbl::find($id); 
+        $inventoryLocation = location_tbl::find($id); 
         $inventoryLocation->locationAvailability = 1; 
         $inventoryLocation->save();
         return redirect()->back();
@@ -2738,7 +2771,7 @@ class adminController extends Controller
 
     public function disableLocation(){
         $id = Input::get('disableLocationID');
-        $inventoryLocation = locationtbl::find($id); 
+        $inventoryLocation = location_tbl::find($id); 
         $inventoryLocation->locationAvailability = 0; 
         $inventoryLocation->save();
         return redirect()->back();
@@ -2784,7 +2817,7 @@ class adminController extends Controller
 
     public function cancelEvent(){
         $transactionID = Input::get('cancelEventTransactionId');
-        $transaction = transactiontbl::find($transactionID); 
+        $transaction = transaction_tbl::find($transactionID); 
         $transaction->transactionStatus = 3; 
         $transaction->save();
         return redirect()->back();
