@@ -183,7 +183,7 @@
 				                <td>{{ $ld->emailAddress }}</td>
 				                <td>{{ $ld->equipmentName }}</td>
 				                <td>{{ $ld->equipmentRatePerHour }}</td>
-				                <td>{{ $ld->assignEquipmentQty }}-{{ $ld->assignReturnQty }}</td>
+				                <td>{{ $ld->assignEquipmentQty - $ld->assignReturnQty }}</td>
 				                <td>{{ $ld->eventDate}}</td>             
 				          	</tr>
 				            @endforeach							      
@@ -220,7 +220,7 @@
 				                <td>{{ $ld->emailAddress }}</td>
 				                <td>{{ $ld->equipmentName }}</td>
 				                <td>{{ $ld->equipmentRatePerHour }}</td>
-				                <td>{{ $ld->assignEquipmentQty }}-{{ $ld->assignReturnQty }}</td>
+				                <td>{{ $ld->assignEquipmentQty - $ld->assignReturnQty }}</td>
 				                <td>{{ $ld->eventDate}}</td>             
 				          	</tr>
 				            @endforeach						      
@@ -259,7 +259,7 @@
 						    @foreach ($assign as $ad)
 				            <tr>
 				               	<td>{{ $ad->fullName }}</td>
-				                <td>{{ $ad->cellNum }}</td>
+				                <td>{{ $ad->eventName }}</td>
 				                <td>{{ $ad->equipmentName }}</td>
 				                <td>{{ $ad->assignEquipmentQty }}</td>
 				                <td>{{ $ad->eventDate}}</td>             

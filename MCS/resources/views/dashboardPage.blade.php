@@ -1024,7 +1024,7 @@
             var timeDiff = Math.abs(checkDate.getTime() - today.getTime());
             var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
             // alert(diffDays);
-              if(diffDays < 7 && diffDays >  0){
+              if(diffDays < 8 && diffDays >  0){
                 latestEventName = data['latestEvents'][i]['eventName'];
                 latestReservationID = data['latestEvents'][i]['reservationID'];
                 latestPackageID = data['latestEvents'][i]['packageID'];
