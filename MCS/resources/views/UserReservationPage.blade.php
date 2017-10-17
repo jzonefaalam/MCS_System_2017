@@ -156,6 +156,8 @@
 											<input type="text" name="tm3" id="tm3"  hidden>
 											<input type="text" name="tm1" id="tm1" value="9:00" hidden>
 											<input type="text" name="tm2" id="tm2" value="9:00"  hidden>
+											<input type="text" name="pID" id="pID" hidden="">
+											<input type="text" name="pChecker" id="pChecker" hidden="">
 											<div class="col-sm-12">
 			                                    <div class="form-group">
 			                                        <h5 class="info-text"><input type="checkbox" name="prevCus" id = "prevCus" onchange="prevC(this)" >Previous Customer</h5>
@@ -1875,6 +1877,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					var cusNames;
 					if(document.getElementById('prevCus').checked){							
 						cusNames = $("#prevCusName").find(":selected").text().trim();
+						document.getElementById('pID').value = $("#prevCusName").find(":selected").val();
+
 					}
 					else{							
 						cusNames = $("#cusName").val();							
@@ -2226,6 +2230,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
  					
  				}
  				$("#btnFinish").click(function(e){
+ 						var pchecker = $("#pChecker").val();
+ 						var pID = $("#pID").val();
 						var addEventIDs = $("#addEventID").val();						
 						var eNames = $("#eName").val();
 						var eDates = $("#eDate").val();
@@ -2267,9 +2273,6 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 						var addEmpNotes = [];
 						var ptIDs = $("#ptids").val();
 						var pmIDs = $("#pmids").val();
-						if(!(pmIDs)){
-							
-						}
 						var addReservationIDs = $("#addReservationID").val();
 						var addPackIDs = $("#addPackageID").val();
 						if(addPackIDs){
@@ -2343,6 +2346,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					                data: {
 					                	"_token": "{{ csrf_token() }}",
 										addEventID: addEventIDs,
+										pChecker: pchecker,
+										pID: pID,
 										eName: eNames,
 										eDate: eDates,
 										eTime: eTimes,
@@ -2425,7 +2430,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					    $("#dob").attr('disabled', true);
  						document.getElementById('cusNo').style="display:none";
  						document.getElementById('cusYes').style="display:";
- 						$('#cStat').val('0');
+ 						// $('#cStat').val('0');
+ 						document.getElementById('pChecker').value = 1;
 					} else {
 					    $("#homeAdd").removeAttr('disabled');
 					    $("#dob").removeAttr('disabled');
@@ -2436,7 +2442,9 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 					    document.getElementById('cusYes').style="display:none";
  						document.getElementById('cusNo').style="display:";
  						document.getElementById('prevCusName').selectedIndex="0";
- 						$('#cStat').val('1');			
+
+ 						document.getElementById('pChecker').value = 0;
+ 						// $('#cStat').val('1');			
 					}
 				}
 				function prevChange(id){	        
@@ -2457,7 +2465,8 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
 	 						document.getElementById('dob').value=d;			
 	 						document.getElementById('cellNum').value=c;			
 	 						document.getElementById('homeAdd').value=h;			
-	 						document.getElementById('emailAdd').value=e;							
+	 						document.getElementById('emailAdd').value=e;
+	 						document.getElementById('pID').value=data['cus'][0]['customerID'];							
 							},
 							error: function(result){
 								alert('error');
