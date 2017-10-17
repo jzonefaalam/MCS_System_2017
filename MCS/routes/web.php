@@ -28,6 +28,9 @@ Route::get('/ReportPage', 'adminController@reportPage');
 Route::get('/RetrieveMonthlyTransaction', 'adminController@retrieveMonthlyTransaction');
 Route::get('/RetrieveYearlyTransaction', 'adminController@retrieveYearlyTransaction');
 Route::get('/RetrieveAllTransaction', 'adminController@retrieveAllTransaction');
+Route::get('/RetrieveMonthlyCollection', 'adminController@retrieveMonthlyCollection');
+Route::get('/RetrieveYearlyCollection', 'adminController@retrieveYearlyCollection');
+Route::get('/RetrieveAllCollection', 'adminController@retrieveAllCollection');
 
 Route::post("/ApproveReservationEmail", array("uses"=>"adminController@sendApprovalEmail"));
 Route::post("/DenyReservationEmail", array("uses"=>"adminController@sendDenyEmail"));
