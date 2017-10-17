@@ -138,7 +138,7 @@
 						    @foreach ($cancellation as $cd)
 				            <tr>
 				                <td>{{ $cd->eventDate}}<br> 
-				               	{{ $cd->fullName }} - {{ $cd->cellNum }}<br>
+				               	<b>{{ $cd->fullName }} - {{ $cd->cellNum }}</b><br>
 				                EVENT NAME: {{ $cd->eventName }}</td>            
 				          	</tr>
 				            @endforeach							      
@@ -196,7 +196,7 @@
 		</div>
 		</div>
 		<!-- LOST LIST -->
-		<div class="cancel"  style="display: none">
+		<div class="lost"  style="display: none">
 		<div class="lists"  style="display: none">
 			<div class="col-md-8">
 				<div class="box box-danger">
@@ -274,6 +274,41 @@
 		</div>
     </div>
     </div>
+    <!-- ASSIGNED LIST -->
+		<div class="assign"  style="display: none">
+		<div class="lists"  style="display: none">
+			<div class="col-md-8">
+				<div class="box box-danger">
+				    <div class="box-header with-border">
+			            <i class="fa fa-bar-chart-o"></i>
+
+			            <h3 class="box-title">Items Out</h3>
+					</div>
+					<div class="box-body">
+		  				<div class="col-md-12">          
+						  <table id="assignTable" class="table table-bordered dataTable">
+						    <thead>
+						      <tr>
+						      </tr>
+						    </thead>
+						    <tbody>
+						    @foreach ($assign as $ad)
+				            <tr>
+				               	<td>{{ $ad->fullName }}</td>
+				                <td>{{ $ad->cellNum }}</td>
+				                <td>{{ $ad->equipmentName }}</td>
+				                <td>{{ $ad->assignEquipmentQty }}</td>
+				                <td>{{ $ad->eventDate}}</td>             
+				          	</tr>
+				            @endforeach						      
+						    </tbody>
+						  </table>
+						</div>
+					</div>					
+				</div>
+			</div>
+        </div>
+        </div>
     <!-- RETURN TABLE -->
 		<div class="return"  style="display: none">
 		<div class="tablee"  style="display: none">
@@ -317,6 +352,41 @@
 			</div>
 		</div>
 		</div>
+		<!-- RETURN LIST -->
+		<div class="return"  style="display: none">
+		<div class="lists"  style="display: none">
+			<div class="col-md-8">
+				<div class="box box-danger">
+				    <div class="box-header with-border">
+			            <i class="fa fa-bar-chart-o"></i>
+
+			            <h3 class="box-title">Return Customer</h3>
+					</div>
+					<div class="box-body">
+		  				<div class="col-md-12">          
+						  <table id="returnTable" class="table table-bordered dataTable">
+						    <thead>
+						      <tr>
+						      </tr>
+						    </thead>
+						    <tbody>
+						    @foreach ($return as $rd)
+				            <tr>
+				                <td>{{ $rd->eventDate}}<br>
+				               	<b>{{ $rd->fullName }}-{{ $rd->cellNum }}</b><br>
+				               	EMAIL ADDRESS: {{ $rd->emailAddress }}<br>
+				                EVENT COST: {{ $rd->totalFee }}<br>
+				                EVENT NAME: {{ $rd->eventName }}</td>        
+				          	</tr>
+				            @endforeach						      
+						    </tbody>
+						  </table>
+						</div>
+					</div>					
+				</div>
+			</div>
+        </div>
+        </div>
 
     </section>
     <!-- /.content -->
