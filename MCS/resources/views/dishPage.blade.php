@@ -1,6 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
+
+<!-- SweetAlert -->
+<link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
+
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -254,7 +258,7 @@
                 <h2>Dish List</h2>
               </div>
               <div class="col-md-6">
-                <a class="btn btn-app" data-target="#addDishModal" data-toggle="modal" style="float:right">
+                <a class="btn btn-app" data-target="#addDishModal" data-toggle="modal" style="float:right" onclick="dishBtn()">
                   <i class="fa fa-save"></i> ADD
                 </a>
               </div>
@@ -403,8 +407,22 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+<script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
+
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+<script type="text/javascript">
+  function btnsave() {
+      swal({   
+        title: "Saved!",  
+        type: "success",
+        timer: 2000,
+        showConfirmButton: false
+      });
+    }
+</script>
 
 <script>
   $(function () {
