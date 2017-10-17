@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->
@@ -13,7 +14,7 @@
       
     <!-- Main content -->
     <section class="content">
-    <div>
+    <div id="didid">
       	<div class="col-md-4">
 	        <div class="box box-danger">
 	          	<!-- box header -->
@@ -214,18 +215,18 @@
 						      <tr>
 						      </tr>
 						    </thead>
-						    <tbody>
-						    @foreach ($lost as $ld)
+						    <tbody id="lostlist">
+						   <!--  @foreach ($lost as $ld)
 				            <tr>
-				               	<td>{{ $ld->fullName }}</td>
-				                <td>{{ $ld->cellNum }}</td>
-				                <td>{{ $ld->emailAddress }}</td>
+				            	<td>{{ $ld->eventDate}}<br> 
+				               	<b>{{ $ld->fullName }} - {{ $ld->cellNum }}</b><br>
+				                EMAIL ADDRESS: {{ $ld->emailAddress }}</td>
 				                <td>{{ $ld->equipmentName }}</td>
 				                <td>{{ $ld->equipmentRatePerHour }}</td>
 				                <td>{{ $ld->assignEquipmentQty - $ld->assignReturnQty }}</td>
-				                <td>{{ $ld->eventDate}}</td>             
+				                           
 				          	</tr>
-				            @endforeach						      
+				            @endforeach		 -->				      
 						    </tbody>
 						  </table>
 						</div>
@@ -513,8 +514,57 @@
 			$('.lists').css('display', 'inline');
 			$('.tablee').css('display', 'none');
 		}
+		document.getElementById('lostlist').innerHTML ="";
+		var csid;
+		 $.ajax({
+	        type: "GET",
+	        url:  "/QueryLost",
+	        success: function(data){
+	        for(var i=0; i< data['lost'].length; i++){
+	        	csid=data['lost'][i]['customerID'];
+	        	document.getElementById('lostlist').innerHTML +='<tr><td>'+data['lost'][i]['eventDate']+'<br><b>'+data['lost'][i]['fullName']+' - '+data['lost'][i]['cellNum']+'</b><br>EMAIL ADDRESS: '+data['lost'][i]['emailAddress']+'</td>';
+	        	$.ajax({
+			        type: "GET",
+			        url:  "/QueryLost2",
+			        data: {
+			        	csid:csid,
+			        },
+			        success: function(data){
+			    //     	document.getElementById('lostlist').innerHTML +='<td>'
+			    //     	for(var j=0; j< data['lost2'].length; j++){
+							// document.getElementById('lostlist').innerHTML +=data['lost2'][j]['equipmentName']+'<br>';
+			    //     	}
+			    //     	document.getElementById('lostlist').innerHTML +='</td><td>'
+			    //     	for(var j=0; j< data['lost2'].length; j++){
+							// document.getElementById('lostlist').innerHTML +=data['lost2'][j]['equipmentRatePerHour']+'<br>';
+			    //     	}
+			    //     	document.getElementById('lostlist').innerHTML +='</td><td>'
+			    //     	for(var j=0; j< data['lost2'].length; j++){
+							// document.getElementById('lostlist').innerHTML +=(data['lost2'][j]['assignEquipmenQty'])-(data['lost'][j]['assignReturnQty'])+'<br>';
+			    //     	}
+
+			    //     	document.getElementById('lostlist').innerHTML +='</td>'
+			        	// document.getElementById('lostlist').innerHTML +='<td>'+data['lost'][0]['eventDate']+'<br><b>'+data['lost'][0]['fullName']+' - '+data['lost'][0]['cellNum']+'</b><br>EMAIL ADDRESS: '+data['lost'][0]['emailAddress']+'</td>';
+			        },
+			        error: function(xhr){
+			            alert("mali");
+			            alert($.parseJSON(xhr.responseText)['error']['message']);
+			        }                
+		      	});
+		      	// document.getElementById('lostlist').innerHTML +='</tr>';
+		      }
+	         },
+	        error: function(xhr){
+	            alert("mali");
+	            alert($.parseJSON(xhr.responseText)['error']['message']);
+	        }                
+      });
 
 	}
+
+	// $('.lists').ready(function() {
+		
+	// });
 	// function orderBy(){
 	// 	if(document.getElementById('asc').checked){
 	// 		// $("#eLoc").removeAttr('disabled');
@@ -534,4 +584,7 @@
 
 
 
+@endsection
+
+@section('script')
 @endsection

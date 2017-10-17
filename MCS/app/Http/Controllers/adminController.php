@@ -3028,7 +3028,32 @@ class adminController extends Controller
         return View::make('/QueryPage')->with('cancellation', $cancellation)->with('lost', $lost)->with('assign', $assign)->with('return', $return);
     }
 
-    
+    public function queryLost(){
+         $lost = DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
+        ->where('transaction_tbl.transactionStatus', 4)
+        ->where('event_tbl.eventStatus', 2)
+        ->get();
+
+        
+        return \Response::json(['lost'=>$lost]);
+    }
+    public function queryLost2(){
+         $lost2 = DB::table('transaction_tbl')
+        ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('assignequipment_tbl', 'assignequipment_tbl.reservationID', '=','reservation_tbl.reservationID')
+        ->join('equipment_tbl', 'assignequipment_tbl.equipmentID', '=','equipment_tbl.equipmentID')
+        ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*','equipment_tbl.*','assignequipment_tbl.*')
+        ->where('transaction_tbl.transactionStatus', 4)
+        ->where('customer_tbl.customerID', Input::get('csid'))
+        ->get();
+
+        return \Response::json(['lost2'=>$lost2]);
+    }
     //VALIDATIONS
     ////DISH TYPE
     public function validateDishTypeName(){

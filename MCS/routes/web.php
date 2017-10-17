@@ -171,6 +171,8 @@ Route::post("/CancelEvent", array("uses"=>"adminController@cancelEvent"));
 
 //Query Page
 Route::get('/QueryPage', 'adminController@queryPage');
+Route::get('/QueryLost', 'adminController@queryLost');
+Route::get('/QueryLost2', 'adminController@queryLost2');
 
 ///// USER ROUTING /////
 
