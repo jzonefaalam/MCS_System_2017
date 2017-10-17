@@ -30,6 +30,7 @@ use App\purchaseordertbl;
 use App\paymenttbl;
 use App\assignequipmenttbl;
 use Mail;
+use Session;
 class adminController extends Controller
 {
 
@@ -246,6 +247,11 @@ class adminController extends Controller
             $coursetbl->dishStatus = 1;
             $coursetbl->dishImage = "No image";
             $coursetbl->save();
+
+            Session::flash('title', 'Error!');
+            Session::flash('message', 'Please complete the information.');
+            Session::flash('type', 'error');
+
             return redirect()->back();
         }
         else{
@@ -273,6 +279,11 @@ class adminController extends Controller
             $coursetbl->dishStatus = 1;
             $coursetbl->dishImage = $dishImage;
             $coursetbl->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Dish added succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -298,6 +309,11 @@ class adminController extends Controller
         $coursetbl->dishStatus = 1;
         $coursetbl->dishImage = $dishImage;
         $coursetbl->save();
+
+        Session::flash('title', 'Saved!');
+        Session::flash('message', 'Dish added succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
         } else {
             return \Redirect::back();
@@ -319,6 +335,11 @@ class adminController extends Controller
         $coursetbl->dishTypeID= Input::get('editDishType');
         $coursetbl->dishImage= "No Image";
         $coursetbl->save();
+
+        Session::flash('title', 'Error!');
+        Session::flash('message', 'Please complete the information.');
+        Session::flash('type', 'error');
+
         return redirect()->back();
         }
         else{
@@ -345,6 +366,11 @@ class adminController extends Controller
             $coursetbl->dishTypeID= Input::get('editDishType');
             $coursetbl->dishImage= $dishImage;
             $coursetbl->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Dish updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -369,9 +395,16 @@ class adminController extends Controller
             $coursetbl->dishTypeID= Input::get('editDishType');
             $coursetbl->dishImage= $dishImage;
             $coursetbl->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Dish updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         } else {
-            alert('File Not Uploaded!');
+            Session::flash('title', 'Error!');
+            Session::flash('message', 'Dish not updated.');
+            Session::flash('type', 'error');
             return \Redirect::back();
         }
         }
@@ -383,6 +416,11 @@ class adminController extends Controller
         $coursetbl=coursetbl::find($id);
         $coursetbl->dishStatus = 0;
         $coursetbl->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Dish deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -429,6 +467,11 @@ class adminController extends Controller
             $courseType->dishTypeStatus = 1;
             $courseType->dishTypeImage = ($_FILES['addDishTypeImage']['name']);
             $courseType->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Dish type added succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
 
         }
@@ -451,6 +494,11 @@ class adminController extends Controller
             $courseType->dishTypeStatus = 1;
             $courseType->dishTypeImage = ($_FILES['addDishTypeImage']['name']);
             $courseType->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Dish type added succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         } else {
             return \Redirect::back();
@@ -500,6 +548,11 @@ class adminController extends Controller
             $coursetypetbl->dishTypeName= Input::get('editDishTypeName');
             $coursetypetbl->dishTypeImage = ($_FILES['editDishTypeImage']['name']);
             $coursetypetbl->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Dish type updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -521,9 +574,16 @@ class adminController extends Controller
         $coursetypetbl->dishTypeName= Input::get('editDishTypeName');
         $coursetypetbl->dishTypeImage = ($_FILES['editDishTypeImage']['name']);
         $coursetypetbl->save();
+
+        Session::flash('title', 'Updated!');
+        Session::flash('message', 'Dish type updated succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
         } else {
-            alert('File Not Uploaded!');
+            Session::flash('title', 'Error!');
+            Session::flash('message', 'Dish type not updated.');
+            Session::flash('type', 'error');
             return \Redirect::back();
         }
         }
@@ -536,6 +596,11 @@ class adminController extends Controller
         $coursetypetbl = coursetypetbl::find($id);
         $coursetypetbl->dishTypeStatus= 0;
         $coursetypetbl->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Dish type deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -665,6 +730,11 @@ class adminController extends Controller
         $employeeType->employeeTypeStatus = 1;
         $employeeType->employeeTypeImage = "No Image";
         $employeeType->save();
+
+        Session::flash('title', 'Saved!');
+        Session::flash('message', 'Employee added succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -674,6 +744,11 @@ class adminController extends Controller
         $employeetypetbl->employeeTypeName= Input::get('editEmployeeTypeName');
         $employeetypetbl->employeeRatePerHour = Input::get('editEmployeeRatePerHour');
         $employeetypetbl->save();
+
+        Session::flash('title', 'Updated!');
+        Session::flash('message', 'Employee updated succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -690,6 +765,11 @@ class adminController extends Controller
         $employeetypetbl = employeetypetbl::find($id);
         $employeetypetbl->employeeTypeStatus= 0;
         $employeetypetbl->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Employee deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -710,6 +790,11 @@ class adminController extends Controller
         $event->eventTypeStatus = 1;
         $event->eventTypeAvailability = 1;
         $event->save();
+
+        Session::flash('title', 'Saved!');
+        Session::flash('message', 'Event added succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -719,6 +804,11 @@ class adminController extends Controller
         $event->eventTypeName = Input::get('editEventTypeName');
         $event->eventTypeDescription = Input::get('editEventTypeDesc');
         $event->save();
+
+        Session::flash('title', 'Updated!');
+        Session::flash('message', 'Event updated succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -735,6 +825,11 @@ class adminController extends Controller
         $event = eventtypetbl::find($id);
         $event->eventTypeStatus = 0;
         $event->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Event deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -791,6 +886,11 @@ class adminController extends Controller
             $location->locationStatus = 1;
             $location->locationAvailability = 1;
             $location->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Location added succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -818,6 +918,11 @@ class adminController extends Controller
             $location->locationStatus = 1;
             $location->locationAvailability = 1;
             $location->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Location added succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         } else {
             return \Redirect::back();
@@ -867,6 +972,11 @@ class adminController extends Controller
             $location->locationCapacity = Input::get('editLocationCapacity');
             $location->locationImage = $locationImage;
             $location->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Location updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -893,6 +1003,11 @@ class adminController extends Controller
             $location->locationCapacity = Input::get('editLocationCapacity');
             $location->locationImage = $locationImage;
             $location->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Location updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         } else {
             return \Redirect::back();
@@ -914,6 +1029,11 @@ class adminController extends Controller
         $location = locationtbl::find($id); 
         $location->locationStatus = 0;
         $location->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Location deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -1053,6 +1173,11 @@ class adminController extends Controller
                     $packageInclusion->serviceID = $serviceInclusion;
                     $packageInclusion->save();
                 }
+
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Package added succesfully.');
+                Session::flash('type', 'success');
+
                 return redirect()->back();
             }
             // Check file size
@@ -1107,6 +1232,11 @@ class adminController extends Controller
                     $packageInclusion->serviceID = $serviceInclusion;
                     $packageInclusion->save();
                 }
+
+                Session::flash('title', 'Saved!');
+                Session::flash('message', 'Package added succesfully.');
+                Session::flash('type', 'success');
+
                 return redirect()->back();
             } else {
                 return \Redirect::back();
@@ -1154,6 +1284,7 @@ class adminController extends Controller
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
+
             return redirect()->back();
         }
         else{
@@ -1207,6 +1338,11 @@ class adminController extends Controller
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Package updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -1258,6 +1394,11 @@ class adminController extends Controller
                 $packageInclusion->serviceID = $serviceInclusion;
                 $packageInclusion->save();
             }
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Package updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         } else {
             return \Redirect::back();
@@ -1394,6 +1535,11 @@ class adminController extends Controller
         $package = packagetbl::find($id); 
         $package->packageStatus = 0;
         $package->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Package deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
     //Equipment functions------------------------------------------------------------------------->
@@ -1606,11 +1752,17 @@ class adminController extends Controller
     }
 
     public function addEquipmentType(Request $request){
+
         $equipmentType = new equipmenttypetbl;
         $equipmentType->equipmentTypeName = Input::get('addEquipmentTypeName');
         $equipmentType->equipmentTypeStatus = 1;
         $equipmentType->equipmentTypeImage = "No Image";
         $equipmentType->save();
+
+        Session::flash('title', 'Saved!');
+        Session::flash('message', 'Equipment added succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -1627,6 +1779,11 @@ class adminController extends Controller
         $equipmentType = equipmenttypetbl::find($id);
         $equipmentType->equipmentTypeStatus = 0;
         $equipmentType->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Equipment removed succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -1635,6 +1792,11 @@ class adminController extends Controller
         $equipmentType = equipmenttypetbl::find($id);
         $equipmentType->equipmentTypeName = Input::get('editEquipmentTypeName');
         $equipmentType->save();
+
+        Session::flash('title', 'Updated!');
+        Session::flash('message', 'Equipment updated succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -1915,6 +2077,11 @@ class adminController extends Controller
             $service->serviceAvailability = 1;
             $service->serviceImage = $serviceImage;
             $service->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Service added succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -1940,6 +2107,11 @@ class adminController extends Controller
             $service->serviceAvailability = 1;
             $service->serviceImage = $serviceImage;
             $service->save();
+
+            Session::flash('title', 'Saved!');
+            Session::flash('message', 'Service added succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         } else {
             return \Redirect::back();
@@ -1984,6 +2156,11 @@ class adminController extends Controller
             $service->serviceTypeID = Input::get('editServiceType');
             $service->serviceImage = $serviceImage;
             $service->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Service updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         }
         // Check file size
@@ -2008,6 +2185,11 @@ class adminController extends Controller
             $service->serviceTypeID = Input::get('editServiceType');
             $service->serviceImage = $serviceImage;
             $service->save();
+
+            Session::flash('title', 'Updated!');
+            Session::flash('message', 'Service updated succesfully.');
+            Session::flash('type', 'success');
+
             return redirect()->back();
         } else {
             return \Redirect::back();
@@ -2029,6 +2211,11 @@ class adminController extends Controller
         $service = servicetbl::find($id); 
         $service->serviceStatus = 0;
         $service->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Service deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -2049,6 +2236,11 @@ class adminController extends Controller
         $serviceType->serviceTypeStatus = 1;
         $serviceType->serviceTypeAvailability = 1;
         $serviceType->save();
+
+        Session::flash('title', 'Saved!');
+        Session::flash('message', 'Service type added succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -2058,6 +2250,11 @@ class adminController extends Controller
         $serviceType->serviceTypeName = Input::get('editServiceTypeName');
         // $serviceType->serviceTypeDescription = Input::get('editServiceTypeDesc');
         $serviceType->save();
+
+        Session::flash('title', 'Updated!');
+        Session::flash('message', 'Service type updated succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 
@@ -2074,6 +2271,11 @@ class adminController extends Controller
         $serviceType = servicetypetbl::find($id); 
         $serviceType->serviceTypeStatus = 0;
         $serviceType->save();
+
+        Session::flash('title', 'Deleted!');
+        Session::flash('message', 'Service type deleted succesfully.');
+        Session::flash('type', 'success');
+
         return redirect()->back();
     }
 

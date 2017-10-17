@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 
 @section('content')
+
+<!-- SweetAlert -->
+<link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
 <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -127,7 +130,7 @@
                 <form id="editlocationForm" role="form" method="POST" action="DeleteLocationPage" class="form-horizontal " enctype="multipart/form-data">
                 <div class="modal fade" id="deleteLocationModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                         <div class="modal-body">
                           <div class="form-group" style="display: none;">
                             <label class="col-sm-4 control-label">Location ID</label>
@@ -137,13 +140,13 @@
                             </div>
                           </div>
                           {!! csrf_field() !!}
-                          <div>
-                            <h5> Are you sure you want to delete this item? </h5>
+                          <div align="center">
+                            <h4> Are you sure you want to delete this item? </h4>
                           </div>
 
                           <div style="text-align: center;">
-                            <button type="submit" name="deleteLocationBtn" class="btn btn-primary btn-sm">Confirm</button>
-                            <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+                            <button type="submit" name="deleteLocationBtn" class="btn btn-danger btn-sm">Delete</button>
+                            <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                           </div>
                         </div>
                     </div>
@@ -372,9 +375,52 @@
       <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
+
+<script type="text/javascript" src="{{ asset('sweetalert/dist/sweetalert.min.js') }}"></script>
   
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
 <script src='http://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+
+    @if (Session::has('message'))
+      <script>
+        swal({   
+          title: "{{ Session::get('title') }}",   
+          text: "{{ Session::get('message') }}",   
+          type: "{{ Session::get('type') }}",
+          timer: 3000,
+          showConfirmButton: false
+        });
+      </script>
+    @endif
+
+<!-- <script type="text/javascript">
+  function locationAdd() {
+      swal({   
+        title: "Saved!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+
+  function locationDelete() {
+      swal({   
+        title: "Deleted!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+
+  function locationUpdate() {
+      swal({   
+        title: "Updated!",  
+        type: "success",
+        timer: 4000,
+        showConfirmButton: false
+      });
+    }
+</script> -->
 
 <script>
   $(function () {
