@@ -178,13 +178,15 @@
 						    <tbody>
 						    @foreach ($lost as $ld)
 				            <tr>
+				            	@if($ld->assignEquipmentQty!=$ld->assignReturnQty)
 				               	<td>{{ $ld->fullName }}</td>
 				                <td>{{ $ld->cellNum }}</td>
 				                <td>{{ $ld->emailAddress }}</td>
 				                <td>{{ $ld->equipmentName }}</td>
 				                <td>{{ $ld->equipmentRatePerHour }}</td>
 				                <td>{{ $ld->assignEquipmentQty - $ld->assignReturnQty }}</td>
-				                <td>{{ $ld->eventDate}}</td>             
+				                <td>{{ $ld->eventDate}}</td>
+				                @endif             
 				          	</tr>
 				            @endforeach							      
 						    </tbody>
