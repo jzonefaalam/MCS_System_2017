@@ -82,7 +82,7 @@
     <form role="form" method="POST" action="#" class="form-horizontal">
       <div  class="modal fade" id="transactionModal">
         <!-- <div class="modal-dialog"> -->
-        <div style="height: 80%; width: 40%; margin-top: 5%; margin-left: 30%;" class="modal-dialog">
+        <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -154,7 +154,6 @@
                   </div>
                 </div>
               </div>
-            </div>
             <!-- /Modal Body -->
             <div class="modal-footer">
               <a data-target="#cancelEventModal" id="cancelBtn" data-toggle="modal" onclick="cancelEvent(document.getElementById('parTransactionId').value);" class="btn btn-app" type="submit" style=" float:right; display:none;">
@@ -172,11 +171,11 @@
               <a class="btn btn-app" id="printBtn" href="#" style="float:right; display:none;" onclick="getReservation(document.getElementById('parTransactionId').value);">
                 <i class="fa fa-print"></i>Print
               </a>
-
             </div>
             <!-- /Modal Footer -->
           </div>
-        </div>
+
+            </div>
       </div>
     </form>
     <!-- End Modals-->
@@ -213,8 +212,10 @@
                     <div id="paymentModalEventDate" style="display: inline-block;">
                       
                     </div>
-                    <input id="paymentModalpaymentTerm" type="text" style="display: none;">
+                    <input id="paymentModalpaymentTerm" type="text" >
                     <input id="paymentModalTransactionID" type="text" style="display: none;">
+                    <input id="paymentModalPaymentFee" type="text" style="display: none;">
+                    <input id="paymentModalTransactionFee" type="text" style="display: none;">
                   </div>
                 </div>
               </div>
@@ -223,7 +224,7 @@
             </div>
             <!-- Payment Table -->
             <div class="row">
-              <table id="paymentDetailTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
+              <table id="paymentDetailTbl" class="table table-striped table-bordered" style="width:95%;">
                   <thead>
                     <tr>
                       <th>Payment Amount</th>
@@ -423,6 +424,40 @@
   </form>
   <!-- End -->
 
+   <!-- SUBMIT PAYMENT MODAL -->
+  <form role="form" method="POST" action="SubmitPayment" class="form-horizontal">
+    <div class="modal fade" id="submitEventModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-body">
+              <div class="form-group" >
+                <label class="col-sm-4 control-label">Payment ID</label>
+                <div class="col-sm-5 input-group" >
+                  <input type="text"  name="submitPaymentID" id="submitPaymentID" >
+                  <input type="text"  name="submitPaymentTransactionID" id="submitPaymentTransactionID">
+                  <input type="text"  name="submitPaymentTermID" id="submitPaymentTermID" >
+                  <input type="text"  name="submitPaymentReceiveDate" id="submitPaymentReceiveDate" >
+                  <input type="text"  name="submitPaymentChecker" id="submitPaymentChecker" >
+                  <input type="text"  name="submitPaymentFee" id="submitPaymentFee" >
+                  <input type="text"  name="submitTransactionFee" id="submitTransactionFee" >
+                </div>
+              </div>
+            </div>
+              {!! csrf_field() !!}
+            <div>
+              <h5> Are you sure you want to submit this event? </h5>
+            </div>
+            <div style="text-align: center;">
+              <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+              <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End Modals-->
+
   </div>
   <!-- /Content-wrapper -->
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
@@ -597,6 +632,7 @@
           document.getElementById('paymentModalContactNumber').innerHTML += '<h6>'+data['eventDetail'][0]['cellNum']+'</h6>';
           document.getElementById('paymentModalpaymentTerm').value=data['eventDetail'][0]['paymentTermID'];
           document.getElementById('paymentModalTransactionID').value=data['eventDetail'][0]['transactionID'];
+          document.getElementById('paymentModalTransactionFee').value=data['eventDetail'][0]['totalFee'];
           // Ajax for Payment Detail
           // alert(data['eventDetail'][0]['paymentTermID']);
           $.ajax({
@@ -625,7 +661,7 @@
                 if (statusChecker == 0) {
                   paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-warning">Pending</span>';
                   paymentReceiveDate = '<input type="date" id="' + addPaymentReceiveDate + '" max="{{date('Y-m-d',  strtotime( '+2 month' ))}}" min="{{date('Y-m-d',  strtotime( '+7 day' ))}}">';
-                  paymentActionBtn = '<input type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
+                  paymentActionBtn = '<input data-target="#submitEventModal" data-toggle="modal" type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
                 }
                 if (statusChecker == 1) {
                   paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-success">Confirmed</span>';
@@ -640,6 +676,8 @@
                   paymentStatus,
                   paymentActionBtn
                   ]).draw(true);
+
+                document.getElementById('paymentModalPaymentFee').value = paymentAmount;
               }
               $("#paymentModal").modal("show"); 
             },
@@ -667,38 +705,11 @@
     var receiveDate0 = document.getElementById('addPaymentReceiveDate0').value;
     var paymentTermID = document.getElementById('paymentModalpaymentTerm').value;
     var transactionID = document.getElementById('paymentModalTransactionID').value;
-    alert(paymentID0);
-    alert(receiveDate0);
-    alert(paymentTermID);
-    alert(transactionID);
-    $.ajax({
-      url: "/SavePayment0",
-      type: "POST",
-      beforeSend: function (xhr) {
-        var token = $('meta[name="csrf_token"]').attr('content');
-        if (token) {
-          return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-        }
-      },
-      data: {
-        sendPaymentID: paymentID0,
-        sendReceiveDate: receiveDate0,
-        sendPaymentTerm: paymentTermID,
-        sendTransactionID: transactionID,
-        '_token': $('#token').val()
-      },               
-      success: function (response) {
-        alert('zczc');
-        // $('#addPaymentStatusID0').removeClass('labe\\l label-warning').addClass('label label-success');
-        // document.getElementById('addPaymentStatusID0').innerHTML = 'Confirmed';
-        // $('#addPaymentBtnID0').prop("disabled",true);
-        // $('#addPaymentReceiveDate0').prop("disabled",true);
-      },
-      error: function(xhr)
-      {
-        alert("mali")
-      }                  
-    });
+    document.getElementById('submitPaymentTransactionID').value = transactionID;
+    document.getElementById('submitPaymentReceiveDate').value = receiveDate0;
+    document.getElementById('submitPaymentTermID').value = paymentTermID;
+    document.getElementById('submitPaymentID').value = paymentID0;
+    document.getElementById('submitPaymentChecker').value = 1;
   }
 
   //Second Payment
@@ -706,34 +717,33 @@
     var paymentID1 = id;
     var receiveDate1 = document.getElementById('addPaymentReceiveDate1').value;
     var transactionID = document.getElementById('paymentModalTransactionID').value;
-    alert(receiveDate1);
-    $.ajax({
-      url: "/SavePayment1",
-      type: "POST",
-      beforeSend: function (xhr) {
-        var token = $('meta[name="csrf_token"]').attr('content');
-        if (token) {
-          return xhr.setRequestHeader('X-CSRF-TOKEN', token);
-        }
-      },
-      data: {
-        sendPaymentID: paymentID1,
-        sendReceiveDate: receiveDate1,
-        sendTransactionID: transactionID,
-        '_token': $('#token').val()
-      },               
-      success: function (response) {
-        alert('zxc');
-        // $('#addPaymentStatusID1').removeClass('label label-warning').addClass('label label-success');
-        // document.getElementById('addPaymentStatusID1').innerHTML = 'Confirmed';
-        // $('#addPaymentBtnID1').prop("disabled",true);
-        // $('#addPaymentReceiveDate1').prop("disabled",true);
-      },
-      error: function(xhr)
-      {
-        alert("mali");
-      }                  
-    });
+    var paymentTermID = document.getElementById('paymentModalpaymentTerm').value;
+    var transactionFee = document.getElementById('paymentModalTransactionFee').value;
+    var paymentFee = document.getElementById('paymentModalPaymentFee').value;
+    document.getElementById('submitPaymentTransactionID').value = transactionID;
+    document.getElementById('submitPaymentReceiveDate').value = receiveDate1;
+    document.getElementById('submitPaymentTermID').value = paymentTermID;
+    document.getElementById('submitPaymentID').value = paymentID1;
+    document.getElementById('submitPaymentChecker').value = 2;
+    document.getElementById('submitPaymentFee').value = paymentFee;
+    document.getElementById('submitTransactionFee').value = transactionFee;
+  }
+
+  //Second Payment
+  function submitPayment2(id){
+    var paymentID2 = id;
+    var receiveDate2 = document.getElementById('addPaymentReceiveDate2').value;
+    var transactionID = document.getElementById('paymentModalTransactionID').value;
+    var paymentTermID = document.getElementById('paymentModalpaymentTerm').value;
+    var transactionFee = document.getElementById('paymentModalTransactionFee').value;
+    var paymentFee = document.getElementById('paymentModalPaymentFee').value;
+    document.getElementById('submitPaymentTransactionID').value = transactionID;
+    document.getElementById('submitPaymentReceiveDate').value = receiveDate2;
+    document.getElementById('submitPaymentTermID').value = paymentTermID;
+    document.getElementById('submitPaymentID').value = paymentID2;
+    document.getElementById('submitPaymentChecker').value = 3;
+    document.getElementById('submitPaymentFee').value = paymentFee;
+    document.getElementById('submitTransactionFee').value = transactionFee;
   }
 </script>
 

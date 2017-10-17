@@ -2473,11 +2473,79 @@ class adminController extends Controller
         ->join('reservation_tbl','reservation_tbl.reservationID','=','payment_tbl.reservationID')
         ->select('reservation_tbl.*', 'payment_tbl.*')
         ->where('reservation_tbl.reservationID', '=' , Input::get('reservationID'))
-        ->orderBy('payment_tbl.paymentDueDate', 'asc')
+        ->orderBy('payment_tbl.paymentDueDate', 'desc')
         ->get();
 
 
         return \Response::json(['paymentDetail'=>$paymentDetail]);
+    }
+
+    public function submitPayment(){   
+        $transactionID = Input::get('submitPaymentTransactionID');
+        $paymentTermID = Input::get('submitPaymentTermID');
+        $paymentID = Input::get('submitPaymentID');
+        $paymentRDate = Input::get('submitPaymentReceiveDate');
+        $paymentChecker = Input::get('submitPaymentChecker');
+        if($paymentChecker == 1){
+            $payment = payment_tbl::find($paymentID);
+            $payment->paymentReceiveDate = $paymentRDate;
+            $payment->paymentStatus = 1;
+            $payment->save();
+                if($paymentTermID == 1){
+                    $transaction = transaction_tbl::find($transactionID);
+                    $transaction->transactionStatus = 1;
+                    $transaction->save();
+                }
+                if($paymentTermID == 2){
+                    $transaction = transaction_tbl::find($transactionID);
+                    $transaction->transactionStatus = 2;
+                    $transaction->save();
+                }
+                if($paymentTermID == 3){
+                    $transaction = transaction_tbl::find($transactionID);
+                    $transaction->transactionStatus = 2;
+                    $transaction->save();
+                }
+        }
+        if($paymentChecker == 2){
+            $paymentFee = Input::get('submitPaymentFee');
+            $transactionFee = Input::get('submitTransactionFee');
+            $totalFee = $paymentFee + $transactionFee;
+                $payment = payment_tbl::find($paymentID);
+                $payment->paymentReceiveDate = $paymentRDate;
+                $payment->paymentStatus = 1;
+                $payment->save();
+                    if($paymentTermID == 1){
+                        $transaction = transaction_tbl::find($transactionID);
+                        $transaction->transactionStatus = 4;
+                        $transaction->totalFee = $totalFee;
+                        $transaction->save();
+                    }
+                    if($paymentTermID == 2){
+                        $transaction = transaction_tbl::find($transactionID);
+                        $transaction->transactionStatus = 1;
+                        $transaction->save();
+                    }
+                    if($paymentTermID == 3){
+                        $transaction = transaction_tbl::find($transactionID);
+                        $transaction->transactionStatus = 1;
+                        $transaction->save();
+                    }
+        }
+        if($paymentChecker == 3){
+            $paymentFee = Input::get('submitPaymentFee');
+            $transactionFee = Input::get('submitTransactionFee');
+            $totalFee = $paymentFee + $transactionFee;
+                $payment = payment_tbl::find($paymentID);
+                $payment->paymentReceiveDate = $paymentRDate;
+                $payment->paymentStatus = 1;
+                $payment->save();
+                    $transaction = transaction_tbl::find($transactionID);
+                    $transaction->transactionStatus = 4;
+                    $transaction->totalFee = $totalFee;
+                    $transaction->save();
+        }
+        return redirect()->back();
     }
 
     public function savePayment0()
@@ -2520,6 +2588,7 @@ class adminController extends Controller
         $paymentFee = Input::get('sendPaymentFee');
         $transactionFee = Input::get('sendTransactionFee');
         $totalFee = $paymentFee + $transactionFee;
+
         $payment = payment_tbl::find($paymentID);
         $payment->paymentReceiveDate = $paymentRDate;
         $payment->paymentStatus = 1;

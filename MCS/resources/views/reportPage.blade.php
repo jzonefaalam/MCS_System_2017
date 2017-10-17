@@ -818,6 +818,8 @@
       url:  "/RetrieveMonthlyCollection",
       success: function(data){
         var totalAmount = 0;
+        var totalBalance = 0;
+        var totalPaid = 0;
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -837,9 +839,9 @@
         frameDoc.document.write('<th> Event Date</th>');
         frameDoc.document.write('<th> Name</th>');
         frameDoc.document.write('<th> Occasion/Event </th>');
-        frameDoc.document.write('<th> Down </th>');
-        frameDoc.document.write('<th> Balance </th>');
-        frameDoc.document.write('<th> Total </th>');
+        frameDoc.document.write('<th> Paid Amount </th>');
+        frameDoc.document.write('<th> Balance Amount </th>');
+        frameDoc.document.write('<th> Total Amount </th>');
         frameDoc.document.write('</tr>');
         for (i = 0; i < data['paymentData'].length; i++) {
           frameDoc.document.write('<tr style ="text-align:center">');
@@ -847,11 +849,26 @@
           frameDoc.document.write('<td>'+data['paymentData'][i]['fullName']+'</br>'+data['paymentData'][i]['guestCount']+' Guests</br>'+data['paymentData'][i]['packageName']+'</br></td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['eventName']+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['paid']+'</td>');
-          frameDoc.document.write('<td>'+(data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'])+'</td>');
+          var balanceAmt = 0;
+          balanceAmt = data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'];
+          frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
+          totalAmount = totalAmount + data['paymentData'][i]['totalFee'];
+          totalPaid = totalPaid + data['paymentData'][i]['paid'];
+          totalBalance = totalBalance + balanceAmt;
         }
-        frameDoc.document.write('</table></br>');
+        frameDoc.document.write('<tr style ="text-align:center">');
+        frameDoc.document.write('<td></td>');
+        frameDoc.document.write('<td></td>');
+        frameDoc.document.write('<td>TOTAL</td>');
+        frameDoc.document.write('<td>'+totalPaid+'</td>');
+        frameDoc.document.write('<td>'+totalBalance+'</td>');
+        frameDoc.document.write('<td>'+totalAmount+'</td>');
+        frameDoc.document.write('</tr>');
+        frameDoc.document.write('</table></br>')
+        frameDoc.document.write('</html>')
+        frameDoc.document.close();
         setTimeout(function () {
           window.frames["frame1"].focus();
           window.frames["frame1"].print();
@@ -922,6 +939,8 @@
       url:  "/RetrieveYearlyCollection",
       success: function(data){
         var totalAmount = 0;
+        var totalBalance = 0;
+        var totalPaid = 0;        
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -951,11 +970,26 @@
           frameDoc.document.write('<td>'+data['paymentData'][i]['fullName']+'</br>'+data['paymentData'][i]['guestCount']+' Guests</br>'+data['paymentData'][i]['packageName']+'</br></td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['eventName']+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['paid']+'</td>');
-          frameDoc.document.write('<td>'+(data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'])+'</td>');
+          var balanceAmt = 0;
+          balanceAmt = data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'];
+          frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
+          totalAmount = totalAmount + data['paymentData'][i]['totalFee'];
+          totalPaid = totalPaid + data['paymentData'][i]['paid'];
+          totalBalance = totalBalance + balanceAmt;
         }
-        frameDoc.document.write('</table></br>');
+        frameDoc.document.write('<tr style ="text-align:center">');
+        frameDoc.document.write('<td></td>');
+        frameDoc.document.write('<td></td>');
+        frameDoc.document.write('<td>TOTAL</td>');
+        frameDoc.document.write('<td>'+totalPaid+'</td>');
+        frameDoc.document.write('<td>'+totalBalance+'</td>');
+        frameDoc.document.write('<td>'+totalAmount+'</td>');
+        frameDoc.document.write('</tr>');
+        frameDoc.document.write('</table></br>')
+        frameDoc.document.write('</html>')
+        frameDoc.document.close();
         setTimeout(function () {
           window.frames["frame1"].focus();
           window.frames["frame1"].print();
@@ -1026,6 +1060,8 @@
       url:  "/RetrieveAllCollection",
       success: function(data){
         var totalAmount = 0;
+        var totalBalance = 0;
+        var totalPaid = 0;
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -1055,11 +1091,26 @@
           frameDoc.document.write('<td>'+data['paymentData'][i]['fullName']+'</br>'+data['paymentData'][i]['guestCount']+' Guests</br>'+data['paymentData'][i]['packageName']+'</br></td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['eventName']+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['paid']+'</td>');
-          frameDoc.document.write('<td>'+(data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'])+'</td>');
+          var balanceAmt = 0;
+          balanceAmt = data['paymentData'][i]['totalFee']-data['paymentData'][i]['paid'];
+          frameDoc.document.write('<td>'+balanceAmt+'</td>');
           frameDoc.document.write('<td>'+data['paymentData'][i]['totalFee']+'</td>');
           frameDoc.document.write('</tr>');
+          totalAmount = totalAmount + data['paymentData'][i]['totalFee'];
+          totalPaid = totalPaid + data['paymentData'][i]['paid'];
+          totalBalance = totalBalance + balanceAmt;
         }
-        frameDoc.document.write('</table></br>');
+        frameDoc.document.write('<tr style ="text-align:center">');
+        frameDoc.document.write('<td></td>');
+        frameDoc.document.write('<td></td>');
+        frameDoc.document.write('<td>TOTAL</td>');
+        frameDoc.document.write('<td>'+totalPaid+'</td>');
+        frameDoc.document.write('<td>'+totalBalance+'</td>');
+        frameDoc.document.write('<td>'+totalAmount+'</td>');
+        frameDoc.document.write('</tr>');
+        frameDoc.document.write('</table></br>')
+        frameDoc.document.write('</html>')
+        frameDoc.document.close();
         setTimeout(function () {
           window.frames["frame1"].focus();
           window.frames["frame1"].print();

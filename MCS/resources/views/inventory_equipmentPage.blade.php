@@ -249,7 +249,7 @@
                           <div class="tab-content">
 
                             <div class="tab-pane active" id="tab_1">
-                              <form  id="editEquipmentForm" role="form" method="POST" action="EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
+                              <form  id="editEquipmentForm" role="form" method="POST" action="/EditEquipmentPage" class="form-horizontal editEquipmentValidator" enctype="multipart/form-data">
                               {!! csrf_field() !!}
 
                               <div class="form-group">
@@ -258,7 +258,7 @@
                               </div>
                               </div>
 
-                              <div class="form-group" style="display: none;">
+                              <div class="form-group">
                               <label class="col-sm-4 control-label">Equipment ID</label>
                               <div class="col-sm-6">
                               <div class = "input-group">
@@ -683,32 +683,7 @@ yourImg.style.width = '150px';
       "autoWidth": true
     });
   });
-
-  $(document).ready(function() {
-    var table = $('#inventoryEquipmentTable').DataTable();
-     
-    $('#inventoryEquipmentTable tbody').on('dblclick', 'tr', function () {
-        var data = table.row( this ).data();
-        var equipmentDateVar = data[0];
-        var equipmentNameVar = data[2];
-        var equipmentDescriptionVar = data[3];
-        var equipmentRatePerHourVar = data[4];
-        var equipmentUnitVar= data[5];
-        var equipmentTypeVar = data[1];
-        var equipmentIDVar = data[6];
-        var equipmentImageVar = data[7];
-         $('#editEquipmentTypeID option[value="' + equipmentTypeVar + '"]').prop("selected", true);
-         $('#editEquipmentName').val(equipmentNameVar);
-         $('#editEquipmentDescription').val(equipmentDescriptionVar);
-         $('#editEquipmentRatePerHour').val(equipmentRatePerHourVar);
-         $('#editEquipmentID').val(equipmentIDVar);
-         $('#addQuantityEquipmentID').val(equipmentIDVar);
-         $('#addQuantityEquipmentName').val(equipmentNameVar);
-         $('#equipmentQuantityFake').val(equipmentUnitVar);
-         document.getElementById("editPhotoIcon").src="img/" + equipmentImageVar;
-         $("#editEquipmentModal").modal("show");
-        } );
-} );
+  
 </script>
 
   @endsection

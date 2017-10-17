@@ -965,12 +965,42 @@
           </div>
           <div class="modal-footer">
               <button type="submit" class="btn btn-primary">Send Notification</button>
+              <button data-target="#cancelEventModal" id="cancelBtn" data-toggle="modal" onclick="cancelEvent(document.getElementById('paymentModalTransactionID').value);" class="btn btn-danger" type="button" style=" float:right;">
+                 Cancel Event</button>
           </div>
         </div>
       </div>
     </div>
   </form>
   <!-- End -->
+
+   <!-- CANCEL EVENT MODAL -->
+  <form role="form" method="POST" action="CancelEvent" class="form-horizontal">
+    <div class="modal fade" id="cancelEventModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+           <div class="modal-body">
+              <div class="form-group" style="display:none;">
+                <label class="col-sm-4 control-label">Transaction ID</label>
+                <div class="col-sm-5 input-group" >
+                  <input type="text"  name="cancelEventTransactionId" id="cancelEventTransactionId" style="display: none;">
+                </div>
+              </div>
+            </div>
+              {!! csrf_field() !!}
+            <div>
+              <h5> Are you sure you want to cancel this event? </h5>
+            </div>
+            <div style="text-align: center;">
+              <button type="submit" class="btn btn-primary btn-sm">Confirm</button>
+              <button data-dismiss="modal" class="btn btn-primary btn-sm">Cancel</button>
+            </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End Modals-->
   
 </div>
 <!-- ./wrapper -->
@@ -998,6 +1028,27 @@
 <script src="{{ asset('LTE/fullcalendar/gcal.min.js')}}"></script>
 <script src="{{ asset('LTE/plugins/datepicker/bootstrap-datepicker.min.js') }}"></script>
 <!-- Page specific script -->
+
+<script>
+  function cancelEvent(id){
+    var transactionID = id;
+    $.ajax({
+      type: "GET",
+      url:  "/RetrieveTransaction",
+      data: 
+      {
+        getId: transactionID
+      },
+      success: function(data){
+        document.getElementById("cancelEventTransactionId").value = data['tdata'][0]['transactionID'];
+      }, 
+      error: function(xhr)
+      {
+        alert($.parseJSON(xhr.responseText)['error']['message']);
+      }                
+    });
+  }
+</script>
 
 <!-- Render of Event Table -->
 <script>
@@ -1719,10 +1770,6 @@
     var receiveDate0 = document.getElementById('addPaymentReceiveDate0').value;
     var paymentTermID = document.getElementById('paymentModalpaymentTerm').value;
     var transactionID = document.getElementById('paymentModalTransactionID').value;
-    alert(paymentID0);
-    alert(receiveDate0);
-    alert(paymentTermID);
-    alert(transactionID);
     $.ajax({
       url: "/SavePayment0",
       type: "POST",

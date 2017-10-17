@@ -128,6 +128,7 @@ Route::get('/RetrievePaymentDetail', 'adminController@retrievePaymentDetail');
 Route::post("/SavePayment0", array("uses"=>"adminController@savePayment0"));
 Route::post("/SavePayment1", array("uses"=>"adminController@savePayment1"));
 Route::post("/SavePayment2", array("uses"=>"adminController@savePayment2"));
+Route::post("/SubmitPayment", array("uses"=>"adminController@submitPayment"));
 Route::post("/TransactionSavePayment0", array("uses"=>"adminController@transactionSavePayment0"));
 Route::post("/TransactionSavePayment1", array("uses"=>"adminController@transactionSavePayment1"));
 Route::post("/AssignEquipment", array("uses"=>"adminController@assignEquipment"));
@@ -146,7 +147,7 @@ Route::post("/EditReservation", array("uses"=>"adminController@editReservation")
 Route::get('/InventoryEquipmentPage', 'adminController@inventoryEquipmentPage');
 Route::post("/EnableEquipment", array("uses"=>"adminController@enableEquipment"));
 Route::post("/DisableEquipment", array("uses"=>"adminController@disableEquipment"));
-Route::post("/UpdateEquipmentUnit", array("uses"=>"adminController@addEquipmentUnit"));
+// Route::post("/EditEquipmentPage", array("uses"=>"adminController@editEquipment"));
 
 //Purchase Order Page
 Route::get('/PurchaseOrderPage', 'adminController@inventoryPOPage');

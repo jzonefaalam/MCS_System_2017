@@ -169,6 +169,22 @@
                     </div>
                     </div>
 
+                    <div class="form-group" style="display: none;">
+                    <label class="col-sm-4 control-label"> Type</label>
+                    <div class="col-sm-6">
+                    <div class = "input-group">
+                    <div class="input-group-addon">
+                    <i class="fa fa-navicon" aria-hidden="true"></i>
+                    </div>
+                    <select class="form-control" name="editEquipmentType" id="editEquipmentType">
+                    @foreach($addEquipmentData as $equipmentTypeData)
+                    <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
+                    @endforeach
+                    </select>
+                    </div>
+                    </div>
+                    </div>
+
                     <div class="form-group">
                     <label class="col-sm-4 control-label"> Type</label>
                     <div class="col-sm-6">
@@ -176,7 +192,7 @@
                     <div class="input-group-addon">
                     <i class="fa fa-navicon" aria-hidden="true"></i>
                     </div>
-                    <select disabled class="form-control" name="editEquipmentType" id="editEquipmentType">
+                    <select disabled class="form-control" name="editEquipmentTypeFake" id="editEquipmentTypeFake">
                     @foreach($addEquipmentData as $equipmentTypeData)
                     <option value="{{ $equipmentTypeData->equipmentTypeID }}">{{ $equipmentTypeData->equipmentTypeName }} </option>
                     @endforeach
@@ -378,10 +394,17 @@
             $('#editEquipmentRatePerHour').val(data['ss'][0]['equipmentRatePerHour']);
             $('#editEquipmentUnit').val(data['ss'][0]['equipmentUnit']);
             document.getElementById("editPhotoIcon").src="img/" + (data['ss'][0]['equipmentImage']);
-            var opty = document.getElementById('editEquipmentType').options;
+            var opty = document.getElementById('editEquipmentType').options; 
+            var opty1 = document.getElementById('editEquipmentTypeFake').options;
               for(var i =0; i<opty.length; i++){
                 if(opty[i].value==data['ss'][0]['equipmentTypeID']){
                 $('#editEquipmentType').val(data['ss'][0]['equipmentTypeID']) ;
+                break;
+                }
+              }
+              for(var i =0; i<opty.length; i++){
+                if(opty1[i].value==data['ss'][0]['equipmentTypeID']){
+                $('#editEquipmentTypeFake').val(data['ss'][0]['equipmentTypeID']) ;
                 break;
                 }
               }
