@@ -61,7 +61,7 @@
                     <span class="label label-danger">Cancelled</span>
                   <?php endif ?>
                   <?php if (($transactionData->transactionStatus)==4): ?>
-                    <span class="label label-success">Finished</span>
+                    <span class="label label-primary">Finished</span>
                   <?php endif ?>
                   <?php if (($transactionData->transactionStatus)==5): ?>
                     <span class="label label-danger">Payment Pending</span>
@@ -99,14 +99,11 @@
                       <div class="col-sm-5">
                         <p class="form-control-static" id="parCustomerName" style="color: red; font-size: 16px"></p>
                       </div>
-                    </div>
-                        
-                    <div class="form-group">
+
                       <label class="control-label col-sm-6" for="email">Customer Number:</label>
                       <div class="col-sm-5">
                         <p class="form-control-static" id="parContactNumber" style="color: red; font-size: 16px"></p>
                       </div>
-                    </div>
 
                       <label class="control-label col-sm-6" for="email">Event Name:</label>
                       <div class="col-sm-5">

@@ -16,7 +16,7 @@
       </section>
 
     <section class="content">
-          <div class="box">
+          <div class="box box-danger">
             <div class="box-header with-border">
               <div class="row">
                 <div class="col-md-6">

@@ -21,7 +21,7 @@
           <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>Locations</h2>
+                <h2>Location</h2>
               </div>
               <div class="col-md-6">
                 <a class="btn btn-app" data-target="#addLocationModal" data-toggle="modal" style="float:right">
@@ -36,13 +36,13 @@
               <thead>
                 <tr>
                   <th>Image</th>
-                  <th>Location Name</th>
-                  <th>Location Description</th>
-                  <th>Location Address</th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Address</th>
                   <th>Contact Person</th>
                   <th>Contact Number</th>
-                  <th>Location Capacity</th>
-                  <th>Actions</th>
+                  <th>Capacity</th>
+                  <th style="width: 100px">Actions</th>
                 </tr>
               </thead>
               <tbody>

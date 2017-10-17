@@ -11,7 +11,7 @@
       <br>
         <ol class="breadcrumb">
           <li><a href="menu.php"><i class="fa fa-wrench"></i> Maintenance</a></li>
-          <li class="active"><a href = "#"><i class="fa fa-cube"></i>service</a></li>
+          <li class="active"><a href = "#"><i class="fa fa-cube"></i>Service</a></li>
         </ol>
       </section>
 
