@@ -2,7 +2,6 @@
 
 @section('content')
 
-
 <!-- SweetAlert -->
 <link href="{{ asset('sweetalert/dist/sweetalert.css') }}" rel="stylesheet"/>
 
@@ -276,8 +275,8 @@
                   <th style="width:250px;">Description</th>
                   <th style="width:100px;">Cost</th>
                   <th style="width:110px;">Type</th>
-                  <th style="width:190px;">Actions</th>
-                  <th style="width:150px;">Status</th>
+                  <th style="width:220px;">Actions</th>
+                  <th style="width:100px;">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -317,7 +316,7 @@
                       </button>
                       <ul class="dropdown-menu" role="menu">
                       <li>
-                        <a data-toggle="modal" data-target="#disableDishModal" onclick="editdishget(this.name);" name="{{$dishData->dishID}}">Disable</a>
+                        <a  style="width: 100px; margin-right: 0px" data-toggle="modal" data-target="#disableDishModal" onclick="editdishget(this.name);" name="{{$dishData->dishID}}">Disable</a>
                       </li>
                       </ul>
                       </div>
@@ -390,10 +389,6 @@
                   </div>
                 </div>
                 <!-- End Modals-->
-        
-        
-        
-
                
               </tbody>
             </table>
@@ -401,8 +396,6 @@
           <!-- /.box-body -->
         </div>
           <!-- /.box -->
-
-
 
       </section>
       <!-- /.content -->
