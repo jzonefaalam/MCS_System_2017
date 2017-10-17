@@ -2186,7 +2186,7 @@ a) Staffed Limited Service. This set-up includes a tablecloth for the food items
  					var d = new Date($('#eDate').val());
  					var n = d.getDay();
  					// alert(n);
- 					if(n==5 || n==6){
+ 					if(n==0 || n==6){
  						var a = "13:00";
  						var b = "18:00";
  						document.getElementById('eTime').setAttribute("max","13:00:00.00");

@@ -17,7 +17,7 @@
     </section>
 
     <section class="content">
-      <div class="box">
+      <div class="box box-danger">
         <div class="box-header with-border">
           <div class="row">
             <div class="col-md-6">
@@ -27,6 +27,7 @@
         </div>
         <!-- /Header -->
         <div class="box-body">
+          <h5><i><b>Note:</b> Double click the row to view transaction details.</i></h5>
           <table id="transactionTable" class="table table-bordered table-striped dataTable">
             <thead>
               <tr>
@@ -81,18 +82,19 @@
     <form role="form" method="POST" action="#" class="form-horizontal">
       <div  class="modal fade" id="transactionModal">
         <!-- <div class="modal-dialog"> -->
-        <div style="height: 80%; width: 80%; margin-top: 5%; margin-left: 12%;" class="modal-dialog">
+        <div style="height: 80%; width: 40%; margin-top: 5%; margin-left: 30%;" class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              Transaction Details
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="transModal">Transaction Details</h4>
             </div>
             <!-- /Modal Header -->
             <div class="modal-body">
               {!! csrf_field() !!}
               <div name="customerDetails">
-                <h4><strong>Customer & Event Details</strong></h4>
+                <h4 align="center"><strong><i>Customer and Event Information</i></strong></h4>
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-4 col-sm-offset-2">
                     <p>Customer Name: </p>
                     <p>Contact Number: </p>
                     <p>Event Name: </p>
@@ -128,13 +130,13 @@
                   <i class="fa fa-times" ></i> Cancel Event
               </a>
               <a class="btn btn-app" id="paymentBtn" onclick="getPayment(document.getElementById('parReservationID').value);" style="float:right; display:none;">
-                <i class="fa fa-check"></i> Payment
+                <i class="fa fa-money"></i> Payment
               </a>
               <a class="btn btn-app" id="assessmentBtn" onclick="assessmentEvent(document.getElementById('parTransactionId').value);" style="float:right; display:none;">
                 <i class="fa fa-print"></i>Assessment
               </a>
               <a sstyle="float:right;" class="btn btn-app" id="assignBtn" onclick="assignEvent(document.getElementById('parReservationID').value);" style="float:right; display:none;">
-                  <i class="fa fa-check" ></i> Assign Equipment
+                  <i class="fa fa-edit" ></i> Assign Equipment
               </a>
               <a class="btn btn-app" id="printBtn" href="#" style="float:right; display:none;" onclick="getReservation(document.getElementById('parTransactionId').value);">
                 <i class="fa fa-print"></i>Print
