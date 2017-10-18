@@ -758,7 +758,7 @@
               <button id="assignEquipmentBtn" onclick="getEquipmentDetails();" class="btn btn-primary" type="button">
                 Assign Equipment
               </button>
-              <button id="assessEquipmentBtn" type="button" href="#" style="display: none;" class="btn btn-default">Assessment of Equipment</button>
+              <button id="assessEquipmentBtn" type="button" href="#" style="display: none;" class="btn btn-default">asdasd of Equipment</button>
           </div>
         </div>
       </div>
@@ -988,7 +988,7 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button type="submit" class="btn btn-primary">Send Notification</button>
+              <!-- <button type="submit" class="btn btn-primary">Send Notification</button> -->
               <button data-target="#cancelEventModal" id="cancelBtn" data-toggle="modal" onclick="cancelEvent(document.getElementById('paymentModalTransactionID').value);" class="btn btn-danger" type="button" style=" float:right;">
                  Cancel Event</button>
           </div>
@@ -1652,10 +1652,13 @@
           }
           // May na assign na
           if(checkEventStatus == 2){
+            // Kapag 0 lagpas na sa date so dapat visible na
+            if(diffDays > 0 ){
               var x = document.getElementById('assessEquipmentBtn');
                 x.style.display = '';
+            }
               var y = document.getElementById('assignEquipmentBtn');
-                y.style.display = 'none';
+              y.style.display = 'none';
           }
           $.ajax({
             type: "GET",
