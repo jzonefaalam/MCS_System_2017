@@ -29,6 +29,7 @@ use App\purchaseordertype_tbl;
 use App\purchaseorder_tbl;
 use App\payment_tbl;
 use App\assignequipment_tbl;
+use App\unitmeasurement_tbl;
 use Mail;
 use Session;
 class adminController extends Controller
@@ -259,6 +260,42 @@ class adminController extends Controller
         // ->where('transaction_tbl.transactionStatus', 4)
         ->get();  
         return \Response::json(['transactionData'=>$transactionData]);
+    }
+
+    public function retrieveMonthlyPO(){
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+        $poData =  DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        ->join('unitmeasurement_tbl','unitmeasurement_tbl.uomID','=','purchaseorder_tbl.uomID')
+        ->select('purchaseorder_tbl.*', 'purchaseordertype_tbl.*','unitmeasurement_tbl.*')
+        ->whereMonth('purchaseorder_tbl.poDate', $currentMonth)
+        ->whereYear('purchaseorder_tbl.poDate',$currentYear)
+        ->get();  
+        return \Response::json(['poData'=>$poData]);
+    }
+
+    public function retrieveYearlyPO(){
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+        $poData =  DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        ->join('unitmeasurement_tbl','unitmeasurement_tbl.uomID','=','purchaseorder_tbl.uomID')
+        ->select('purchaseorder_tbl.*', 'purchaseordertype_tbl.*','unitmeasurement_tbl.*')
+        ->whereYear('purchaseorder_tbl.poDate',$currentYear)
+        ->get();  
+        return \Response::json(['poData'=>$poData]);
+    }
+
+    public function retrieveAllPO(){
+        $currentMonth = date('m');
+        $currentYear = date('Y');
+        $poData =  DB::table('purchaseorder_tbl')
+        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
+        ->join('unitmeasurement_tbl','unitmeasurement_tbl.uomID','=','purchaseorder_tbl.uomID')
+        ->select('purchaseorder_tbl.*', 'purchaseordertype_tbl.*','unitmeasurement_tbl.*')
+        ->get();  
+        return \Response::json(['poData'=>$poData]);
     }
 
 
@@ -1929,11 +1966,17 @@ class adminController extends Controller
         ->where('purchaseorder_tbl.poTypeId', 1)
         ->get();
 
+        $uomData = DB::table('unitmeasurement_tbl')
+        ->select('*')
+        ->where('uomStatus', 1)
+        ->get();
+
         return View::make('/inventory_purchaseOrderPage')
         ->with('poData', $poData)
         ->with('poTypeData', $poTypeData)
         ->with('equipmentType', $equipmentType)
-        ->with('existingPO', $existingPO);
+        ->with('existingPO', $existingPO)
+        ->with('uomData', $uomData);
     }
 
     public function retrievePOFood(){
@@ -1970,6 +2013,7 @@ class adminController extends Controller
                 $po->poPrice = Input::get('addPOPrice');
                 $po->poTypeId = Input::get('addPOType');
                 $po->poStatus = 1;
+                $po->uomID = Input::get('addUOM');
                 $po->save();
 
                 Session::flash('title', 'Saved!');
@@ -1986,6 +2030,7 @@ class adminController extends Controller
                 $po->poQty = Input::get('addPOQty');
                 $po->poPrice = Input::get('addPOPrice');
                 $po->poTypeId = Input::get('addPOType');
+                $po->uomID = Input::get('addUOM');
                 $po->poStatus = 1;
                 $po->save();
 
@@ -2074,6 +2119,48 @@ class adminController extends Controller
         return redirect()->back();
         
         
+    }
+
+
+    public function uomPage(){
+    $uomData = DB::table('unitmeasurement_tbl')
+        ->select('*')
+        ->where('uomStatus', 1)
+        ->get();
+        return View::make('/uomPage')->with('uomData', $uomData);
+    }
+
+    public function retrieveUOM(){
+        $uomData = DB::table('unitmeasurement_tbl')
+        ->select('*')
+        ->where('uomID', Input::get('sendID'))
+        ->get();
+        return \Response::json(['uomData'=>$uomData]);
+    }
+
+     public function addUOM(Request $request){
+        $uom = new unitmeasurement_tbl;
+        $uom->uomName = Input::get('addUOMName');
+        $uom->uomStatus = 1;
+        $uom->save();
+        return redirect()->back();
+    }
+
+    public function deleteUOM(Request $request){
+        $id = Input::get('deleteUOMID');
+        $uom = unitmeasurement_tbl::find($id);
+        $uom->uomStatus = 0;
+        $uom->save();
+        return redirect()->back();
+    }
+
+    public function editUOM(Request $request){
+        $id = Input::get('editUOMID');
+        $uom = unitmeasurement_tbl::find($id);
+        $uom->uomName = Input::get('editUOMName');
+        $uom->uomStatus = 1;
+        $uom->save();
+        return redirect()->back();
     }
 
     public function retrieveEquipmentID(){

@@ -141,6 +141,7 @@
                       </li>
                     </ul>
                   </li>
+                  <li><a href="/UOMPage"><i class="fa fa-circle-o"></i> Unit Of Measurement</a></li>
               </ul>
             </li>
 
@@ -164,8 +165,8 @@
                 <i class="fa fa-shopping-cart"></i><span>Purchase Order</span>
               </a>
               <!-- <ul class="treeview-menu">
-                <li><a href="/PurchaseOrderPage"><i class="fa fa-square-o"></i> List</a></li>
-                <li><a href="/PurchaseOrderTypePage"><i class="fa fa-square-o"></i> Categories</a></li>
+                <li><a href="/PurchaseOrderPage"><i class="fa fa-circle-o"></i> List</a></li>
+                <li><a href="/UOMPage"><i class="fa fa-circle-o"></i> Unit Of Measurement</a></li>
               </ul> -->
             </li>
 

@@ -31,6 +31,9 @@ Route::get('/RetrieveAllTransaction', 'adminController@retrieveAllTransaction');
 Route::get('/RetrieveMonthlyCollection', 'adminController@retrieveMonthlyCollection');
 Route::get('/RetrieveYearlyCollection', 'adminController@retrieveYearlyCollection');
 Route::get('/RetrieveAllCollection', 'adminController@retrieveAllCollection');
+Route::get('/RetrieveMonthlyPO', 'adminController@retrieveMonthlyPO');
+Route::get('/RetrieveYearlyPO', 'adminController@retrieveYearlyPO');
+Route::get('/RetrieveAllPO', 'adminController@retrieveAllPO');
 
 Route::post("/ApproveReservationEmail", array("uses"=>"adminController@sendApprovalEmail"));
 Route::post("/DenyReservationEmail", array("uses"=>"adminController@sendDenyEmail"));
@@ -156,6 +159,11 @@ Route::post("/InventoryPOPage", array("uses"=>"adminController@addPO"));
 Route::get('/RetrievePOFood', 'adminController@retrievePOFood');
 Route::get('/RetrievePOEquipment', 'adminController@retrievePOEquipment');
 Route::get('/RetrieveEquipmentID', 'adminController@retrieveEquipmentID');
+Route::get('/UOMPage', 'adminController@uomPage');
+Route::get('/RetrieveUOM', 'adminController@retrieveUOM');
+Route::post("/AddUOM", array("uses"=>"adminController@addUOM"));
+Route::post("/DeleteUOM", array("uses"=>"adminController@deleteUOM"));
+Route::post("/EditUOM", array("uses"=>"adminController@editUOM"));
 
 //Purchase Order Type Page
 Route::get('/PurchaseOrderTypePage', 'adminController@inventoryPOTypePage');

@@ -155,6 +155,23 @@
                         </div>
                       </div>
                     </div>
+
+                    <div class="form-group" style="display:none;" id="uomDiv">
+                      <label class="col-sm-4 control-label">Unit of Measurement</label>
+                      <div class="col-sm-6">
+                        <div class="input-group">
+                          <span class="input-group-addon"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></span>
+                          <select class="form-control" name="addUOM" id="addUOM">
+                            <option selected disabled="">Select Unit of Measurement</option>
+                            @foreach($uomData as $uomData)
+                            <!-- <option disabled="">Select Category</option> -->                            
+                            <option value="{{ $uomData->uomID }}">{{ $uomData->uomName }} </option>
+                            @endforeach
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
                     <div class="form-group">
                       <label class="col-sm-4 control-label">Item Price</label>
                       <div class="col-sm-6">
@@ -218,8 +235,12 @@
 function enableEquipmentType(id){
   var selectedOption = document.getElementById(id);
   var loc = selectedOption.selectedIndex;
+  var checkerUOM = document.getElementById('checkboxChecker').value;
   // Food
   if(loc==1){
+    if(checkerUOM == 1){
+      document.getElementById('uomDiv').style="display:";
+    }
     document.getElementById('equipmentTypeDiv').style="display:none";
     document.getElementById('ratePerHourDiv').style="display:none";
     document.getElementById('imageDiv').style="display:none";
@@ -238,8 +259,7 @@ function enableEquipmentType(id){
       success: function (data) {
         for (var i = 0; i < data['existingPOFood'].length; i++) {
           var div_data="<option value=" +data['existingPOFood'][i]['poItemName']+ ">" +data['existingPOFood'][i]['poItemName']+ "</option>";
-          $(div_data).appendTo('#addExistingItemName'); 
-          // alert(data['existingPOFood'][i]['poItemName']);
+          $(div_data).appendTo('#addExistingItemName');
         }
       },
       error: function(xhr)
@@ -251,8 +271,11 @@ function enableEquipmentType(id){
   }
   // Equipment
   if(loc==2){
+    if(checkerUOM == 1){
+      document.getElementById('uomDiv').style="display:";
+    }
     document.getElementById('equipmentTypeDiv').style="display:";
-    document.getElementById('ratePerHourDiv').style="display:";
+    document.getElementById('ratePerHourDiv').style="display: none;";
     document.getElementById('categoryChecker').value="1";
     $('#addExistingItemName')
       .find('option')
@@ -286,12 +309,14 @@ function existingItemFunction(){
  if(document.getElementById('itemCheckbox').checked){
   document.getElementById('existingItem').style="display:none";
   document.getElementById('newItem').style="display:";
+  document.getElementById('uomDiv').style="display:";
   document.getElementById('checkboxChecker').value="1";
  }
  else{
   document.getElementById('existingItem').style="display:";
   document.getElementById('newItem').style="display:none";
   document.getElementById('checkboxChecker').value="0";
+  document.getElementById('uomDiv').style="display:none";
  }
 }
 </script>

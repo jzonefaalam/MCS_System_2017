@@ -121,6 +121,8 @@
                       </li>
                     </ul>
                   </li>
+
+                  <li><a href="/UOMPage"><i class="fa fa-circle-o"></i> Unit Of Measurement</a></li>
               </ul>
             </li>
 

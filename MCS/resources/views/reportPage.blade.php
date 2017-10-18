@@ -472,9 +472,11 @@
     var today = dd+'/'+mm+'/'+yyyy;
     $.ajax({
       type: "GET",
-      url:  "/RetrieveMonthlyTransaction",
+      url:  "/RetrieveMonthlyPO",
       success: function(data){
-        var totalAmount = 0;
+        var totalPrice = 0;
+        var totalQty = 0;
+        var totalGrossPrice = 0;
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -491,29 +493,37 @@
         frameDoc.document.write('<p align= "center" style ="font-weight:bold;font-size:16pt">Purchase Order Report for the Month of ' +currentMonth+ '</p>');
         frameDoc.document.write('<table border="1" style="width:100%;">');
         frameDoc.document.write('<tr>');
-        frameDoc.document.write('<th> Event Date</th>') ;
-        frameDoc.document.write('<th> Client Info</th>');
-        frameDoc.document.write('<th> Service Acquired </th>');
-        frameDoc.document.write('<th> Amount </th>');
+        frameDoc.document.write('<th> Purchase Date</th>') ;
+        frameDoc.document.write('<th> Item Category</th>');
+        frameDoc.document.write('<th> Item Name </th>');
+        frameDoc.document.write('<th> Unit of Measurement </th>');
+        frameDoc.document.write('<th> Quantity </th>');
+        frameDoc.document.write('<th> Price </th>');
+        frameDoc.document.write('<th> Gross Price </th>');
         frameDoc.document.write('</tr>');
-        for (i = 0; i < data['transactionData'].length; i++) { 
-          var packagePrice = data['transactionData'][i]['packageCost'] * data['transactionData'][i]['guestCount'];
-          packagePrice = packagePrice.toFixed(2);
+        for (i = 0; i < data['poData'].length; i++) { 
           frameDoc.document.write('<tr style ="text-align:center">');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
-          frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poDate']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poTypeName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poItemName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['uomName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poQty']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poPrice']+ '</td>');
+          var grossPrice = parseFloat(data['poData'][i]['poPrice']) * parseFloat(data['poData'][i]['poQty'])
+          frameDoc.document.write('<td>' +grossPrice+ '</td>');
           frameDoc.document.write('</tr>');
-          var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
-          totalAmount = totalAmount + transactionFee;
+          totalQty = totalQty + parseFloat(data['poData'][i]['poQty']);
+          totalPrice = totalPrice + parseFloat(data['poData'][i]['poPrice']);
+          totalGrossPrice = totalGrossPrice + grossPrice;
         }
-        // alert(totalAmount);
         frameDoc.document.write('<tr style ="text-align:center">');
-        frameDoc.document.write('<td>  </td>');
-        frameDoc.document.write('<td>  </td>');
-        frameDoc.document.write('<td>TOTAL</td>');
-        frameDoc.document.write('<td>' +totalAmount +'</td>');
+        frameDoc.document.write('<th> </th>') ;
+        frameDoc.document.write('<th> </th>');
+        frameDoc.document.write('<th> </th>');
+        frameDoc.document.write('<th> TOTAL </th>');
+        frameDoc.document.write('<th> '+totalQty+' </th>');
+        frameDoc.document.write('<th> '+totalPrice+' </th>');
+        frameDoc.document.write('<th> '+totalGrossPrice+'</th>');
         frameDoc.document.write('</tr>');
         frameDoc.document.write('</table></br>')
         frameDoc.document.write('</html>')
@@ -586,9 +596,11 @@
     var today = dd+'/'+mm+'/'+yyyy;
     $.ajax({
       type: "GET",
-      url:  "/RetrieveYearlyTransaction",
-      success: function(data){
-        var totalAmount = 0;
+      url:  "/RetrieveYearlyPO",
+      success: function(data){ 
+        var totalPrice = 0;
+        var totalQty = 0;
+        var totalGrossPrice = 0;
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -602,32 +614,40 @@
         frameDoc.document.write('696-4528 | (+63) 928-297-2321 | (+63) 907-208-3331 </br>');
         frameDoc.document.write('margarethcateringservices@gmail.com </p></br></br>');
         frameDoc.document.write('<p align="right" >' +today+ '</p>');
-        frameDoc.document.write('<p align= "center" style ="font-weight:bold;font-size:16pt">Sales Report for Year ' +yyyy+ '</p>');
+        frameDoc.document.write('<p align= "center" style ="font-weight:bold;font-size:16pt">Purchase Report for Year ' +yyyy+ '</p>');
         frameDoc.document.write('<table border="1" style="width:100%;">');
         frameDoc.document.write('<tr>');
-        frameDoc.document.write('<th> Event Date</th>') ;
-        frameDoc.document.write('<th> Client Info</th>');
-        frameDoc.document.write('<th> Service Acquired </th>');
-        frameDoc.document.write('<th> Amount </th>');
+        frameDoc.document.write('<th> Purchase Date</th>') ;
+        frameDoc.document.write('<th> Item Category</th>');
+        frameDoc.document.write('<th> Item Name </th>');
+        frameDoc.document.write('<th> Unit of Measurement </th>');
+        frameDoc.document.write('<th> Quantity </th>');
+        frameDoc.document.write('<th> Price </th>');
+        frameDoc.document.write('<th> Gross Price </th>');
         frameDoc.document.write('</tr>');
-        for (i = 0; i < data['transactionData'].length; i++) { 
-          var packagePrice = data['transactionData'][i]['packageCost'] * data['transactionData'][i]['guestCount'];
-          packagePrice = packagePrice.toFixed(2);
+        for (i = 0; i < data['poData'].length; i++) { 
           frameDoc.document.write('<tr style ="text-align:center">');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
-          frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poDate']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poTypeName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poItemName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['uomName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poQty']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poPrice']+ '</td>');
+          var grossPrice = parseFloat(data['poData'][i]['poPrice']) * parseFloat(data['poData'][i]['poQty'])
+          frameDoc.document.write('<td>' +grossPrice+ '</td>');
           frameDoc.document.write('</tr>');
-          var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
-          totalAmount = totalAmount + transactionFee;
+          totalQty = totalQty + parseFloat(data['poData'][i]['poQty']);
+          totalPrice = totalPrice + parseFloat(data['poData'][i]['poPrice']);
+          totalGrossPrice = totalGrossPrice + grossPrice;
         }
-        // alert(totalAmount);
         frameDoc.document.write('<tr style ="text-align:center">');
-        frameDoc.document.write('<td>  </td>');
-        frameDoc.document.write('<td>  </td>');
-        frameDoc.document.write('<td>TOTAL</td>');
-        frameDoc.document.write('<td>' +totalAmount +'</td>');
+        frameDoc.document.write('<th> </th>') ;
+        frameDoc.document.write('<th> </th>');
+        frameDoc.document.write('<th> </th>');
+        frameDoc.document.write('<th> TOTAL </th>');
+        frameDoc.document.write('<th> '+totalQty+' </th>');
+        frameDoc.document.write('<th> '+totalPrice+' </th>');
+        frameDoc.document.write('<th> '+totalGrossPrice+'</th>');
         frameDoc.document.write('</tr>');
         frameDoc.document.write('</table></br>')
         frameDoc.document.write('</html>')
@@ -698,11 +718,13 @@
     }
     
     var today = dd+'/'+mm+'/'+yyyy;
-    var totalAmount = 0;
     $.ajax({
       type: "GET",
-      url:  "/RetrieveAllTransaction",
-      success: function(data){
+      url:  "/RetrieveAllPO",
+      success: function(data){ 
+        var totalPrice = 0;
+        var totalQty = 0;
+        var totalGrossPrice = 0;
         var frame1 = $('<iframe />');
         frame1[0].name = "frame1";
         frame1.css({ "position": "absolute", "top": "-1000000px" });
@@ -716,32 +738,40 @@
         frameDoc.document.write('696-4528 | (+63) 928-297-2321 | (+63) 907-208-3331 </br>');
         frameDoc.document.write('margarethcateringservices@gmail.com </p></br></br>');
         frameDoc.document.write('<p align="right" >' +today+ '</p>');
-        frameDoc.document.write('<p align= "center" style ="font-weight:bold;font-size:16pt">Sales Report of Margareth`s Catering Services</p>');
+        frameDoc.document.write('<p align= "center" style ="font-weight:bold;font-size:16pt">Purchase Report of Margareth`s Catering Services</p>');
         frameDoc.document.write('<table border="1" style="width:100%;">');
         frameDoc.document.write('<tr>');
-        frameDoc.document.write('<th> Event Date</th>') ;
-        frameDoc.document.write('<th> Client Info</th>');
-        frameDoc.document.write('<th> Service Acquired </th>');
-        frameDoc.document.write('<th> Amount </th>');
+        frameDoc.document.write('<th> Purchase Date</th>') ;
+        frameDoc.document.write('<th> Item Category</th>');
+        frameDoc.document.write('<th> Item Name </th>');
+        frameDoc.document.write('<th> Unit of Measurement </th>');
+        frameDoc.document.write('<th> Quantity </th>');
+        frameDoc.document.write('<th> Price </th>');
+        frameDoc.document.write('<th> Gross Price </th>');
         frameDoc.document.write('</tr>');
-        for (i = 0; i < data['transactionData'].length; i++) { 
-          var packagePrice = data['transactionData'][i]['packageCost'] * data['transactionData'][i]['guestCount'];
-          packagePrice = packagePrice.toFixed(2);
+        for (i = 0; i < data['poData'].length; i++) { 
           frameDoc.document.write('<tr style ="text-align:center">');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
-          frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poDate']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poTypeName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poItemName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['uomName']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poQty']+ '</td>');
+          frameDoc.document.write('<td>' +data['poData'][i]['poPrice']+ '</td>');
+          var grossPrice = parseFloat(data['poData'][i]['poPrice']) * parseFloat(data['poData'][i]['poQty'])
+          frameDoc.document.write('<td>' +grossPrice+ '</td>');
           frameDoc.document.write('</tr>');
-          var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
-          totalAmount = totalAmount + transactionFee;
+          totalQty = totalQty + parseFloat(data['poData'][i]['poQty']);
+          totalPrice = totalPrice + parseFloat(data['poData'][i]['poPrice']);
+          totalGrossPrice = totalGrossPrice + grossPrice;
         }
-        // alert(totalAmount);
         frameDoc.document.write('<tr style ="text-align:center">');
-        frameDoc.document.write('<td>  </td>');
-        frameDoc.document.write('<td>  </td>');
-        frameDoc.document.write('<td>TOTAL</td>');
-        frameDoc.document.write('<td>' +totalAmount +'</td>');
+        frameDoc.document.write('<th> </th>') ;
+        frameDoc.document.write('<th> </th>');
+        frameDoc.document.write('<th> </th>');
+        frameDoc.document.write('<th> TOTAL </th>');
+        frameDoc.document.write('<th> '+totalQty+' </th>');
+        frameDoc.document.write('<th> '+totalPrice+' </th>');
+        frameDoc.document.write('<th> '+totalGrossPrice+'</th>');
         frameDoc.document.write('</tr>');
         frameDoc.document.write('</table></br>')
         frameDoc.document.write('</html>')
