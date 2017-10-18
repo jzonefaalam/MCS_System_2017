@@ -7,12 +7,12 @@
       <section class="content-header">
         <br>
         <ol class="breadcrumb">
-          <li><a href="/Reports"><i class="fa fa-wrench"></i> Reports</a></li>
+          <li><a href="/Reports"><i class="fa fa-edit"></i> Reports</a></li>
         </ol>
       </section>
       <!-- Main content -->
       <section class="content">
-        <div class="box box-primary">
+        <div class="box box-danger">
           <!-- box header -->
           <div class="box-header with-border">
             <div class="row">

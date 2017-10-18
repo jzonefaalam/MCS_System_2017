@@ -21,7 +21,7 @@
           <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>Events</h2>
+                <h2>Event</h2>
               </div>
               <div class="col-md-6">
                 <a class="btn btn-app" data-target="#addEventModal" data-toggle="modal" style="float:right">
