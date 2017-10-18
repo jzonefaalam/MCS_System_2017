@@ -968,6 +968,7 @@
                   <tbody id="paymentDetailTblBody">
 
                     <input type="hidden" id="token" value="{{ csrf_token() }}">
+                    <input type="hidden" id="paymentchk" value="">
                   </tbody>
                 </table>
             </div>
@@ -1540,12 +1541,12 @@
                 statusChecker = data['paymentDetail'][i]['paymentStatus'];
                 if (statusChecker == 0) {
                   paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-warning">Pending</span>';
-                  paymentReceiveDate = '<input type="date" id="' + addPaymentReceiveDate + '" max="{{date('Y-m-d',  strtotime( '+1 month' ))}}" min="{{date('Y-m-d',  strtotime( '+1 day' ))}}">';
-                  paymentActionBtn = '<input type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
+                  paymentReceiveDate = '<input type="date" id="' + addPaymentReceiveDate+'" name="'+i+'" max="{{date('Y-m-d',  strtotime( '+1 month' ))}}" min="{{date('Y-m-d',  strtotime( '+1 day' ))}}" onchange="paymentchk(this.name)">';
+                  paymentActionBtn = '<input disabled type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
                 }
                 if (statusChecker == 1) {
                   paymentStatus = '<span id="' + addPaymentStatusID + '" class="label label-success">Confirmed</span>';
-                  paymentReceiveDate = '<input disabled value="' + data['paymentDetail'][i]['paymentReceiveDate'] + '" id="' + addPaymentReceiveDate + '" data-date-format="yyyy/mm/dd">';
+                  paymentReceiveDate = '<input disabled value="' + data['paymentDetail'][i]['paymentReceiveDate'] + '" id="' + addPaymentReceiveDate + i+'" data-date-format="yyyy/mm/dd">';
                   paymentActionBtn = '<input disabled type="button" id="' + addPaymentBtnID + '" value="Confirm" onclick=" ' +submitPayment+ '(this.name)" name="'+data['paymentDetail'][i]['paymentID']+'">';
                 }
                 
@@ -1575,6 +1576,10 @@
       });
     });
   });
+
+  function paymentchk(id) {
+    document.getElementById('addPaymentBtnID'+id).disabled=false;
+  }
 
   // Event Table Function
   $(document).ready(function() {
