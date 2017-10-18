@@ -679,7 +679,7 @@
     <div class="modal fade" id="eventModal" >
       <div class="modal-dialog" style="width:50%;">
         <div class="modal-content">
-            <div class="modal-header" style="width:100%;" >
+            <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               <h4 class="modal-title" id="upcomingEventModal">Upcoming Event</h4>
             </div>
@@ -688,31 +688,7 @@
             <div class="row" align="center" style="width: 97%; padding-left: 7%">
               <div class="box box-danger">
               <div class="box-body">
-                <div class="row">
-
-                  <div class="form-horizontal">
-
-                      <div class="col-sm-5" style="padding-left: 70px; padding-right: 0px">
-                        <div class="form-group">
-                          <label class="control-label col-sm-6">Customer Name</label>
-                          <div>
-                            <input type="text" class="form-control" id="editCustomerName" name="editCustomerName" column="20" style="width: 50px" required>
-                            <input type="text"  name="reservationNumber" id="reservationNumber" style="display: none;">
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-sm-5">
-                        <div class="form-group">
-                          <label class="control-label col-sm-6">Event Name</label>
-                          <div>
-                            <input type="text" class="form-control" id="editEventName" name="editEventName" column="20" style="width: 50px" required>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
+                <div class="row" style="padding-left: 9%">
                   <div class="col-md-6" align="left">
                     <label>Customer Name: </label>
                     <div id="eventModalCustomerName" style="display: inline-block;">
@@ -751,11 +727,11 @@
             <!-- End Box -->
             </div>
             <div class="row">
-              <table class="table table-bordered table-striped dataTable" id="equipmentTbl" style="width:95%;" align="center">
+              <table class="table table-bordered table-striped dataTable" id="equipmentTbl" style="width:85%;" align="center">
                 <thead>
                   <tr>
-                    <th>Equipment</th>
-                    <th>Equipment Quantity</th>
+                    <th style="width: 250px">Equipment</th>
+                    <th style="width: 200px">Equipment Quantity</th>
                   </tr>
                 </thead>
                 <tbody id="equipmentTblBody">
@@ -765,7 +741,7 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button id="assignEquipmentBtn" onclick="getEquipmentDetails();" class="btn btn-default" type="button">
+              <button id="assignEquipmentBtn" onclick="getEquipmentDetails();" class="btn btn-primary" type="button">
                 Assign Equipment
               </button>
               <button id="assessEquipmentBtn" type="button" href="#" style="display: none;" class="btn btn-default">Assessment of Equipment</button>
@@ -856,14 +832,18 @@
   <!-- Assign Modal Modal -->
   <form id="assignForm" role="form" method="POST" action="/AssignEquipment" class="form-horizontal">
     <div class="modal fade" id="assignEquipmentModal" >
-      <div class="modal-dialog" style="width:70%;">
+      <div class="modal-dialog" style="width:50%;">
         <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="upcomingEventModal">Assign Equipment</h4>
+            </div>
           <div class="modal-body">
             {!! csrf_field() !!}
-            <div class="row" align="center">
-              <div class="box" style="width:95%;">
+            <div class="row" align="center" style="width: 97%; padding-left: 7%">
+              <div class="box box-danger">
               <div class="box-body">
-                <div class="row">
+                <div class="row" style="padding-left: 9%">
                   <div class="col-md-6" align="left">
                     <label>Customer Name: </label>
                     <div id="assignEquipmentCustomerName" style="display: inline-block;">
@@ -901,11 +881,11 @@
             <!-- End Box -->
             </div>
             <div class="row">
-              <table id="equipmentAssignTbl" class="table table-striped table-bordered" style="width:95%;" align="center">
+              <table id="equipmentAssignTbl" class="table table-striped table-bordered" style="width:85%;" align="center">
                   <thead>
                     <tr>
-                      <th>Equipment Name</th>
-                      <th>Equipment Quantity</th>
+                      <th style="width: 250px">Equipment Name</th>
+                      <th style="width: 200px">Equipment Quantity</th>
                       <th style="display: none;">Equipment ID</th>
                     </tr>
                   </thead>
@@ -916,7 +896,7 @@
             </div>
           </div>
           <div class="modal-footer">
-              <button class="btn btn-default" type="submit">
+              <button class="btn btn-success" type="submit">
                 Save
               </button>
               <!-- <button type="button" href="#" class="btn btn-default">Back</button> -->
