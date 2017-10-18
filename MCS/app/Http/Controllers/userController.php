@@ -374,6 +374,46 @@ class userController extends Controller
     }
 
     public function addReservation(Request $request){
+    
+     $pchecker = Input::get('pChecker');
+     $pID = Input::get('pID');
+     if($pchecker == 1){
+       $event_tbl = new event_tbl;
+     $event_tbl->eventID = Input::get('addEventID');
+     $event_tbl->eventName = Input::get('eName');
+     $event_tbl->eventDate = Input::get('eDate');
+     $event_tbl->eventTime = Input::get('eTime');
+     $event_tbl->endTime = Input::get('enTime');
+     $event_tbl->eventLocation = Input::get('eLoc');
+     $event_tbl->locationID = Input::get('eLoc2');
+     $event_tbl->guestCount = Input::get('eNum');
+     $event_tbl->eventStatus = 1;
+     $event_tbl->eventTypeID = Input::get('eType');
+      $customer_tbl = customer_tbl::find($pID);
+      $customer_tbl->customerAvailability = 0;
+      $customer_tbl->homeAddress = Input::get('homeAdd');
+      $customer_tbl->emailAddress = Input::get('emailAdd');
+      $customer_tbl->cellNum = Input::get('cellNum');
+       $contact_tbl = new contact_tbl;
+       $contact_tbl->contactID = Input::get('addContactID');
+       $contact_tbl->contactName = Input::get('conPerson');
+       $contact_tbl->contactNum = Input::get('conNum');
+       $contact_tbl->customerID = Input::get('pID');
+     $event_tbl->customerID = Input::get('pID');
+    $reservation_tbl = new reservation_tbl;
+    $reservation_tbl->reservationID = Input::get('addReservationID');
+    $reservation_tbl->reservationStatus = 1;
+    $reservation_tbl->eventID = Input::get('addEventID');
+    $reservation_tbl->paymentModeID = Input::get('pmIDs');
+    $reservation_tbl->paymentTermID = Input::get('ptIDs');
+    $reservation_tbl->packageID = Input::get('addPackID');
+    
+      $customer_tbl->save();
+      $contact_tbl->save();
+      $event_tbl->save();
+      $reservation_tbl->save();
+     }
+     if($pchecker == 0){
      $event_tbl = new event_tbl;
      $event_tbl->eventID = Input::get('addEventID');
      $event_tbl->eventName = Input::get('eName');
@@ -392,7 +432,7 @@ class userController extends Controller
       $customer_tbl->billingAddress = Input::get('billAdd');
       $customer_tbl->emailAddress = Input::get('emailAdd');
       $customer_tbl->customerStatus = 1;
-      $customer_tbl->customerAvailability = Input::get('cStat');
+      $customer_tbl->customerAvailability = 1;
       $customer_tbl->cellNum = Input::get('cellNum');
       $customer_tbl->dateOfBirth = Input::get('dob');
        $contact_tbl = new contact_tbl;
@@ -408,6 +448,12 @@ class userController extends Controller
     $reservation_tbl->paymentModeID = Input::get('pmIDs');
     $reservation_tbl->paymentTermID = Input::get('ptIDs');
     $reservation_tbl->packageID = Input::get('addPackID');
+
+      $customer_tbl->save();
+      $contact_tbl->save();
+      $event_tbl->save();
+      $reservation_tbl->save();
+      }
       $dishID = Input::get('dishID');
       $servID = Input::get('servID');
       $equipID = Input::get('equipID');
@@ -426,10 +472,6 @@ class userController extends Controller
       $addEmpID = Input::get('addEmpID');
       $addEmpQty = Input::get('addEmpQty');
       $addEmpNotes = Input::get('addEmpNotes');
-      $customer_tbl->save();
-      $contact_tbl->save();
-      $event_tbl->save();
-      $reservation_tbl->save();
     if(!empty($dishID[0][0])){
       for ($i = 0; $i < count($dishID); $i++){
         $maxDishAvailedID = DB::table('dishavailed_tbl')->max('dishAvailedID');
