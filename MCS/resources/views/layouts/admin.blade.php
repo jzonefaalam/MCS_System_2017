@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Margareths Catering Service</title>
+    <link rel="icon" type="image/png" href="../img/logo_2.png"/>
+  <title>Admin | Margareth's Catering</title>
   <link rel="icon" type="image/gif" href="ggg.png"/>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -76,7 +77,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu" style="font-size: 20px">
             
-            <li class="active">
+            <li class="treeview">
               <a href="DashboardPage">
                 <i class="fa fa-home"></i> <span>Home</span>
               </a>

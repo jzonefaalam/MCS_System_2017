@@ -86,37 +86,68 @@
           <div class="modal-content">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="transModal">Transaction Details</h4>
+              <h4 class="modal-title" id="transModal">Customer and Event Information</h4>
             </div>
             <!-- /Modal Header -->
             <div class="modal-body">
               {!! csrf_field() !!}
               <div name="customerDetails">
-                <h4 align="center"><strong><i>Customer and Event Information</i></strong></h4>
                 <div class="row">
-                  <div class="col-md-4 col-sm-offset-2">
-                    <p>Customer Name: </p>
-                    <p>Contact Number: </p>
-                    <p>Event Name: </p>
-                    <p>Event Location: </p>
-                    <p>Number of Guests: </p>
-                    <p>Availed Package: </p>
-                    <p>Additional: </p>
-                    <p>Total Fee: </p>
-                    <p>Payment Term: </p>
-                    <p>Payment Status: </p>
-                  </div>
-                  <div class="col-md-6">
-                    <p id="parCustomerName"></p>
-                    <p id="parContactNumber"></p>
-                    <p id="parEventName"></p>
-                    <p id="parEventLocation"></p>
-                    <p id="parNumberOfGuest"></p>
-                    <p id="parAvailedPackage"></p>
-                    <p id="parAdditionalItem"></p>
-                    <p id="parTotalFee"></p>
-                    <p id="parPaymentTerm"></p>
-                    <p id="parPaymentStatus"></p>
+                  <div class="form-horizontal">
+                    <div class="form-group">
+                      <label class="control-label col-sm-6" for="email">Customer Name:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parCustomerName" style="color: red; font-size: 16px"></p>
+                      </div>
+                    </div>
+                        
+                    <div class="form-group">
+                      <label class="control-label col-sm-6" for="email">Customer Number:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parContactNumber" style="color: red; font-size: 16px"></p>
+                      </div>
+                    </div>
+
+                      <label class="control-label col-sm-6" for="email">Event Name:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parEventName" style="color: red; font-size: 16px"></p>
+                      </div>
+
+                      <label class="control-label col-sm-6" for="email">Event Location:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parEventLocation" style="color: red; font-size: 16px"></p>
+                      </div>
+
+                      <label class="control-label col-sm-6" for="email">Number of Guests:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parNumberOfGuest" style="color: red; font-size: 16px"></p>
+                      </div>
+
+                      <label class="control-label col-sm-6" for="email">Availed Package:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parAvailedPackage" style="color: red; font-size: 16px"></p>
+                      </div>
+
+                      <label class="control-label col-sm-6" for="email">Additional:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parAdditionalItem" style="color: red; font-size: 16px"></p>
+                      </div>
+
+                      <label class="control-label col-sm-6" for="email">Total Fee:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parTotalFee" style="color: red; font-size: 16px"></p>
+                      </div>
+
+                      <label class="control-label col-sm-6" for="email">Payment Term:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parPaymentTerm" style="color: red; font-size: 16px"></p>
+                      </div>
+
+                      <label class="control-label col-sm-6" for="email">Payment Status:</label>
+                      <div class="col-sm-5">
+                        <p class="form-control-static" id="parPaymentStatus" style="color: red; font-size: 16px"></p>
+                      </div>
+                    </div>
                     <input type="text"  name="parTransactionId" id="parTransactionId" style="display: none;">
 
                     <input type="text"  name="parReservationID" id="parReservationID" style="display: none;">

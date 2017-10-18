@@ -55,7 +55,7 @@
                 <!-- Disable Package Modal-->
                 <div class="modal fade" id="disableModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                       <form role="form" method="POST" action="disable_event.php" class="form-horizontal">
                         <div class="modal-body">
                           <div class="form-group" style="display: none;">
@@ -66,13 +66,13 @@
                             </div>
                           </div>
 
-                          <div>
-                            <h5> Are you sure you want to deactive this event? </h5>
+                          <div align="center">
+                            <h4> Are you sure you want to deactive this event? </h4>
                           </div>
 
                           <div style="text-align: center;">
-                            <button type="submit" name="disableEventBtn" class="btn btn-default">Yes</button>
-                            <button data-dismiss="modal" class="btn btn-default">No</button>
+                            <button type="submit" name="disableEventBtn" class="btn btn-danger btn-sm">Confirm</button>
+                            <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                           </div>
                         </div>
                       </form>
@@ -84,7 +84,7 @@
                  <!-- Disable Package Modal-->
                 <div class="modal fade" id="enableModal">
                   <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top: 250px">
                       <form role="form" method="POST" action="enable_event.php" class="form-horizontal">
                         <div class="modal-body">
                           <div class="form-group" style="display: none;">
@@ -95,13 +95,13 @@
                             </div>
                           </div>
 
-                          <div>
-                            <h5> Are you sure you want to activate this event? </h5>
+                          <div align="center">
+                            <h4> Are you sure you want to activate this event? </h4>
                           </div>
 
                           <div style="text-align: center;">
-                            <button type="submit" name="enableEventBtn" class="btn btn-default">Yes</button>
-                            <button data-dismiss="modal" class="btn btn-default">No</button>
+                            <button type="submit" name="enableEventBtn" class="btn btn-success btn-sm">Confirm</button>
+                            <button data-dismiss="modal" class="btn btn-default btn-sm">Cancel</button>
                           </div>
                         </div>
                       </form>

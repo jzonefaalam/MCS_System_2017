@@ -15,13 +15,12 @@
     <section class="content-header">
       <br>
         <ol class="breadcrumb">
-          <li><a><i class="fa fa-wrench"></i> Inventory</a></li>
           <li class="active"><a href = "/InventoryPOPage"><i class="fa fa-cube"></i>Purchase Order</a></li>
         </ol>
       </section>
 
     <section class="content">
-      <div class="box">
+      <div class="box box-danger">
         <div class="box-header with-border">
           <div class="row">
             <div class="col-md-6">
@@ -295,6 +294,120 @@ function existingItemFunction(){
   document.getElementById('checkboxChecker').value="0";
  }
 }
+</script>
+
+<script type="text/javascript">
+  $('#addPOForm').bootstrapValidator({
+  // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
+  
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+        addPOName: {
+            validators: {
+                    stringLength: {
+                    min: 2,
+                    max: 20,
+                    message:'Item name should be at least 2 characters and not exceed 20 characters.'
+                  },
+                      regexp: {
+                          regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
+                          message: 'This field should contain letters, hyphen & apostrophe only.'
+                  },
+                      notEmpty: {
+                      message: 'This field is required.'
+                  }
+              }
+        },
+
+          addExistingItemName: {
+            validators: {
+                    notEmpty: {
+                    message: 'This field is required.'
+                },
+            }
+          },
+
+         addPODescription: {
+              validators: {
+                  stringLength: {
+                  max: 150,
+                  message:'Description should not exceed 150 characters.'
+              },
+            }
+          },
+
+          addPOType: {
+            validators: {
+                    notEmpty: {
+                    message: 'This field is required.'
+                },
+            }
+          },
+
+          addEquipmentType: {
+            validators: {
+                    notEmpty: {
+                    message: 'This field is required.'
+                },
+            }
+          },
+
+          addPOQty: {
+                validators: {
+                regexp: {
+                        regexp: /^[1-9][0-9]*$/,
+                        message: 'Invalid Input.'
+                },
+                stringLength: {
+                    max: 7,
+                    message:'Price limit reached.'
+                },
+                    notEmpty: {
+                    message: 'This field is required.'
+                }
+            }
+          },
+
+        addPOPrice: {
+                validators: {
+                regexp: {
+                        regexp: /^\d+(?:\.\d{1,2})?$/,
+                        message: 'Invalid Input.'
+                },
+                stringLength: {
+                    max: 7,
+                    message:'Price limit reached.'
+                },
+                    notEmpty: {
+                    message: 'This field is required.'
+                }
+            }
+
+        },
+
+        addRatePerHour: {
+                validators: {
+                regexp: {
+                        regexp: /^\d+(?:\.\d{1,2})?$/,
+                        message: 'Invalid Input.'
+                },
+                stringLength: {
+                    max: 7,
+                    message:'Price limit reached.'
+                },
+                    notEmpty: {
+                    message: 'This field is required.'
+                }
+            }
+
+        },
+
+        }
+    });
 </script>
 
 <!-- Script for ADDING -->
