@@ -12,7 +12,7 @@
         <br>
         <ol class="breadcrumb">
           <li><a href="/DishPage"><i class="fa fa-wrench"></i> Purchase Order</a></li>
-          <li class="active"><a href = "#"><i class="fa fa-cutlery"></i>Unit of Measurement</a></li>
+          <li class="active"><a href = "#"><i class="fa fa-pie-chart"></i>Unit of Measurement</a></li>
         </ol>
       </section>
       <!-- Main content -->
@@ -88,7 +88,7 @@
         <!-- Disable Package Modal-->
 
         <!-- Update Dish Type Modal-->
-        <form  id="asdasdsad" role="form" method="POST" action="/EditUOM" class="form-horizontal " enctype="multipart/form-data">
+        <form  id="updateUOMform" role="form" method="POST" action="/EditUOM" class="form-horizontal updateUOMform" enctype="multipart/form-data">
          <div class="modal fade" id="editDishTypeModal">
            <div class="modal-dialog">
             <div class="modal-content">
@@ -114,7 +114,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">Unit of Measurement Name</label>
+                    <label class="col-sm-4 control-label">UOM Name</label>
                     <div class="col-sm-6">
                       <div class = "input-group">
                         <div class="input-group-addon">
@@ -138,7 +138,7 @@
         <!-- End Modals-->
 
         <!-- Add Dish Type Modal -->
-          <form id="addDishTypeForm" role="form" method="POST" action="/AddUOM" class="form-horizontal " enctype="multipart/form-data">
+          <form id="addUOMform" role="form" method="POST" action="/AddUOM" class="form-horizontal " enctype="multipart/form-data">
             <div class="modal fade" id="addDishTypeModal" style="width:100%;">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -149,13 +149,13 @@
                   <div class="modal-body" id="addDishTypeModalBody">
 
                   <div class="form-group">
-                    <label class="col-sm-4 control-label">Unit of Measurement Name</label>
+                    <label class="col-sm-4 control-label">UOM Name</label>
                     <div class="col-sm-6">
                       <div class = "input-group">
                         <div class="input-group-addon">
-                        <i class="fa fa-cutlery" aria-hidden="true"></i>
+                        <i class="fa fa-pie-chart" aria-hidden="true"></i>
                         </div>
-                        <input type="text" class="form-control" name="addUOMName" id="addUOMName" required>
+                        <input type="text" class="form-control" name="addUOMName" id="addUOMName" placeholder="Unit of Measurement" required>
                       </div>
                     </div>
                   </div>
@@ -285,7 +285,7 @@
 </script>
 
 <script type="text/javascript">
-  $('#addDishTypeForm').bootstrapValidator({
+  $('#addUOMform').bootstrapValidator({
       // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
     feedbackIcons: {
         valid: 'glyphicon glyphicon-ok',
@@ -293,12 +293,12 @@
         validating: 'glyphicon glyphicon-refresh'
     },
     fields: {
-      addDishTypeName: {
+      addUOMName: {
           validators: {
             stringLength: {
               min: 2,
               max: 20,
-              message:'Dish type name should be at least 3 characters long, and should not exceed 20 characters.'
+              message:'Name should be at least 3 characters long, and should not exceed 20 characters.'
             },
             regexp: {
               regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
@@ -309,19 +309,12 @@
             }
           }
       },
-      addDishTypeImage: {
-        validators: {
-          notEmpty: {
-            message: 'This field is required.'
-          }
-        }
-      },
     }
   });
 </script>
 
 <script type="text/javascript">
-  $('.editDishTypeValidator').bootstrapValidator({
+  $('.updateUOMform').bootstrapValidator({
   // To use feedback icons, ensure that you use Bootstrap v3.1.0 or later
   
     feedbackIcons: {
@@ -330,12 +323,12 @@
         validating: 'glyphicon glyphicon-refresh'
     },
     fields: {
-        editDishTypeName: {
+        editUOMName: {
             validators: {
                   stringLength: {
                   min: 2,
                   max: 20,
-                  message:'Dish type name should be at least 2 characters and not exceed 20 characters.'
+                  message:'Name should be at least 2 characters and not exceed 20 characters.'
                 },
                     regexp: {
                         regexp: /^[a-zA-Z]+([-'\s][a-zA-Z]+)*$/,
