@@ -34,7 +34,7 @@
                   <img src="../img/4.jpg" alt="Awesome Image">
                 </div>
                 <div class="item">
-                  <img src="../img/6.jpg" alt="Awesome Image">
+                  <img src="../img/1.jpg" alt="Awesome Image">
                 </div>
                 <div class="item">
                   <img src="../img/7.jpg" alt="Awesome Image">
