@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" type="image/png" href="../img/logo_2.png"/>
+    <link rel="icon" type="image/png" href="../img/icon.png"/>
   <title>Admin | Margareth's Catering</title>
   <link rel="icon" type="image/gif" href="ggg.png"/>
   <!-- Tell the browser to be responsive to screen width -->
@@ -124,7 +124,7 @@
                     <a href="/LocationPage"><i class="fa fa-circle-o"></i> Location</a>
                   </li>
                   <li>
-                    <a href="/PackagePage"><i class="fa fa-circle-o"></i> Packages</a>
+                    <a href="/PackagePage"><i class="fa fa-circle-o"></i> Package</a>
                   </li>
                   <li>
                     <a href="/ServicePage"><i class="fa fa-circle-o"></i> Service

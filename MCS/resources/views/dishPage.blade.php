@@ -271,12 +271,12 @@
               <thead>
                 <tr>
                   <th style="width:150px;">Image</th>
-                  <th style="width:200px;">Name</th>
-                  <th style="width:250px;">Description</th>
+                  <th style="width:180px;">Name</th>
+                  <th style="width:220px;">Description</th>
                   <th style="width:100px;">Cost</th>
                   <th style="width:110px;">Type</th>
                   <th style="width:220px;">Actions</th>
-                  <th style="width:100px;">Status</th>
+                  <th style="width:120px;">Status</th>
                 </tr>
               </thead>
               <tbody>

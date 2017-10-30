@@ -21,7 +21,7 @@
           <div class="box-header with-border">
             <div class="row">
               <div class="col-md-6">
-                <h2>Packages</h2>
+                <h2>Package</h2>
               </div>
               <div class="col-md-6">
                 <a class="btn btn-app" data-target="#addPackageModal" data-toggle="modal" style="float:right">
@@ -35,12 +35,12 @@
             <table class="table table-stripped table-bordered dataTable">
               <thead>
                 <tr>
-                  <th>Image</th>
-                  <th>Package Name</th>
-                  <th>Package Description</th>
-                  <th>Package Inclusions</th>
-                  <th>Package Cost (per head)</th>
-                  <th>Actions</th>
+                  <th style="width: 150px">Image</th>
+                  <th style="width: 150px">Package Name</th>
+                  <th style="width: 250px">Description</th>
+                  <th style="width: 100px">Inclusions</th>
+                  <th style="width: 100px">Package Cost (per head)</th>
+                  <th style="width: 150px">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -50,7 +50,7 @@
                   <td>{{ $packageData->packageName }}</td>
                   <td>{{ $packageData->packageDescription }}</td>
                   <td>
-                    <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewInclusionsModal" onclick="getPackageInclusion(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-wrench fa-fw"></i> View Inclusions</a>
+                    <a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#viewInclusionsModal" onclick="getPackageInclusion(this.name);" name="{{$packageData->packageID}}"><i class="fa fa-eye fa-fw"></i> View Inclusions</a>
                   </td>
                   <td>{{ $packageData->packageCost }}</td>
                   <td width="180px">
@@ -169,10 +169,10 @@
                 
                   <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                      <li ><a href="#tab_1" data-toggle="tab">Dish </a></li>
-                      <li ><a href="#tab_2" data-toggle="tab">Equipment </a></li>
-                      <li ><a href="#tab_3" data-toggle="tab">Services</a></li>
-                      <li ><a href="#tab_4" data-toggle="tab">Staff </a></li>
+                      <li style="width: 24%; text-align: center; font-size: 16px"><a href="#tab_1" data-toggle="tab">Dish </a></li>
+                      <li style="width: 24%; text-align: center; font-size: 16px"><a href="#tab_2" data-toggle="tab">Equipment </a></li>
+                      <li style="width: 24%; text-align: center; font-size: 16px"><a href="#tab_3" data-toggle="tab">Services</a></li>
+                      <li style="width: 24%; text-align: center; font-size: 16px"><a href="#tab_4" data-toggle="tab">Staff </a></li>
                     </ul>
                     <div class="tab-content">
 
