@@ -39,14 +39,14 @@
   
     <header class="main-header">
     <!-- Logo -->
-    <a href="../index2.html" class="logo">
+    <a href="/DashboardPage" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b><i>Margareth's Catering</i></b>  </span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
-        <a style="display:none; text-align:center;" class="pull-right" href="/Logout">Logout</a>
+        <a style="text-align:center;" class="logo pull-right" href="/Logout"><span class="fa fa-sign-out"></span><b> Log out</b> </a>
     </nav>
   </header>
       <!-- Left side column. contains the logo and sidebar -->
@@ -758,7 +758,7 @@
               <button id="assignEquipmentBtn" onclick="getEquipmentDetails();" class="btn btn-primary" type="button">
                 Assign Equipment
               </button>
-              <button id="assessEquipmentBtn" type="button" href="#" style="display: none;" class="btn btn-default">asdasd of Equipment</button>
+              <button id="assessEquipmentBtn" type="button" href="#" style="display: none;" class="btn btn-default">Assessment of Equipment</button>
           </div>
         </div>
       </div>
@@ -835,7 +835,7 @@
               <button id="saveAssessEquipment" class="btn btn-default" type="submit">
                 Save
               </button>
-              <button type="button" href="#" class="btn btn-default">Back</button>
+              <button type="button"  data-dismiss="modal"  data-toggle="modal" class="btn btn-default">Back</button>
           </div>
         </div>
       </div>
@@ -1472,6 +1472,10 @@
               var x = document.getElementById('confirmationDiv');
               x.style.display = 'none';
             }
+            else if( reservationStatus == 1){
+              var x = document.getElementById('confirmationDiv');
+              x.style.display = '';
+            }
             $("#detailModal").modal("show");     
           },
           error: function(xhr)
@@ -1576,7 +1580,7 @@
   // Event Table Function
   $(document).ready(function() {
     var table = $('#eventTable').DataTable();
-    $('#eventTable tbody').on('dblclick', 'tr', function () {
+    $('#eventTable tbody').on('dblclick', 'tr', function() {
       var data = table.row( this ).data();
       var eventModalReservationID = data[1];
       var eventModalEventID = data[2];
@@ -1620,7 +1624,6 @@
           transactionStatus = data['eventDetail'][0]['transactionStatus'];
           var checkEventStatus = data['eventDetail'][0]['eventStatus'];
           if(transactionStatus == 1){
-            document.getElementById('assessEquipmentBtn').style.display='';
             document.getElementById('assignEquipmentBtn').style.display='none';
           }
           if(transactionStatus == 6){
@@ -1641,7 +1644,11 @@
           var myDate = new Date(today);
           var eventCheckDate = new Date(checkEventDate);
           var timeDiff = eventCheckDate.getTime() - myDate.getTime();
+          // alert(timeDiff);
           var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+          // alert(diffDays);
+          // alert(checkEventStatus);
+          // alert(transactionStatus);
 
           //  Wala pang nassign na equipment
           if(checkEventStatus == 1){
@@ -1653,7 +1660,7 @@
           // May na assign na
           if(checkEventStatus == 2){
             // Kapag 0 lagpas na sa date so dapat visible na
-            if(diffDays > 0 ){
+            if(diffDays <= 0 ){
               var x = document.getElementById('assessEquipmentBtn');
                 x.style.display = '';
             }
@@ -1962,6 +1969,7 @@
       var eventPackageName=[];
       var eventPackageId=[];
       var reservationStatus=[];
+      var transStatus=[];
       $.ajax({
             url: '/RetrieveSchedule',
             type: 'GET',
@@ -1985,30 +1993,83 @@
                   eventPackageName.push([data['rsvtn'][i]['packageName']]);
                   eventPackageId.push([data['rsvtn'][i]['packageID']]);
                   reservationStatus.push([data['rsvtn'][i]['reservationStatus']]);
+                  transStatus.push([data['rsvtn'][i]['transactionStatus']]);
                 } 
                 // alert(dateReservationId);
                 for(var i=0;i<data['rsvtn'].length;i++){
+                  if(transStatus[i]==4){
                   events.push({
-                    title: 'Reserved'+"\r\nEvent: "+eventName[i],  
-                    start: eventDate[i]+'T'+eventStart[i], 
-                    end: eventDate[i]+'T'+eventEnd[i], 
-                    id: dateReservationId[i],
-                    customerNameEvent: customerName[i],
-                    customerHomeAddressEvent: customerHomeAddress[i],
-                    customerEmailAddressEvent: customerEmailAddress[i],
-                    customerCellNumberEvent: customerCellNumber[i],
-                    customerBirthDateEvent: customerBirthDate[i],
-                    guestCountEvent: eventGuestCount[i],
-                    locationEvent: eventLocation[i],
-                    nameEvent: eventName[i],
-                    dateEvent: eventDate[i],
-                    startTimeEvent: eventStart[i],
-                    endTimeEvent: eventEnd[i],
-                    packageNameEvent: eventPackageName[i],
-                    packageIdEvent: eventPackageId[i],
-                    reservationStatus: reservationStatus[i]
+                      title: 'Finished'+"\r\nEvent: "+eventName[i],  
+                      start: eventDate[i]+'T'+eventStart[i], 
+                      end: eventDate[i]+'T'+eventEnd[i], 
+                      id: dateReservationId[i],
+                      customerNameEvent: customerName[i],
+                      customerHomeAddressEvent: customerHomeAddress[i],
+                      customerEmailAddressEvent: customerEmailAddress[i],
+                      customerCellNumberEvent: customerCellNumber[i],
+                      customerBirthDateEvent: customerBirthDate[i],
+                      guestCountEvent: eventGuestCount[i],
+                      locationEvent: eventLocation[i],
+                      nameEvent: eventName[i],
+                      dateEvent: eventDate[i],
+                      startTimeEvent: eventStart[i],
+                      endTimeEvent: eventEnd[i],
+                      packageNameEvent: eventPackageName[i],
+                      packageIdEvent: eventPackageId[i],
+                      reservationStatus: reservationStatus[i],
+                      
+                    
                   })
                 }
+                else if(transStatus[i]==2 || transStatus[i]==1){
+                   events.push({
+                      title: 'Upcoming'+"\r\nEvent: "+eventName[i],  
+                      start: eventDate[i]+'T'+eventStart[i], 
+                      end: eventDate[i]+'T'+eventEnd[i], 
+                      id: dateReservationId[i],
+                      customerNameEvent: customerName[i],
+                      customerHomeAddressEvent: customerHomeAddress[i],
+                      customerEmailAddressEvent: customerEmailAddress[i],
+                      customerCellNumberEvent: customerCellNumber[i],
+                      customerBirthDateEvent: customerBirthDate[i],
+                      guestCountEvent: eventGuestCount[i],
+                      locationEvent: eventLocation[i],
+                      nameEvent: eventName[i],
+                      dateEvent: eventDate[i],
+                      startTimeEvent: eventStart[i],
+                      endTimeEvent: eventEnd[i],
+                      packageNameEvent: eventPackageName[i],
+                      packageIdEvent: eventPackageId[i],
+                      reservationStatus: reservationStatus[i],
+                      color: '#ec971f'
+                    
+                  })
+                }
+                else if(transStatus[i]==5 || transStatus[i]==0){
+                   events.push({
+                      title: 'Payment Pending'+"\r\nEvent: "+eventName[i],  
+                      start: eventDate[i]+'T'+eventStart[i], 
+                      end: eventDate[i]+'T'+eventEnd[i], 
+                      id: dateReservationId[i],
+                      customerNameEvent: customerName[i],
+                      customerHomeAddressEvent: customerHomeAddress[i],
+                      customerEmailAddressEvent: customerEmailAddress[i],
+                      customerCellNumberEvent: customerCellNumber[i],
+                      customerBirthDateEvent: customerBirthDate[i],
+                      guestCountEvent: eventGuestCount[i],
+                      locationEvent: eventLocation[i],
+                      nameEvent: eventName[i],
+                      dateEvent: eventDate[i],
+                      startTimeEvent: eventStart[i],
+                      endTimeEvent: eventEnd[i],
+                      packageNameEvent: eventPackageName[i],
+                      packageIdEvent: eventPackageId[i],
+                      reservationStatus: reservationStatus[i],
+                      color: '#dd4b39'
+                    
+                  })
+                }
+              }
 
                 $('#calendar').fullCalendar({
                 header: {

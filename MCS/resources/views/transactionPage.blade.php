@@ -898,7 +898,7 @@
         if(data['tdata'][0]['transactionStatus'] == 1){
           document.getElementById("parPaymentStatus").innerHTML = "Fully Paid";
           document.getElementById('assignBtn').style.display='none';
-          document.getElementById('paymentBtn').style.display='block';
+          document.getElementById('paymentBtn').style.display='none';
           document.getElementById('assessmentBtn').style.display='block';
           document.getElementById('cancelBtn').style.display='block';
         }

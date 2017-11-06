@@ -348,7 +348,6 @@ class userController extends Controller
     public function getReservation(Request $request){
         $rsvtn = DB::table('reservation_tbl')
               ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
-              ->where('reservation_tbl.reservationStatus', '=', 1)
               ->get();
       
 

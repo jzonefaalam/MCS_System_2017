@@ -67,12 +67,12 @@
 						</div>
 		          	</div>
  -->
-                <a class="btn btn-app" data-target="#" data-toggle="modal" style="float:right">
+                <!-- <a class="btn btn-app" data-target="#" data-toggle="modal" style="float:right">
                   <i class="fa fa-print"></i> PRINT
                 </a>
                 <a class="btn btn-app" data-target="#" data-toggle="modal" style="float:right">
                   <i class="fa fa-refresh"></i> GENERATE
-                </a>
+                </a> -->
 		        </div>
 	        </div>
 	    </div>
