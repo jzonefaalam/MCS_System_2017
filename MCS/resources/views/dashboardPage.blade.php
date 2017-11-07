@@ -730,8 +730,8 @@
                       
                     </div>
                     <br>
-                    <label>Event Location: </label>
-                    <div id="eventModalEventLocation" style="display: inline-block;">
+                    <label style="display: none;">Event Location: </label>
+                    <div id="eventModalEventLocation" style="display: none;">
                       
                     </div>
                   </div>
@@ -769,12 +769,12 @@
   <!-- Assessment Modal Modal -->
   <form role="form" method="POST" class="form-horizontal" action="/AssessEquipment">
     <div class="modal fade" id="assessmentModal" >
-      <div class="modal-dialog" style="width:70%;">
+      <div class="modal-dialog" style="width:50%;">
         <div class="modal-content">
           <div class="modal-body">
             {!! csrf_field() !!}
             <div class="row" align="center">
-              <div class="box" style="width:95%;">
+              <div class="box box-danger" style="width:95%;">
               <div class="box-body">
                 <div class="row">
                   <div class="col-md-6" align="left">
@@ -901,6 +901,7 @@
                       <th style="width: 250px">Equipment Name</th>
                       <th style="width: 200px">Equipment Quantity</th>
                       <th style="display: none;">Equipment ID</th>
+                      <th style="width: 200px">Remaining Quantity</th>
                     </tr>
                   </thead>
                   <tbody id="equipmentAssignTblBody">
@@ -1178,7 +1179,7 @@
             assessEquipmentRatePerHourID = "assessEquipmentRatePerHour" + i;
             assessItemName = data['ss'][i]['equipmentName'];
             assessAssignQty = '<input disabled value="' + data['ss'][i]['assignEquipmentQty'] + '" id="'+ assessAssignQtyID +'" name="'+assessAssignQtyID+'">' ;
-            assessReturnQty = '<input name="'+assessReturnQtyID+'" id="'+ assessReturnQtyID +'">';
+            assessReturnQty = '<input class="col-md-10"  name="'+assessReturnQtyID+'"  required type="number" min="0" max="'+ data['ss'][i]['assignEquipmentQty'] +'" id="'+ assessReturnQtyID +'">';
             assessItemID = '<input name="'+assessItemIDID+'" style="display: none;" id="'+ assessItemIDID +'" value="'+ data['ss'][i]['assignEquipmentID'] +'"/>';
             assessEquipmentName = '<input name="'+assessEquipmentNameID+'" style="display: none;" id="'+ assessEquipmentNameID +'" value="'+ data['ss'][i]['equipmentID'] +'"/>';
             assessEquipmentRatePerHour = '<input name="'+assessEquipmentRatePerHourID+'" style="display: none;" id="'+ assessEquipmentRatePerHourID +'" value="'+ data['ss'][i]['equipmentRatePerHour'] +'"/>';
@@ -1212,45 +1213,49 @@
     var reservationID = document.getElementById('assignEquipmentReservationID').value;
     $.ajax({
         type: "GET",
-        url:  "/RetrievePackageInclusion",
+        url:  "/RetrieveAssignDetail",
         data: 
         {
             sdid: packageID,
             sendReservationID: reservationID
         },
         success: function(data){
-          var itemName, itemQty, itemID;
+          var itemName, itemQty, itemID, itemRQty;
           var addItemName, addItemQtyID, addItemID;
           var addItemCounter = 0;
           var additionalItemCounter = 0;
           var tblSDet = $('#equipmentAssignTbl').DataTable();
           tblSDet.clear();
           tblSDet.draw(true);
-          for (var i = 0; i < data['ff'].length; i++) {
+          for (var i = 0; i < data['rr'].length; i++) {
             addItemName = "addItemName" + i;
             addItemID = "addItemID" + i;
             addItemQtyID = "addItemQtyID" + i;
-            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['ff'][i]['equipmentID'] + '" />';
-            itemName = data['ff'][i]['equipmentName'];
-            itemQty = '<input value="0" name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number">';
+            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['rr'][i]['equipmentID'] + '" />';
+            itemName = data['rr'][i]['equipmentName'];
+            itemQty = '<input required value="0" min="0" max="'+data['rr'][i]['qtyIn'] +'" name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number" class="col-md-10" >';
+            itemRQty = data['rr'][i]['qtyIn'];
             tblSDet.row.add([
               itemName,
               itemQty,
-              itemID
+              itemRQty,
+              itemID,
               ]).draw(true);
             addItemCounter = addItemCounter + 1;
           }
 
-          for (var i = 0; i < data['additionalEquipment'].length; i++) {
+          for (var i = 0; i < data['tt'].length; i++) {
             addItemName = "additionalItemName" + i;
             addItemID = "additionalItemID" + i;
             addItemQtyID = "additionalItemQtyID" + i;
-            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['ff'][i]['equipmentID'] + '" />';
-            itemName = "Additional: " + data['ff'][i]['equipmentName'];
-            itemQty = '<input name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number" value="' + data['additionalEquipment'][i]['equipmentAdditionalQty']+ '">';
+            itemID = '<input style="display: none;" name="' + addItemID + '" id="' + addItemID + '" value="' + data['rr'][i]['equipmentID'] + '" />';
+            itemName = "Additional: " + data['rr'][i]['equipmentName'];
+            itemQty = '<input  required name="' + addItemQtyID + '" id="' + addItemQtyID + '"type="number" min="1" max="'+data['tt'][i]['qtyIn'] +'" class="col-md-10" value="' + data['tt'][i]['equipmentAdditionalQty']+ '">';
+            itemRQty = data['tt'][i]['qtyIn'];
             tblSDet.row.add([
               itemName,
               itemQty,
+              itemRQty,
               itemID
               ]).draw(true);
             additionalItemCounter = additionalItemCounter + 1;
@@ -1675,16 +1680,19 @@
                 sendReservationID: eventModalReservationID
             },
             success: function(data){
-              var equipmentName, equipmentQty;
+              var equipmentName, equipmentQty, equipmentRQty;
               var tblSDet = $('#equipmentTbl').DataTable();
               tblSDet.clear();
               tblSDet.draw(true);
               for (var i = 0; i < data['ss'].length; i++) {
                 equipmentName = data['ss'][i]['equipmentName'];
                 equipmentQty = data['ss'][i]['assignEquipmentQty'];
+                equipmentRQty = data['ss'][i]['qtyIn'];
+
                 tblSDet.row.add([
                   equipmentName,
                   equipmentQty,
+                  equipmentRQty,
                   ]).draw(true);
               }
               $("#eventModal").modal("show");

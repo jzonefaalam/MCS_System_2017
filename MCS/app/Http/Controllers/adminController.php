@@ -29,162 +29,123 @@ use App\purchaseordertype_tbl;
 use App\purchaseorder_tbl;
 use App\payment_tbl;
 use App\assignequipment_tbl;
-use App\unitmeasurement_tbl;
 use Mail;
 use Session;
 class adminController extends Controller
 {
 
     public function sendApprovalEmail(Request $request){
-
-        // Customer
-        $getCustomerName = Input::get('mailCustomerName');
-        $getCustomerHomeAddress = Input::get('mailCustomerHomeAddress');
-        $getCustomerEmailAddress = Input::get('mailCustomerEmailAddress');
-        $getCustomerContactNumber = Input::get('mailCustomerContactNumber');
-        $getCustomerBirthDate = Input::get('mailCustomerBirthDate');
-
-        // Event
-        $getEventName = Input::get('mailEventName');
-        $getEventDate = Input::get('mailEventDate');
-        $getEventLocation = Input::get('mailEventLocation');
-        $getEventGuestCount = Input::get('mailEventGuestCount');
-        $getEventStartTime = Input::get('mailEventStartTime');
-        $getEventEndTime = Input::get('mailEventEndTime');
-
-        // Others
-        $getPackageCost = Input::get('mailPackageCost');
-        $getPackageAddOns = Input::get('mailPackageAddOns');
-        $getReservationFee = ($getPackageCost *  $getEventGuestCount) + $getPackageAddOns;
-        $getReservationID = Input::get('mailReservationID');
-        $getCustomerID = Input::get('mailCustomerID');
-        $getPaymentTerm = Input::get('mailEventPaymentTerm');
-        $getEventID = Input::get('mailEventID');
-
         // Save to reservation_tbl
-        $reservationtbl = reservation_tbl::find($getReservationID);
+        $id = Input::get('approveReservationId');
+        $reservationtbl = reservation_tbl::find($id);
         $reservationtbl->reservationStatus = 2;
         $reservationtbl->save();
 
-        // Save to event
-        $eventtbl = event_tbl::find($getEventID);
-        $eventtbl->eventName = $getEventName;
-        $eventtbl->eventDate = $getEventDate;
-        $eventtbl->eventLocation = $getEventLocation;
-        $eventtbl->guestCount= $getEventGuestCount;
-        $eventtbl->eventTime= $getEventStartTime;
-        $eventtbl->endTime= $getEventEndTime;
-        $eventtbl->locationID= null;
-        $eventtbl->save();
-
         // Save to transaction_tbl
+        $totalFee = Input::get('totalReservationFee');
         $transactiontbl = new transaction_tbl;
         $transactiontbl->transactionStatus = 0;
-        $transactiontbl->totalFee = $getReservationFee;
-        $transactiontbl->reservationID = $getReservationID;
+        $transactiontbl->totalFee = $totalFee;
+        $transactiontbl->reservationID = $id;
         $transactiontbl->save();
 
         //Save to customer_tbl
-        $customertbl = customer_tbl::find($getCustomerID);
-        $customertbl->fullName = $getCustomerName;
-        $customertbl->homeAddress = $getCustomerHomeAddress;
-        $customertbl->emailAddress = $getCustomerEmailAddress;
-        $customertbl->cellNum = $getCustomerContactNumber;
-        $customertbl->dateOfBirth = $getCustomerBirthDate;
+        $idCustomer = Input::get('mailCustomerID');
+        $customertbl = customer_tbl::find($idCustomer);
         $customertbl->customerStatus = 0;
         $customertbl->save();
 
         // Save to payment_tbl
-        $paymentTerm = $getPaymentTerm;
+        $paymentTerm = Input::get('mailPaymentTerm');
         if ($paymentTerm == 1) {
             $paymenttbl = new payment_tbl;
             $plusOneWeek = strtotime("+8 day");
             $firstPaymentDate = date('Y-m-d', $plusOneWeek);
             $paymenttbl->paymentDueDate = $firstPaymentDate;
             $paymenttbl->paymentStatus = 0;
-            $paymenttbl->reservationID = $getReservationID;
-            $paymenttbl->paymentAmount = $getReservationFee;
+            $paymenttbl->reservationID = $id;
+            $paymenttbl->paymentAmount = $totalFee;
             $paymenttbl->save();
         }
         if ($paymentTerm == 2) {
-            $halfPayment = $getReservationFee / 2;
+            $halfPayment = $totalFee / 2;
             $plusOneWeek = strtotime("+8 day");
             $NewDate=Date('y:m:d', strtotime("+8 days"));
             $firstPaymentDate = date('Y-m-d', $plusOneWeek);
             // dd($firstPaymentDate);
             $paymenttbl = new payment_tbl;
-            $paymenttbl->paymentDueDate = $getEventDate;
+            $paymenttbl->paymentDueDate = Input::get('mailEventDate');
             $paymenttbl->paymentStatus = 0;
-            $paymenttbl->reservationID = $getReservationID;
+            $paymenttbl->reservationID = $id;
             $paymenttbl->paymentAmount = $halfPayment;
             $paymenttbl->save();
 
             $paymenttbl2 = new payment_tbl;
             $paymenttbl2->paymentDueDate = $firstPaymentDate;
             $paymenttbl2->paymentStatus = 0;
-            $paymenttbl2->reservationID = $getReservationID;
+            $paymenttbl2->reservationID = $id;
             $paymenttbl2->paymentAmount = $halfPayment;
             $paymenttbl2->save();
         }
 
         if ($paymentTerm == 3) {
-            $firstPayment = ($getReservationFee * .7);
-            $secondPayment = ($getReservationFee * .3);
+            $firstPayment = ($totalFee * .7);
+            $secondPayment = ($totalFee * .3);
             $plusOneWeek = strtotime("+8 day");
             $NewDate=Date('y:m:d', strtotime("+8 days"));
             $firstPaymentDate = date('Y-m-d', $plusOneWeek);
             // dd($firstPaymentDate);
             $paymenttbl = new payment_tbl;
-            $paymenttbl->paymentDueDate = $getEventDate;
+            $paymenttbl->paymentDueDate = Input::get('mailEventDate');
             $paymenttbl->paymentStatus = 0;
-            $paymenttbl->reservationID = $getReservationID;
+            $paymenttbl->reservationID = $id;
             $paymenttbl->paymentAmount = $secondPayment;
             $paymenttbl->save();
 
             $paymenttbl2 = new payment_tbl;
             $paymenttbl2->paymentDueDate = $firstPaymentDate;
             $paymenttbl2->paymentStatus = 0;
-            $paymenttbl2->reservationID = $getReservationID;
+            $paymenttbl2->reservationID = $id;
             $paymenttbl2->paymentAmount = $firstPayment;
             $paymenttbl2->save();
         }
 
-        // $mailEventLocation = Input::get('mailEventLocation');
-        // $mailPackageAvailed = Input::get('mailPackageAvailed');
-        // $mailPaymentTerm = Input::get('mailPaymentTerm');
-        // $mailEventDate = Input::get('mailEventDate');
-        // $mailEventName = Input::get('mailEventName');
-        // $mailEventStartTime = Input::get('mailEventStartTime');
-        // $mailEventEndTime = Input::get('mailEventEndTime');
-        // $mailDishInclusion = Input::get('mailDishInclusion');
-        // $mailDishAdditional = Input::get('mailDishAdditional');
-        // $mailServiceAdditional = Input::get('mailServiceAdditional');
-        // $mailEmployeeAdditional = Input::get('mailEmployeeAdditional');
-        // $mailEquipmentAdditional = Input::get('mailEquipmentAdditional');
-        // $mailNumOfGuest = Input::get('mailNumOfGuest');
-        // $mailCustomerName = Input::get('mailCustomerName');
-        // $currentMonth = date('m');
-        // $currentDay = date('d');
-        // $currentYear = date('Y');
-        // $data = array(
-        //  'mailEventLocation' => $mailEventLocation,
-        //  'mailPackageAvailed' => $mailPackageAvailed,
-        //  'currentMonth' => $currentMonth,
-        //  'currentDay' => $currentDay, 
-        //  'currentYear' => $currentYear,
-        //  'mailPaymentTerm' => $mailPaymentTerm,
-        //  'mailEventDate' => $mailEventDate,
-        //  'mailEventStartTime' => $mailEventStartTime, 
-        //  'mailEventEndTime' => $mailEventEndTime,
-        //  'mailDishInclusion' => $mailDishInclusion,
-        //  'mailDishAdditional' => $mailDishAdditional,
-        //  'mailServiceAdditional' => $mailServiceAdditional,
-        //  'mailEmployeeAdditional' => $mailEmployeeAdditional, 
-        //  'mailEquipmentAdditional' => $mailEquipmentAdditional,
-        //  'mailNumOfGuest' => $mailNumOfGuest,
-        //  'mailEventName' => $mailEventName,
-        //  'mailCustomerName' => $mailCustomerName
-        // );
+        $mailEventLocation = Input::get('mailEventLocation');
+        $mailPackageAvailed = Input::get('mailPackageAvailed');
+        $mailPaymentTerm = Input::get('mailPaymentTerm');
+        $mailEventDate = Input::get('mailEventDate');
+        $mailEventName = Input::get('mailEventName');
+        $mailEventStartTime = Input::get('mailEventStartTime');
+        $mailEventEndTime = Input::get('mailEventEndTime');
+        $mailDishInclusion = Input::get('mailDishInclusion');
+        $mailDishAdditional = Input::get('mailDishAdditional');
+        $mailServiceAdditional = Input::get('mailServiceAdditional');
+        $mailEmployeeAdditional = Input::get('mailEmployeeAdditional');
+        $mailEquipmentAdditional = Input::get('mailEquipmentAdditional');
+        $mailNumOfGuest = Input::get('mailNumOfGuest');
+        $mailCustomerName = Input::get('mailCustomerName');
+        $currentMonth = date('m');
+        $currentDay = date('d');
+        $currentYear = date('Y');
+        $data = array(
+         'mailEventLocation' => $mailEventLocation,
+         'mailPackageAvailed' => $mailPackageAvailed,
+         'currentMonth' => $currentMonth,
+         'currentDay' => $currentDay, 
+         'currentYear' => $currentYear,
+         'mailPaymentTerm' => $mailPaymentTerm,
+         'mailEventDate' => $mailEventDate,
+         'mailEventStartTime' => $mailEventStartTime, 
+         'mailEventEndTime' => $mailEventEndTime,
+         'mailDishInclusion' => $mailDishInclusion,
+         'mailDishAdditional' => $mailDishAdditional,
+         'mailServiceAdditional' => $mailServiceAdditional,
+         'mailEmployeeAdditional' => $mailEmployeeAdditional, 
+         'mailEquipmentAdditional' => $mailEquipmentAdditional,
+         'mailNumOfGuest' => $mailNumOfGuest,
+         'mailEventName' => $mailEventName,
+         'mailCustomerName' => $mailCustomerName
+        );
         // Mail::send('mail', $data, function($message) use ($data){$message->to("mcssystem2017@gmail.com",'Products')->subject('Receipt');
         // });
         return redirect()->back();  
@@ -298,42 +259,6 @@ class adminController extends Controller
         // ->where('transaction_tbl.transactionStatus', 4)
         ->get();  
         return \Response::json(['transactionData'=>$transactionData]);
-    }
-
-    public function retrieveMonthlyPO(){
-        $currentMonth = date('m');
-        $currentYear = date('Y');
-        $poData =  DB::table('purchaseorder_tbl')
-        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
-        ->join('unitmeasurement_tbl','unitmeasurement_tbl.uomID','=','purchaseorder_tbl.uomID')
-        ->select('purchaseorder_tbl.*', 'purchaseordertype_tbl.*','unitmeasurement_tbl.*')
-        ->whereMonth('purchaseorder_tbl.poDate', $currentMonth)
-        ->whereYear('purchaseorder_tbl.poDate',$currentYear)
-        ->get();  
-        return \Response::json(['poData'=>$poData]);
-    }
-
-    public function retrieveYearlyPO(){
-        $currentMonth = date('m');
-        $currentYear = date('Y');
-        $poData =  DB::table('purchaseorder_tbl')
-        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
-        ->join('unitmeasurement_tbl','unitmeasurement_tbl.uomID','=','purchaseorder_tbl.uomID')
-        ->select('purchaseorder_tbl.*', 'purchaseordertype_tbl.*','unitmeasurement_tbl.*')
-        ->whereYear('purchaseorder_tbl.poDate',$currentYear)
-        ->get();  
-        return \Response::json(['poData'=>$poData]);
-    }
-
-    public function retrieveAllPO(){
-        $currentMonth = date('m');
-        $currentYear = date('Y');
-        $poData =  DB::table('purchaseorder_tbl')
-        ->join('purchaseordertype_tbl','purchaseordertype_tbl.poTypeId','=','purchaseorder_tbl.poTypeId')
-        ->join('unitmeasurement_tbl','unitmeasurement_tbl.uomID','=','purchaseorder_tbl.uomID')
-        ->select('purchaseorder_tbl.*', 'purchaseordertype_tbl.*','unitmeasurement_tbl.*')
-        ->get();  
-        return \Response::json(['poData'=>$poData]);
     }
 
 
@@ -1672,7 +1597,19 @@ class adminController extends Controller
         ->where('employeeadditional_tbl.reservationID', Input::get('sendReservationID'))
         ->get();
 
+        
+
         return \Response::json(['ss'=>$ss, 'ww'=>$ww, 'gg'=>$gg, 'ff'=>$ff, 'dd'=>$dd, 'additionalDish'=>$additionalDish, 'additionalEquipment'=>$additionalEquipment, 'additionalService'=>$additionalService, 'additionalEmployee'=>$additionalEmployee, 'dishTypeData'=>$dishTypeData, 'dishData'=>$dishData, 'dishInclusion'=>$dishInclusion]);
+    }
+    public function assignRetrieve(){
+         $ass =  Input::get('sdid'); 
+        $stmt = "SELECT equipment_tbl.`equipmentName`, equipment_tbl.`equipmentID`, SUM(equipmentlog_tbl.`equipmentQuantityIn`) as qtyIn FROM equipment_tbl, equipmenttype_tbl, equipmentlog_tbl, packageinclusion_tbl WHERE equipment_tbl.`equipmentID` = packageinclusion_tbl.`equipmentID` AND equipment_tbl.`equipmentTypeID` = equipmenttype_tbl.`equipmentTypeID` AND equipment_tbl.`equipmentID` = equipmentlog_tbl.`equipmentID` AND packageinclusion_tbl.`packageID` = '$ass' GROUP BY equipment_tbl.`equipmentName`, equipment_tbl.`equipmentID` ";
+        $rr = DB::select($stmt);
+
+        $asss =  Input::get('sendReservationID'); 
+        $stmts = "SELECT equipment_tbl.`equipmentName`, equipmentadditional_tbl.`equipmentAdditionalQty`, SUM(equipmentlog_tbl.`equipmentQuantityIn`) as qtyIn FROM equipment_tbl, equipmenttype_tbl, equipmentlog_tbl, equipmentadditional_tbl, reservation_tbl WHERE reservation_tbl.`reservationID` =equipmentadditional_tbl.`reservationID` AND equipment_tbl.`equipmentID` = equipmentadditional_tbl.`equipmentID` AND equipment_tbl.`equipmentTypeID` = equipmenttype_tbl.`equipmentTypeID` AND equipment_tbl.`equipmentID` = equipmentlog_tbl.`equipmentID` AND equipmentadditional_tbl.`reservationID` = '$asss' GROUP BY equipment_tbl.`equipmentName`, equipmentadditional_tbl.`equipmentAdditionalQty`";
+        $tt = DB::select($stmts);
+        return \Response::json(['rr'=>$rr, 'tt'=>$tt]);
     }
 
     public function deletePackage(){
@@ -2004,17 +1941,11 @@ class adminController extends Controller
         ->where('purchaseorder_tbl.poTypeId', 1)
         ->get();
 
-        $uomData = DB::table('unitmeasurement_tbl')
-        ->select('*')
-        ->where('uomStatus', 1)
-        ->get();
-
         return View::make('/inventory_purchaseOrderPage')
         ->with('poData', $poData)
         ->with('poTypeData', $poTypeData)
         ->with('equipmentType', $equipmentType)
-        ->with('existingPO', $existingPO)
-        ->with('uomData', $uomData);
+        ->with('existingPO', $existingPO);
     }
 
     public function retrievePOFood(){
@@ -2051,7 +1982,6 @@ class adminController extends Controller
                 $po->poPrice = Input::get('addPOPrice');
                 $po->poTypeId = Input::get('addPOType');
                 $po->poStatus = 1;
-                $po->uomID = Input::get('addUOM');
                 $po->save();
 
                 Session::flash('title', 'Saved!');
@@ -2068,7 +1998,6 @@ class adminController extends Controller
                 $po->poQty = Input::get('addPOQty');
                 $po->poPrice = Input::get('addPOPrice');
                 $po->poTypeId = Input::get('addPOType');
-                $po->uomID = Input::get('addUOM');
                 $po->poStatus = 1;
                 $po->save();
 
@@ -2157,48 +2086,6 @@ class adminController extends Controller
         return redirect()->back();
         
         
-    }
-
-
-    public function uomPage(){
-    $uomData = DB::table('unitmeasurement_tbl')
-        ->select('*')
-        ->where('uomStatus', 1)
-        ->get();
-        return View::make('/uomPage')->with('uomData', $uomData);
-    }
-
-    public function retrieveUOM(){
-        $uomData = DB::table('unitmeasurement_tbl')
-        ->select('*')
-        ->where('uomID', Input::get('sendID'))
-        ->get();
-        return \Response::json(['uomData'=>$uomData]);
-    }
-
-     public function addUOM(Request $request){
-        $uom = new unitmeasurement_tbl;
-        $uom->uomName = Input::get('addUOMName');
-        $uom->uomStatus = 1;
-        $uom->save();
-        return redirect()->back();
-    }
-
-    public function deleteUOM(Request $request){
-        $id = Input::get('deleteUOMID');
-        $uom = unitmeasurement_tbl::find($id);
-        $uom->uomStatus = 0;
-        $uom->save();
-        return redirect()->back();
-    }
-
-    public function editUOM(Request $request){
-        $id = Input::get('editUOMID');
-        $uom = unitmeasurement_tbl::find($id);
-        $uom->uomName = Input::get('editUOMName');
-        $uom->uomStatus = 1;
-        $uom->save();
-        return redirect()->back();
     }
 
     public function retrieveEquipmentID(){
@@ -2604,7 +2491,7 @@ class adminController extends Controller
         ->join('reservation_tbl','reservation_tbl.reservationID','=','payment_tbl.reservationID')
         ->select('reservation_tbl.*', 'payment_tbl.*')
         ->where('reservation_tbl.reservationID', '=' , Input::get('reservationID'))
-        ->orderBy('payment_tbl.paymentDueDate', 'asc')
+        ->orderBy('payment_tbl.paymentDueDate', 'desc')
         ->get();
 
 
@@ -2894,6 +2781,7 @@ class adminController extends Controller
     }
 
     public function retrieveAssignedEquipment(){
+
        $ss = DB::table('assignequipment_tbl')
         ->join('equipment_tbl','equipment_tbl.equipmentID','=','assignequipment_tbl.equipmentID')
         ->select('assignequipment_tbl.*', 'equipment_tbl.*')
@@ -3143,6 +3031,7 @@ class adminController extends Controller
         ->join('equipment_tbl', 'assignequipment_tbl.equipmentID', '=','equipment_tbl.equipmentID')
         ->select('transaction_tbl.*', 'reservation_tbl.*','event_tbl.*','customer_tbl.*','equipment_tbl.*','assignequipment_tbl.*')
         ->where('transaction_tbl.transactionStatus', 4)
+        ->orWhere('transaction_tbl.transactionStatus', 5)
         ->get();
 
         $assign = DB::table('transaction_tbl')
@@ -3165,11 +3054,26 @@ class adminController extends Controller
         ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
         ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
         ->where('transaction_tbl.transactionStatus', 4)
+        ->orWhere('transaction_tbl.transactionStatus', 5)
         ->where('event_tbl.eventStatus', 2)
         ->get();
 
         
         return \Response::json(['lost'=>$lost]);
+    }
+    public function queryAssign(){
+         $assign = DB::table('transaction_tbl')
+       ->join('reservation_tbl','reservation_tbl.reservationID','=','transaction_tbl.reservationID')
+        ->join('event_tbl','event_tbl.eventID','=','reservation_tbl.eventID')
+        ->join('customer_tbl', 'customer_tbl.customerID','=','event_tbl.customerID')
+        ->join('assignequipment_tbl', 'assignequipment_tbl.reservationID', '=','reservation_tbl.reservationID')
+        ->where('transaction_tbl.transactionStatus', '!=', 4)
+        ->orWhere('transaction_tbl.transactionStatus', '!=',5)
+        ->where('event_tbl.eventStatus', 2)
+        ->get();
+
+        
+        return \Response::json(['assign'=>$assign]);
     }
     public function queryLost2(){
          $lost2 = DB::table('transaction_tbl')

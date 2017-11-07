@@ -128,6 +128,7 @@ Route::get('/DashboardPage', 'adminController@dashboardPage');
 Route::get('/RetrieveSchedule', 'adminController@retrieveScheduleData');
 Route::get('/RetrieveEventDetail', 'adminController@retrieveEventDetail');
 Route::get('/RetrievePaymentDetail', 'adminController@retrievePaymentDetail');
+Route::get('/RetrieveAssignDetail', 'adminController@assignRetrieve');
 Route::post("/SavePayment0", array("uses"=>"adminController@savePayment0"));
 Route::post("/SavePayment1", array("uses"=>"adminController@savePayment1"));
 Route::post("/SavePayment2", array("uses"=>"adminController@savePayment2"));
@@ -181,6 +182,7 @@ Route::post("/CancelEvent", array("uses"=>"adminController@cancelEvent"));
 //Query Page
 Route::get('/QueryPage', 'adminController@queryPage');
 Route::get('/QueryLost', 'adminController@queryLost');
+Route::get('/QueryAssign', 'adminController@queryAssign');
 Route::get('/QueryLost2', 'adminController@queryLost2');
 
 ///// USER ROUTING /////

@@ -294,14 +294,14 @@
 						      <tr>
 						      </tr>
 						    </thead>
-						    <tbody>
+						    <tbody id="assignlist">
 						    @foreach ($assign as $ad)
 				            <tr>
-				               	<td>{{ $ad->fullName }}</td>
-				                <td>{{ $ad->cellNum }}</td>
-				                <td>{{ $ad->equipmentName }}</td>
-				                <td>{{ $ad->assignEquipmentQty }}</td>
-				                <td>{{ $ad->eventDate}}</td>             
+				            	<td>{{ $ad->eventDate}}<br>
+				            	<b>{{ $ad->fullName }} - {{ $ad->cellNum }}</b><br>
+				                EQUIPMENT NAME:{{ $ad->equipmentName }}<br>
+				                QUANTITY: {{ $ad->assignEquipmentQty }}</td>
+				                           
 				          	</tr>
 				            @endforeach						      
 						    </tbody>
@@ -515,6 +515,7 @@
 			$('.tablee').css('display', 'none');
 		}
 		document.getElementById('lostlist').innerHTML ="";
+		// document.getElementById('assignlist').innerHTML ="";
 		var csid;
 		 $.ajax({
 	        type: "GET",
@@ -559,7 +560,21 @@
 	            alert($.parseJSON(xhr.responseText)['error']['message']);
 	        }                
       });
-
+	// $.ajax({
+	//         type: "GET",
+	//         url:  "/QueryAssign",
+	//         success: function(data){
+	//         for(var i=0; i< data['assign'].length; i++){
+	//         	csid=data['assign'][i]['customerID'];
+	//         	document.getElementById('assignlist').innerHTML +='<tr><td>'+data['assign'][i]['eventDate']+'<br><b>'+data['assign'][i]['fullName']+' - '+data['assign'][i]['cellNum']+'</b><br>EMAIL ADDRESS: '+data['assign'][i]['emailAddress']+'</td>';
+	        	
+	// 	      }
+	//          },
+	//         error: function(xhr){
+	//             alert("mali");
+	//             alert($.parseJSON(xhr.responseText)['error']['message']);
+	//         }                
+ //      });
 	}
 
 	// $('.lists').ready(function() {
