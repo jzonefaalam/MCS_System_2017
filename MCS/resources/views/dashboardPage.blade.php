@@ -229,7 +229,7 @@
                       <tr>
                           <td>
                             <a >{{ $latestPayments -> eventName}}</a>
-                            <small style="width: 100px;" class="label label-danger pull-right">
+                            <small style="width: 100px;" class="label label-warning pull-right">
                               <i class="fa fa-calendar-o"></i> 
                               {{ $latestPayments->eventTime }}
                             </small>
@@ -596,7 +596,7 @@
       <div class="modal-dialog">
         <div class="modal-content" style="margin-top: 250px">
           <div class="modal-body">
-            <div class="form-group">
+            <div class="form-group" hidden>
               <label class="col-sm-4 control-label">Reservation Details</label>
               <div class="col-sm-5 input-group" >
                 <span class="input-group-addon"><i class="fa fa-list" aria-hidden="true"></i></span>
@@ -1107,7 +1107,7 @@
                 latestCustomerID = data['latestEvents'][i]['customerID'];
                 latestEventID = data['latestEvents'][i]['eventID'];
                 latestEventTime = data['latestEvents'][i]['eventTime'];
-                latestNull = '<a>' +latestEventName+ '</a><small style="width: 150px;" class="label label-danger pull-right"><i class="fa fa-calendar-o"></i>'+latestEventDate+' &nbsp '+latestEventTime+'</small>';
+                latestNull = '<a>' +latestEventName+ '</a><small style="width: 150px;" class="label label-success pull-right"><i class="fa fa-calendar-o"></i>'+latestEventDate+' &nbsp '+latestEventTime+'</small>';
                 tblSDet.row.add([
                     latestNull,
                     latestReservationID,
@@ -1719,7 +1719,7 @@
   function dishInclusionChange(id){
     var selectedOption = document.getElementById(id);
     var dish = selectedOption.options[selectedOption.selectedIndex].value;
-    alert(dish);
+    // alert(dish);
     $.ajax({
         type: "GET",
         url:  "/InclusionChange",

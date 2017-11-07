@@ -159,7 +159,7 @@
           frameDoc.document.write('<tr style ="text-align:center">');
           frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
           frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
+          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '<br>w/Addons</td>');
           frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
           frameDoc.document.write('</tr>');
           var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
@@ -273,7 +273,7 @@
           frameDoc.document.write('<tr style ="text-align:center">');
           frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
           frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
+          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '<br>w/Addons</td>');
           frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
           frameDoc.document.write('</tr>');
           var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);
@@ -387,7 +387,7 @@
           frameDoc.document.write('<tr style ="text-align:center">');
           frameDoc.document.write('<td>' +data['transactionData'][i]['eventDate']+ '</td>');
           frameDoc.document.write('<td>' +data['transactionData'][i]['fullName']+ '</td>');
-          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '</td>');
+          frameDoc.document.write('<td>' +data['transactionData'][i]['packageName']+ ' for ' +data['transactionData'][i]['guestCount']+ ' People' + '<br>w/Addons</td>');
           frameDoc.document.write('<td>'+data['transactionData'][i]['totalFee']+ '</td>');
           frameDoc.document.write('</tr>');
           var transactionFee = parseFloat(data['transactionData'][i]['totalFee']);

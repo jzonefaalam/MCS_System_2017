@@ -24,7 +24,8 @@
           </div>
             
           <div id="my-tab-content" class="tab-content text-center">
-            <div class="tab-pane active" id="Equipment">
+            <div class="tab-pane active" id="Equipment"  style=" height: 500px">
+              <img src="{{ asset('img/' . 'eq.jpg') }}" class="col-md-12" > 
             </div>
           @foreach($equipmenttype as $dd)
             <div class="tab-pane" id="{{$dd->equipmentTypeName}}">

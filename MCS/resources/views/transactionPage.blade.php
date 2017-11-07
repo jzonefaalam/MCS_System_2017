@@ -26,6 +26,76 @@
           </div>
         </div>
         <!-- /Header -->
+
+        <!-- PAYMENT EVENT Modal -->
+  <form id="paymentForm" role="form" method="POST" action="#" class="form-horizontal">
+    <div class="modal fade" id="paymentModal" >
+      <div class="modal-dialog" style="width:70%;">
+        <div class="modal-content">
+          <div class="modal-body">
+            {!! csrf_field() !!}
+            <div class="row" align="center">
+              <div class="box" style="width:95%;">
+              <div class="box-body">
+                <div class="row">
+                  <div class="col-md-6" align="left">
+                    <label>Customer Name: </label>
+                    <div id="paymentModalCustomerName" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Name: </label>
+                    <div id="paymentModalEventName" style="display: inline-block;">
+                      
+                    </div>
+                  </div>
+                  <div class="col-md-6" align="left">
+                    <label>Contact Number: </label>
+                    <div id="paymentModalContactNumber" style="display: inline-block;">
+                      
+                    </div>
+                    <br>
+                    <label>Event Date: </label>
+                    <div id="paymentModalEventDate" style="display: inline-block;">
+                      
+                    </div>
+                    <input id="paymentModalpaymentTerm" type="text" hidden>
+                    <input id="paymentModalTransactionID" type="text" style="display: none;">
+                    <input id="paymentModalPaymentFee" type="text" style="display: none;">
+                    <input id="paymentModalTransactionFee" type="text" style="display: none;">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- End Box -->
+            </div>
+            <!-- Payment Table -->
+            <div class="row">
+              <table id="paymentDetailTbl" class="table table-striped table-bordered" style="width:95%;">
+                  <thead>
+                    <tr>
+                      <th>Payment Amount</th>
+                      <th>Due Date</th>
+                      <th>Date Received</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="paymentDetailTblBody">
+                    <input type="hidden" id="token" value="{{ csrf_token() }}">
+                  </tbody>
+                </table>
+            </div>
+          </div>
+          <!-- <div class="modal-footer">
+              <button type="submit" class="btn btn-default">Send Notification</button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- End -->
+
         <div class="box-body">
           <h5><i><b>Note:</b> Double click the row to view transaction details.</i></h5>
           <table id="transactionTable" class="table table-bordered table-striped dataTable">
@@ -177,74 +247,7 @@
     </form>
     <!-- End Modals-->
 
-  <!-- PAYMENT EVENT Modal -->
-  <form id="paymentForm" role="form" method="POST" action="#" class="form-horizontal">
-    <div class="modal fade" id="paymentModal" >
-      <div class="modal-dialog" style="width:70%;">
-        <div class="modal-content">
-          <div class="modal-body">
-            {!! csrf_field() !!}
-            <div class="row" align="center">
-              <div class="box" style="width:95%;">
-              <div class="box-body">
-                <div class="row">
-                  <div class="col-md-6" align="left">
-                    <label>Customer Name: </label>
-                    <div id="paymentModalCustomerName" style="display: inline-block;">
-                      
-                    </div>
-                    <br>
-                    <label>Event Name: </label>
-                    <div id="paymentModalEventName" style="display: inline-block;">
-                      
-                    </div>
-                  </div>
-                  <div class="col-md-6" align="left">
-                    <label>Contact Number: </label>
-                    <div id="paymentModalContactNumber" style="display: inline-block;">
-                      
-                    </div>
-                    <br>
-                    <label>Event Date: </label>
-                    <div id="paymentModalEventDate" style="display: inline-block;">
-                      
-                    </div>
-                    <input id="paymentModalpaymentTerm" type="text" >
-                    <input id="paymentModalTransactionID" type="text" style="display: none;">
-                    <input id="paymentModalPaymentFee" type="text" style="display: none;">
-                    <input id="paymentModalTransactionFee" type="text" style="display: none;">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- End Box -->
-            </div>
-            <!-- Payment Table -->
-            <div class="row">
-              <table id="paymentDetailTbl" class="table table-striped table-bordered" style="width:95%;">
-                  <thead>
-                    <tr>
-                      <th>Payment Amount</th>
-                      <th>Due Date</th>
-                      <th>Date Received</th>
-                      <th>Status</th>
-                      <th>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody id="paymentDetailTblBody">
-                    <input type="hidden" id="token" value="{{ csrf_token() }}">
-                  </tbody>
-                </table>
-            </div>
-          </div>
-          <div class="modal-footer">
-              <button type="submit" class="btn btn-default">Send Notification</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-  <!-- End -->
+  
 
   <!-- CANCEL EVENT MODAL -->
   <form role="form" method="POST" action="CancelEvent" class="form-horizontal">
@@ -899,15 +902,15 @@
           document.getElementById("parPaymentStatus").innerHTML = "Fully Paid";
           document.getElementById('assignBtn').style.display='none';
           document.getElementById('paymentBtn').style.display='none';
-          document.getElementById('assessmentBtn').style.display='block';
+          document.getElementById('assessmentBtn').style.display='none';
           document.getElementById('cancelBtn').style.display='block';
         }
         if(data['tdata'][0]['transactionStatus'] == 2){
           document.getElementById("parPaymentStatus").innerHTML = "Half Paid";
-          document.getElementById('assignBtn').style.display='block';
+          document.getElementById('assignBtn').style.display='none';
           document.getElementById('assessmentBtn').style.display='none';
           document.getElementById('cancelBtn').style.display='block';
-          document.getElementById('printBtn').style.display='block';
+          document.getElementById('printBtn').style.display='none';
           document.getElementById('paymentBtn').style.display='block';
         }
         if(data['tdata'][0]['transactionStatus'] == 3){
@@ -922,14 +925,14 @@
           document.getElementById("parPaymentStatus").innerHTML = "Finished";
           document.getElementById('assessmentBtn').style.display='none';
           document.getElementById('assignBtn').style.display='none';
-          document.getElementById('printBtn').style.display='block';
+          document.getElementById('printBtn').style.display='none';
         }
 
         if(data['tdata'][0]['transactionStatus'] == 5){
           document.getElementById("parPaymentStatus").innerHTML = "Additional Payment Pending";
           document.getElementById('assessmentBtn').style.display='none';
           document.getElementById('assignBtn').style.display='none';
-          document.getElementById('printBtn').style.display='block';
+          document.getElementById('printBtn').style.display='none';
           document.getElementById('paymentBtn').style.display='block';
         }
         document.getElementById("parNumberOfGuest").innerHTML = data['tdata'][0]['guestCount'];
