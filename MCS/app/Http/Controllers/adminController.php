@@ -903,7 +903,7 @@ class adminController extends Controller
     public function addLocation(Request $request){
         $locationImage = ($_FILES["addLocationImage"]["name"]);
         if($locationImage==null){
-            $location = new locationtbl;
+            $location = new location_tbl;
             $location->locationName = Input::get('addLocationName');
             $location->locationContactPerson = Input::get('addLocationContactPerson');
             $location->locationDescription = Input::get('addLocationDescription');
@@ -932,7 +932,7 @@ class adminController extends Controller
         }
         // Check if file already exists
         if (file_exists($target_file)) {
-            $location = new locationtbl;
+            $location = new location_tbl;
             $location->locationName = Input::get('addLocationName');
             $location->locationContactPerson = Input::get('addLocationContactPerson');
             $location->locationDescription = Input::get('addLocationDescription');
@@ -964,7 +964,7 @@ class adminController extends Controller
             // if everything is ok, try to upload file
         } else {
         if (move_uploaded_file($_FILES["addLocationImage"]["tmp_name"], $target_file)) {
-            $location = new locationtbl;
+            $location = new location_tbl;
             $location->locationName = Input::get('addLocationName');
             $location->locationContactPerson = Input::get('addLocationContactPerson');
             $location->locationDescription = Input::get('addLocationDescription');
@@ -992,7 +992,7 @@ class adminController extends Controller
         $locationImage = ($_FILES["editLocationImage"]["name"]);
         if($locationImage==null){
             $id = Input::get('editLocationID');
-            $location = locationtbl::find($id); 
+            $location = location_tbl::find($id); 
             $location->locationName = Input::get('editLocationName');
             $location->locationContactPerson = Input::get('editLocationContactPerson');
             $location->locationDescription = Input::get('editLocationDesc');
@@ -1020,7 +1020,7 @@ class adminController extends Controller
         // Check if file already exists
         if (file_exists($target_file)) {
             $id = Input::get('editLocationID');
-            $location = locationtbl::find($id); 
+            $location = location_tbl::find($id); 
             $location->locationName = Input::get('editLocationName');
             $location->locationContactPerson = Input::get('editLocationContactPerson');
             $location->locationDescription = Input::get('editLocationDesc');
@@ -1051,7 +1051,7 @@ class adminController extends Controller
         } else {
         if (move_uploaded_file($_FILES["editLocationImage"]["tmp_name"], $target_file)) {
             $id = Input::get('editLocationID');
-            $location = locationtbl::find($id); 
+            $location = location_tbl::find($id); 
             $location->locationName = Input::get('editLocationName');
             $location->locationContactPerson = Input::get('editLocationContactPerson');
             $location->locationDescription = Input::get('editLocationDesc');
