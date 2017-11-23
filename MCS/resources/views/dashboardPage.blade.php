@@ -677,14 +677,42 @@
   <!-- Event Modal -->
   <form id="eventForm" role="form" method="POST" action="#" class="form-horizontal">
     <div class="modal fade" id="eventModal" >
-      <div class="modal-dialog" style="width:70%;">
+      <div class="modal-dialog" style="width:50%;">
         <div class="modal-content">
+            <div class="modal-header" style="width:100%;" >
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="upcomingEventModal">Upcoming Event</h4>
+            </div>
           <div class="modal-body">
             {!! csrf_field() !!}
-            <div class="row" align="center">
-              <div class="box" style="width:95%;">
+            <div class="row" align="center" style="width: 97%; padding-left: 7%">
+              <div class="box box-danger">
               <div class="box-body">
                 <div class="row">
+
+                  <div class="form-horizontal">
+
+                      <div class="col-sm-5" style="padding-left: 70px; padding-right: 0px">
+                        <div class="form-group">
+                          <label class="control-label col-sm-6">Customer Name</label>
+                          <div>
+                            <input type="text" class="form-control" id="editCustomerName" name="editCustomerName" column="20" style="width: 50px" required>
+                            <input type="text"  name="reservationNumber" id="reservationNumber" style="display: none;">
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-5">
+                        <div class="form-group">
+                          <label class="control-label col-sm-6">Event Name</label>
+                          <div>
+                            <input type="text" class="form-control" id="editEventName" name="editEventName" column="20" style="width: 50px" required>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
                   <div class="col-md-6" align="left">
                     <label>Customer Name: </label>
                     <div id="eventModalCustomerName" style="display: inline-block;">
